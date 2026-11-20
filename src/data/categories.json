@@ -1,0 +1,1830 @@
+{
+ "raw": 1172,
+ "unique": 1123,
+ "duplicates": [
+  "Deity-Assisted Shadow Work",
+  "Aura Reading",
+  "Mirror Scrying",
+  "Flower Magic",
+  "Crystal Grid Creation",
+  "Stone & Mineral Magic",
+  "Protective Talisman Creation",
+  "Personalised Amulet Creation",
+  "Mirror Magic",
+  "Key Magic",
+  "Salt Magic",
+  "Bibliomancy",
+  "Poppet Magic",
+  "Effigy & Symbolic Representation Magic",
+  "Spell Box Creation",
+  "Witch Bottle Creation",
+  "Mirror Box Ritual",
+  "Honey Jar Working",
+  "Sweetening Jar Working",
+  "Petition Magic",
+  "Planetary Seal Working",
+  "Deity Devotion Package",
+  "Glamour Spell",
+  "Glow-Up Spell",
+  "Friendship Spell",
+  "Communication Spell",
+  "Money Spell",
+  "Career Spell",
+  "Client Attraction Spell",
+  "Protection Spell",
+  "Home Protection Spell",
+  "Psychic Protection Spell",
+  "Grounding Spell",
+  "Habit Release Spell",
+  "Dream Enhancement Spell",
+  "Fisherman's Knot Spell",
+  "Mermaid / Siren Spell",
+  "Spirit Guide Communication",
+  "CBT + NLP",
+  "NLP Anchoring",
+  "Past-Life Regression",
+  "Inner-Child Journaling",
+  "Distance Reiki",
+  "Aura Protection",
+  "Aura Strengthening",
+  "Aura Cleansing",
+  "Energetic Protection",
+  "Spirit Attachment Assessment",
+  "Mirror Box Hexing"
+ ],
+ "pillars": [
+  {
+   "name": "Devotion & the Unseen",
+   "categories": [
+    {
+     "name": "Devi & Deity Work",
+     "subs": [
+      {
+       "name": "Kali & the Mahavidyas",
+       "items": [
+        "Kali Working",
+        "Tara Working",
+        "Chinnamasta Working",
+        "Dhumavati Working",
+        "Baglamukhi Working",
+        "Lalita Tripura Sundari Working",
+        "Dashamahavidya Working",
+        "Matangi Working",
+        "Bhuvaneshwari Working",
+        "Kamala Working",
+        "Bhairavi Working"
+       ]
+      },
+      {
+       "name": "Devi & Hindu Deities",
+       "items": [
+        "Pratyangira Working",
+        "Shiva Working",
+        "Bhairava Working",
+        "Narasimha Working",
+        "Krishna Working",
+        "Hanuman Working",
+        "Durga Working",
+        "Lakshmi Working",
+        "Saraswati Working",
+        "Ganesha Working",
+        "Kartikeya / Murugan Working",
+        "Kamakhya Devotional Working",
+        "Devi Protection Working",
+        "Devi Invocation & Prayer",
+        "Goddess-Centred Spiritual Guidance"
+       ]
+      },
+      {
+       "name": "Mantra, Yantra & Tantric Devotion",
+       "items": [
+        "Mantra-Based Devotional Working",
+        "Yantra-Based Devotional Working",
+        "Tantric Symbolic Ritual Work",
+        "Personalised Devi Sadhana Guidance"
+       ]
+      },
+      {
+       "name": "Greek Deities",
+       "items": [
+        "Individual Greek deity working",
+        "Hecate",
+        "Aphrodite",
+        "Athena",
+        "Artemis",
+        "Apollo",
+        "Hermes",
+        "Ares",
+        "Hephaestus",
+        "Demeter",
+        "Persephone",
+        "Hades",
+        "Dionysus",
+        "Hera",
+        "Zeus",
+        "Poseidon",
+        "Gaia",
+        "Nyx",
+        "Selene",
+        "Eros",
+        "Hestia",
+        "Kronos",
+        "Rhea",
+        "Nemesis",
+        "Nike",
+        "Greek Pantheon Devotional Working",
+        "Hecate Crossroads Ritual",
+        "Aphrodite Love & Beauty Working",
+        "Athena Wisdom & Strategy Working",
+        "Artemis Independence & Wilderness Working",
+        "Apollo Creativity & Clarity Working",
+        "Hermes Communication & Opportunity Working",
+        "Persephone Shadow & Transformation Working",
+        "Hades Ancestral & Underworld Devotion",
+        "Dionysus Liberation & Expression Working",
+        "Selene Lunar Devotional Working",
+        "Nyx Night & Shadow Working",
+        "Hecate-Inspired Witchcraft",
+        "Persephone Devotional Working",
+        "Gaia Devotional Working",
+        "Psyche Devotional Working",
+        "Nyx & Hecate Combined Working",
+        "Aphrodite & Persephone Combined Working",
+        "Aphrodite Partner Attraction",
+        "Self-Love + Aphrodite",
+        "Aphrodite Relationship Blessing",
+        "Aphrodite + Hecate Love Transition",
+        "Artemis Wilderness Spell",
+        "Hermes Spell"
+       ]
+      },
+      {
+       "name": "Lilith & Other Traditions",
+       "items": [
+        "Lilith Devotional Working",
+        "Isis Devotional Working",
+        "Brigid Devotional Working",
+        "Odin Devotional Working",
+        "Loki Devotional Working",
+        "Freyja Devotional Working",
+        "Frigg Devotional Working",
+        "Benzaiten Devotional Working",
+        "Asherah Devotional Working",
+        "Mazu Devotional Working",
+        "Nüwa Devotional Working",
+        "Flora Devotional Working",
+        "Sunna Devotional Working",
+        "Kurukulla Devotional Study",
+        "Vajrayogini-Inspired Devotional Study",
+        "Vajravarahi-Inspired Devotional Study",
+        "Lilith & Aphrodite Combined Working",
+        "Custom Cross-Pantheon Devotional Ritual"
+       ]
+      },
+      {
+       "name": "Devotional Practice, Altars & Sacred Space",
+       "items": [
+        "Deity Invocation",
+        "Personalised Deity Working",
+        "Multi-Deity Ritual",
+        "Deity Devotional Working",
+        "Deity Connection Ritual",
+        "Deity Introduction & Guidance",
+        "Deity Offering Ritual",
+        "Deity Prayer & Invocation",
+        "Deity Altar Blessing",
+        "Deity Devotion Package",
+        "Divine Feminine Working",
+        "Divine Masculine Working",
+        "Goddess Devotion Working",
+        "God Devotion Working",
+        "Sacred Devotional Ritual",
+        "Personalised Deity Correspondence Working",
+        "Devotional Altar & Offering Working",
+        "Spiritual Reconnection Spell",
+        "Sacred Space Magic",
+        "Spiritual Connection Spell Jar",
+        "Altar Cleansing",
+        "Altar Blessing",
+        "Sacred Space Creation",
+        "Personal Altar Consecration",
+        "Dream & Deity Connection Ritual",
+        "Custom Multi-Deity Ceremony",
+        "Multi-Deity Package",
+        "Altar Cleansing Spell",
+        "Deity Connection Spell",
+        "Return to Spirituality Spell"
+       ]
+      },
+      {
+       "name": "Deity-Assisted Workings",
+       "items": [
+        "Deity-Assisted Spellwork",
+        "Deity-Assisted Shadow Work",
+        "Deity-Assisted Protection",
+        "Deity-Assisted Cleansing",
+        "Deity-Assisted Manifestation",
+        "Deity Candle Working",
+        "Deity Sigil",
+        "Deity Devotional Sigil",
+        "Deity Devotional Spell Jar",
+        "Deity + Moon Working",
+        "Deity Talisman Creation",
+        "Deity-Assisted Ceremonial Ritual",
+        "Deity + Candle + Sigil Package",
+        "Moon + Deity + Spellwork Package",
+        "Ancestral + Deity + Protection Package"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Spirits, Mediumship & Ancestors",
+     "subs": [
+      {
+       "name": "Mediumship & Spirit Communication",
+       "items": [
+        "Spirit Communication",
+        "Mediumship",
+        "Spiritual Messages and Intuitive Interpretation"
+       ]
+      },
+      {
+       "name": "Loved Ones & Grief",
+       "items": [
+        "Communication with Deceased Loved Ones",
+        "Grief-Oriented Spiritual Communication Sessions"
+       ]
+      },
+      {
+       "name": "Animal & Pet Spirits",
+       "items": [
+        "Communication with Deceased Animals",
+        "Communication with Deceased Cats",
+        "Animal Spirit Communication",
+        "Pet Spirit Communication",
+        "Deceased Pet Connection Sessions",
+        "Animal Afterlife Communication"
+       ]
+      },
+      {
+       "name": "Ancestors & Lineage",
+       "items": [
+        "Ancestral Pattern Release",
+        "Ancestor Guidance",
+        "Ancestor Connection",
+        "Ancestor Healing",
+        "Ancestral Pattern Work",
+        "Ancestral Release",
+        "Ancestor Protection",
+        "Personalised Ancestor Ritual",
+        "Ancestor + Grief Working",
+        "Ancestral Honour Ritual",
+        "Ancestral Altar Working",
+        "Ancestral Gratitude Ritual",
+        "Ancestral Pattern Exploration",
+        "Lineage Reflection Working",
+        "Ancestor Devotional Offering",
+        "Ancestor-Inspired Protection",
+        "Ancestral Dream Reflection",
+        "Family Pattern Release Ritual",
+        "Ancestral Remembrance Ritual",
+        "Ancestor Guidance + Healing",
+        "Ancestor Communication",
+        "Ancestral Spirit Communication",
+        "Ancestral Spirit Release"
+       ]
+      },
+      {
+       "name": "Spirit Discernment & Attachment",
+       "items": [
+        "Spirit Identification and Discernment",
+        "Spirit Attachment Assessment",
+        "Spiritual Disturbance Assessment",
+        "Spiritual Discernment Sessions"
+       ]
+      },
+      {
+       "name": "Exorcism, Spirit Release & Spiritual Cleansing",
+       "items": [
+        "Banishing and Spirit Removal",
+        "Spirit Release Work",
+        "Spirit Cleansing",
+        "Spiritual Protection Following Communication",
+        "Exorcism Sessions",
+        "Spirit Release Sessions",
+        "Spiritual Cleansing",
+        "Entity-Release Rituals",
+        "Home Spirit Cleansing",
+        "Personal Spiritual Cleansing",
+        "Banishing Rituals",
+        "Spiritual Oppression Cleansing",
+        "Protective Warding",
+        "Post-Cleansing Protection",
+        "Spiritual Space Restoration",
+        "Multi-Stage Cleansing and Protection"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Shamanic Work",
+     "subs": [
+      {
+       "name": "Journeying, Guidance & Divination",
+       "items": [
+        "Shamanic Journeying",
+        "Guided Shamanic Journeys",
+        "Spirit Guide Communication",
+        "Shamanic Divination",
+        "Shadow Journeying",
+        "Spirit-World Exploration",
+        "Shamanic Journey Interpretation"
+       ]
+      },
+      {
+       "name": "Power Animals & Animal Spirits",
+       "items": [
+        "Power Animal Connection",
+        "Animal Spirit Work"
+       ]
+      },
+      {
+       "name": "Soul Retrieval & Integration",
+       "items": [
+        "Soul Retrieval Work",
+        "Soul Integration Work"
+       ]
+      },
+      {
+       "name": "Shamanic Healing & Protection",
+       "items": [
+        "Shamanic Healing",
+        "Shamanic Energy Cleansing",
+        "Shamanic Protection",
+        "Shamanic Extraction Work",
+        "Shamanic Cord Release",
+        "Shamanic Grounding"
+       ]
+      },
+      {
+       "name": "Ceremony, Drum & Initiation",
+       "items": [
+        "Shamanic Rituals",
+        "Shamanic Drumming",
+        "Shamanic Trance Work",
+        "Shamanic Initiation and Spiritual Development Guidance",
+        "Shamanic Altar and Sacred-Space Work"
+       ]
+      },
+      {
+       "name": "Ancestors, Nature & the Elements",
+       "items": [
+        "Ancestral Shamanic Work",
+        "Shamanic Work with Nature and Elements"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Witchcraft & Magic",
+   "categories": [
+    {
+     "name": "Love, Attraction & Glamour",
+     "subs": [
+      {
+       "name": "Love & Attraction",
+       "items": [
+        "Love & Attraction Working",
+        "Partner Attraction Working",
+        "Calling in a Compatible Partner",
+        "Romantic Magnetism Working",
+        "Dating Confidence Working",
+        "Reciprocal Love Working",
+        "Healthy Partnership Manifestation",
+        "Heart Opening Ritual",
+        "Romantic Confidence Working",
+        "Dating & Social Magnetism",
+        "Love / Attraction Candle",
+        "Love Spellwork",
+        "Attraction Spellwork",
+        "Love Sigil",
+        "Love Spell Jar",
+        "Love & Attraction Package",
+        "Heart Opening Spell",
+        "Love Spell",
+        "Reciprocal Love Spell",
+        "Red Thread Spell",
+        "Love & Expansion Spell"
+       ]
+      },
+      {
+       "name": "Relationships, Reconciliation & Moving On",
+       "items": [
+        "Relationship Harmony",
+        "Release Old Relationship Patterns",
+        "Love + Cord Cutting + New Beginning",
+        "Emotional Availability Working",
+        "Relationship Communication Working",
+        "Reconciliation Intention Ritual",
+        "Separation & Moving-On Ritual",
+        "Love After Loss Working",
+        "Relationship Blessing Ritual",
+        "Emotional Bond Release",
+        "Self-Worth & Relationship Boundaries",
+        "Reconciliation Candle Working",
+        "Honey Jar Working",
+        "Sweetening Jar Working",
+        "Past Relationship Release",
+        "Closure & Moving-On Ritual",
+        "Love + Self-Worth + Relationship Healing Package",
+        "Obsession Pattern Release Spell",
+        "Reconciliation Spell",
+        "Moving-On Spell",
+        "Love After Loss Spell"
+       ]
+      },
+      {
+       "name": "Friendship & Social Connection",
+       "items": [
+        "Friendship Attraction Working",
+        "Friendship Harmony Working",
+        "Friendship Spell",
+        "Friendship Spell Jar"
+       ]
+      },
+      {
+       "name": "Glamour, Beauty & Self-Love",
+       "items": [
+        "Venusian Beauty & Attraction Working",
+        "Self-Love Candle Working",
+        "Self-Love Spellwork",
+        "Glamour Spell",
+        "Beauty & Self-Presentation Spell",
+        "Glow-Up Spell",
+        "Glamour Magic",
+        "Self-Love Sigil",
+        "Glamour Sigil",
+        "Self-Love Spell Jar",
+        "Glamour Spell Jar",
+        "Beauty & Confidence Spell Jar",
+        "Scent-Based Glamour Magic",
+        "Self-Love + Empowerment Package",
+        "Skincare Intention Spell",
+        "Dream Body Intention Spell",
+        "Self-Love Spell",
+        "Venus Doorway Spell"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Abundance, Career & Success",
+     "subs": [
+      {
+       "name": "Money & Abundance",
+       "items": [
+        "Money / Abundance Candle",
+        "Money Spell",
+        "Money Sigil",
+        "Money & Abundance Spell Jar",
+        "Money + Career + Opportunity Package"
+       ]
+      },
+      {
+       "name": "Career, Business & Clients",
+       "items": [
+        "Career / Success Candle",
+        "Career Spell",
+        "Client Attraction Spell",
+        "Business Growth Working",
+        "Career Sigil",
+        "Career & Success Spell Jar",
+        "Client Attraction Spell Jar",
+        "Business Growth Spell Jar",
+        "Career + Business + Client Attraction Package",
+        "Business Growth Spell"
+       ]
+      },
+      {
+       "name": "Luck, Success & Road Opening",
+       "items": [
+        "Road Opener Candle Working",
+        "Luck & Fortune Spell",
+        "Success & Achievement Spell",
+        "Opportunity Attraction Spell",
+        "Road Opener Spell",
+        "Blockage Release Ritual",
+        "Success Sigil",
+        "Good Luck Spell Jar",
+        "Opportunity Spell Jar",
+        "Road Opener Spell Jar",
+        "Good Luck Sachet",
+        "Good Luck Spell",
+        "Success Spell",
+        "Opportunity Spell"
+       ]
+      },
+      {
+       "name": "Focus, Memory & Communication",
+       "items": [
+        "Discipline & Focus Spell",
+        "Memory & Concentration Intention Spell",
+        "Communication Spell",
+        "Discipline Spell Jar",
+        "Communication Spell Jar",
+        "Discipline Spell",
+        "Memory Spell"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Protection, Cleansing & Uncrossing",
+     "subs": [
+      {
+       "name": "Personal, Psychic & Evil-Eye Protection",
+       "items": [
+        "Protection Spell",
+        "Evil Eye Cleansing",
+        "Spiritual Protection Spell",
+        "Psychic Protection Spell",
+        "Evil Eye Protection Jar",
+        "Knot Magic for Protection",
+        "Spiritual Shielding Ritual",
+        "Psychic Shielding Ritual",
+        "Protective Boundary Ritual",
+        "Multi-Layer Protection Ritual",
+        "Psychic Protection Ritual",
+        "Protection Package",
+        "Evil Eye Cleansing Spell",
+        "Shielding Spell"
+       ]
+      },
+      {
+       "name": "Home, Threshold & Warding",
+       "items": [
+        "Home Protection Spell",
+        "Protective Ward",
+        "Warding & Shielding Spell",
+        "Iron Magic",
+        "Threshold & Doorway Magic",
+        "Home Protection Working",
+        "Threshold / Doorway Protection",
+        "Household Protection Ritual",
+        "Property Protection Ritual",
+        "Four Corners Protection Ritual",
+        "New Room Intention Ritual",
+        "Threshold Protection Ritual",
+        "Doorway Warding",
+        "Mirror Protection Working",
+        "Protective Iron & Key Working",
+        "Doorway Magic",
+        "Threshold Magic",
+        "Eggshell Symbolic Protection Magic",
+        "Iron Protection Magic",
+        "Iron & Key Protection Working",
+        "Home Protection Package",
+        "Warding Spell",
+        "Threshold / Doorway Spell"
+       ]
+      },
+      {
+       "name": "Cleansing & Blessing",
+       "items": [
+        "Personal Cleansing",
+        "Home Cleansing",
+        "Space Cleansing",
+        "Home Cleansing + Protection",
+        "Home Blessing",
+        "Room Cleansing",
+        "Bedroom Peace Ritual",
+        "New Home Blessing",
+        "Housewarming Ritual",
+        "Home Energy Reset",
+        "Home Harmony Ritual",
+        "Smoke Cleansing",
+        "Complete Home Cleansing + Protection Package",
+        "Room Cleansing Spell",
+        "Doorway Blessing Spell",
+        "Home Blessing Spell",
+        "Peaceful Home Spell",
+        "Bedroom Peace Spell",
+        "New Home Blessing Spell"
+       ]
+      },
+      {
+       "name": "Banishing",
+       "items": [
+        "Banishing Candle Working",
+        "Banishing Spellwork",
+        "Banishing Spell Jar",
+        "Banishing Spell"
+       ]
+      },
+      {
+       "name": "Uncrossing, Reversal & Curse Removal",
+       "items": [
+        "Uncrossing Candle Working",
+        "Reversal Candle Working",
+        "Uncrossing Spellwork",
+        "Reversal Spellwork",
+        "Unbinding Spellwork",
+        "Reversal Spell Jar",
+        "Unbinding Ritual",
+        "Reversal Working",
+        "Uncrossing Spell",
+        "Unbinding Spell",
+        "Uncrossing",
+        "Curse Removal",
+        "Hex Removal",
+        "Reversal and Counter-Magic",
+        "Curse Removal Rituals",
+        "Hex Removal Rituals"
+       ]
+      },
+      {
+       "name": "Protective Candles, Jars & Charms",
+       "items": [
+        "Protection Candle",
+        "Cleansing Candle Working",
+        "Spiritual Protection Candle",
+        "Protection Sigil",
+        "Psychic Protection Sigil",
+        "Protective Charm Creation",
+        "Protection Spell Jar",
+        "Home Protection Spell Jar",
+        "Psychic Protection Spell Jar",
+        "Protection Sachet",
+        "Protective Talisman Creation",
+        "Protective Amulet Creation",
+        "Protection Bottle Creation",
+        "Protective Charm / Talisman",
+        "Protective Charm Crafting",
+        "Custom Protection Talismans"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Baneful & Dark Craft",
+     "subs": [
+      {
+       "name": "Hexing & Curse Work",
+       "items": [
+        "Mirror Box Ritual",
+        "Hexing",
+        "Curse Work",
+        "Mirror Box Hexing",
+        "Advanced Mirror Box Work",
+        "Curse and Hex Construction"
+       ]
+      },
+      {
+       "name": "Binding, Domination & Separation",
+       "items": [
+        "Binding Spellwork",
+        "Symbolic Binding Ritual",
+        "Domination Magic",
+        "Binding Magic",
+        "Separation Magic",
+        "Sour Jar Work",
+        "Sour Jar Magic",
+        "Freezer Spellwork",
+        "Domination Spellwork"
+       ]
+      },
+      {
+       "name": "Justice, Retribution & Return-to-Sender",
+       "items": [
+        "Justice Candle Working",
+        "Justice / Return-to-Sender Spell",
+        "Revenge / Justice Reflection Ritual",
+        "Hostile-Energy Reversal",
+        "Return-to-Sender Work",
+        "Justice and Retribution Workings"
+       ]
+      },
+      {
+       "name": "Graveyard & Cemetery Work",
+       "items": [
+        "Graveyard Magic",
+        "Graveyard Rituals",
+        "Cemetery-Based Spiritual Work",
+        "Graveyard Spellwork",
+        "Graveyard Offerings and Rituals"
+       ]
+      },
+      {
+       "name": "Dark Devotion",
+       "items": [
+        "Deity-Assisted Baneful Working",
+        "Darker Deity-Assisted Workings",
+        "Dark Devotional Witchcraft",
+        "Dark Devotional Spellcraft"
+       ]
+      },
+      {
+       "name": "Dark Magic & Shadow Spellcraft",
+       "items": [
+        "Personalised Baneful Ritual",
+        "Dark Magic",
+        "Baneful Magic",
+        "Shadow-Oriented Spellcraft",
+        "Baneful Petition Magic"
+       ]
+      },
+      {
+       "name": "Spiritual Warfare & Defence",
+       "items": [
+        "Defensive Baneful Working",
+        "Enemy Protection and Defence",
+        "Spiritual Warfare",
+        "Protective Baneful Magic"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Spellcraft & Magical Objects",
+     "subs": [
+      {
+       "name": "Made-to-Order Spellwork",
+       "items": [
+        "Simple Spellwork",
+        "Personalised Spellwork",
+        "Deep / Custom Spellwork",
+        "Complex Spellwork",
+        "Custom Multi-Spell",
+        "Multi-Material Spell Construction",
+        "Candle + Sigil + Spellwork",
+        "Custom Multi-Spell Package",
+        "Custom Long-Term Spellwork Programme",
+        "Custom Multi-Layered Spellwork"
+       ]
+      },
+      {
+       "name": "Candle & Flame Magic",
+       "items": [
+        "Personalised Intention Candle",
+        "Personalised Candle Spellwork",
+        "Intensive Candle Working",
+        "Multi-Candle Ritual",
+        "Seven-Day Candle Working",
+        "Symbolic Fire Magic",
+        "Candle & Flame Magic",
+        "Candle Dressing & Intention Setting"
+       ]
+      },
+      {
+       "name": "Spell Jars, Bottles & Sachets",
+       "items": [
+        "Pouch & Sachet Magic",
+        "Spell Bottle Magic",
+        "Spell Jar Magic",
+        "Personalised Spell Jar",
+        "Personalised Multi-Intention Spell Jar",
+        "Spell Bottle Creation",
+        "Personal Charm Bag",
+        "Witch Bottle Creation",
+        "Spell Box Creation",
+        "Spell Chest Creation",
+        "Spirit Bottles",
+        "Magical Sachets"
+       ]
+      },
+      {
+       "name": "Sigils, Seals & Symbols",
+       "items": [
+        "Sigil Magic",
+        "Personalised Sigil",
+        "Activated Sigil",
+        "Sigil + Candle",
+        "Sigil + Spellwork",
+        "Custom Sigil System",
+        "Custom Combination Sigils",
+        "Sigil Activation Ritual",
+        "Sigil Pendant / Talisman Design",
+        "Multi-Purpose Sigil System",
+        "Sacred Geometry-Inspired Symbolic Work",
+        "Sigil-Based Manifestation",
+        "Numerology-Inspired Magic",
+        "Sacred Geometry-Inspired Magic",
+        "Rune-Inspired Symbolic Work",
+        "Alphabet & Word Magic",
+        "Sigil-Activated Talisman",
+        "Custom Symbolic Magical System"
+       ]
+      },
+      {
+       "name": "Talismans, Amulets & Charms",
+       "items": [
+        "Talismanic Magic",
+        "Amulet Creation",
+        "Charm Magic",
+        "Personalised Amulet Creation",
+        "Symbolic Charm Creation",
+        "Personalised Magical Charm",
+        "Personal Magical Object Creation"
+       ]
+      },
+      {
+       "name": "Oils, Powders & Washes",
+       "items": [
+        "Protection Water",
+        "Cleansing Water",
+        "Ritual Powders",
+        "Magical Oils and Anointing Blends, where Safely Prepared",
+        "Magical Washes and Cleansing Preparations",
+        "Banishing Powders",
+        "Protection Powders"
+       ]
+      },
+      {
+       "name": "Folk Techniques",
+       "items": [
+        "Mirror Magic",
+        "Knot Magic",
+        "Thread Magic",
+        "Petition Magic",
+        "Smoke & Incense Magic",
+        "Salt Magic",
+        "Key Magic",
+        "Colour Magic",
+        "Scent & Perfume Magic",
+        "Poppet Magic",
+        "Effigy & Symbolic Representation Magic",
+        "Knot & Cord Magic",
+        "Red Thread Magic",
+        "Petition Paper Magic",
+        "Written Intention Magic",
+        "Coin Magic",
+        "Incense Magic",
+        "Perfume Magic",
+        "Colour Correspondence Magic",
+        "Sound & Bell Rituals",
+        "Name Paper Ritual",
+        "Knot Spellwork",
+        "Red Thread Ritual"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Rituals, Ceremonies & Witchcraft Paths",
+     "subs": [
+      {
+       "name": "Personal & Custom Rituals",
+       "items": [
+        "Personalised Ritual",
+        "Custom Ritual",
+        "Intensive Ritual",
+        "Multi-Stage Ritual",
+        "Long-Term Spiritual Working",
+        "Intensive Spiritual Package",
+        "Long-Term / Multi-Stage Package",
+        "Full Personal Spiritual Working"
+       ]
+      },
+      {
+       "name": "Ceremonial, Fire & Elemental Rites",
+       "items": [
+        "Four Directions Rituals",
+        "Elemental Invocation",
+        "Ceremonial Ritual",
+        "Elemental Invocation Ritual",
+        "Four Directions Ritual",
+        "Sacred Fire Ritual",
+        "Fire Release Ritual",
+        "Four Directional Spell"
+       ]
+      },
+      {
+       "name": "Transitions, Rebirth & Dedication",
+       "items": [
+        "Transformation Spell",
+        "Phoenix / Rebirth Spell",
+        "New Beginning Spell",
+        "Symbolic Burial Ritual",
+        "Rebirth & Renewal Ritual",
+        "Phoenix Transformation Ritual",
+        "Crossroads Ritual",
+        "Threshold Crossing Ritual",
+        "Life Transition Ritual",
+        "New Beginning Ritual",
+        "Personal Empowerment Ceremony",
+        "Spiritual Dedication Ritual",
+        "Sacred Object Consecration",
+        "Phoenix Spell",
+        "Time-Reconciliation Spell"
+       ]
+      },
+      {
+       "name": "Witchcraft Paths & Traditions",
+       "items": [
+        "Traditional Witchcraft-Inspired Spellwork",
+        "Contemporary Witchcraft",
+        "Eclectic Witchcraft",
+        "Solitary Witchcraft",
+        "Devotional Witchcraft",
+        "Shadow Witchcraft",
+        "Lunar Witchcraft",
+        "Solar Witchcraft",
+        "Planetary Witchcraft",
+        "Elemental Witchcraft",
+        "Green Witchcraft",
+        "Kitchen Witchcraft",
+        "Cottage Witchcraft",
+        "Garden Witchcraft",
+        "Forest Witchcraft",
+        "Sea & Ocean Witchcraft",
+        "Cosmic Witchcraft",
+        "Astrological Witchcraft",
+        "Ceremonial Magic",
+        "Chaos Magic",
+        "Folk-Inspired Magic",
+        "Seasonal Witchcraft",
+        "Ancestral Witchcraft",
+        "Deity-Centred Witchcraft"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Nature, Moon & Cosmic Magic",
+     "subs": [
+      {
+       "name": "Moon Magic",
+       "items": [
+        "New Moon Ritual",
+        "Full Moon Ritual",
+        "Personalised New Moon Ritual",
+        "Personalised Full Moon Ritual",
+        "Lunar Cleansing",
+        "Lunar Protection",
+        "Moon + Shadow Work",
+        "Waxing Moon Manifestation",
+        "Waning Moon Release Ritual",
+        "Dark Moon Ritual",
+        "Blue Moon Ritual",
+        "Blood Moon Reflection Ritual",
+        "Lunar Intention Setting",
+        "Lunar Spellwork",
+        "Eclipse Reflection Ritual",
+        "Moon + Spellwork"
+       ]
+      },
+      {
+       "name": "Sun, Planets & Astrology",
+       "items": [
+        "Planetary Candle Working",
+        "Planetary Seal Working",
+        "Solar Ritual",
+        "Solar Manifestation Working",
+        "Planetary Hour Magic",
+        "Mercury Working",
+        "Venus Working",
+        "Mars Working",
+        "Jupiter Working",
+        "Saturn Working",
+        "Uranus Working",
+        "Neptune Working",
+        "Pluto Working",
+        "Astrological Birth Chart-Inspired Ritual",
+        "Zodiac-Based Spellwork",
+        "Planetary Candle Magic",
+        "Planetary Talisman Creation",
+        "Planetary Magic",
+        "Zodiac Magic"
+       ]
+      },
+      {
+       "name": "Seasons & Sabbats",
+       "items": [
+        "Seasonal Sabbat Rituals",
+        "Equinox Rituals",
+        "Solstice Rituals",
+        "Samhain Rituals",
+        "Imbolc Rituals",
+        "Beltane Rituals",
+        "Lughnasadh Rituals",
+        "Ostara Rituals",
+        "Mabon Rituals",
+        "Yule Rituals",
+        "Seasonal Transition Ritual",
+        "Equinox & Solstice Rituals",
+        "Sabbat & Seasonal Ceremony",
+        "Seasonal Botanical Ritual",
+        "Personalised Seasonal Ceremony"
+       ]
+      },
+      {
+       "name": "Herbal & Botanical Magic",
+       "items": [
+        "Herbal Magic",
+        "Flower Magic",
+        "Herbal Charm Pouch",
+        "Land & Garden Blessing",
+        "Herbal Spellwork",
+        "Herbal Protection Working",
+        "Herbal Cleansing Working",
+        "Rose Magic",
+        "Jasmine Magic",
+        "Lavender Magic",
+        "Rosemary Magic",
+        "Bay Leaf Magic",
+        "Cinnamon Magic",
+        "Basil Magic",
+        "Chamomile Magic",
+        "Botanical Spell Jars",
+        "Herbal Sachet Creation",
+        "Herbal Charm Creation",
+        "Garden Blessing Ritual",
+        "Bay Leaf Manifestation",
+        "Herbal Doll / Charm Creation",
+        "Herbal Protection Blends"
+       ]
+      },
+      {
+       "name": "Crystal & Stone Magic",
+       "items": [
+        "Crystal Magic",
+        "Stone & Mineral Magic",
+        "Crystal Grid Creation",
+        "Crystal Intention Setting",
+        "Crystal Cleansing Ritual",
+        "Crystal Charging Ritual",
+        "Crystal Protection Working",
+        "Personal Crystal Grid",
+        "Love Crystal Grid",
+        "Abundance Crystal Grid",
+        "Protection Crystal Grid",
+        "Chakra Crystal Grid",
+        "Crystal Spellwork"
+       ]
+      },
+      {
+       "name": "Elements & Wild Places",
+       "items": [
+        "Elemental Candle Working",
+        "Tree & Wood Magic",
+        "Forest Intention Ritual",
+        "Tree Devotional Working",
+        "Nature Connection Ritual",
+        "Earth Element Ritual",
+        "Water Element Ritual",
+        "Air Element Ritual",
+        "Fire Element Ritual",
+        "Elemental Balance Ritual",
+        "Elemental Magic",
+        "Forest Spell",
+        "Ocean Spell",
+        "Mountain Spell",
+        "Fisherman's Knot Spell",
+        "Mermaid / Siren Spell"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Healing & Inner Work",
+   "categories": [
+    {
+     "name": "Energy Healing, Aura & Chakra",
+     "subs": [
+      {
+       "name": "Reiki & Karuna Ki",
+       "items": [
+        "Reiki",
+        "Distance Reiki",
+        "Karuna Ki Reiki",
+        "Deep Karuna Ki Reiki",
+        "Reiki + Chakra Balancing",
+        "Reiki + Meditation",
+        "Reiki + Energy Cleansing",
+        "Reiki + Aura Balancing",
+        "Reiki + Emotional Relaxation",
+        "Personalised Reiki Session",
+        "Distance Reiki + Intention Setting",
+        "Reiki + Chakra + Aura Package",
+        "Reiki Master Sessions",
+        "Karuna Ki Reiki Sessions",
+        "Advanced Reiki Sessions"
+       ]
+      },
+      {
+       "name": "Energy Healing & Restoration",
+       "items": [
+        "Energy Healing",
+        "Deep Energy Healing",
+        "Distance Energy Healing",
+        "Intensive Energy Healing",
+        "Energetic Grounding",
+        "Energetic Rebalancing",
+        "Energy Clearing",
+        "Emotional Energy Release",
+        "Full-Body Energy Balancing",
+        "Personal Energy Restoration Ritual",
+        "Spiritual Energy Cleansing",
+        "Personal Energy Restoration",
+        "Energy Field Balancing",
+        "Deep Energetic Cleansing",
+        "Spiritual Energy Restoration",
+        "Personalised Energy-Work Sessions"
+       ]
+      },
+      {
+       "name": "Aura Work",
+       "items": [
+        "Aura Cleansing",
+        "Full Aura + Chakra Session",
+        "Aura Protection",
+        "Aura Strengthening",
+        "Aura Cleansing + Chakra Balancing",
+        "Aura + Chakra + Energy Healing",
+        "Aura Leakage Repair or Restoration Work",
+        "Aura Sealing",
+        "Aura Restoration"
+       ]
+      },
+      {
+       "name": "Chakra Work",
+       "items": [
+        "Chakra Balancing",
+        "Root Chakra Working",
+        "Sacral Chakra Working",
+        "Solar Plexus Chakra Working",
+        "Heart Chakra Working",
+        "Throat Chakra Working",
+        "Third Eye Chakra Working",
+        "Crown Chakra Working",
+        "Full Seven-Chakra Balancing",
+        "Chakra Meditation"
+       ]
+      },
+      {
+       "name": "Energy Readings & Assessments",
+       "items": [
+        "Energy Reading",
+        "Aura Reading",
+        "Chakra Assessment",
+        "Chakra Assessment + Balancing",
+        "Aura Leakage Assessment",
+        "Energy Cord Assessment",
+        "Energy Cord Identification",
+        "Energetic Attachment Assessment",
+        "Energetic Boundary Assessment",
+        "Energetic Depletion Assessment",
+        "Energy Leakage Assessment",
+        "Chakra and Aura Assessment"
+       ]
+      },
+      {
+       "name": "Cords, Attachments & Shielding",
+       "items": [
+        "Energetic Protection",
+        "Energetic Cord Release",
+        "Cord Cutting",
+        "Deep Cord Cutting",
+        "Cord Cutting + Energy Healing",
+        "Cord Cutting + Candle Work",
+        "Relationship Cord Cutting",
+        "Emotional Cord Release",
+        "Energetic Attachment Release",
+        "Cord Cutting + Emotional Release",
+        "Energetic Shielding"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Mind & Subconscious Work",
+     "subs": [
+      {
+       "name": "Hypnotherapy",
+       "items": [
+        "Hypnotherapy",
+        "Hypnotherapy + Subconscious Exploration Package",
+        "Guided Hypnosis",
+        "Personalised Hypnotherapy",
+        "Confidence-Oriented Hypnosis",
+        "Self-Concept Hypnosis",
+        "Habit-Related Hypnosis",
+        "Relaxation Hypnosis",
+        "Hypnosis + NLP",
+        "Hypnosis + Journaling"
+       ]
+      },
+      {
+       "name": "Past-Life Regression",
+       "items": [
+        "Past-Life Regression",
+        "Deep Past-Life Regression",
+        "Past-Life Regression + Integration",
+        "Past-Life Regression + Subconscious Work",
+        "Past-Life Regression Integration"
+       ]
+      },
+      {
+       "name": "CBT-Based Work",
+       "items": [
+        "CBT-Based Session",
+        "CBT + NLP",
+        "Deeper Cognitive Behavioural Sessions",
+        "Automatic Thought Identification",
+        "Cognitive Restructuring",
+        "Core Belief Exploration",
+        "Limiting Belief Work",
+        "Behavioural Pattern Analysis",
+        "Behavioural Activation",
+        "Emotional Regulation",
+        "Coping Mechanisms",
+        "Thought Records",
+        "Cognitive Distortions Exploration",
+        "Self-Sabotage Patterns",
+        "Relationship Pattern Exploration",
+        "Attachment-Related Thought Patterns",
+        "Boundaries and Assertiveness",
+        "Personalised CBT Worksheets",
+        "CBT + EFT",
+        "CBT + Journaling",
+        "CBT + Somatic Awareness"
+       ]
+      },
+      {
+       "name": "NLP",
+       "items": [
+        "NLP Session",
+        "NLP Anchoring",
+        "Visualisation & Reframing",
+        "Resource Anchoring",
+        "Belief Reframing",
+        "Submodalities",
+        "Swish Pattern",
+        "Timeline-Based Techniques",
+        "Visualisation",
+        "Language-Pattern Exploration",
+        "Confidence Anchoring",
+        "Self-Concept Development",
+        "Goal-Setting Techniques",
+        "NLP-Based Personal Development"
+       ]
+      },
+      {
+       "name": "EFT Tapping",
+       "items": [
+        "EFT-Informed Emotional Processing",
+        "Standalone EFT Tapping Sessions",
+        "Personalised EFT Tapping",
+        "Emotional Release Tapping",
+        "Anxiety-Related Tapping",
+        "Confidence Tapping",
+        "Self-Worth Tapping",
+        "Inner-Child EFT",
+        "Anger and Frustration Tapping",
+        "Shame and Guilt Processing",
+        "Intimacy-Related Emotional Processing",
+        "Relationship-Related Tapping",
+        "Trauma-Informed EFT Exercises",
+        "Personalised Tapping Scripts",
+        "EFT + Journaling",
+        "EFT + Affirmations",
+        "EFT + NLP"
+       ]
+      },
+      {
+       "name": "Subconscious, Beliefs & Self-Concept",
+       "items": [
+        "Guided Subconscious Exploration",
+        "Personalised Affirmation Development",
+        "Limiting Belief Exploration",
+        "Self-Concept Work",
+        "Identity Exploration",
+        "Confidence & Self-Esteem Work",
+        "Emotional Awareness Sessions",
+        "Habit Pattern Exploration",
+        "Personal Development Sessions",
+        "Emotional Regulation Skills",
+        "Fear & Limiting Belief Exploration",
+        "Subconscious Exploration"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Shadow Work & Inner Healing",
+     "subs": [
+      {
+       "name": "Shadow & Inner-Child Work",
+       "items": [
+        "Shadow Work",
+        "Inner-Child Work",
+        "Deep Shadow Integration",
+        "Shadow Work + Inner-Child Package",
+        "Inner-Child Spell"
+       ]
+      },
+      {
+       "name": "Emotional Release, Grief & Peace",
+       "items": [
+        "Emotional Release",
+        "Emotional Awareness & Expression",
+        "Shame & Guilt Release Ritual",
+        "Anger Awareness & Expression",
+        "Peace & Harmony Spell",
+        "Forgiveness & Closure Spell",
+        "Grief Support Ritual",
+        "Emotional Release Spell",
+        "Peace & Harmony Spell Jar",
+        "Emotional Release Spell Jar",
+        "Sacred Anger / Never Again Spell",
+        "Grief Spell",
+        "Forgiveness Spell",
+        "Releasing Anger Spell",
+        "Fear Release Spell",
+        "Shame Release Spell",
+        "Freeze Response Release Spell",
+        "Emotional Weather Spell",
+        "Meet Me Where I Am Spell",
+        "No Test Tonight Ritual",
+        "Do Not Abandon Me, Do Not Let Me Abandon Myself Spell",
+        "Divine Anger Spell"
+       ]
+      },
+      {
+       "name": "Release & Closure Rituals",
+       "items": [
+        "People-Pleasing Pattern Exploration",
+        "Release & Separation Spell",
+        "Habit Release Spell",
+        "Knot Magic for Release",
+        "Habit Release Ritual",
+        "People-Pleasing Release Ritual",
+        "Past Identity Release Ritual",
+        "Cutting Repetitive Patterns",
+        "Old Self Burial Spell",
+        "People-Pleasing Release Spell",
+        "The Door I Close Spell",
+        "Parental Pattern Release Spell"
+       ]
+      },
+      {
+       "name": "Self-Discovery & Reflection",
+       "items": [
+        "Self-Reflection Session",
+        "Self-Discovery Working",
+        "Personal Identity Exploration",
+        "Reconnecting With Yourself Working",
+        "Self-Compassion Working"
+       ]
+      },
+      {
+       "name": "Confidence, Empowerment & Boundaries",
+       "items": [
+        "Boundary Development Working",
+        "Personal Empowerment Sessions",
+        "Confidence Candle Working",
+        "Confidence & Courage Spell",
+        "Personal Empowerment Spell",
+        "Boundary & Self-Protection Spell",
+        "Confidence Sigil",
+        "Personal Empowerment Sigil",
+        "Boundary Sigil",
+        "Confidence Spell Jar",
+        "Courage Spell Jar",
+        "Personal Boundary Ritual",
+        "Confidence Spell",
+        "Courage Spell",
+        "I Can Say Yes Spell",
+        "Boundaries Spell",
+        "I Can Say No Spell"
+       ]
+      },
+      {
+       "name": "Healing & Wellbeing Intentions",
+       "items": [
+        "Healing-Intention Candle",
+        "Rest & Recovery Intention Spell",
+        "Healing-Intention Sigil",
+        "Healing-Intention Package",
+        "Self-Healing Intention Spell",
+        "Speedy Recovery Intention Spell",
+        "Mental Wellbeing Intention Spell",
+        "Trauma Symbolic Integration Spell"
+       ]
+      },
+      {
+       "name": "Meditation, Breath & Grounding",
+       "items": [
+        "Guided Meditation",
+        "Deep Meditation",
+        "Guided Visualisation",
+        "Grounding & Embodiment Practices",
+        "Guided Breathwork",
+        "Reflective Art-Based Exercises",
+        "Somatic Awareness Exercises",
+        "Guided Relaxation",
+        "Grounding Spell",
+        "Grounding Spell Jar",
+        "Drum & Rhythm Meditation"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Journaling & Guided Reflection",
+     "subs": [
+      {
+       "name": "Guided Sessions, Prompts & Programmes",
+       "items": [
+        "Journaling-Based Inner Work",
+        "Guided Journaling Sessions",
+        "Personalised Journaling Programmes",
+        "Personalised Journal Prompts",
+        "Structured Multi-Day Journaling Programmes"
+       ]
+      },
+      {
+       "name": "Shadow, Inner-Child & Emotional Journaling",
+       "items": [
+        "Inner-Child Journaling",
+        "Shadow-Work Journaling",
+        "Emotional-Processing Journaling",
+        "Trauma-Reflection Journaling",
+        "Subconscious Pattern Journaling",
+        "Grief Journaling",
+        "Anger-Processing Journaling"
+       ]
+      },
+      {
+       "name": "Self-Discovery & Identity Journaling",
+       "items": [
+        "Self-Discovery Journaling",
+        "Identity Exploration Journaling",
+        "Self-Worth Journaling",
+        "Gratitude Journaling",
+        "Daily Reflection Practices"
+       ]
+      },
+      {
+       "name": "Relationship & Intimacy Journaling",
+       "items": [
+        "Relationship Journaling",
+        "Intimacy and Relationship Journaling"
+       ]
+      },
+      {
+       "name": "Spiritual, Devotional & Dream Journaling",
+       "items": [
+        "Dream Journaling Guidance",
+        "Spiritual Journaling",
+        "Deity-Devotional Journaling",
+        "Manifestation Journaling",
+        "Dream Journaling",
+        "Ancestral Journaling"
+       ]
+      },
+      {
+       "name": "Journaling Combined with Other Tools",
+       "items": [
+        "Guided Journaling + EFT",
+        "Guided Journaling + CBT",
+        "Guided Journaling + Shadow Work"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Identity, Intimacy & the Body",
+   "categories": [
+    {
+     "name": "Queer-Affirming Work",
+     "subs": [
+      {
+       "name": "Identity & Self-Acceptance",
+       "items": [
+        "Queer Identity Exploration",
+        "Queer Self-Acceptance",
+        "Body Autonomy and Self-Acceptance",
+        "Gender Identity Reflection",
+        "Sexuality and Identity Reflection",
+        "Internalised Shame Exploration",
+        "Queer Self-Expression"
+       ]
+      },
+      {
+       "name": "Coming Out, Family & Belonging",
+       "items": [
+        "Coming-Out-Related Emotional Processing",
+        "Family Acceptance and Rejection Processing",
+        "Queer Community and Belonging Exploration"
+       ]
+      },
+      {
+       "name": "Queer Relationships & Intimacy",
+       "items": [
+        "Queer Relationship Exploration",
+        "Queer Relationship Healing",
+        "Queer Intimacy Exploration",
+        "Intimacy and Vulnerability Work",
+        "Navigating Emotional Safety in Intimacy",
+        "Queer Relationship Communication"
+       ]
+      },
+      {
+       "name": "Queer Inner Work & Empowerment",
+       "items": [
+        "Queer Self-Worth and Confidence",
+        "Queer-Focused Shadow Work",
+        "Queer Inner-Child Work",
+        "Queer Boundaries and Assertiveness",
+        "Queer Empowerment"
+       ]
+      },
+      {
+       "name": "Queer Spirituality & Devotion",
+       "items": [
+        "Queer Spiritual Exploration",
+        "Queer Devotional and Deity Work"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Intimacy, Sexuality & the Body",
+     "subs": [
+      {
+       "name": "Intimacy & Vulnerability",
+       "items": [
+        "Intimacy Exploration Sessions",
+        "Fear of Intimacy Exploration",
+        "Difficulty with Emotional Intimacy",
+        "Difficulty with Physical Intimacy",
+        "Intimacy-Related Anxiety",
+        "Relationship and Attachment Patterns",
+        "Emotional Availability Work",
+        "Shame around Intimacy",
+        "Intimacy-Related Inner-Child Work",
+        "Intimacy-Focused Journaling",
+        "Intimacy-Focused EFT",
+        "Intimacy-Focused Shadow Work"
+       ]
+      },
+      {
+       "name": "Trust, Safety & Consent",
+       "items": [
+        "Personal Boundaries & Body Autonomy Ritual",
+        "Relearning Safe Touch Spell",
+        "Trust Rebuilding Spell with Devi",
+        "Vulnerability and Trust Exploration",
+        "Boundaries around Physical Intimacy",
+        "Body Safety and Autonomy",
+        "Consent and Communication Exploration",
+        "Rebuilding Trust and Emotional Safety"
+       ]
+      },
+      {
+       "name": "Body Reconnection & Self-Acceptance",
+       "items": [
+        "Body Reclamation Ritual",
+        "Body Connection Working",
+        "Self-Acceptance Working",
+        "Body Confidence Ritual",
+        "Their Actions Are Not My Body Spell",
+        "My Body Is Mine Spell",
+        "Return to the Body Spell",
+        "Reconnecting with One's Body",
+        "Self-Acceptance and Sexuality"
+       ]
+      },
+      {
+       "name": "Womb & Sacred Feminine",
+       "items": [
+        "Womb Healing",
+        "Womb Energy Work",
+        "Womb + Ancestral Work",
+        "Womb + Shadow Work",
+        "Womb-Centred Meditation",
+        "Sacred Feminine Working",
+        "Divine Feminine Meditation",
+        "Menstrual Cycle Reflection Ritual",
+        "Womb-Ancestral Symbolic Working",
+        "Sacred Anger & Empowerment Ritual",
+        "Womb Healing Intention Spell"
+       ]
+      },
+      {
+       "name": "Lilith & Sexual Energy",
+       "items": [
+        "Sexual Energy Reclamation Ritual",
+        "Lilith Wild Woman Spell",
+        "Sexual Energy Reclamation Spell",
+        "Lilith Exile & Return Spell"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Divination & Insight",
+   "categories": [
+    {
+     "name": "Readings & Divination",
+     "subs": [
+      {
+       "name": "Psychic & Intuitive Readings",
+       "items": [
+        "Psychic Reading",
+        "Deep Psychic Session",
+        "Extended / Intensive Psychic Reading",
+        "Past, Present & Future Reading",
+        "Yes / No Intuitive Reading",
+        "Psychic + Deity Guidance Package"
+       ]
+      },
+      {
+       "name": "Tarot, Oracle & Card Readings",
+       "items": [
+        "Oracle Reading",
+        "Deep Oracle + Psychic Reading",
+        "Yogini Card Reading",
+        "Tarot Reading",
+        "Angel Card Reading",
+        "Goddess Oracle Reading",
+        "Psychic + Oracle + Spiritual Guidance Package"
+       ]
+      },
+      {
+       "name": "Themed Readings",
+       "items": [
+        "Deity Guidance Reading",
+        "Ancestral Guidance Reading",
+        "Love & Relationship Reading",
+        "Career & Financial Reading",
+        "Life Path Reading",
+        "Spiritual Path Reading",
+        "Shadow Insight Reading",
+        "Intuitive Compatibility Reading",
+        "Ancestral Reading"
+       ]
+      },
+      {
+       "name": "Scrying, Pendulum & Other Divination",
+       "items": [
+        "Mirror Scrying",
+        "Waterless Scrying",
+        "Pendulum Divination",
+        "Bibliomancy",
+        "Scrying Session",
+        "Pendulum Guidance",
+        "Fire Scrying",
+        "Symbolic Divination"
+       ]
+      },
+      {
+       "name": "Spiritual Guidance & Direction",
+       "items": [
+        "Spiritual / Divine Guidance",
+        "Intuitive Guidance Session",
+        "Spiritual Blockage Insight",
+        "Personal Spiritual Direction"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Dreams, Psychic Development & Astral Work",
+     "subs": [
+      {
+       "name": "Dreamwork",
+       "items": [
+        "Dream Interpretation",
+        "Symbolic Dream Analysis",
+        "Dream Enhancement Spell",
+        "Dream Magic",
+        "Dream Sigil",
+        "Dream Enhancement Spell Jar",
+        "Dream Enhancement Working",
+        "Dream Recall Working",
+        "Lucid Dreaming Intention Ritual",
+        "Dream Symbol Interpretation",
+        "Dream Protection Ritual",
+        "Sleep & Rest Intention Ritual",
+        "Dream Incubation Rituals",
+        "Dream Recall Spell",
+        "Lucid Dreaming Spell"
+       ]
+      },
+      {
+       "name": "Psychic & Intuitive Development",
+       "items": [
+        "Divination Enhancement Spell",
+        "Divination Clarity Ritual",
+        "Intuition Development Meditation",
+        "Psychic Awareness Meditation",
+        "Third Eye Meditation",
+        "Spiritual Discernment Working",
+        "Intuitive Development Working",
+        "Discernment Spell",
+        "Spiritual Discernment Spell"
+       ]
+      },
+      {
+       "name": "Astral & Between-Worlds Work",
+       "items": [
+        "Astral Exploration Rituals",
+        "Astral Exploration Preparation",
+        "Astral Projection Intention Ritual",
+        "Between-Worlds Symbolic Ritual",
+        "Veil-Thinning Seasonal Ritual",
+        "Astral Work / Projection Intention Spell",
+        "Between-Worlds Spell",
+        "Veil-Thinning Ritual"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Learning",
+   "categories": [
+    {
+     "name": "Classes & Mentoring",
+     "subs": [
+      {
+       "name": "Spiritual Foundations",
+       "items": [
+        "Spirituality Fundamentals Classes",
+        "Understanding Spiritual Experiences",
+        "Energy-Work Fundamentals",
+        "Aura and Chakra Education",
+        "Shadow-Work Education"
+       ]
+      },
+      {
+       "name": "Witchcraft & Spellcraft Classes",
+       "items": [
+        "Introduction to Witchcraft",
+        "Introductory Spellcraft",
+        "Sigil Creation Classes",
+        "Candle Magic Classes",
+        "Spell Jar Classes",
+        "Protection Magic Classes"
+       ]
+      },
+      {
+       "name": "Tantra, Mantra & Yantra",
+       "items": [
+        "Introduction to Tantra",
+        "Introduction to Yantra",
+        "Introduction to Mantra",
+        "Mantra Meanings and Interpretations"
+       ]
+      },
+      {
+       "name": "Deity & Devotional Studies",
+       "items": [
+        "Deity Studies",
+        "Hindu Spiritual Traditions",
+        "Devi and Mahavidya Studies",
+        "Greek Deity Studies",
+        "Devotional Practices and Personal Spirituality",
+        "Altar Creation and Spiritual Practice",
+        "Deity Offerings and Devotional Symbolism"
+       ]
+      },
+      {
+       "name": "Mentoring & Consultations",
+       "items": [
+        "Spellcraft Consultation",
+        "Custom Magical Correspondence Research",
+        "Personal Grimoire Development",
+        "Magical Practice Guidance",
+        "Spell Jar Design Consultation",
+        "Sigil Design Consultation",
+        "Altar Design & Devotional Guidance",
+        "Custom Spellcraft Consultation",
+        "Personalised Grimoire Entry Creation",
+        "Bespoke Ritual & Correspondence Research",
+        "Personalised Witchcraft & Spiritual Development Package",
+        "Guided Spiritual Discussions",
+        "Personalised Spiritual Mentoring",
+        "One-to-One Spirituality Classes",
+        "Group Spirituality Classes",
+        "Customised Spiritual Learning Programmes"
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

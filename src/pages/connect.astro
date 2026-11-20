@@ -1,0 +1,53 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Connect · Sarvakali" sequence="connect" description="Request a conversation with Sarvakali.">
+  <section class="connect">
+    <div class="connect-intro">
+      <p class="kicker" data-hero>Connect</p>
+      <h1 class="display-l" data-hero data-split>Request a conversation</h1>
+      <p class="lede" data-hero>
+        Leave your name and a few times that suit you. Sarvakali confirms the meeting or suggests another time, and the Google Meet link arrives by email.
+      </p>
+    </div>
+
+    <form id="connect-form" class="connect-form" data-hero novalidate>
+      <div class="field">
+        <label for="name">Your name</label>
+        <input id="name" name="name" type="text" autocomplete="name" required />
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" autocomplete="email" required />
+        <p class="hint">The meeting invitation is sent here.</p>
+      </div>
+      <div class="field">
+        <label for="phone">Phone <span class="optional">(optional)</span></label>
+        <input id="phone" name="phone" type="tel" autocomplete="tel" />
+      </div>
+      <div class="field">
+        <label for="topic">What you would like to talk about <span class="optional">(optional)</span></label>
+        <input id="topic" name="topic" type="text" placeholder="For example: Healing & Inner Work" />
+      </div>
+      <fieldset class="field">
+        <legend>Times that suit you</legend>
+        <div class="times">
+          <input id="time1" name="time1" type="datetime-local" required aria-label="First choice" />
+          <input id="time2" name="time2" type="datetime-local" aria-label="Second choice (optional)" />
+          <input id="time3" name="time3" type="datetime-local" aria-label="Third choice (optional)" />
+        </div>
+      </fieldset>
+      <p class="notice">
+        We use your name, email and phone only to arrange this conversation. You can ask us to delete them at any time.
+      </p>
+      <button type="submit" class="btn btn-solid">Send request</button>
+      <p class="proto-note">Prototype: in the finished site this step is the Cal.com booking calendar, styled to match. Nothing is sent from here.</p>
+    </form>
+
+    <div id="connect-done" class="connect-done" hidden>
+      <h2 class="display-m">Request received</h2>
+      <p class="lede">In the finished site, Sarvakali now sees your request and either confirms it or suggests another time. This prototype did not send anything.</p>
+      <a class="btn btn-ghost" href="/">Back to the homepage</a>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,55 @@
+---
+import Base from '../../layouts/Base.astro';
+import { pillars, categoryCount, type Pillar } from '../../data/site';
+
+export function getStaticPaths() {
+  return pillars.map((p, i) => ({ params: { slug: p.slug }, props: { index: i } }));
+}
+
+const { index } = Astro.props as { index: number };
+const p: Pillar = pillars[index];
+const prev = pillars[(index + pillars.length - 1) % pillars.length];
+const next = pillars[(index + 1) % pillars.length];
+const anchor = (s: string) => s.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+---
+<Base title={`${p.name} · Sarvakali`} sequence={p.preset} description={p.line}>
+  <section class="pp-hero">
+    <a class="back-link" href="/#paths">← All pillars</a>
+    <p class="kicker" data-hero>Pillar {index + 1} of {pillars.length}</p>
+    <h1 class="display-l" data-hero data-split>{p.name}</h1>
+    <p class="lede" data-hero>{p.line}</p>
+    <ul class="pp-index" data-hero>
+      {p.categories.map((c) => (
+        <li><a href={`#${anchor(c.name)}`}>{c.name}</a></li>
+      ))}
+    </ul>
+  </section>
+
+  {p.categories.map((c) => (
+    <section class="pp-cat" id={anchor(c.name)}>
+      <div class="pp-cat-head" data-fade>
+        <h2>{c.name}</h2>
+        <p class="pp-count">{categoryCount(c)} services</p>
+        <a class="btn btn-ghost btn-sm" href="/connect" data-topic={c.name}>Ask about this</a>
+      </div>
+      <div class="pp-subs">
+        {c.subs.map((s) => (
+          <details class="pp-sub" data-fade>
+            <summary>
+              <span>{s.name}</span>
+              <span class="pp-n">{s.items.length}</span>
+            </summary>
+            <ul>
+              {s.items.map((item) => <li>{item}</li>)}
+            </ul>
+          </details>
+        ))}
+      </div>
+    </section>
+  ))}
+
+  <nav class="pp-nav" aria-label="Other pillars">
+    <a href={`/pillars/${prev.slug}`}><span>Previous pillar</span>{prev.name}</a>
+    <a href={`/pillars/${next.slug}`}><span>Next pillar</span>{next.name}</a>
+  </nav>
+</Base>

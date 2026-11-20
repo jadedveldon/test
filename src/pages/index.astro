@@ -1,0 +1,68 @@
+---
+import Base from '../layouts/Base.astro';
+import Loader from '../components/Loader.astro';
+import { pillars, totalServices } from '../data/site';
+---
+<Base title="Sarvakali">
+  <Loader slot="overlay" />
+
+  <section class="chapter chapter-hero" data-chapter="hero">
+    <div class="chapter-inner">
+      <p class="kicker" data-hero>Welcome to</p>
+      <h1 class="display-xl" data-hero data-split>Sarvakali</h1>
+      <p class="lede" data-hero>Devotion, magic, healing and insight, held in one place.</p>
+      <div class="cta-row" data-hero>
+        <a class="btn btn-solid" href="/connect">Request a conversation</a>
+        <a class="btn btn-ghost" href="#paths">Explore the six pillars</a>
+      </div>
+    </div>
+    <p class="scroll-cue" data-hero aria-hidden="true">Scroll</p>
+  </section>
+
+  <section class="chapter chapter-connect" data-chapter="connect">
+    <div class="chapter-inner narrow">
+      <p class="kicker" data-fade>Connect</p>
+      <h2 class="display-l" data-split>Speak with Sarvakali</h2>
+      <p class="lede" data-fade>
+        Share your name and a few times that suit you. Sarvakali confirms the meeting or suggests another time, and you meet over Google Meet.
+      </p>
+      <div class="cta-row" data-fade>
+        <a class="btn btn-solid" href="/connect">Request a conversation</a>
+      </div>
+    </div>
+  </section>
+
+  <div id="paths" class="anchor"></div>
+
+  {pillars.map((p, i) => (
+    <section class="chapter chapter-pillar" data-chapter={p.preset}>
+      <div class="chapter-inner">
+        <p class="kicker" data-fade>Pillar {i + 1} of {pillars.length}</p>
+        <h2 class="display-l" data-split>{p.name}</h2>
+        <p class="lede" data-fade>{p.line}</p>
+        <ul class="chips" data-fade>
+          {p.categories.map((c) => <li>{c.name}</li>)}
+        </ul>
+        <div class="cta-row" data-fade>
+          <a class="btn btn-solid" href={`/pillars/${p.slug}`}>Explore this pillar</a>
+          <a class="btn btn-ghost" href="/connect" data-topic={p.name}>Ask about this</a>
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section class="chapter chapter-close" data-chapter="close">
+    <div class="chapter-inner narrow center">
+      <p class="kicker" data-fade>When you are ready</p>
+      <h2 class="display-l" data-split>Every path begins with a conversation</h2>
+      <div class="cta-row center" data-fade>
+        <a class="btn btn-solid" href="/connect">Request a conversation</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-foot">
+    <p>Sarvakali · working prototype. Copy, colours and the intro artwork are placeholders.</p>
+    <p>{totalServices.toLocaleString('en-IN')} services across {pillars.length} pillars.</p>
+  </footer>
+</Base>

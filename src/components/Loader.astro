@@ -1,0 +1,103 @@
+---
+/**
+ * STAND-IN intro. Abstract eyes only: the commissioned Kali painting (layers +
+ * depth map) replaces this artwork. The choreography is the real thing:
+ * darkness → eyes open → two blinks → third eye opens as light gathers →
+ * fly into the third eye → an eye-shaped opening reveals the hero.
+ */
+// third eye (vertical almond) and the two eyes, in a 1600 × 1000 space
+const E3 = { x: 800, y: 430 };
+const third = `M${E3.x} ${E3.y - 70} Q${E3.x + 52} ${E3.y} ${E3.x} ${E3.y + 70} Q${E3.x - 52} ${E3.y} ${E3.x} ${E3.y - 70}Z`;
+const eye = (cx: number, cy: number) => `M${cx - 105} ${cy} Q${cx} ${cy - 68} ${cx + 105} ${cy} Q${cx} ${cy + 68} ${cx - 105} ${cy}Z`;
+const eyes = [
+  { id: 'L', cx: 640, cy: 595 },
+  { id: 'R', cx: 960, cy: 595 },
+];
+// motes of light that gather into the third eye (deterministic scatter)
+let s = 7;
+const rand = () => ((s = (s * 16807) % 2147483647) / 2147483647);
+const motes = Array.from({ length: 56 }, () => {
+  const a = rand() * Math.PI * 2;
+  const r = 180 + rand() * 520;
+  return { x: E3.x + Math.cos(a) * r * 1.3, y: E3.y + Math.sin(a) * r * 0.8, r: 1.2 + rand() * 2.6 };
+});
+---
+<div id="loader" class="loader" role="dialog" aria-label="Opening animation" aria-modal="false">
+  <svg class="loader-svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <radialGradient id="lg-ember" cx="50%" cy="50%" r="50%">
+        <stop offset="0" stop-color="#7a1c12" stop-opacity="0.55" />
+        <stop offset="0.55" stop-color="#3a0c09" stop-opacity="0.25" />
+        <stop offset="1" stop-color="#060304" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="lg-iris" cx="50%" cy="45%" r="55%">
+        <stop offset="0" stop-color="#ffd98e" />
+        <stop offset="0.45" stop-color="#e2622f" />
+        <stop offset="1" stop-color="#3b0907" />
+      </radialGradient>
+      <radialGradient id="lg-third" cx="50%" cy="50%" r="50%">
+        <stop offset="0" stop-color="#fff4cf" stop-opacity="0.95" />
+        <stop offset="0.35" stop-color="#f3ad45" stop-opacity="0.55" />
+        <stop offset="1" stop-color="#f3ad45" stop-opacity="0" />
+      </radialGradient>
+      {eyes.map((e) => (
+        <clipPath id={`lc-${e.id}`}><path d={eye(e.cx, e.cy)} /></clipPath>
+      ))}
+      <clipPath id="lc-3"><path d={third} /></clipPath>
+      <mask id="lm-hole" maskUnits="userSpaceOnUse" x="-4000" y="-4000" width="9600" height="9000">
+        <rect x="-4000" y="-4000" width="9600" height="9000" fill="#fff" />
+        <path id="loader-hole" d={third} fill="#000" />
+      </mask>
+    </defs>
+
+    <g mask="url(#lm-hole)">
+      <rect x="-4000" y="-4000" width="9600" height="9000" fill="#060304" />
+      <g id="loader-face">
+        <circle id="loader-ember" cx="800" cy="520" r="560" fill="url(#lg-ember)" opacity="0" />
+
+        <g id="loader-eyes" opacity="0">
+          <path d="M520 512 Q640 470 760 518" fill="none" stroke="#5a2018" stroke-width="3" stroke-linecap="round" opacity="0.6" />
+          <path d="M840 518 Q960 470 1080 512" fill="none" stroke="#5a2018" stroke-width="3" stroke-linecap="round" opacity="0.6" />
+          {eyes.map((e) => (
+            <g class="l-eye">
+              <path d={eye(e.cx, e.cy)} fill="#140607" />
+              <g clip-path={`url(#lc-${e.id})`}>
+                <g class="l-iris">
+                  <circle cx={e.cx} cy={e.cy} r="31" fill="url(#lg-iris)" />
+                  <circle cx={e.cx} cy={e.cy} r="10" fill="#080203" />
+                  <circle cx={e.cx - 9} cy={e.cy - 10} r="4" fill="#fff" opacity="0.75" />
+                </g>
+                <g class="l-lid">
+                  <rect x={e.cx - 120} y={e.cy - 80} width="240" height="150" fill="#0d0405" />
+                  <path d={`M${e.cx - 110} ${e.cy + 68} Q${e.cx} ${e.cy + 40} ${e.cx + 110} ${e.cy + 68}`} fill="none" stroke="#c9584a" stroke-width="2" opacity="0.7" />
+                </g>
+              </g>
+              <path d={eye(e.cx, e.cy)} fill="none" stroke="#b6483a" stroke-width="2.2" />
+            </g>
+          ))}
+        </g>
+
+        <g id="loader-third">
+          <circle id="loader-third-glow" cx={E3.x} cy={E3.y} r="190" fill="url(#lg-third)" opacity="0" />
+          <line id="loader-third-line" x1={E3.x} y1={E3.y - 62} x2={E3.x} y2={E3.y + 62} stroke="#f0b34a" stroke-width="2" stroke-linecap="round" opacity="0" />
+          <g id="loader-third-open">
+            <path d={third} fill="#1c0807" />
+            <g clip-path="url(#lc-3)">
+              <circle cx={E3.x} cy={E3.y} r="24" fill="url(#lg-iris)" />
+              <circle cx={E3.x} cy={E3.y} r="8" fill="#080203" />
+              <circle id="loader-third-core" cx={E3.x} cy={E3.y} r="80" fill="#fff1c9" opacity="0" />
+            </g>
+            <path d={third} fill="none" stroke="#f0b34a" stroke-width="2.4" />
+          </g>
+        </g>
+
+        <g id="loader-motes" fill="#f6c46c">
+          {motes.map((m) => <circle cx={m.x} cy={m.y} r={m.r} opacity="0" />)}
+        </g>
+      </g>
+    </g>
+  </svg>
+
+  <p class="loader-note">Stand-in art. The commissioned Kali painting replaces it.</p>
+  <button type="button" class="loader-skip" id="loader-skip">Skip intro</button>
+</div>

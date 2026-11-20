@@ -1,0 +1,80 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** preset names for pages without chapters, e.g. "connect" */
+  sequence?: string;
+}
+const {
+  title,
+  description = 'Sarvakali: devotion, witchcraft, healing, identity, divination and learning.',
+  sequence = 'hero',
+} = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#060304" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" />
+    <script is:inline>
+      document.documentElement.classList.add('js');
+      try {
+        if (sessionStorage.getItem('sk-intro-seen') && location.search.indexOf('intro') < 0) document.documentElement.dataset.intro = 'seen';
+      } catch (e) {}
+    </script>
+    <ClientRouter fallback="animate" />
+  </head>
+  <body>
+    <div id="world" transition:persist="world" aria-hidden="true">
+      <div class="world-fallback"></div>
+      <canvas id="world-canvas"></canvas>
+    </div>
+
+    <header class="site-header">
+      <a class="wordmark" href="/">Sarvakali</a>
+      <nav class="site-nav" aria-label="Main">
+        <a class="nav-link" href="/#paths">Pillars</a>
+        <a class="btn btn-solid btn-sm" href="/connect">Book a session</a>
+      </nav>
+    </header>
+
+    <slot name="overlay" />
+
+    <main id="main" data-sequence={sequence}>
+      <slot />
+    </main>
+
+    <aside id="hud" class="hud" transition:persist="hud" data-open="true" aria-label="Prototype panel">
+      <button type="button" class="hud-toggle" data-hud-toggle aria-expanded="true">Prototype</button>
+      <div class="hud-body">
+        <dl class="hud-stats">
+          <div><dt>Quality</dt><dd data-hud-tier>…</dd></div>
+          <div><dt>Frame rate</dt><dd data-hud-fps>…</dd></div>
+          <div><dt>Atmosphere</dt><dd data-hud-chapter>…</dd></div>
+        </dl>
+        <div class="hud-tiers" role="group" aria-label="Quality level">
+          <button type="button" data-tier-btn="auto">Auto</button>
+          <button type="button" data-tier-btn="full">Full</button>
+          <button type="button" data-tier-btn="lighter">Lighter</button>
+          <button type="button" data-tier-btn="still">Still</button>
+          <button type="button" data-tier-btn="calm">Calm</button>
+        </div>
+        <button type="button" class="hud-replay" data-hud-replay>Replay the intro</button>
+      </div>
+    </aside>
+
+    <script>
+      import '../scripts/app';
+    </script>
+  </body>
+</html>
