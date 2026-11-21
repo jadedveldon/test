@@ -33,10 +33,13 @@ const {
         h.classList.add('js');
         try {
           if (sessionStorage.getItem('sk-intro-seen') && location.search.indexOf('intro') < 0) h.dataset.intro = 'seen';
-          var hero = new URLSearchParams(location.search).get('hero') || sessionStorage.getItem('sk-x-hero');
-          h.dataset.heroVariant = hero === 'name' || hero === 'dawn' ? hero : 'eye';
+          var q = new URLSearchParams(location.search);
+          var hero = q.get('hero') || sessionStorage.getItem('sk-x-hero');
+          h.dataset.heroVariant = hero === 'name' || hero === 'dawn' || hero === 'eye' ? hero : 'dawneye';
+          var page = q.get('page') || sessionStorage.getItem('sk-x-page');
+          h.dataset.pageStyle = page || 'eye';
         } catch (e) {
-          h.dataset.heroVariant = 'eye';
+          h.dataset.heroVariant = 'dawneye';
         }
       })();
     </script>
@@ -47,11 +50,26 @@ const {
       <div class="world-fallback"></div>
       <canvas id="world-canvas"></canvas>
     </div>
+    <canvas id="incense" class="incense" transition:persist="incense" aria-hidden="true"></canvas>
 
     <header class="site-header">
-      <a class="wordmark" href="/">Sarvakali</a>
+      <a class="wordmark" href="/" transition:name="sk-wordmark" data-pt>Sarvakali</a>
       <nav class="site-nav" aria-label="Main">
         <a class="nav-link" href="/#paths">Pillars</a>
+        <a class="nav-link" href="/path">Find your path</a>
+        <div class="sky" data-sky>
+          <button type="button" class="sky-pill" data-sky-btn aria-expanded="false" aria-controls="sky-card">
+            <span class="sky-icon" data-sky-icon></span><span class="sky-name" data-sky-name>Moon</span>
+          </button>
+          <div id="sky-card" class="sky-card" data-sky-card hidden>
+            <p class="sky-title" data-sky-title></p>
+            <p data-sky-note></p>
+          </div>
+        </div>
+        <button type="button" class="sound-btn" data-sound aria-pressed="false" aria-label="Ambient sound">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path class="sound-waves" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path class="sound-off" d="M16 9l5 6M21 9l-5 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <span class="sound-label">Sound</span>
+        </button>
         <a class="btn btn-solid btn-sm" href="/connect">Book a session</a>
       </nav>
     </header>
@@ -64,6 +82,47 @@ const {
 
     <Veil />
 
+    <dialog id="card-dialog" class="card-dialog" aria-label="Today's card">
+      <div class="card-wrap">
+        <div class="card3d" role="button" tabindex="0" aria-label="Turn the card">
+          <div class="card3d-inner">
+            <div class="card-face card-back" aria-hidden="true">
+              <svg viewBox="0 0 200 300">
+                <rect x="10" y="10" width="180" height="280" rx="10" fill="none" stroke="currentColor" stroke-width="1.2" />
+                <rect x="18" y="18" width="164" height="264" rx="7" fill="none" stroke="currentColor" stroke-width="0.6" />
+                <g transform="translate(100 150)" fill="none" stroke="currentColor" stroke-width="1">
+                  <circle r="62" /><circle r="54" stroke-width="0.6" />
+                  <path d="M0 -46 L40 23 L-40 23 Z" /><path d="M0 46 L40 -23 L-40 -23 Z" />
+                  <path d="M0 -30 L26 15 L-26 15 Z" stroke-width="0.7" />
+                  <circle r="4" fill="currentColor" />
+                  <g stroke-width="0.7">{Array.from({ length: 16 }, (_, i) => <path d="M0 -62 Q6 -72 0 -82 Q-6 -72 0 -62Z" transform={`rotate(${i * 22.5})`} />)}</g>
+                </g>
+              </svg>
+            </div>
+            <div class="card-face card-front">
+              <p class="card-kicker">Today's card</p>
+              <svg class="card-glyph" viewBox="0 0 100 100" aria-hidden="true"><path data-card-glyph d="" /></svg>
+              <h2 class="card-name" data-card-name></h2>
+              <p class="card-line" data-card-line></p>
+            </div>
+          </div>
+        </div>
+        <p class="card-status" data-card-status aria-live="polite"></p>
+        <div class="card-actions">
+          <button type="button" class="btn btn-solid btn-sm" data-card-flip>Turn the card</button>
+          <button type="button" class="btn btn-ghost btn-sm" data-card-share>Share</button>
+          <button type="button" class="btn btn-ghost btn-sm" data-card-close>Close</button>
+        </div>
+        <p class="card-note">Prototype: the twelve cards and their words are placeholders for Sarvakali's own deck.</p>
+      </div>
+    </dialog>
+
+    <div class="toast" data-toast role="status" hidden>
+      <p data-toast-text></p>
+      <button type="button" class="btn btn-ghost btn-sm" data-toast-action hidden></button>
+      <button type="button" class="toast-close" data-toast-close aria-label="Dismiss">×</button>
+    </div>
+
     <div id="cursor" class="cursor" transition:persist="cursor" aria-hidden="true">
       <span class="cursor-flame"></span>
       <span class="cursor-dot"></span>
@@ -75,6 +134,7 @@ const {
         <dl class="hud-stats">
           <div><dt>Quality</dt><dd data-hud-tier>…</dd></div>
           <div><dt>Frame rate</dt><dd data-hud-fps>…</dd></div>
+          <div><dt>Points of light</dt><dd data-hud-points>…</dd></div>
           <div><dt>Atmosphere</dt><dd data-hud-chapter>…</dd></div>
         </dl>
 
@@ -82,10 +142,53 @@ const {
           <p class="hud-label">Quality</p>
           <div class="hud-seg" role="group" aria-label="Quality level">
             <button type="button" data-tier-btn="auto">Auto</button>
+            <button type="button" data-tier-btn="ultra">Ultra</button>
             <button type="button" data-tier-btn="full">Full</button>
             <button type="button" data-tier-btn="lighter">Lighter</button>
             <button type="button" data-tier-btn="still">Still</button>
             <button type="button" data-tier-btn="calm">Calm</button>
+          </div>
+        </div>
+
+        <div class="hud-group">
+          <p class="hud-label">Hero</p>
+          <div class="hud-seg" role="group" aria-label="Hero" data-x="hero">
+            <button type="button" data-v="dawneye">Eye at dawn</button>
+            <button type="button" data-v="eye">Living eye</button>
+            <button type="button" data-v="name">Name of light</button>
+            <button type="button" data-v="dawn">Dawn</button>
+          </div>
+        </div>
+
+        <div class="hud-group">
+          <p class="hud-label">Living sky</p>
+          <div class="hud-seg" role="group" aria-label="Living sky" data-x="sky">
+            <button type="button" data-v="now">Tonight</button>
+            <button type="button" data-v="amavasya">Amavasya</button>
+            <button type="button" data-v="purnima">Purnima</button>
+            <button type="button" data-v="night">Night</button>
+            <button type="button" data-v="day">Day</button>
+            <button type="button" data-v="off">Off</button>
+          </div>
+        </div>
+
+        <div class="hud-group">
+          <p class="hud-label">Page change</p>
+          <div class="hud-seg" role="group" aria-label="Page change" data-x="page">
+            <button type="button" data-v="eye">Eye</button>
+            <button type="button" data-v="smoke">Smoke</button>
+            <button type="button" data-v="ink">Ink</button>
+            <button type="button" data-v="morph">Morph titles</button>
+            <button type="button" data-v="fade">Fade</button>
+          </div>
+        </div>
+
+        <div class="hud-group">
+          <p class="hud-label">Cursor</p>
+          <div class="hud-seg" role="group" aria-label="Cursor" data-x="cursor">
+            <button type="button" data-v="flame">Flame</button>
+            <button type="button" data-v="incense">Incense smoke</button>
+            <button type="button" data-v="off">Normal</button>
           </div>
         </div>
 
@@ -98,32 +201,33 @@ const {
         </div>
 
         <div class="hud-group">
-          <p class="hud-label">Hero</p>
-          <div class="hud-seg" role="group" aria-label="Hero" data-x="hero">
-            <button type="button" data-v="eye">Living eye</button>
-            <button type="button" data-v="name">Name of light</button>
-            <button type="button" data-v="dawn">Dawn</button>
-          </div>
-        </div>
-
-        <div class="hud-group">
-          <p class="hud-label">Page change</p>
-          <div class="hud-seg" role="group" aria-label="Page change" data-x="page">
-            <button type="button" data-v="eye">Eye</button>
-            <button type="button" data-v="smoke">Smoke</button>
-            <button type="button" data-v="ink">Ink</button>
-            <button type="button" data-v="fade">Fade</button>
-          </div>
-        </div>
-
-        <div class="hud-group">
-          <p class="hud-label">Motion</p>
-          <div class="hud-seg" role="group" aria-label="Motion">
+          <p class="hud-label">Motion and touch</p>
+          <div class="hud-seg" role="group" aria-label="Motion and touch">
+            <button type="button" data-toggle="touch">Touchable forms</button>
+            <button type="button" data-toggle="dust">Headings to dust</button>
             <button type="button" data-toggle="bend">Scroll bend</button>
-            <button type="button" data-toggle="cursor">Flame cursor</button>
+            <button type="button" data-toggle="haptics">Vibration</button>
             <button type="button" data-tilt hidden>Phone tilt</button>
           </div>
           <p class="hud-note" data-tilt-note hidden></p>
+        </div>
+
+        <div class="hud-group">
+          <p class="hud-label">Data saver</p>
+          <div class="hud-seg" role="group" aria-label="Data saver">
+            <button type="button" data-toggle="saver">Pretend data saver is on</button>
+          </div>
+          <p class="hud-note" data-saver-note></p>
+        </div>
+
+        <div class="hud-group">
+          <p class="hud-label">Try</p>
+          <div class="hud-links">
+            <a href="/path">Find your path</a>
+            <button type="button" data-card-open>Draw today's card</button>
+            <a href="/#close">Light a diya</a>
+            <a href="/depth">AI depth demo</a>
+          </div>
         </div>
 
         <button type="button" class="hud-replay" data-hud-replay>Replay the intro</button>

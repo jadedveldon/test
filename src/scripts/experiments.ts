@@ -4,31 +4,46 @@ import type { World } from './world/World';
 
 /* -------------------------------------------------------------- state */
 
-export type HeroVariant = 'eye' | 'name' | 'dawn';
-export type PageStyle = 'eye' | 'smoke' | 'ink' | 'fade';
+export type HeroVariant = 'dawneye' | 'eye' | 'name' | 'dawn';
+export type PageStyle = 'eye' | 'smoke' | 'ink' | 'morph' | 'fade';
+export type CursorStyle = 'flame' | 'incense' | 'off';
+export type SkyMode = 'now' | 'amavasya' | 'purnima' | 'night' | 'day' | 'off';
+type OnOff = 'on' | 'off';
 export type Exp = {
-  forms: 'on' | 'off';
+  forms: OnOff;
   hero: HeroVariant;
   page: PageStyle;
-  bend: 'on' | 'off';
-  cursor: 'on' | 'off';
+  bend: OnOff;
+  cursor: CursorStyle;
+  sky: SkyMode;
+  touch: OnOff;
+  dust: OnOff;
+  haptics: OnOff;
+  saver: OnOff;
 };
 
-const DEFAULTS: Exp = { forms: 'on', hero: 'eye', page: 'eye', bend: 'on', cursor: 'on' };
+const DEFAULTS: Exp = {
+  forms: 'on', hero: 'dawneye', page: 'eye', bend: 'on', cursor: 'flame', sky: 'now', touch: 'on', dust: 'on', haptics: 'on', saver: 'off',
+};
 const ALLOWED: Record<keyof Exp, string[]> = {
-  forms: ['on', 'off'], hero: ['eye', 'name', 'dawn'], page: ['eye', 'smoke', 'ink', 'fade'], bend: ['on', 'off'], cursor: ['on', 'off'],
+  forms: ['on', 'off'], hero: ['dawneye', 'eye', 'name', 'dawn'], page: ['eye', 'smoke', 'ink', 'morph', 'fade'], bend: ['on', 'off'],
+  cursor: ['flame', 'incense', 'off'], sky: ['now', 'amavasya', 'purnima', 'night', 'day', 'off'],
+  touch: ['on', 'off'], dust: ['on', 'off'], haptics: ['on', 'off'], saver: ['on', 'off'],
 };
 export const exp: Exp = { ...DEFAULTS };
+export type ToggleKey = 'bend' | 'touch' | 'dust' | 'haptics' | 'saver';
 
 /** each hero option uses its own atmosphere */
-export const HERO_PRESET: Record<HeroVariant, string> = { eye: 'hero', name: 'heroName', dawn: 'dawn' };
+export const HERO_PRESET: Record<HeroVariant, string> = { dawneye: 'dawnRise', eye: 'hero', name: 'heroName', dawn: 'dawn' };
 
 export function loadExp() {
   const q = new URLSearchParams(location.search);
   (Object.keys(DEFAULTS) as (keyof Exp)[]).forEach((k) => {
-    const fromUrl = q.get(k);
+    let fromUrl = q.get(k);
+    if (k === 'cursor' && fromUrl === 'on') fromUrl = 'flame'; // links from the earlier prototype
     if (fromUrl && ALLOWED[k].includes(fromUrl)) store(`sk-x-${k}`, fromUrl);
-    const v = read(`sk-x-${k}`);
+    let v = read(`sk-x-${k}`);
+    if (k === 'cursor' && v === 'on') v = 'flame';
     if (v && ALLOWED[k].includes(v)) (exp as Record<string, string>)[k] = v;
   });
 }
@@ -56,7 +71,7 @@ export function initExpPanel(onChange: (k: keyof Exp, v: string) => void, world:
   });
   hud.querySelectorAll<HTMLButtonElement>('button[data-toggle]').forEach((b) => {
     b.addEventListener('click', () => {
-      const key = b.dataset.toggle as 'bend' | 'cursor';
+      const key = b.dataset.toggle as ToggleKey;
       const v = exp[key] === 'on' ? 'off' : 'on';
       setExp(key, v);
       onChange(key, v);
@@ -86,7 +101,7 @@ export function renderExpPanel() {
     group.querySelectorAll<HTMLButtonElement>('button[data-v]').forEach((b) => b.setAttribute('aria-pressed', String(exp[key] === b.dataset.v)));
   });
   hud.querySelectorAll<HTMLButtonElement>('button[data-toggle]').forEach((b) => {
-    b.setAttribute('aria-pressed', String(exp[b.dataset.toggle as 'bend' | 'cursor'] === 'on'));
+    b.setAttribute('aria-pressed', String(exp[b.dataset.toggle as ToggleKey] === 'on'));
   });
 }
 
@@ -94,6 +109,7 @@ export function renderExpPanel() {
 
 const finePointer = () => matchMedia('(pointer: fine)').matches;
 let cursorActive = false;
+let cursorStyle: CursorStyle = 'flame';
 let cursorReady = false;
 let magnets = new WeakMap<Element, { x: (v: number) => void; y: (v: number) => void }>();
 let lastMove: PointerEvent | null = null;
@@ -170,10 +186,13 @@ function pullMagnets() {
   }
 }
 
-export function setCursor(on: boolean) {
+/** flame: the flame follows the pointer. incense: the incense stick, with real smoke drawn by fluid.ts */
+export function setCursor(on: boolean, style: CursorStyle = 'flame') {
   setupCursor();
+  cursorStyle = style;
   cursorActive = on && finePointer();
   document.documentElement.classList.toggle('x-cursor', cursorActive);
+  document.getElementById('cursor')?.setAttribute('data-style', cursorStyle);
   if (!cursorActive) {
     document.getElementById('cursor')?.classList.remove('is-visible');
     document.querySelectorAll<HTMLElement>('.btn').forEach((b) => gsap.to(b, { x: 0, y: 0, duration: 0.4 }));

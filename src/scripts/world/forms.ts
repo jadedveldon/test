@@ -371,3 +371,38 @@ export function buildForms(n: number, seeds: Float32Array): Record<FormKey, Floa
 }
 
 export const shuffleForm = (o: Float32Array, seed: number) => { shuffleInPlace(o, rng(seed)); return o; };
+
+/** grow an existing form to n points by repeating it with a little jitter (used for Ultra text forms) */
+export function upsample(src: Float32Array, n: number, jitter = 0.012, seed = 7) {
+  const r = rng(seed);
+  const m = src.length / 3;
+  const o = new Float32Array(n * 3);
+  for (let i = 0; i < n; i++) {
+    const k = i % m;
+    o[i * 3] = src[k * 3] + gauss(r) * jitter;
+    o[i * 3 + 1] = src[k * 3 + 1] + gauss(r) * jitter;
+    o[i * 3 + 2] = src[k * 3 + 2] + gauss(r) * jitter;
+  }
+  return o;
+}
+
+/** like buildForms, but yields to the browser between forms so a big build never freezes the page */
+export async function buildFormsAsync(n: number, seeds: Float32Array, textFrom?: { name: Float32Array; letters: Float32Array }) {
+  const wait = () => new Promise<void>((res) => {
+    const ric = (window as unknown as { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => void }).requestIdleCallback;
+    if (ric) ric(() => res(), { timeout: 120 }); else setTimeout(res, 16);
+  });
+  const out: Partial<Record<FormKey, Float32Array>> = {};
+  const steps: [FormKey, () => Float32Array][] = [
+    ['dust', () => dust(n)], ['halo', () => halo(n)], ['vortex', () => vortex(n)], ['flames', () => flames(n)],
+    ['sigils', () => shuffleForm(sigils(n), 101)], ['water', () => shuffleForm(water(n), 103)], ['silk', () => shuffleForm(silk(n), 107)],
+    ['stars', () => shuffleForm(stars(n), 109)], ['eye', () => shuffleForm(eye(n), 113)], ['horizon', () => horizon(n, seeds)],
+    ['name', () => (textFrom ? upsample(textFrom.name, n, 0.01, 61) : dust(n))],
+    ['letters', () => (textFrom ? upsample(textFrom.letters, n, 0.008, 67) : dust(n))],
+  ];
+  for (const [k, make] of steps) {
+    out[k] = make();
+    await wait();
+  }
+  return out as Record<FormKey, Float32Array>;
+}

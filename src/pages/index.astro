@@ -51,12 +51,13 @@ import { pillars, totalServices } from '../data/site';
   <section class="chapter chapter-connect" data-chapter="connect">
     <div class="chapter-inner narrow">
       <p class="kicker" data-fade>Connect</p>
-      <h2 class="display-l" data-split>Speak with Sarvakali</h2>
+      <h2 class="display-l" data-split data-dust>Speak with Sarvakali</h2>
       <p class="lede" data-fade>
         Share your name and a few times that suit you. Sarvakali confirms the meeting or suggests another time, and you meet over Google Meet.
       </p>
       <div class="cta-row" data-fade>
         <a class="btn btn-solid" href="/connect">Request a conversation</a>
+        <a class="btn btn-ghost" href="/path">Not sure where to begin? Find your path</a>
       </div>
     </div>
   </section>
@@ -67,7 +68,7 @@ import { pillars, totalServices } from '../data/site';
     <section class="chapter chapter-pillar" data-chapter={p.preset}>
       <div class="chapter-inner">
         <p class="kicker" data-fade>Pillar {i + 1} of {pillars.length}</p>
-        <h2 class="display-l" data-split>{p.name}</h2>
+        <h2 class="display-l" data-split data-dust transition:name={`pt-${p.slug}`} data-pt>{p.name}</h2>
         <p class="lede" data-fade>{p.line}</p>
         <ul class="chips" data-fade>
           {p.categories.map((c) => <li>{c.name}</li>)}
@@ -75,23 +76,56 @@ import { pillars, totalServices } from '../data/site';
         <div class="cta-row" data-fade>
           <a class="btn btn-solid" href={`/pillars/${p.slug}`}>Explore this pillar</a>
           <a class="btn btn-ghost" href="/connect" data-topic={p.name}>Ask about this</a>
+          {p.slug === 'divination' && <button type="button" class="btn btn-ghost" data-card-open>Draw today's card</button>}
         </div>
       </div>
     </section>
   ))}
 
-  <section class="chapter chapter-close" data-chapter="close">
+  <section class="chapter chapter-close" data-chapter="close" id="close">
     <div class="chapter-inner narrow center">
+      <div class="diya" data-diya data-fade>
+        <svg class="diya-svg" viewBox="0 0 160 130" aria-hidden="true">
+          <defs>
+            <radialGradient id="diya-glow" cx="50%" cy="60%" r="50%">
+              <stop offset="0" stop-color="#ffd27a" stop-opacity="0.75" />
+              <stop offset="0.4" stop-color="#f0903a" stop-opacity="0.25" />
+              <stop offset="1" stop-color="#f0903a" stop-opacity="0" />
+            </radialGradient>
+            <linearGradient id="diya-flame-g" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0" stop-color="#fff7df" />
+              <stop offset="0.35" stop-color="#ffc35a" />
+              <stop offset="1" stop-color="#e2492a" stop-opacity="0.85" />
+            </linearGradient>
+            <linearGradient id="diya-clay" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#b0552c" />
+              <stop offset="1" stop-color="#5a2312" />
+            </linearGradient>
+          </defs>
+          <circle class="diya-halo" cx="80" cy="52" r="60" fill="url(#diya-glow)" />
+          <g class="diya-flame">
+            <path d="M80 70 C70 58 72 44 80 26 C88 44 90 58 80 70 Z" fill="url(#diya-flame-g)" />
+            <path d="M80 68 C76 62 77 55 80 47 C83 55 84 62 80 68 Z" fill="#fffaf0" opacity="0.9" />
+          </g>
+          <path d="M80 70 L80 76" stroke="#2a120a" stroke-width="2.4" stroke-linecap="round" />
+          <path d="M22 78 Q80 74 132 72 L142 66 Q140 80 128 86 Q80 122 32 92 Q22 86 22 78 Z" fill="url(#diya-clay)" />
+          <path d="M26 80 Q80 76 134 74" fill="none" stroke="#e08a52" stroke-width="1.4" opacity="0.7" />
+        </svg>
+        <button type="button" class="btn btn-ghost" data-diya-light>Light a diya</button>
+        <p class="diya-count" data-diya-count aria-live="polite"></p>
+      </div>
       <p class="kicker" data-fade>When you are ready</p>
       <h2 class="display-l" data-split>Every path begins with a conversation</h2>
       <div class="cta-row center" data-fade>
         <a class="btn btn-solid" href="/connect">Request a conversation</a>
+        <a class="btn btn-ghost" href="/path">Find your path</a>
       </div>
     </div>
   </section>
 
   <footer class="site-foot">
     <p>Sarvakali · working prototype. Copy, colours and the intro artwork are placeholders.</p>
+    <p><a href="/path">Find your path</a> · <a href="/depth">AI depth demo</a> · <a href="/connect">Connect</a></p>
     <p>{totalServices.toLocaleString('en-IN')} services across {pillars.length} pillars.</p>
   </footer>
 </Base>

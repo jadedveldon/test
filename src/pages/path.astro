@@ -1,0 +1,83 @@
+---
+import Base from '../layouts/Base.astro';
+import { pillars } from '../data/site';
+
+/** first question: one plain sentence per pillar (placeholder copy) */
+const WANTS: Record<string, string> = {
+  devotion: 'A deeper bond with Kali, the Devi or the unseen',
+  magic: 'To change something: protection, love, abundance, a curse lifted',
+  healing: 'To heal, let go and feel lighter',
+  identity: 'To feel at home in my body, my identity and my relationships',
+  divination: 'Clarity about what lies ahead',
+  learning: 'To learn the craft and practise it myself',
+};
+const anchor = (s: string) => s.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+---
+<Base title="Find your path · Sarvakali" sequence="connect" description="Three questions to find where to begin with Sarvakali.">
+  <section class="path" data-path>
+    <div class="path-head">
+      <p class="kicker" data-hero>Find your path</p>
+      <h1 class="display-l" data-hero data-split>Where would you like to begin?</h1>
+      <p class="lede" data-hero>Three short questions. Nothing is saved or sent: it simply points you to the right place.</p>
+    </div>
+
+    <ol class="path-steps" aria-label="Progress" data-hero>
+      <li data-dot="1" aria-current="step">1</li>
+      <li data-dot="2">2</li>
+      <li data-dot="3">3</li>
+    </ol>
+
+    <div class="path-stage" data-hero>
+      <fieldset class="path-q" data-step="1">
+        <legend class="display-m">What are you looking for?</legend>
+        <div class="path-options">
+          {pillars.map((p) => (
+            <button type="button" class="path-opt" data-pillar={p.slug} data-preset={p.preset} data-name={p.name}>
+              <span class="path-opt-main">{WANTS[p.slug]}</span>
+              <span class="path-opt-sub">{p.name}</span>
+            </button>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset class="path-q" data-step="2" hidden>
+        <legend class="display-m">Which of these feels closest?</legend>
+        {pillars.map((p) => (
+          <div class="path-options" data-for={p.slug} hidden>
+            <a hidden data-explore href={`/pillars/${p.slug}`} tabindex="-1" aria-hidden="true"></a>
+            {p.categories.map((c) => (
+              <button type="button" class="path-opt" data-category={c.name} data-anchor={anchor(c.name)}>
+                <span class="path-opt-main">{c.name}</span>
+                <span class="path-opt-sub">{c.subs.slice(0, 3).map((s) => s.name).join(' · ')}</span>
+              </button>
+            ))}
+          </div>
+        ))}
+      </fieldset>
+
+      <fieldset class="path-q" data-step="3" hidden>
+        <legend class="display-m">How would you like to begin?</legend>
+        <div class="path-options">
+          <button type="button" class="path-opt" data-begin="talk"><span class="path-opt-main">A first conversation</span><span class="path-opt-sub">Talk it through before choosing anything</span></button>
+          <button type="button" class="path-opt" data-begin="session"><span class="path-opt-main">A session or reading</span><span class="path-opt-sub">Go straight to the work</span></button>
+          <button type="button" class="path-opt" data-begin="learn"><span class="path-opt-main">A class or mentoring</span><span class="path-opt-sub">Learn to do it yourself</span></button>
+        </div>
+      </fieldset>
+
+      <div class="path-result" hidden aria-live="polite">
+        <p class="kicker">Your path</p>
+        <h2 class="display-l" data-result-pillar></h2>
+        <p class="lede" data-result-text></p>
+        <div class="cta-row">
+          <a class="btn btn-solid" href="/connect" data-result-connect data-topic="">Request a conversation</a>
+          <a class="btn btn-ghost" href="/" data-result-explore>Explore this pillar</a>
+        </div>
+      </div>
+
+      <div class="path-nav">
+        <button type="button" class="path-back" data-path-back hidden>← Back</button>
+        <button type="button" class="path-back" data-path-restart hidden>Start again</button>
+      </div>
+    </div>
+  </section>
+</Base>

@@ -76,6 +76,14 @@ export const PRESETS: Record<string, Preset> = {
     a: '#04030c', b: '#2c1838', c: '#ff9a5c', glow: '#ffd9a0',
     ink: '#fbf0e6', inkSoft: '#d8bfb0', scale: 1.2, warp: 1.8, speed: 0.045, light: 0, motes: 0.35, form: 'horizon', shift: 0, dawn: 1,
   },
+  dawnRise: {
+    a: '#04030c', b: '#2c1838', c: '#ff9a5c', glow: '#ffd9a0',
+    ink: '#fbf0e6', inkSoft: '#d8bfb0', scale: 1.2, warp: 1.8, speed: 0.045, light: 0, motes: 0.35, form: 'horizon', shift: 0, dawn: 1,
+  },
+  dawnName: {
+    a: '#04030c', b: '#2c1838', c: '#ff9a5c', glow: '#ffd9a0',
+    ink: '#fbf0e6', inkSoft: '#d8bfb0', scale: 1.2, warp: 1.8, speed: 0.045, light: 0, motes: 0.35, form: 'name', shift: 0, dawn: 1,
+  },
   close: {
     a: '#050203', b: '#240809', c: '#8e2a1a', glow: '#f0b34a',
     ink: '#f6ece2', inkSoft: '#c4ada0', scale: 1.5, warp: 2.4, speed: 0.06, light: 0, motes: 0.5, form: 'eye', shift: 0,

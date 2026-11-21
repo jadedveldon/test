@@ -1,4 +1,5 @@
 import gsap from 'gsap';
+import { buzz, PATTERNS } from './haptics';
 import type { World } from './world/World';
 
 type Options = {
@@ -77,6 +78,7 @@ export function runLoader(el: HTMLElement, o: Options) {
     .to(motes, { attr: { cx: 800, cy: 430 }, opacity: 0, duration: 0.8, ease: 'power3.in', stagger: { each: 0.004, from: 'random' } }, 2.1)
     .to(thirdGlow, { opacity: 1, duration: 0.6 }, 2.35)
     .to(third, { opacity: 1, scaleX: 1, duration: 0.55, ease: 'back.out(1.7)' }, 2.62)
+    .call(() => buzz(PATTERNS.eyeOpens), [], 2.62)
     .to(thirdLine, { opacity: 0, duration: 0.2 }, 2.7)
     // fly into the third eye
     .addLabel('zoom', 3.2)

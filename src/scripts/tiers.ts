@@ -1,7 +1,8 @@
-export type Tier = 'full' | 'lighter' | 'still' | 'calm';
-export const TIERS: Tier[] = ['full', 'lighter', 'still', 'calm'];
+export type Tier = 'ultra' | 'full' | 'lighter' | 'still' | 'calm';
+export const TIERS: Tier[] = ['ultra', 'full', 'lighter', 'still', 'calm'];
 
 export const TIER_LABEL: Record<Tier, string> = {
+  ultra: 'Ultra',
   full: 'Full',
   lighter: 'Lighter',
   still: 'Still',

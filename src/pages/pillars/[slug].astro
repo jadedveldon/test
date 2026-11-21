@@ -16,8 +16,9 @@ const anchor = (s: string) => s.toLowerCase().replace(/&/g, 'and').replace(/[^a-
   <section class="pp-hero">
     <a class="back-link" href="/#paths">← All pillars</a>
     <p class="kicker" data-hero>Pillar {index + 1} of {pillars.length}</p>
-    <h1 class="display-l" data-hero data-split>{p.name}</h1>
+    <h1 class="display-l" data-hero data-split transition:name={`pt-${p.slug}`} data-pt>{p.name}</h1>
     <p class="lede" data-hero>{p.line}</p>
+    {p.slug === 'divination' && <div class="cta-row" data-hero><button type="button" class="btn btn-solid" data-card-open>Draw today's card</button></div>}
     <ul class="pp-index" data-hero>
       {p.categories.map((c) => (
         <li><a href={`#${anchor(c.name)}`}>{c.name}</a></li>
@@ -49,7 +50,7 @@ const anchor = (s: string) => s.toLowerCase().replace(/&/g, 'and').replace(/[^a-
   ))}
 
   <nav class="pp-nav" aria-label="Other pillars">
-    <a href={`/pillars/${prev.slug}`}><span>Previous pillar</span>{prev.name}</a>
-    <a href={`/pillars/${next.slug}`}><span>Next pillar</span>{next.name}</a>
+    <a href={`/pillars/${prev.slug}`}><span>Previous pillar</span><b transition:name={`pt-${prev.slug}`} data-pt>{prev.name}</b></a>
+    <a href={`/pillars/${next.slug}`}><span>Next pillar</span><b transition:name={`pt-${next.slug}`} data-pt>{next.name}</b></a>
   </nav>
 </Base>

@@ -92,7 +92,8 @@ export function initTransitions(world: World, isCalm: () => boolean) {
     let style: PageStyle = exp.page;
     if (isCalm()) style = 'fade';
     if (style === 'smoke' && !world.isLive) style = 'fade';
-    pending = style === 'fade' ? null : style;
+    // morph and fade are drawn by the browser itself (view transitions), so no cover is needed
+    pending = style === 'fade' || style === 'morph' ? null : style;
     if (!pending) return;
     const e = ev as Event & { loader: () => Promise<void> };
     const original = e.loader;
