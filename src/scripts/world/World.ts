@@ -344,6 +344,8 @@ export class World {
   private target: Numeric = toNumeric(PRESETS.loader);
   readonly current: Numeric = toNumeric(PRESETS.loader);
 
+  private lost = false;
+  private lostHandler: (() => void) | null = null;
   private nameNative = { cx: 0, cy: 0.25, w: 7 };
   private nameAnchor: { cx: number; cy: number; w: number } | null = null;
 
@@ -376,6 +378,13 @@ export class World {
     }
     this.available = ok;
     if (!ok || !this.renderer) return;
+
+    // if the browser drops the 3D context (memory pressure, driver reset), stop drawing and let the page fall back
+    canvas.addEventListener('webglcontextlost', (e) => {
+      e.preventDefault();
+      this.lost = true;
+      this.lostHandler?.();
+    }, false);
 
     // full-screen smoke
     this.bgMat = new ShaderMaterial({
@@ -516,7 +525,12 @@ export class World {
   }
 
   get isLive() {
-    return this.available && this.settings.live;
+    return this.available && !this.lost && this.settings.live;
+  }
+
+  /** called once if the 3D context is lost */
+  onLost(fn: () => void) {
+    this.lostHandler = fn;
   }
 
   setForms(on: boolean) {

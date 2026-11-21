@@ -79,6 +79,27 @@ function runAutoProbe(dt: number) {
   }
 }
 
+/**
+ * Smoothness watchdog: keeps listening for the whole visit (not just at the
+ * start). If a device struggles for four seconds in a row, step down a level.
+ * Never overrides a level someone picked by hand.
+ */
+const watch = { t: 0, low: 0 };
+function watchdog(dt: number) {
+  if (autoProbe || read('sk-tier-manual') || (tier !== 'full' && tier !== 'lighter') || document.hidden) return;
+  watch.t += dt;
+  if (watch.t < 1) return;
+  watch.t = 0;
+  const fps = meter.fps;
+  watch.low = fps > 0 && fps < 22 ? watch.low + 1 : 0;
+  if (watch.low >= 4) {
+    setTier(tier === 'full' ? 'lighter' : 'still');
+    rememberAuto(tier);
+    watch.low = 0;
+    meter.reset();
+  }
+}
+
 /* ---------------------------------------------------------- chapters */
 
 function trackChapters() {
@@ -404,6 +425,11 @@ function boot() {
   world = new World(canvas);
   world.setForms(exp.forms === 'on');
   world.setBend(exp.bend === 'on');
+  world.onLost(() => {
+    autoProbe = false;
+    setTier('still');
+    rememberAuto('still');
+  });
 
   const manual = manualTier();
   let t: Tier;
@@ -428,6 +454,7 @@ function boot() {
     world.update(dt);
     skewText();
     runAutoProbe(dt);
+    watchdog(dt);
     hudTick(dt);
   });
 

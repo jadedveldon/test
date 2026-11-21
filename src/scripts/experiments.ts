@@ -129,23 +129,45 @@ function setupCursor() {
   document.documentElement.addEventListener('pointerleave', () => el.classList.remove('is-visible'));
 }
 
+const clamp = (v: number, a: number) => Math.max(-a, Math.min(a, v));
+
+/**
+ * Buttons lean gently toward the cursor. Only the one nearest the cursor
+ * moves, by a few pixels at most, measured from where it rests (not where it
+ * has already moved to), so neighbours never collide and nothing runs away.
+ */
 function pullMagnets() {
   rafPending = false;
   const e = lastMove;
   if (!e || !cursorActive) return;
-  document.querySelectorAll<HTMLElement>('.btn').forEach((b) => {
+  let best: { b: HTMLElement; dx: number; dy: number; k: number } | null = null;
+  const all = Array.from(document.querySelectorAll<HTMLElement>('.btn'));
+  for (const b of all) {
     const r = b.getBoundingClientRect();
-    if (!r.width) return;
-    const dx = e.clientX - (r.left + r.width / 2);
-    const dy = e.clientY - (r.top + r.height / 2);
-    const reach = Math.max(r.width, r.height) * 0.5 + 56;
+    if (!r.width) continue;
+    const gx = Number(gsap.getProperty(b, 'x')) || 0;
+    const gy = Number(gsap.getProperty(b, 'y')) || 0;
+    const dx = e.clientX - (r.left + r.width / 2 - gx);
+    const dy = e.clientY - (r.top + r.height / 2 - gy);
+    const rx = r.width / 2 + 22, ry = r.height / 2 + 22;
+    const k = Math.max(Math.abs(dx) / rx, Math.abs(dy) / ry);
+    if (k < 1 && (!best || k < best.k)) best = { b, dx, dy, k };
+  }
+  for (const b of all) {
     let m = magnets.get(b);
     if (!m) {
-      m = { x: gsap.quickTo(b, 'x', { duration: 0.55, ease: 'power3' }), y: gsap.quickTo(b, 'y', { duration: 0.55, ease: 'power3' }) };
+      m = { x: gsap.quickTo(b, 'x', { duration: 0.6, ease: 'power3' }), y: gsap.quickTo(b, 'y', { duration: 0.6, ease: 'power3' }) };
       magnets.set(b, m);
     }
-    if (Math.hypot(dx, dy) < reach) { m.x(dx * 0.22); m.y(dy * 0.32); } else { m.x(0); m.y(0); }
-  });
+    if (best && best.b === b) {
+      const strength = 1 - best.k * 0.6;
+      m.x(clamp(best.dx * 0.14, 6) * strength);
+      m.y(clamp(best.dy * 0.2, 4) * strength);
+    } else {
+      m.x(0);
+      m.y(0);
+    }
+  }
 }
 
 export function setCursor(on: boolean) {

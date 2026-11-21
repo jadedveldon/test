@@ -316,6 +316,8 @@ html[data-light="1"] .cursor-flame { mix-blend-mode: multiply; background: radia
 html.x-cursor, html.x-cursor a, html.x-cursor button, html.x-cursor summary, html.x-cursor label { cursor: none; }
 html.x-cursor input, html.x-cursor textarea, html.x-cursor select { cursor: text; }
 html.x-cursor .btn:hover { transform: none; }
+/* while buttons lean toward the cursor, only colour and glow animate in CSS */
+html.x-cursor .btn { transition: box-shadow 0.35s ease, background 0.35s ease; }
 .hud, .hud * { cursor: auto; }
 .hud button { cursor: pointer; }
 
