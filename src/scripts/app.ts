@@ -4,6 +4,20 @@ import { SplitText } from 'gsap/SplitText';
 import Lenis from 'lenis';
 import { World } from './world/World';
 import { runLoader } from './loader';
+import { initTransitions } from './transitions';
+import {
+  HERO_PRESET,
+  cursorIsActive,
+  exp,
+  initExpPanel,
+  loadExp,
+  renderExpPanel,
+  resetMagnets,
+  setCursor,
+  startHeroEye,
+  stopHeroEye,
+  type Exp,
+} from './experiments';
 import {
   FpsMeter,
   TIER_LABEL,
@@ -21,9 +35,9 @@ gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const html = document.documentElement;
 const LABELS: Record<string, string> = {
-  loader: 'Intro', hero: 'Hero', connect: 'Connect', devotion: 'Devotion & the Unseen', magic: 'Witchcraft & Magic',
-  healing: 'Healing & Inner Work', identity: 'Identity, Intimacy & the Body', divination: 'Divination & Insight',
-  learning: 'Learning', close: 'Close',
+  loader: 'Intro', hero: 'Hero · living eye', heroName: 'Hero · name of light', dawn: 'Hero · dawn', connect: 'Connect',
+  devotion: 'Devotion & the Unseen', magic: 'Witchcraft & Magic', healing: 'Healing & Inner Work',
+  identity: 'Identity, Intimacy & the Body', divination: 'Divination & Insight', learning: 'Learning', close: 'Close',
 };
 
 let world: World;
@@ -35,6 +49,9 @@ let tweens: gsap.core.Animation[] = [];
 let splits: SplitText[] = [];
 let heroTl: gsap.core.Timeline | null = null;
 let heroWanted = false;
+let dawnTween: gsap.core.Tween | null = null;
+let mainEl: HTMLElement | null = null;
+let skewing = false;
 const meter = new FpsMeter();
 const probe = { phase: 0, t: 0 };
 
@@ -50,7 +67,6 @@ function setTier(t: Tier) {
 function runAutoProbe(dt: number) {
   if (!autoProbe) return;
   probe.t += dt;
-  // warm up, then measure two seconds; step down once or twice if needed
   if (probe.phase === 0 && probe.t > 2.5) { meter.reset(); probe.phase = 1; probe.t = 0; }
   else if (probe.phase === 1 && probe.t > 2) {
     const fps = meter.fps;
@@ -77,6 +93,10 @@ function trackChapters() {
   world.setPosition(pos);
 }
 
+function chapterKeys() {
+  return chapters.map((c) => (c.hasAttribute('data-hero-chapter') ? HERO_PRESET[exp.hero] : c.dataset.chapter!));
+}
+
 /* ----------------------------------------------------------- reveals */
 
 function splitWords(el: HTMLElement) {
@@ -101,9 +121,41 @@ function buildHero() {
   if (heroWanted) heroTl.play();
 }
 
+function startDawn() {
+  dawnTween?.kill();
+  if (exp.hero !== 'dawn' || !document.querySelector('[data-hero-chapter]')) { world.dawnProgress = 1; return; }
+  world.dawnProgress = 0;
+  dawnTween = gsap.to(world, { dawnProgress: 1, duration: 5.5, ease: 'sine.inOut', delay: 0.2 });
+}
+
+/** the name of light forms over the real heading, wherever the layout puts it */
+function anchorName() {
+  const h1 = document.querySelector<HTMLElement>('.hero-title');
+  if (!h1) { world.setNameAnchor(null); return; }
+  const masks = Array.from(h1.querySelectorAll<HTMLElement>('.sk-word-mask'));
+  let r: DOMRect;
+  if (masks.length) {
+    const rs = masks.map((m) => m.getBoundingClientRect());
+    const l = Math.min(...rs.map((x) => x.left)), t = Math.min(...rs.map((x) => x.top));
+    const rr = Math.max(...rs.map((x) => x.right)), b = Math.max(...rs.map((x) => x.bottom));
+    r = new DOMRect(l, t, rr - l, b - t);
+  } else {
+    const range = document.createRange();
+    range.selectNodeContents(h1);
+    r = range.getBoundingClientRect();
+  }
+  if (!r.width) return;
+  world.setNameAnchor({ cx: r.left + r.width / 2, cy: r.top + r.height / 2 + window.scrollY, w: r.width });
+}
+window.addEventListener('resize', () => anchorName(), { passive: true });
+
 function playHero() {
   heroWanted = true;
   heroTl?.play();
+  world.releaseForms();
+  document.querySelector('.chapter-hero')?.classList.add('is-on');
+  startDawn();
+  if (exp.hero === 'eye' && document.querySelector('.hero-eye')) startHeroEye();
 }
 
 function setupReveals() {
@@ -119,7 +171,6 @@ function setupReveals() {
       scrollTrigger: { trigger: el, start: 'top 92%', toggleActions: 'play none none reverse' },
     }));
   });
-  // each chapter dissolves upward as the next one arrives
   document.querySelectorAll<HTMLElement>('[data-chapter] > .chapter-inner').forEach((inner) => {
     tweens.push(gsap.to(inner, {
       opacity: 0, y: -80, ease: 'none',
@@ -133,18 +184,34 @@ function lockScroll(on: boolean) {
   if (on) lenis?.stop(); else lenis?.start();
 }
 
+/** text leans a touch with scroll speed, matching the bend of the world */
+function skewText() {
+  if (!mainEl) return;
+  const on = exp.bend === 'on' && tier !== 'calm';
+  const k = on ? world.speed * 2.2 : 0;
+  if (Math.abs(k) > 0.02) {
+    mainEl.style.transform = `skewY(${k.toFixed(3)}deg)`;
+    skewing = true;
+  } else if (skewing) {
+    mainEl.style.transform = '';
+    skewing = false;
+  }
+}
+
 /* ------------------------------------------------------------- pages */
 
 function initPage() {
   const main = document.getElementById('main');
   if (!main || main.dataset.init) return;
   main.dataset.init = '1';
+  mainEl = main;
   heroWanted = false;
 
   chapters = Array.from(document.querySelectorAll<HTMLElement>('[data-chapter]'));
-  const seq = chapters.length ? chapters.map((c) => c.dataset.chapter!) : (main.dataset.sequence || 'hero').split(',');
+  const seq = chapters.length ? chapterKeys() : (main.dataset.sequence || 'hero').split(',');
   world.setSequence(seq);
   world.forceCss();
+  if (!document.querySelector('[data-hero-chapter]')) world.dawnProgress = 1;
 
   if (tier !== 'calm') {
     lenis = new Lenis({ lerp: 0.085, anchors: true, autoRaf: false });
@@ -174,11 +241,12 @@ function initPage() {
   }
 
   const fontsReady = Promise.race([
-    (document as any).fonts?.ready ?? Promise.resolve(),
+    (document as unknown as { fonts?: { ready: Promise<unknown> } }).fonts?.ready ?? Promise.resolve(),
     new Promise((r) => setTimeout(r, 1200)),
   ]);
   fontsReady.then(() => {
-    if (main !== document.getElementById('main')) return; // already navigated away
+    if (main !== document.getElementById('main')) return;
+    anchorName(); // measure the heading before its words are lowered for their entrance
     if (tier === 'calm') {
       document.querySelectorAll<HTMLElement>('[data-hero]').forEach((el) => (el.style.opacity = '1'));
     } else {
@@ -203,7 +271,37 @@ function cleanupPage() {
   lenis?.destroy();
   lenis = null;
   chapters = [];
+  stopHeroEye();
+  resetMagnets();
+  if (mainEl) mainEl.style.transform = '';
+  mainEl = null;
+  skewing = false;
   html.classList.remove('locked');
+}
+
+/* ------------------------------------------------- experiment switches */
+
+function onExpChange(k: keyof Exp, v: string) {
+  if (k === 'forms') world.setForms(v === 'on');
+  if (k === 'bend') world.setBend(v === 'on');
+  if (k === 'cursor') setCursor(v === 'on');
+  if (k === 'hero') {
+    html.dataset.heroVariant = v;
+    anchorName();
+    if (document.querySelector('[data-hero-chapter]') && chapters.length) {
+      world.setSequence(chapterKeys());
+      stopHeroEye();
+      if (heroWanted) {
+        heroTl?.restart();
+        const hero = document.querySelector('.chapter-hero');
+        hero?.classList.remove('is-on');
+        void (hero as HTMLElement | null)?.offsetWidth;
+        hero?.classList.add('is-on');
+        startDawn();
+        if (v === 'eye') startHeroEye();
+      }
+    }
+  }
 }
 
 /* ----------------------------------------------------- connect page */
@@ -225,13 +323,11 @@ function initConnect() {
   });
 }
 
-// remember which category someone asked about, for the Connect page
 document.addEventListener('click', (e) => {
   const a = (e.target as Element | null)?.closest<HTMLElement>('[data-topic]');
   if (a) store('sk-topic', a.dataset.topic || '');
 });
 
-// opening a subcategory changes the page height
 let refreshTimer = 0;
 document.addEventListener('toggle', () => {
   clearTimeout(refreshTimer);
@@ -259,7 +355,6 @@ function hudInit() {
     b.addEventListener('click', () => {
       const t = b.dataset.tierBtn as Tier | 'auto';
       chooseManual(t);
-      // calm and auto change how the page itself is set up, so reload
       if (t === 'auto' || t === 'calm' || tier === 'calm') { location.reload(); return; }
       autoProbe = false;
       setTier(t);
@@ -270,6 +365,7 @@ function hudInit() {
     const home = document.querySelector<HTMLAnchorElement>('.wordmark');
     location.href = home ? home.href : location.href;
   });
+  initExpPanel(onExpChange, world);
 }
 
 function hudRender() {
@@ -282,6 +378,7 @@ function hudRender() {
     const v = b.dataset.tierBtn;
     b.setAttribute('aria-pressed', String(manual ? v === tier : v === 'auto'));
   });
+  renderExpPanel();
 }
 
 function hudTick(dt: number) {
@@ -300,8 +397,13 @@ function hudTick(dt: number) {
 /* -------------------------------------------------------------- boot */
 
 function boot() {
+  loadExp();
+  html.dataset.heroVariant = exp.hero;
+
   const canvas = document.getElementById('world-canvas') as HTMLCanvasElement;
   world = new World(canvas);
+  world.setForms(exp.forms === 'on');
+  world.setBend(exp.bend === 'on');
 
   const manual = manualTier();
   let t: Tier;
@@ -314,6 +416,7 @@ function boot() {
   }
   if (!world.available && (t === 'full' || t === 'lighter')) { t = 'still'; autoProbe = false; }
   setTier(t);
+  setCursor(exp.cursor === 'on' && t !== 'calm');
 
   gsap.ticker.lagSmoothing(0);
   gsap.ticker.add((time, deltaMs) => {
@@ -323,19 +426,24 @@ function boot() {
     trackChapters();
     world.setVelocity(lenis ? lenis.velocity : 0);
     world.update(dt);
+    skewText();
     runAutoProbe(dt);
     hudTick(dt);
   });
 
   window.addEventListener('pointermove', (e) => {
+    if (e.pointerType === 'touch') return;
     world.setPointer((e.clientX / innerWidth) * 2 - 1, -((e.clientY / innerHeight) * 2 - 1));
   }, { passive: true });
 
+  initTransitions(world, () => tier === 'calm');
+
   document.addEventListener('astro:before-swap', cleanupPage);
   document.addEventListener('astro:after-swap', () => {
-    // the router copies the new page's <html> attributes, so restore ours
     html.classList.add('js');
+    html.classList.toggle('x-cursor', cursorIsActive());
     html.dataset.tier = tier;
+    html.dataset.heroVariant = exp.hero;
     if (read('sk-intro-seen')) html.dataset.intro = 'seen';
     world.forceCss();
   });

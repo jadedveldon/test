@@ -1,0 +1,33 @@
+---
+/**
+ * The cover used while pages change. It persists across pages, so the
+ * animation that closes on one page can open on the next.
+ */
+const almond = 'M800 430 Q852 500 800 570 Q748 500 800 430Z';
+---
+<div id="veil" class="veil" transition:persist="veil" aria-hidden="true">
+  <svg class="veil-eye" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <mask id="vm-eye" maskUnits="userSpaceOnUse" x="-9000" y="-9000" width="19600" height="19000">
+        <rect x="-9000" y="-9000" width="19600" height="19000" fill="#fff" />
+        <path id="veil-hole" d={almond} fill="#000" />
+      </mask>
+    </defs>
+    <rect x="-9000" y="-9000" width="19600" height="19000" fill="#050203" mask="url(#vm-eye)" />
+    <path id="veil-rim" d={almond} fill="none" stroke="#f0b34a" stroke-width="2.5" vector-effect="non-scaling-stroke" />
+  </svg>
+
+  <svg class="veil-ink" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <filter id="vf-ink" x="-25%" y="-25%" width="150%" height="150%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.011" numOctaves="3" seed="4" />
+        <feDisplacementMap in="SourceGraphic" scale="150" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+      <mask id="vm-ink" maskUnits="userSpaceOnUse" x="-9000" y="-9000" width="19600" height="19000">
+        <rect x="-9000" y="-9000" width="19600" height="19000" fill="#fff" />
+        <circle id="ink-hole" cx="800" cy="500" r="0" fill="#000" filter="url(#vf-ink)" />
+      </mask>
+    </defs>
+    <circle id="ink-blot" cx="800" cy="500" r="0" fill="#0a0506" filter="url(#vf-ink)" mask="url(#vm-ink)" />
+  </svg>
+</div>

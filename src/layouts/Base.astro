@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import Veil from '../components/Veil.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -15,7 +16,7 @@ const {
 } = Astro.props;
 ---
 <!doctype html>
-<html lang="en">
+<html lang="en" transition:animate="none">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -25,12 +26,19 @@ const {
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=Tiro+Devanagari+Sanskrit&display=swap" />
     <script is:inline>
-      document.documentElement.classList.add('js');
-      try {
-        if (sessionStorage.getItem('sk-intro-seen') && location.search.indexOf('intro') < 0) document.documentElement.dataset.intro = 'seen';
-      } catch (e) {}
+      (function () {
+        var h = document.documentElement;
+        h.classList.add('js');
+        try {
+          if (sessionStorage.getItem('sk-intro-seen') && location.search.indexOf('intro') < 0) h.dataset.intro = 'seen';
+          var hero = new URLSearchParams(location.search).get('hero') || sessionStorage.getItem('sk-x-hero');
+          h.dataset.heroVariant = hero === 'name' || hero === 'dawn' ? hero : 'eye';
+        } catch (e) {
+          h.dataset.heroVariant = 'eye';
+        }
+      })();
     </script>
     <ClientRouter fallback="animate" />
   </head>
@@ -54,6 +62,13 @@ const {
       <slot />
     </main>
 
+    <Veil />
+
+    <div id="cursor" class="cursor" transition:persist="cursor" aria-hidden="true">
+      <span class="cursor-flame"></span>
+      <span class="cursor-dot"></span>
+    </div>
+
     <aside id="hud" class="hud" transition:persist="hud" data-open="true" aria-label="Prototype panel">
       <button type="button" class="hud-toggle" data-hud-toggle aria-expanded="true">Prototype</button>
       <div class="hud-body">
@@ -62,13 +77,55 @@ const {
           <div><dt>Frame rate</dt><dd data-hud-fps>…</dd></div>
           <div><dt>Atmosphere</dt><dd data-hud-chapter>…</dd></div>
         </dl>
-        <div class="hud-tiers" role="group" aria-label="Quality level">
-          <button type="button" data-tier-btn="auto">Auto</button>
-          <button type="button" data-tier-btn="full">Full</button>
-          <button type="button" data-tier-btn="lighter">Lighter</button>
-          <button type="button" data-tier-btn="still">Still</button>
-          <button type="button" data-tier-btn="calm">Calm</button>
+
+        <div class="hud-group">
+          <p class="hud-label">Quality</p>
+          <div class="hud-seg" role="group" aria-label="Quality level">
+            <button type="button" data-tier-btn="auto">Auto</button>
+            <button type="button" data-tier-btn="full">Full</button>
+            <button type="button" data-tier-btn="lighter">Lighter</button>
+            <button type="button" data-tier-btn="still">Still</button>
+            <button type="button" data-tier-btn="calm">Calm</button>
+          </div>
         </div>
+
+        <div class="hud-group">
+          <p class="hud-label">Living forms</p>
+          <div class="hud-seg" role="group" aria-label="Living forms" data-x="forms">
+            <button type="button" data-v="on">On</button>
+            <button type="button" data-v="off">Off</button>
+          </div>
+        </div>
+
+        <div class="hud-group">
+          <p class="hud-label">Hero</p>
+          <div class="hud-seg" role="group" aria-label="Hero" data-x="hero">
+            <button type="button" data-v="eye">Living eye</button>
+            <button type="button" data-v="name">Name of light</button>
+            <button type="button" data-v="dawn">Dawn</button>
+          </div>
+        </div>
+
+        <div class="hud-group">
+          <p class="hud-label">Page change</p>
+          <div class="hud-seg" role="group" aria-label="Page change" data-x="page">
+            <button type="button" data-v="eye">Eye</button>
+            <button type="button" data-v="smoke">Smoke</button>
+            <button type="button" data-v="ink">Ink</button>
+            <button type="button" data-v="fade">Fade</button>
+          </div>
+        </div>
+
+        <div class="hud-group">
+          <p class="hud-label">Motion</p>
+          <div class="hud-seg" role="group" aria-label="Motion">
+            <button type="button" data-toggle="bend">Scroll bend</button>
+            <button type="button" data-toggle="cursor">Flame cursor</button>
+            <button type="button" data-tilt hidden>Phone tilt</button>
+          </div>
+          <p class="hud-note" data-tilt-note hidden></p>
+        </div>
+
         <button type="button" class="hud-replay" data-hud-replay>Replay the intro</button>
       </div>
     </aside>

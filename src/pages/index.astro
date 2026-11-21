@@ -6,10 +6,39 @@ import { pillars, totalServices } from '../data/site';
 <Base title="Sarvakali">
   <Loader slot="overlay" />
 
-  <section class="chapter chapter-hero" data-chapter="hero">
+  <section class="chapter chapter-hero" data-chapter="hero" data-hero-chapter>
     <div class="chapter-inner">
+      <div class="hero-eye" aria-hidden="true">
+        <svg viewBox="-90 -125 180 250">
+          <defs>
+            <radialGradient id="he-glow" cx="50%" cy="50%" r="50%">
+              <stop offset="0" stop-color="#ffcf7a" stop-opacity="0.55" />
+              <stop offset="0.5" stop-color="#f0903a" stop-opacity="0.16" />
+              <stop offset="1" stop-color="#f0903a" stop-opacity="0" />
+            </radialGradient>
+            <radialGradient id="he-iris-g" cx="50%" cy="45%" r="55%">
+              <stop offset="0" stop-color="#ffd98e" />
+              <stop offset="0.45" stop-color="#e2622f" />
+              <stop offset="1" stop-color="#3b0907" />
+            </radialGradient>
+            <clipPath id="he-clip"><path d="M0 -100 Q74 0 0 100 Q-74 0 0 -100Z" /></clipPath>
+          </defs>
+          <circle class="he-glow" r="120" fill="url(#he-glow)" />
+          <g id="he-open">
+            <path d="M0 -100 Q74 0 0 100 Q-74 0 0 -100Z" fill="#1c0807" />
+            <g clip-path="url(#he-clip)">
+              <g id="he-iris">
+                <circle r="27" fill="url(#he-iris-g)" />
+                <circle r="9" fill="#080203" />
+                <circle cx="-8" cy="-9" r="4" fill="#fff" opacity="0.8" />
+              </g>
+            </g>
+            <path d="M0 -100 Q74 0 0 100 Q-74 0 0 -100Z" fill="none" stroke="#f0b34a" stroke-width="2.6" />
+          </g>
+        </svg>
+      </div>
       <p class="kicker" data-hero>Welcome to</p>
-      <h1 class="display-xl" data-hero data-split>Sarvakali</h1>
+      <h1 class="display-xl hero-title" data-hero data-split>Sarvakali</h1>
       <p class="lede" data-hero>Devotion, magic, healing and insight, held in one place.</p>
       <div class="cta-row" data-hero>
         <a class="btn btn-solid" href="/connect">Request a conversation</a>

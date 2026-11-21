@@ -12,6 +12,7 @@ npm run preview:artifact   # dist/ + a copy with relative links in preview-artif
 ```
 
 Add `?tier=full|lighter|still|calm` to any URL to force a quality level, and `?intro=1` to replay the intro.
+Experiments can be set by URL too: `?hero=eye|name|dawn`, `?page=eye|smoke|ink|fade`, `?forms=on|off`, `?bend=on|off`, `?cursor=on|off`.
 
 ## How it fits together
 
@@ -23,7 +24,9 @@ Add `?tier=full|lighter|still|calm` to any URL to force a quality level, and `?i
 | Quality levels | `src/scripts/tiers.ts` | Full / Lighter / Still / Calm. Measures frame rate on first visit and steps down if needed. Calm is used when "reduce motion" is on. |
 | Intro | `src/components/Loader.astro`, `src/scripts/loader.ts` | Stand-in eyes: open, two blinks, third eye opens as light gathers, fly-in, eye-shaped reveal of the hero. Once per visit, skippable. |
 | Pages | `src/pages/` | Homepage chapters, six pillar pages generated from `src/data/categories.json` (all 1,123 services), Connect page stub. |
-| Page changes | `src/layouts/Base.astro` | Astro's ClientRouter with `transition:persist` keeps the world canvas alive across pages. |
+| Page changes | `src/layouts/Base.astro`, `src/scripts/transitions.ts`, `src/components/Veil.astro` | Astro's ClientRouter with `transition:persist` keeps the world canvas alive across pages. Custom covers (eye, smoke, ink) wrap the router's loader. |
+| Living forms | `src/scripts/world/forms.ts` | One cloud of up to 24,000 points that reshapes per chapter: halo, name, spiral, 108-flame ring, sigils, sea, silk, constellations, the 51-letter garland, the third eye, dawn. Dissolves and reforms between forms, morphs on page changes. |
+| Experiments | `src/scripts/experiments.ts` | Hero options (living eye, name of light, dawn), flame cursor, magnetic buttons, phone tilt, and the switches in the prototype panel. |
 
 ## Next
 
