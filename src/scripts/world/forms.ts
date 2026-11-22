@@ -8,12 +8,13 @@
  */
 export const CZ = -10;
 
-export const FORM_KEYS = ['dust', 'halo', 'name', 'vortex', 'flames', 'sigils', 'water', 'silk', 'stars', 'letters', 'eye', 'horizon'] as const;
+export const FORM_KEYS = ['dust', 'halo', 'name', 'vortex', 'flames', 'sigils', 'water', 'silk', 'stars', 'letters', 'eye', 'horizon', 'mala', 'lamps', 'agni'] as const;
 export type FormKey = (typeof FORM_KEYS)[number];
 
 export const FLAMES = 108;
 export const HALO_SECTORS = 72;
 export const VORTEX_ARMS = 3;
+export const MALA_BEADS = 108;
 
 /** the 51 letters of Kali's garland (varnamala): 16 vowels, 33 consonants, kṣa and jña */
 export const VARNAMALA = [
@@ -300,6 +301,71 @@ function horizon(n: number, seeds: Float32Array) {
   return o;
 }
 
+/** a mala of 108 identical beads on a thread: it turns by one bead for every count */
+function mala(n: number) {
+  const r = rng(43); const o = new Float32Array(n * 3);
+  const per = Math.ceil(n / MALA_BEADS);
+  const R = 3.0, step = (Math.PI * 2) / MALA_BEADS, cy = 0.3;
+  const tpl: number[][] = []; // [radial, tangential, dz] around a bead at angle 0
+  for (let k = 0; k < per; k++) {
+    if (r() < 0.86) {
+      const u = r() * 2 - 1, t = r() * Math.PI * 2, s = Math.sqrt(1 - u * u), rad = 0.072 * Math.cbrt(r());
+      tpl.push([s * Math.cos(t) * rad, u * rad, s * Math.sin(t) * rad]);
+    } else {
+      tpl.push([gauss(r) * 0.006, (r() - 0.5) * step * R, 0]);
+    }
+  }
+  for (let i = 0; i < n; i++) {
+    const b = i % MALA_BEADS, t = tpl[Math.floor(i / MALA_BEADS)];
+    const a = -Math.PI / 2 + b * step, ca = Math.cos(a), sa = Math.sin(a);
+    const rad = R + t[0];
+    put(o, i, ca * rad - sa * t[1], cy + sa * rad + ca * t[1], CZ + t[2]);
+  }
+  return o;
+}
+
+/** festival night: clay lamps floating on dark water, far into the distance */
+function lamps(n: number) {
+  const r = rng(47); const o = new Float32Array(n * 3);
+  const L = 150;
+  const pos: number[][] = [];
+  for (let l = 0; l < L; l++) {
+    const z = CZ + 3.5 - Math.pow(r(), 0.8) * 11;
+    const spread = 4 + (CZ + 3.5 - z) * 0.9;
+    pos.push([(r() * 2 - 1) * spread, -1.9 + gauss(r) * 0.05, z]);
+  }
+  for (let i = 0; i < n; i++) {
+    const [lx, ly, lz] = pos[i % L];
+    const k = r();
+    if (k < 0.6) { // the flame
+      const u = Math.pow(r(), 1.4), w = 0.05 * Math.pow(Math.sin(Math.PI * (u * 0.9 + 0.06)), 0.85) * (1 - u * 0.5);
+      put(o, i, lx + (r() * 2 - 1) * w, ly + 0.08 + u * 0.26, lz + (r() * 2 - 1) * w * 0.6);
+    } else if (k < 0.86) { // the clay bowl
+      const a = r() * Math.PI;
+      put(o, i, lx + Math.cos(a) * 0.15, ly - Math.sin(a) * 0.05, lz + (r() - 0.5) * 0.1);
+    } else { // its reflection on the water
+      put(o, i, lx + gauss(r) * 0.05, ly - 0.08 - Math.pow(r(), 1.6) * 0.5, lz);
+    }
+  }
+  return o;
+}
+
+/** the sacred fire: a havan kund whose flames rise and thin (flames use seed >= 0.16) */
+function agni(n: number, seeds: Float32Array) {
+  const r = rng(53); const o = new Float32Array(n * 3);
+  const base = -1.45;
+  for (let i = 0; i < n; i++) {
+    if (seeds[i] < 0.16) { // the rim of the fire pit, an ellipse seen from slightly above
+      const a = r() * Math.PI * 2, rad = 1.55 + gauss(r) * 0.04;
+      put(o, i, Math.cos(a) * rad, base - 0.12 + gauss(r) * 0.02, CZ + Math.sin(a) * rad * 0.45);
+    } else { // where the flames are born
+      const rad = Math.pow(r(), 0.7) * 1.15, a = r() * Math.PI * 2;
+      put(o, i, Math.cos(a) * rad, base + r() * 0.3, CZ + Math.sin(a) * rad * 0.45);
+    }
+  }
+  return o;
+}
+
 /* ------------------------------------------------- forms drawn from type */
 
 function sampleCanvas(n: number, draw: (ctx: CanvasRenderingContext2D) => void, w: number, h: number, map: (x: number, y: number) => [number, number], seed: number, extra?: (o: Out, i: number, r: () => number) => boolean) {
@@ -367,6 +433,9 @@ export function buildForms(n: number, seeds: Float32Array): Record<FormKey, Floa
     letters: d.slice(),
     eye: shuffled(eye(n), 113),
     horizon: horizon(n, seeds),
+    mala: mala(n),
+    lamps: shuffled(lamps(n), 127),
+    agni: agni(n, seeds),
   };
 }
 
@@ -397,6 +466,7 @@ export async function buildFormsAsync(n: number, seeds: Float32Array, textFrom?:
     ['dust', () => dust(n)], ['halo', () => halo(n)], ['vortex', () => vortex(n)], ['flames', () => flames(n)],
     ['sigils', () => shuffleForm(sigils(n), 101)], ['water', () => shuffleForm(water(n), 103)], ['silk', () => shuffleForm(silk(n), 107)],
     ['stars', () => shuffleForm(stars(n), 109)], ['eye', () => shuffleForm(eye(n), 113)], ['horizon', () => horizon(n, seeds)],
+    ['mala', () => mala(n)], ['lamps', () => shuffleForm(lamps(n), 127)], ['agni', () => agni(n, seeds)],
     ['name', () => (textFrom ? upsample(textFrom.name, n, 0.01, 61) : dust(n))],
     ['letters', () => (textFrom ? upsample(textFrom.letters, n, 0.008, 67) : dust(n))],
   ];

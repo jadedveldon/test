@@ -1,6 +1,6 @@
 import gsap from 'gsap';
 import { buzz, PATTERNS } from './haptics';
-import type { World } from './world/World';
+import type { WorldHandle as World } from './world/handle';
 
 type Options = {
   calm: boolean;

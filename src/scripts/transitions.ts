@@ -1,5 +1,5 @@
 import gsap from 'gsap';
-import type { World } from './world/World';
+import type { WorldHandle as World } from './world/handle';
 import { exp, type PageStyle } from './experiments';
 
 /**

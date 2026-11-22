@@ -1,7 +1,7 @@
 import gsap from 'gsap';
 import { buzz, PATTERNS } from './haptics';
 import { ring } from './audio';
-import type { World } from './world/World';
+import type { WorldHandle as World } from './world/handle';
 
 /**
  * Draw today's card. One card a day for each visitor: the same card all day,

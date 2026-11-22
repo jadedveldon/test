@@ -20,7 +20,7 @@ import {
 } from 'three';
 import { PRESETS, toNumeric, mixInto, dampInto, cloneNumeric, type Numeric } from './presets';
 import {
-  FLAMES, HALO_SECTORS, VORTEX_ARMS, FORM_KEYS, buildForms, buildFormsAsync, lettersForm, makeDirs, makeSeeds, nameForm,
+  FLAMES, HALO_SECTORS, VORTEX_ARMS, MALA_BEADS, FORM_KEYS, buildForms, buildFormsAsync, lettersForm, makeDirs, makeSeeds, nameForm,
   type FormKey,
 } from './forms';
 import type { Tier } from '../tiers';
@@ -133,6 +133,7 @@ uniform float uMoonR;
 uniform float uMoonPhase;
 uniform float uMoonVis;
 uniform vec3 uMoonTint;
+uniform float uMoonMode; // 0 moon, 1 lunar eclipse (blood moon), 2 solar eclipse (dark disc, corona)
 float hash(vec2 p) {
   p = fract(p * vec2(123.34, 456.21));
   p += dot(p, p + 45.32);
@@ -157,9 +158,16 @@ void main() {
     float cn = mix(mix(hash(ci), hash(ci + vec2(1.0, 0.0)), cf.x), mix(hash(ci + vec2(0.0, 1.0)), hash(ci + vec2(1.0, 1.0)), cf.x), cf.y);
     float crater = 0.84 + 0.16 * cn; // soft grey seas on the moon's face
     vec3 moon = mix(col * 0.55 + uMoonTint * 0.04, uMoonTint * crater, lit);
+    if (uMoonMode > 0.5 && uMoonMode < 1.5) moon = vec3(0.62, 0.16, 0.08) * crater; // blood moon
+    if (uMoonMode > 1.5) moon = vec3(0.01);                                          // the sun hidden
     col = mix(col, moon, disc * uMoonVis);
     float halo = exp(-max(0.0, d - 1.0) * 3.2) * (1.0 - disc);
-    col += uMoonTint * halo * 0.18 * illum * uMoonVis;
+    col += uMoonTint * halo * 0.18 * illum * uMoonVis * step(uMoonMode, 0.5);
+    if (uMoonMode > 1.5) { // corona streamers around the hidden sun
+      float ang = atan(m.y, m.x);
+      float streak = 0.6 + 0.4 * sin(ang * 9.0 + uTime * 0.2) * sin(ang * 4.0 - uTime * 0.13);
+      col += vec3(1.0, 0.93, 0.8) * exp(-max(0.0, d - 1.0) * (4.0 - 1.5 * streak)) * (1.0 - disc) * 0.9 * uMoonVis;
+    }
   }
   col += (hash(gl_FragCoord.xy + fract(uTime * 7.0) * 311.0) - 0.5) * uGrain;
   gl_FragColor = vec4(col, 1.0);
@@ -209,6 +217,8 @@ uniform vec2 uShift;
 uniform vec4 uW1; // flames, water, silk, stars
 uniform vec4 uW2; // letters, eye, horizon, sigils
 uniform vec4 uW3; // vortex, halo, name, dust
+uniform vec4 uW4; // mala, lamps, agni, (spare)
+uniform float uAngMala;
 uniform float uAngFlame;
 uniform float uAngVortex;
 uniform float uAngHalo;
@@ -256,6 +266,19 @@ void main() {
   p.y += climb * 4.5 * wr * uRise;
   p.x += sin(uTime * 0.5 + aSeed * 20.0) * 0.15 * wr;
 
+  // mala: turns one bead per count, and breathes
+  vec2 mc = vec2(0.0, 0.3);
+  p.xy = mix(p.xy, mc + rot(p.xy - mc, uAngMala) * (1.0 + 0.012 * sin(uTime * 0.9)), uW4.x);
+  // lamps bob on the water
+  p.y += sin(uTime * 0.8 + p.x * 0.6 + p.z * 0.4) * 0.05 * uW4.y;
+  // agni: flames rise from the pit, narrow and thin out
+  float fl = uW4.z * step(0.16, aSeed);
+  float rise = fract(uTime * 0.42 + aSeed * 5.3);
+  float narrow = 1.0 - rise * 0.75;
+  p.y += rise * 2.7 * fl;
+  p.x = mix(p.x, p.x * narrow + sin(uTime * 2.2 + aSeed * 30.0 + rise * 6.0) * 0.14 * rise, fl);
+  p.z = mix(p.z, CZ + (p.z - CZ) * narrow, fl);
+
   p.xy = p.xy * uFit + uShift;
 
   // touch: the form parts and swirls around a finger or cursor, then settles back
@@ -270,11 +293,12 @@ void main() {
   vec4 mv = modelViewMatrix * vec4(p, 1.0);
   gl_Position = projectionMatrix * mv;
   float depth = -mv.z;
-  float twinkle = 1.0 + sin(uTime * 2.6 + aSeed * 60.0) * 0.5 * uW1.w;
+  float twinkle = 1.0 + sin(uTime * 2.6 + aSeed * 60.0) * 0.5 * uW1.w + sin(uTime * 9.0 + aSeed * 80.0) * 0.25 * uW4.y;
   gl_PointSize = uSize * uPR * (0.55 + aSeed * 0.9) * twinkle * (10.0 / max(depth, 0.5)) * (1.0 + tf * 0.6);
   vA = (0.55 + 0.45 * fract(aSeed * 13.0)) * smoothstep(40.0, 12.0, depth) * smoothstep(0.5, 3.0, depth) * (1.0 - uVeil);
   vA *= 1.0 - wr * uRise * smoothstep(0.55, 1.0, climb);
   vA *= 1.0 + tf * 0.8;
+  vA *= 1.0 - fl * smoothstep(0.5, 1.0, rise);
   vSeed = aSeed;
 }`;
 
@@ -304,19 +328,26 @@ uniform float uTime;
 uniform float uSize;
 uniform float uPR;
 uniform vec2 uOff;
+uniform float uBurn;
 attribute vec3 aDir;
 attribute float aSeed;
 varying float vA;
+varying float vP;
 void main() {
   float p = uP;
+  vP = p;
   float sp = p * p; // the letters hold their shape at first, then come apart
   vec3 q = position + aDir * (sp * 3.0) + vec3(0.0, sp * 1.8, 0.0);
   q.xy += uOff * (1.0 - 0.5 * p); // follows the page a little, then lets go
+  // burning: the letters catch, then rise as embers and smoke
+  vec3 ember = position + vec3(sin(uTime * 3.0 + aSeed * 20.0) * 0.18 * p, p * (1.2 + aSeed * 2.8), aDir.z * p * 0.6);
+  q = mix(q, ember, uBurn);
   q.x += sin(uTime * 0.8 + aSeed * 30.0) * 0.12 * p;
   vec4 mv = modelViewMatrix * vec4(q, 1.0);
   gl_Position = projectionMatrix * mv;
   gl_PointSize = uSize * uPR * (0.6 + aSeed * 0.8) * (6.0 / max(-mv.z, 0.5));
   vA = smoothstep(0.0, 0.06, p) * (1.0 - smoothstep(0.5, 1.0, p)) * (0.6 + 0.4 * aSeed);
+  vA = mix(vA, (1.0 - smoothstep(0.35 + aSeed * 0.4, 1.0, p)) * (0.7 + 0.3 * aSeed), uBurn);
 }`;
 
 const dustFrag = /* glsl */ `
@@ -324,11 +355,16 @@ precision highp float;
 uniform vec3 uColor;
 uniform vec3 uInk;
 uniform float uLight;
+uniform float uBurn;
 varying float vA;
+varying float vP;
 void main() {
   vec2 c = gl_PointCoord - 0.5;
   float a = smoothstep(0.5, 0.0, length(c));
   vec3 col = mix(uColor, uInk, uLight);
+  // fire colours: white-hot, then orange embers, then grey smoke
+  vec3 fire = mix(mix(vec3(1.0, 0.95, 0.8), vec3(1.0, 0.45, 0.12), smoothstep(0.02, 0.3, vP)), vec3(0.45, 0.4, 0.38), smoothstep(0.45, 0.9, vP));
+  col = mix(col, fire, uBurn);
   float alpha = a * vA;
   gl_FragColor = vec4(col * alpha, alpha * uLight);
 }`;
@@ -424,6 +460,8 @@ export class World {
   private angFlame = 0;
   private angVortex = 0;
   private angHalo = 0;
+  private malaAng = 0;
+  private malaTarget = 0;
   private nameNative = { cx: 0, cy: 0.25, w: 7 };
   private nameAnchor: { cx: number; cy: number; w: number } | null = null;
 
@@ -513,7 +551,7 @@ export class World {
       uniforms: {
         tBg: { value: this.bgRT.texture }, uRes: { value: new Vector2(1, 1) }, uTime: { value: 0 }, uGrain: { value: 0.035 },
         uMoonPos: { value: new Vector2(0.6, 0.3) }, uMoonR: { value: 0.05 }, uMoonPhase: { value: 0.25 }, uMoonVis: { value: 0 },
-        uMoonTint: { value: new Vector3(0.95, 0.92, 0.85) },
+        uMoonTint: { value: new Vector3(0.95, 0.92, 0.85) }, uMoonMode: { value: 0 },
       },
     });
     const copy = new Mesh(new PlaneGeometry(2, 2), this.copyMat);
@@ -586,7 +624,7 @@ export class World {
       uniforms: {
         uTime: { value: 0 }, uMix: { value: 0 }, uT: { value: 0 }, uScatter: { value: 0.9 },
         uSize: { value: 1.9 }, uPR: { value: 1 }, uFit: { value: 1 }, uShift: { value: new Vector2() },
-        uW1: { value: [0, 0, 0, 0] }, uW2: { value: [0, 0, 0, 0] }, uW3: { value: [0, 0, 0, 0] },
+        uW1: { value: [0, 0, 0, 0] }, uW2: { value: [0, 0, 0, 0] }, uW3: { value: [0, 0, 0, 0] }, uW4: { value: [0, 0, 0, 0] }, uAngMala: { value: 0 },
         uAngFlame: { value: 0 }, uAngVortex: { value: 0 }, uAngHalo: { value: 0 }, uRise: { value: 1 }, uVeil: { value: 0 },
         uColor: { value: new Vector3(1, 0.8, 0.5) }, uColor2: { value: new Vector3(1, 0.5, 0.3) }, uInk: { value: new Vector3() },
         uOpacity: { value: 0.8 }, uLight: { value: 0 },
@@ -651,7 +689,7 @@ export class World {
       transparent: true, depthWrite: false, depthTest: false,
       blending: CustomBlending, blendSrc: OneFactor, blendDst: OneMinusSrcAlphaFactor,
       uniforms: {
-        uP: { value: 0 }, uTime: { value: 0 }, uSize: { value: 2.0 }, uPR: { value: 1 }, uOff: { value: new Vector2() },
+        uP: { value: 0 }, uTime: { value: 0 }, uSize: { value: 2.0 }, uPR: { value: 1 }, uOff: { value: new Vector2() }, uBurn: { value: 0 },
         uColor: { value: new Vector3(1, 1, 1) }, uInk: { value: new Vector3() }, uLight: { value: 0 },
       },
     });
@@ -776,6 +814,22 @@ export class World {
 
   setSky(s: SkyInput) {
     this.sky = s;
+  }
+
+  /** the mala turns one bead per count */
+  setMalaCount(n: number) {
+    this.malaTarget = n * ((Math.PI * 2) / MALA_BEADS);
+  }
+
+  /** 0 the moon, 1 a lunar eclipse (blood moon), 2 a solar eclipse (dark disc with corona) */
+  setMoonMode(m: number) {
+    this.moonMode = m;
+  }
+  private moonMode = 0;
+
+  /** heading dust (0) or burning words (1) */
+  setDustBurn(b: number) {
+    if (this.dustMat) this.dustMat.uniforms.uBurn.value = b;
   }
 
   setAudioLevel(v: number) {
@@ -979,7 +1033,9 @@ export class World {
     cu.uTime.value = this.time;
     const sky = this.sky;
     cu.uMoonPhase.value = sky.phase;
-    cu.uMoonVis.value = sky.on ? (0.35 + 0.65 * sky.night) * (1 - c.light) * (1 - this.veil) : 0;
+    cu.uMoonVis.value = this.moonMode > 0 ? (1 - c.light) * (1 - this.veil) : sky.on ? (0.35 + 0.65 * sky.night) * (1 - c.light) * (1 - this.veil) : 0;
+    cu.uMoonMode.value = this.moonMode;
+    if (this.moonMode === 2) cu.uMoonPhase.value = 0.5;
     if (sky.special === 'purnima') cu.uMoonTint.value.set(0.92, 0.95, 1.0);
     else cu.uMoonTint.value.set(0.96, 0.9, 0.8);
 
@@ -1007,6 +1063,9 @@ export class World {
       fu.uW1.value = [w[idx('flames')], w[idx('water')], w[idx('silk')], w[idx('stars')]];
       fu.uW2.value = [w[idx('letters')], w[idx('eye')], w[idx('horizon')], w[idx('sigils')]];
       fu.uW3.value = [w[idx('vortex')], w[idx('halo')], w[idx('name')], w[idx('dust')]];
+      fu.uW4.value = [w[idx('mala')], w[idx('lamps')], w[idx('agni')], 0];
+      this.malaAng += (this.malaTarget - this.malaAng) * (1 - Math.exp(-dt * 7));
+      fu.uAngMala.value = this.malaAng;
       fu.uAngFlame.value = this.angFlame;
       fu.uAngVortex.value = this.angVortex;
       fu.uAngHalo.value = this.angHalo;
@@ -1032,7 +1091,7 @@ export class World {
         fu.uNameC.value.set(n.cx, n.cy);
       }
       const dawnDim = 1 - c.dawn * (1 - (0.25 + 0.75 * this.dawnProgress));
-      fu.uOpacity.value = Math.min(1.3, 0.85 * Math.sqrt(density)) * this.narrowDim * dawnDim * (c.light > 0.5 ? 1.25 : 1) * (1 + this.audioLevel * 0.5);
+      fu.uOpacity.value = Math.min(1.3, 0.85 * Math.sqrt(density)) * this.narrowDim * dawnDim * (c.light > 0.5 ? 1.25 : 1) * (1 + this.audioLevel * 0.5) * c.fade;
       this.formGeo.setDrawRange(0, drawn);
     }
 

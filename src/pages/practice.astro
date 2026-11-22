@@ -1,0 +1,115 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Daily practice · Sarvakali" sequence="divination" description="A little practice for today: a card, a round on the mala, an offering to the fire, a diya and the sacred days ahead.">
+  <div data-practice>
+    <a hidden data-connect-href href="/connect" tabindex="-1" aria-hidden="true"></a>
+
+    <section class="chapter" data-chapter="divination">
+      <div class="chapter-inner narrow">
+        <p class="kicker" data-hero>Daily practice</p>
+        <h1 class="display-l" data-hero data-split>A little practice for today</h1>
+        <p class="lede" data-hero>Five small things, each a few minutes long. Begin anywhere. Nothing you do here is saved or sent.</p>
+        <div class="cta-row" data-hero>
+          <button type="button" class="btn btn-solid" data-card-open>Draw today's card</button>
+          <a class="btn btn-ghost" href="#mala">Or begin with the mala</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" data-chapter="mala" id="mala">
+      <div class="chapter-inner practice-split" data-mala>
+        <div class="practice-copy">
+          <p class="kicker" data-fade>One round</p>
+          <h2 class="display-l" data-split data-dust>Count a round on the mala</h2>
+          <p class="lede" data-fade>A mala has 108 beads. Repeat the mantra once for each bead: tap the button, the beads, or press space. The world turns one bead with you.</p>
+          <p class="mantra" data-fade lang="sa"><span>ॐ क्रीं कालिकायै नमः</span><small lang="en">Om Krīm Kālikāyai Namaḥ · the mantra is chosen with Sarvakali</small></p>
+          <div class="cta-row" data-fade>
+            <button type="button" class="btn btn-solid" data-mala-tap>Next bead</button>
+            <button type="button" class="btn btn-ghost" data-mala-reset>Start the round again</button>
+          </div>
+          <p class="hint" data-fade data-mala-rounds aria-live="polite"></p>
+        </div>
+        <div class="mala-wrap" data-fade>
+          <svg class="mala-svg" viewBox="-140 -140 280 280" tabindex="0" role="button" aria-label="The mala: activate to count the next bead">
+            <circle r="120" fill="none" class="mala-thread" />
+            <g class="mala-beads"></g>
+            <circle cy="133" r="7" class="mala-meru" />
+          </svg>
+          <p class="mala-count"><b data-mala-count>0</b><span>of 108</span></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" data-chapter="agni" id="fire">
+      <div class="chapter-inner narrow" data-fire>
+        <p class="kicker" data-fade>Let it go</p>
+        <h2 class="display-l" data-split data-dust>Offer it to the fire</h2>
+        <p class="lede" data-fade>Write down a fear, a habit or a word you never said. Offer it, and watch the fire take it. It is never saved or sent anywhere.</p>
+        <form class="fire-form" data-fade>
+          <label class="sr-only" for="fire-text">What would you like to let go of?</label>
+          <textarea id="fire-text" maxlength="90" rows="2" placeholder="What would you like to let go of?" autocomplete="off"></textarea>
+          <button type="submit" class="btn btn-solid">Offer it to the fire</button>
+        </form>
+        <p class="fire-words" data-fire-words hidden aria-hidden="true"></p>
+        <div class="fire-after" data-fire-after hidden aria-live="polite">
+          <p class="lede">It has gone to the fire. Nothing was kept.</p>
+          <button type="button" class="btn btn-ghost" data-fire-again>Offer something else</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" data-chapter="lampsNight" id="days">
+      <div class="chapter-inner">
+        <div class="diya diya-inline" data-diya data-fade>
+          <svg class="diya-svg" viewBox="0 0 160 130" aria-hidden="true">
+            <defs>
+              <radialGradient id="pdiya-glow" cx="50%" cy="60%" r="50%"><stop offset="0" stop-color="#ffd27a" stop-opacity="0.75" /><stop offset="0.4" stop-color="#f0903a" stop-opacity="0.25" /><stop offset="1" stop-color="#f0903a" stop-opacity="0" /></radialGradient>
+              <linearGradient id="pdiya-flame-g" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#fff7df" /><stop offset="0.35" stop-color="#ffc35a" /><stop offset="1" stop-color="#e2492a" stop-opacity="0.85" /></linearGradient>
+              <linearGradient id="pdiya-clay" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b0552c" /><stop offset="1" stop-color="#5a2312" /></linearGradient>
+            </defs>
+            <circle class="diya-halo" cx="80" cy="52" r="60" fill="url(#pdiya-glow)" />
+            <g class="diya-flame"><path d="M80 70 C70 58 72 44 80 26 C88 44 90 58 80 70 Z" fill="url(#pdiya-flame-g)" /><path d="M80 68 C76 62 77 55 80 47 C83 55 84 62 80 68 Z" fill="#fffaf0" opacity="0.9" /></g>
+            <path d="M80 70 L80 76" stroke="#2a120a" stroke-width="2.4" stroke-linecap="round" />
+            <path d="M22 78 Q80 74 132 72 L142 66 Q140 80 128 86 Q80 122 32 92 Q22 86 22 78 Z" fill="url(#pdiya-clay)" />
+          </svg>
+          <div>
+            <h2 class="display-m">Light a diya</h2>
+            <p class="diya-count" data-diya-count aria-live="polite"></p>
+            <button type="button" class="btn btn-ghost" data-diya-light>Light a diya</button>
+          </div>
+        </div>
+        <p class="kicker" data-fade>Sacred days ahead</p>
+        <h2 class="display-l" data-split data-dust>The nights that matter</h2>
+        <p class="lede" data-fade>New and full moons are worked out from the moon itself. Festival dates are from public calendars, to be confirmed with Sarvakali's panchang.</p>
+        <ul class="days" data-days data-fade></ul>
+      </div>
+    </section>
+
+    <section class="chapter" data-chapter="close" id="reminders">
+      <div class="chapter-inner practice-two">
+        <div class="practice-card" data-fade>
+          <h2 class="display-m">A reminder before each Amavasya and Purnima</h2>
+          <p>Add the next twelve new and full moons to your calendar, each with a gentle reminder the evening before. It works today, with no sign-up.</p>
+          <button type="button" class="btn btn-solid" data-moon-cal>Add moon reminders to my calendar</button>
+          <p class="hint" data-moon-note aria-live="polite"></p>
+          <form class="moon-email" data-moon-email>
+            <label for="moon-email">Or by email</label>
+            <div class="moon-email-row">
+              <input id="moon-email" type="email" required autocomplete="email" placeholder="you@example.com" />
+              <button type="submit" class="btn btn-ghost btn-sm">Remind me</button>
+            </div>
+          </form>
+          <p class="hint" data-moon-email-done hidden>In the finished site, this signs you up for one short email before each Amavasya and Purnima. The prototype did not send anything.</p>
+        </div>
+        <div class="practice-card" data-fade>
+          <h2 class="display-m">Keep Sarvakali on your phone</h2>
+          <p>Add the site to your home screen and it opens like an app, with shortcuts to today's card and this practice. Pages you have visited keep working without a connection.</p>
+          <button type="button" class="btn btn-solid" data-install>Add to your home screen</button>
+          <p class="hint" data-install-note aria-live="polite"></p>
+          <p class="hint">A morning notification with today's card needs a small sending service, which can be added at launch.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</Base>

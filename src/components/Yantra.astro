@@ -1,0 +1,33 @@
+---
+/**
+ * A Kali yantra that draws itself line by line as you scroll a pillar page:
+ * the bindu, five downward triangles, the circles, eight petals and the square
+ * enclosure with its four gates. Simplified geometry, for the prototype.
+ */
+const tri = (r: number) => {
+  const pts = [90, 210, 330].map((deg) => { const a = (deg * Math.PI) / 180; return `${(Math.cos(a) * r).toFixed(2)} ${(Math.sin(a) * r).toFixed(2)}`; });
+  return `M${pts[0]} L${pts[1]} L${pts[2]} Z`;
+};
+const petals = Array.from({ length: 8 }, (_, i) => {
+  const a = (i * 45 * Math.PI) / 180, b = a + (22.5 * Math.PI) / 180, c = a - (22.5 * Math.PI) / 180;
+  const p = (r: number, t: number) => `${(Math.cos(t) * r).toFixed(2)} ${(Math.sin(t) * r).toFixed(2)}`;
+  return `M${p(66, c)} Q${p(84, c)} ${p(90, a)} Q${p(84, b)} ${p(66, b)}`;
+});
+// the square enclosure (bhupura) with a gate on each side
+const s = 112, g = 16, d = 12;
+const gate = `M${-s} ${-s} L${-g} ${-s} L${-g} ${-s - d} L${g} ${-s - d} L${g} ${-s} L${s} ${-s} L${s} ${-g} L${s + d} ${-g} L${s + d} ${g} L${s} ${g} L${s} ${s} L${g} ${s} L${g} ${s + d} L${-g} ${s + d} L${-g} ${s} L${-s} ${s} L${-s} ${g} L${-s - d} ${g} L${-s - d} ${-g} L${-s} ${-g} Z`;
+---
+<div class="yantra" aria-hidden="true">
+  <svg viewBox="-135 -135 270 270">
+    <g class="y-lines" fill="none" stroke="currentColor" stroke-linejoin="round">
+      <circle class="y-path" r="2.6" pathLength="1" />
+      {[14, 24, 34, 44, 54].map((r) => <path class="y-path" d={tri(r)} pathLength="1" />)}
+      <circle class="y-path" r="60" pathLength="1" />
+      {petals.map((p) => <path class="y-path" d={p} pathLength="1" />)}
+      <circle class="y-path" r="94" pathLength="1" />
+      <circle class="y-path" r="98" pathLength="1" />
+      <path class="y-path" d={gate} pathLength="1" />
+      <path class="y-path" d={gate} pathLength="1" transform="scale(1.06)" />
+    </g>
+  </svg>
+</div>

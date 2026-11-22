@@ -2,7 +2,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import Lenis from 'lenis';
-import { World } from './world/World';
+import { WorldHandle } from './world/handle';
 import { runLoader } from './loader';
 import { initTransitions } from './transitions';
 import {
@@ -29,6 +29,7 @@ import {
   rememberAuto,
   rememberedTier,
   store,
+  hasWebGL,
   type Tier,
 } from './tiers';
 import { moonIcon, readSky } from './sky';
@@ -40,6 +41,13 @@ import { initDiya } from './diya';
 import { initPath } from './path';
 import { sampleHeading } from './dust';
 import { initDepth } from './depth';
+import { FEST_LOOK, activeFestival, daysUntil, inDays, nextMoon, niceDate, type FestMode } from './festivals';
+import { initSearch, revealFound, closeSearch } from './search';
+import { initKeep, keepTopic, renderKeep } from './keep';
+import { closeMenu, initMenu } from './menu';
+import { initPractice } from './practice';
+import { initPwa } from './pwa';
+import { runDeviceTest } from './devicetest';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -51,7 +59,9 @@ const LABELS: Record<string, string> = {
   identity: 'Identity, Intimacy & the Body', divination: 'Divination & Insight', learning: 'Learning', close: 'Close',
 };
 
-let world: World;
+let world: WorldHandle;
+let worldLoading: Promise<boolean> | null = null;
+let festival: ReturnType<typeof activeFestival> = null;
 let incense: Incense | null = null;
 let tier: Tier = 'full';
 let autoProbe = false;
@@ -74,6 +84,8 @@ const isPhone = () => matchMedia('(pointer: coarse)').matches && innerWidth < 90
 
 /* ------------------------------------------------------------- tiers */
 
+const LIVE: Tier[] = ['ultra', 'full', 'lighter'];
+
 function setTier(t: Tier) {
   tier = t;
   html.dataset.tier = t;
@@ -81,11 +93,50 @@ function setTier(t: Tier) {
   markParticles();
   applyCursor();
   hudRender();
+  if (LIVE.includes(t) && !world.ready) afterPaint(ensureWorld);
 }
 
-function markParticles() {
-  html.dataset.particles = world.isLive && exp.forms === 'on' ? 'on' : 'off';
+/** run once the page has painted, so words appear before any heavy work */
+function afterPaint(fn: () => void) {
+  requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(fn, 0)));
 }
+
+/**
+ * The 3D world (Three.js and everything built on it) is its own download.
+ * Visitors on Still, Calm or data saver never fetch it at all.
+ */
+function ensureWorld(): Promise<boolean> {
+  if (world.ready) return Promise.resolve(world.available);
+  if (worldLoading) return worldLoading;
+  worldLoading = import('./world/World').then(({ World }) => {
+    const canvas = document.getElementById('world-canvas') as HTMLCanvasElement;
+    const w = new World(canvas);
+    world.attach(w);
+    if (!w.available) { autoProbe = false; setTier('still'); return false; }
+    html.dataset.world = 'ready';
+    worldArrived = performance.now();
+    markParticles();
+    applyCursor();
+    hudRender();
+    probe.phase = 0; probe.t = 0; // measure from now, not while it was loading
+    return true;
+  }).catch(() => false);
+  return worldLoading;
+}
+
+let particlesTimer = 0;
+function markParticles() {
+  const on = world.isLive && exp.forms === 'on';
+  clearTimeout(particlesTimer);
+  // when the world has only just arrived, give the points a moment to gather
+  // into the name before the written title fades out
+  if (on && html.dataset.particles !== 'on' && performance.now() - worldArrived < 1500) {
+    particlesTimer = window.setTimeout(markParticles, 1500 - (performance.now() - worldArrived));
+    return;
+  }
+  html.dataset.particles = on ? 'on' : 'off';
+}
+let worldArrived = -1e9;
 
 /** a desktop with plenty of cores and memory, where 240,000 points are worth trying */
 function strongMachine() {
@@ -93,8 +144,10 @@ function strongMachine() {
   return finePointer() && (navigator.hardwareConcurrency || 0) >= 8 && (mem === undefined || mem >= 8) && !saverOn();
 }
 
+let testing = false; // the device test is choosing levels itself
+
 function runAutoProbe(dt: number) {
-  if (!autoProbe) return;
+  if (!autoProbe || !world.ready || testing) return;
   probe.t += dt;
   if (probe.phase === 0 && probe.t > 2.5) { meter.reset(); probe.phase = 1; probe.t = 0; }
   else if (probe.phase === 1 && probe.t > 2) {
@@ -126,7 +179,7 @@ function runAutoProbe(dt: number) {
  */
 const watch = { t: 0, low: 0 };
 function watchdog(dt: number) {
-  if (autoProbe || read('sk-tier-manual') || !['ultra', 'full', 'lighter'].includes(tier) || document.hidden) return;
+  if (testing || autoProbe || read('sk-tier-manual') || !['ultra', 'full', 'lighter'].includes(tier) || document.hidden) return;
   watch.t += dt;
   if (watch.t < 1) return;
   watch.t = 0;
@@ -192,6 +245,7 @@ function trackChapters() {
 }
 
 function heroKey() {
+  if (festival) return FEST_LOOK[festival.f.kind].preset;
   if (exp.hero === 'dawneye') return dawnSettled ? 'dawnName' : 'dawnRise';
   return HERO_PRESET[exp.hero];
 }
@@ -327,10 +381,24 @@ function setupReveals() {
       scrollTrigger: { trigger: inner.parentElement, start: 'bottom 72%', end: 'bottom 16%', scrub: true },
     }));
   });
+  // kind words drift gently, like offerings on water
+  document.querySelectorAll<HTMLElement>('[data-drift]').forEach((el, i) => {
+    tweens.push(gsap.to(el, {
+      yPercent: gsap.utils.random(-6, 6), xPercent: gsap.utils.random(-2.5, 2.5), rotation: gsap.utils.random(-1.4, 1.4),
+      duration: gsap.utils.random(4.5, 7.5), ease: 'sine.inOut', yoyo: true, repeat: -1, delay: i * 0.3,
+    }));
+  });
+  // the yantra on pillar pages draws itself as you read down the page
+  const yPaths = document.querySelectorAll<SVGElement>('.yantra .y-path');
+  if (yPaths.length) {
+    gsap.set(yPaths, { strokeDasharray: 1, strokeDashoffset: 1 });
+    tweens.push(gsap.timeline({ scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: 1.2 } })
+      .to(yPaths, { strokeDashoffset: 0, ease: 'none', duration: 1, stagger: 0.35 }));
+  }
   document.querySelectorAll<HTMLElement>('[data-chapter] [data-dust]').forEach((h) => {
     ScrollTrigger.create({
       // starts while the heading is still well in view, ends as it leaves the top
-      trigger: h, start: 'top 30%', end: 'top -12%',
+      trigger: h, start: 'top 20%', end: 'top -14%',
       onUpdate: (self) => dustUpdate(h, self.progress),
       onLeave: () => dustUpdate(h, 1),
       onLeaveBack: () => dustUpdate(h, 0),
@@ -368,10 +436,44 @@ function applySky() {
   if (!wrap) return;
   wrap.hidden = exp.sky === 'off';
   wrap.querySelector('[data-sky-icon]')!.innerHTML = moonIcon(s.phase);
-  wrap.querySelector('[data-sky-name]')!.textContent = s.name;
-  wrap.querySelector('[data-sky-title]')!.textContent = s.special ? s.name : `${s.name} · tithi ${s.tithi}`;
-  wrap.querySelector('[data-sky-note]')!.textContent = s.note;
+  const nA = nextMoon('amavasya');
+  const next = nA && s.special !== 'amavasya' ? ` Next Amavasya: ${niceDate(nA.at)}, ${inDays(daysUntil(nA.at))}.` : '';
+  if (festival) {
+    wrap.querySelector('[data-sky-name]')!.textContent = festival.f.name;
+    wrap.querySelector('[data-sky-title]')!.textContent = festival.f.name;
+    wrap.querySelector('[data-sky-note]')!.textContent = `${festival.f.note} The site is dressed for the day.${festival.preview ? ' (Preview: chosen in the prototype panel.)' : ''}`;
+  } else {
+    wrap.querySelector('[data-sky-name]')!.textContent = s.name;
+    wrap.querySelector('[data-sky-title]')!.textContent = s.special ? s.name : `${s.name} · tithi ${s.tithi}`;
+    wrap.querySelector('[data-sky-note]')!.textContent = s.note + next;
+  }
   wrap.querySelector('[data-sky-btn]')!.setAttribute('aria-label', `Tonight's moon: ${s.name}`);
+}
+
+/** festival days dress the site: the hero's world, its first line and the moon */
+function applyFestival() {
+  festival = activeFestival(exp.festival as FestMode);
+  html.dataset.festival = festival?.f.kind ?? '';
+  if (festival) html.dataset.festivalOn = '1'; else delete html.dataset.festivalOn;
+  world.setMoonMode(festival ? FEST_LOOK[festival.f.kind].moon : 0);
+  const k = document.querySelector('[data-hero-kicker]');
+  if (k) k.textContent = festival ? FEST_LOOK[festival.f.kind].kicker(festival.f, festival.day) : 'Welcome to';
+  if (chapters.length && document.querySelector('[data-hero-chapter]')) world.setSequence(chapterKeys());
+}
+
+/** the countdown to the next Amavasya, at the end of the homepage */
+function renderMoonLine() {
+  const el = document.querySelector<HTMLElement>('[data-moon-line]');
+  if (!el) return;
+  const n = nextMoon('amavasya');
+  if (!n) return;
+  const d = daysUntil(n.at);
+  el.textContent = `Next Amavasya: ${niceDate(n.at)}, ${inDays(d)}. `;
+  const a = document.createElement('a');
+  a.href = document.querySelector('.chapter-close a.btn-solid')?.getAttribute('href') || '/connect';
+  a.dataset.topic = 'A ritual on Amavasya';
+  a.textContent = 'Ask about a ritual for that night';
+  el.appendChild(a);
 }
 
 function skyTick(dt: number) {
@@ -386,6 +488,14 @@ function skyTick(dt: number) {
 function applyCursor() {
   if (!world) return;
   const liveOk = world.isLive && ['ultra', 'full', 'lighter'].includes(tier);
+  if (exp.cursor === 'incense' && liveOk && finePointer() && !incense) {
+    try {
+      const c = document.getElementById('incense') as HTMLCanvasElement | null;
+      if (c) incense = new Incense(c);
+    } catch {
+      incense = null;
+    }
+  }
   const wantsIncense = exp.cursor === 'incense' && !!incense?.ok && liveOk && finePointer();
   setCursor(exp.cursor !== 'off' && tier !== 'calm', wantsIncense ? 'incense' : 'flame');
   incense?.setActive(wantsIncense, tier === 'lighter' ? 0.6 : 1);
@@ -467,9 +577,15 @@ function initPage() {
       setupReveals();
     }
     ScrollTrigger.refresh();
+    revealFound((el) => { if (lenis) lenis.scrollTo(el, { offset: -innerHeight * 0.35 }); else el.scrollIntoView({ block: 'center' }); });
   });
 
   initConnect();
+  initPractice(world);
+  if (document.querySelector('[data-invoice]')) import('./invoice').then((m) => m.initInvoice());
+  renderKeep();
+  applyFestival();
+  renderMoonLine();
   initDiya(world);
   initPath(world, () => { ScrollTrigger.refresh(); lenis?.resize(); });
   depthDispose = initDepth(world.isLive && tier !== 'calm');
@@ -499,7 +615,9 @@ function cleanupPage() {
   if (mainEl) mainEl.style.transform = '';
   mainEl = null;
   skewing = false;
-  html.classList.remove('locked');
+  html.classList.remove('locked', 'menu-open', 'search-open');
+  closeSearch();
+  world.setDustBurn(0);
 }
 
 /* ------------------------------------------------- experiment switches */
@@ -509,6 +627,7 @@ function onExpChange(k: keyof Exp, v: string) {
   if (k === 'bend') world.setBend(v === 'on');
   if (k === 'cursor') applyCursor();
   if (k === 'sky') applySky();
+  if (k === 'festival') { applyFestival(); applySky(); }
   if (k === 'haptics') { setHaptics(v === 'on'); if (v === 'on') buzz(PATTERNS.choice); }
   if (k === 'page') html.dataset.pageStyle = v;
   if (k === 'dust' && v === 'off' && dustOwner) { dustOwner.style.opacity = ''; world.setDust(null, 0); dustOwner = null; }
@@ -544,7 +663,7 @@ function initConnect() {
   if (!form) return;
   const topicInput = form.querySelector<HTMLInputElement>('#topic');
   const fromUrl = new URLSearchParams(location.search).get('topic');
-  const topic = fromUrl || read('sk-topic');
+  const topic = fromUrl || read('sk-topic') || keepTopic();
   if (topic && topicInput) topicInput.value = topic;
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -647,12 +766,19 @@ function hudTick(dt: number) {
   const p = hud.querySelector('[data-hud-points]');
   if (p) {
     const n = world.pointCount;
-    p.textContent = tier === 'ultra' && world.ultraBuildingNow ? 'building 240,000…' : n ? n.toLocaleString('en-IN') : 'none';
+    p.textContent = LIVE.includes(tier) && !world.ready ? 'loading the 3D world…' : tier === 'ultra' && world.ultraBuildingNow ? 'building 240,000…' : n ? n.toLocaleString('en-IN') : 'none';
   }
   if (autoProbe) hudRender();
 }
 
 /* -------------------------------------------------------------- boot */
+
+// a page change can be cut short when a phone's address bar resizes the screen
+// mid-animation; the new page still arrives, so this is not an error worth showing
+window.addEventListener('unhandledrejection', (e) => {
+  const msg = String((e.reason as Error | undefined)?.message || e.reason || '');
+  if (/transition was (aborted|skipped)/i.test(msg)) e.preventDefault();
+});
 
 function boot() {
   loadExp();
@@ -661,8 +787,7 @@ function boot() {
   setHaptics(exp.haptics === 'on');
   dawnSettled = exp.hero !== 'dawneye';
 
-  const canvas = document.getElementById('world-canvas') as HTMLCanvasElement;
-  world = new World(canvas);
+  world = new WorldHandle(hasWebGL());
   world.setForms(exp.forms === 'on');
   world.setBend(exp.bend === 'on');
   world.onLost(() => {
@@ -672,14 +797,6 @@ function boot() {
   });
   (window as unknown as { sarvakali: unknown }).sarvakali = { world, exp, setExp, ScrollTrigger, get tier() { return tier; } };
 
-  if (finePointer()) {
-    try {
-      const c = document.getElementById('incense') as HTMLCanvasElement | null;
-      if (c) incense = new Incense(c);
-    } catch {
-      incense = null;
-    }
-  }
 
   const manual = manualTier();
   let t: Tier;
@@ -739,17 +856,55 @@ function boot() {
   window.addEventListener('touchmove', onTouch, { passive: true });
 
   onSoundChange((on) => { renderSound(); if (on) ring('choice'); });
+  initKeep();
+  initMenu(world);
+  initPwa();
+  initSearch({
+    preview: (preset) => world.setSequence([preset]),
+    restore: () => world.setSequence(chapters.length ? chapterKeys() : (mainEl?.dataset.sequence || 'hero').split(',')),
+  });
+  document.addEventListener('click', (e) => {
+    if (!(e.target as Element | null)?.closest('[data-device-test]')) return;
+    const dlg = document.getElementById('report-dialog') as HTMLDialogElement | null;
+    if (!dlg) return;
+    const step = dlg.querySelector('[data-report-step]')!;
+    const text = dlg.querySelector<HTMLTextAreaElement>('[data-report-text]')!;
+    const copy = dlg.querySelector<HTMLButtonElement>('[data-report-copy]')!;
+    text.value = '';
+    copy.disabled = true;
+    dlg.showModal();
+    testing = true;
+    runDeviceTest({
+      tier: () => tier,
+      setTier: (t) => setTier(t),
+      fps: () => meter.fps,
+      resetMeter: () => meter.reset(),
+      ensureWorld,
+      points: () => world.pointCount,
+    }, (m) => (step.textContent = m)).then((report) => {
+      testing = false;
+      text.value = report;
+      copy.disabled = false;
+      step.textContent = 'Done. Copy the report and send it to whoever asked you to test.';
+    });
+    copy.onclick = async () => { try { await navigator.clipboard.writeText(text.value); copy.textContent = 'Copied'; } catch { text.select(); } };
+    (dlg.querySelector('[data-report-close]') as HTMLButtonElement).onclick = () => dlg.close();
+  });
   initTransitions(world, () => tier === 'calm');
   initCard(world);
 
   document.addEventListener('astro:before-preparation', () => buzz(PATTERNS.pageChange));
   document.addEventListener('astro:before-swap', cleanupPage);
   document.addEventListener('astro:after-swap', () => {
+    closeMenu(true);
     html.classList.add('js');
     html.classList.toggle('x-cursor', cursorIsActive());
     html.dataset.tier = tier;
     html.dataset.heroVariant = exp.hero;
     html.dataset.pageStyle = exp.page;
+    if (world.ready) html.dataset.world = 'ready';
+    html.dataset.festival = festival?.f.kind ?? '';
+    if (festival) html.dataset.festivalOn = '1';
     markParticles();
     if (read('sk-intro-seen')) html.dataset.intro = 'seen';
     world.forceCss();

@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Loader from '../components/Loader.astro';
 import { pillars, totalServices } from '../data/site';
+import kind from '../data/kind-words.json';
 ---
 <Base title="Sarvakali">
   <Loader slot="overlay" />
@@ -37,7 +38,7 @@ import { pillars, totalServices } from '../data/site';
           </g>
         </svg>
       </div>
-      <p class="kicker" data-hero>Welcome to</p>
+      <p class="kicker" data-hero data-hero-kicker>Welcome to</p>
       <h1 class="display-xl hero-title" data-hero data-split>Sarvakali</h1>
       <p class="lede" data-hero>Devotion, magic, healing and insight, held in one place.</p>
       <div class="cta-row" data-hero>
@@ -59,6 +60,28 @@ import { pillars, totalServices } from '../data/site';
         <a class="btn btn-solid" href="/connect">Request a conversation</a>
         <a class="btn btn-ghost" href="/path">Not sure where to begin? Find your path</a>
       </div>
+      <ol class="how" aria-label="How it works">
+        <li data-fade>
+          <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="7" y="12" width="34" height="24" rx="4" /><path d="M8 14l16 12 16-12" /></svg>
+          <b>Request a time</b>
+          <span>Your name, email and a few times that suit you. Nothing about your situation.</span>
+        </li>
+        <li data-fade>
+          <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="10" width="32" height="30" rx="4" /><path d="M8 18h32M16 6v8M32 6v8M17 29l5 5 9-10" /></svg>
+          <b>Sarvakali confirms</b>
+          <span>The time is confirmed, or another one is suggested.</span>
+        </li>
+        <li data-fade>
+          <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="13" width="26" height="22" rx="4" /><path d="M32 21l10-6v18l-10-6z" /></svg>
+          <b>Meet on Google Meet</b>
+          <span>The link arrives by email. Join from your phone or computer.</span>
+        </li>
+        <li data-fade>
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M14 10h22M14 18h22M14 10c10 0 14 4 14 8s-4 8-14 8l16 14" /></svg>
+          <b>Pay by UPI</b>
+          <span>An invoice with a UPI QR code. No card details, ever.</span>
+        </li>
+      </ol>
     </div>
   </section>
 
@@ -81,6 +104,22 @@ import { pillars, totalServices } from '../data/site';
       </div>
     </section>
   ))}
+
+  <section class="chapter chapter-kind" data-chapter="kind">
+    <div class="chapter-inner center">
+      <p class="kicker" data-fade>Kind words</p>
+      <h2 class="display-l" data-split data-dust>From people who have sat with Sarvakali</h2>
+      <ul class="kind-words">
+        {kind.words.map((w) => (
+          <li class="kind-card" data-fade data-drift>
+            <blockquote>“{w.text}”</blockquote>
+            <span>{w.who} · {w.where}</span>
+          </li>
+        ))}
+      </ul>
+      <p class="proto-flag" data-fade>Sample words for the prototype. Real ones are shared only with each person's permission.</p>
+    </div>
+  </section>
 
   <section class="chapter chapter-close" data-chapter="close" id="close">
     <div class="chapter-inner narrow center">
@@ -120,12 +159,14 @@ import { pillars, totalServices } from '../data/site';
         <a class="btn btn-solid" href="/connect">Request a conversation</a>
         <a class="btn btn-ghost" href="/path">Find your path</a>
       </div>
+      <p class="moon-line" data-fade data-moon-line></p>
+      <p class="practice-link" data-fade><a href="/practice">A little practice for today →</a></p>
     </div>
   </section>
 
   <footer class="site-foot">
     <p>Sarvakali · working prototype. Copy, colours and the intro artwork are placeholders.</p>
-    <p><a href="/path">Find your path</a> · <a href="/depth">AI depth demo</a> · <a href="/connect">Connect</a></p>
+    <p><a href="/path">Find your path</a> · <a href="/practice">Daily practice</a> · <a href="/writings">Writings</a> · <a href="/about">About</a> · <a href="/care">Boundaries and care</a> · <a href="/depth">AI depth demo</a></p>
     <p>{totalServices.toLocaleString('en-IN')} services across {pillars.length} pillars.</p>
   </footer>
 </Base>

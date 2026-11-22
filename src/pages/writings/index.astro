@@ -1,0 +1,29 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { pillars } from '../../data/site';
+
+const posts = (await getCollection('writings')).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const pillarName = (slug: string) => pillars.find((p) => p.slug === slug)?.name ?? '';
+---
+<Base title="Writings · Sarvakali" sequence="reading" description="Writings from Sarvakali on Kali, the moon and the work.">
+  <article class="page">
+    <header class="page-hero">
+      <p class="kicker" data-hero>Writings</p>
+      <h1 class="display-l" data-hero data-split>Notes on Kali, the moon and the work</h1>
+      <p class="lede" data-hero>Short pieces to read before a first conversation, or simply to sit with.</p>
+      <p class="proto-flag" data-hero>Drafts written for the prototype. Sarvakali will rewrite them in their own voice.</p>
+    </header>
+    <ul class="writing-list">
+      {posts.map((p) => (
+        <li data-fade>
+          <a href={`/writings/${p.id}`} class="writing-card">
+            <span class="writing-meta">{pillarName(p.data.pillar)} · {p.data.minutes} min read</span>
+            <span class="writing-title" transition:name={`wt-${p.id}`} data-pt>{p.data.title}</span>
+            <span class="writing-summary">{p.data.summary}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </article>
+</Base>

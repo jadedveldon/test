@@ -1,0 +1,66 @@
+---
+import Base from '../layouts/Base.astro';
+import { pillars } from '../data/site';
+
+const services = [...new Set(pillars.flatMap((p) => p.categories.flatMap((c) => c.subs.flatMap((s) => s.items))))].sort();
+---
+<Base title="Invoice maker · Sarvakali" sequence="reading" description="Make a branded invoice with a UPI QR code." noindex>
+  <section class="invoice" data-invoice>
+    <header class="page-hero inv-intro">
+      <p class="kicker" data-hero>For Sarvakali</p>
+      <h1 class="display-l" data-hero data-split>Invoice maker</h1>
+      <p class="lede" data-hero>Fill in the client and the work. The invoice on the right updates as you type, with a UPI QR code for the exact amount. Print it, or choose "Save as PDF" in the print window.</p>
+      <p class="proto-flag" data-hero>Private tool: hidden from search engines and not linked from the public pages. Nothing leaves this browser.</p>
+    </header>
+
+    <div class="inv-layout">
+      <form id="inv-form" class="inv-form" autocomplete="off" onsubmit="return false">
+        <fieldset>
+          <legend>Your details <span class="optional">(remembered on this device when you save them)</span></legend>
+          <label>Name on the invoice<input name="bizName" value="Sarvakali" /></label>
+          <label>UPI ID<input name="upi" placeholder="name@bank" inputmode="email" /></label>
+          <label>Name on the UPI account<input name="payee" placeholder="As your bank shows it" /></label>
+          <label>Email <span class="optional">(optional)</span><input name="myEmail" type="email" /></label>
+          <label>Phone <span class="optional">(optional)</span><input name="myPhone" type="tel" /></label>
+          <label>Address <span class="optional">(optional)</span><input name="myAddress" /></label>
+          <button type="button" class="btn btn-ghost btn-sm" data-inv-save>Remember my details</button>
+        </fieldset>
+        <fieldset>
+          <legend>This invoice</legend>
+          <div class="inv-two">
+            <label>Invoice number<input name="number" /></label>
+            <label>Date<input name="date" type="date" /></label>
+          </div>
+          <div class="inv-two">
+            <label>Client name<input name="client" /></label>
+            <label>Client email <span class="optional">(optional)</span><input name="clientEmail" type="email" /></label>
+          </div>
+          <label>Due date <span class="optional">(optional)</span><input name="due" type="date" /></label>
+          <label>Colours
+            <select name="theme">
+              <option value="kali">Sarvakali</option>
+              {pillars.map((p) => <option value={p.slug}>{p.name}</option>)}
+            </select>
+          </label>
+        </fieldset>
+        <fieldset>
+          <legend>Work</legend>
+          <div class="inv-rowhead" aria-hidden="true"><span>Service</span><span>Qty</span><span>Amount (₹)</span><span></span></div>
+          <div data-inv-rows></div>
+          <button type="button" class="btn btn-ghost btn-sm" data-inv-add>Add a line</button>
+          <datalist id="inv-services">{services.map((s) => <option value={s} />)}</datalist>
+        </fieldset>
+        <fieldset>
+          <legend>Note on the invoice <span class="optional">(optional)</span></legend>
+          <textarea name="notes" rows="3" aria-label="Note on the invoice">Please add the invoice number in the UPI note. Thank you.</textarea>
+        </fieldset>
+        <div class="cta-row">
+          <button type="button" class="btn btn-solid" data-inv-print>Print or save as PDF</button>
+          <button type="button" class="btn btn-ghost" data-inv-copy>Copy UPI payment link</button>
+        </div>
+        <p class="hint" data-inv-msg aria-live="polite"></p>
+      </form>
+      <div class="inv-preview"><div class="inv-paper" aria-label="Invoice preview"></div></div>
+    </div>
+  </section>
+</Base>

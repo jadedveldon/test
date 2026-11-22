@@ -9,11 +9,23 @@ npm install
 npm run dev          # local development at http://localhost:4321
 npm run build        # static site in dist/ (any static host)
 npm run preview:artifact   # dist/ + a copy with relative links in preview-artifact/site
+node tools/make-previews.cjs     # app icons + link-preview pictures (needs the site served and Playwright)
 ```
 
 Add `?tier=ultra|full|lighter|still|calm` to any URL to force a quality level, and `?intro=1` to replay the intro.
 Experiments can be set by URL too: `?hero=dawneye|eye|name|dawn`, `?page=eye|smoke|ink|morph|fade`, `?cursor=flame|incense|off`,
-`?sky=now|amavasya|purnima|night|day|off`, `?forms=on|off`, `?bend=on|off`, `?touch=on|off`, `?dust=on|off`, `?haptics=on|off`, `?saver=on|off`.
+`?sky=now|amavasya|purnima|night|day|off`, `?festival=auto|kalipuja|diwali|navratri|eclipse|none`, `?forms=on|off`, `?bend=on|off`, `?touch=on|off`, `?dust=on|off`, `?haptics=on|off`, `?saver=on|off`.
+
+## Editing content now
+
+| What | Where |
+|---|---|
+| Writings | `src/content/writings/*.md` (Markdown; ready for the Keystatic editor later) |
+| Kind words | `src/data/kind-words.json` (samples until real ones are given with permission) |
+| Festival dates | `FESTIVALS` in `src/scripts/festivals.ts` (confirm with Sarvakali's panchang) |
+| Today's cards | `CARDS` in `src/scripts/card.ts` |
+| About, Boundaries and care | `src/pages/about.astro`, `src/pages/care.astro` (bracketed gaps are for Sarvakali) |
+| Real web address, visitor counts | `src/config.ts` |
 
 ## How it fits together
 
@@ -35,8 +47,16 @@ Experiments can be set by URL too: `?hero=dawneye|eye|name|dawn`, `?page=eye|smo
 | Sound | `src/scripts/audio.ts` | Off by default. A tanpura drone plucked live in the browser (no audio files), with one layer per pillar that cross-fades as you scroll. |
 | Card, diya, path | `src/scripts/card.ts`, `diya.ts`, `path.ts`, `src/pages/path.astro` | Today's card (placeholder deck), a diya to light (count is local in the prototype), and three questions that point to a pillar and category. |
 | Vibration, data saver | `src/scripts/haptics.ts`, `app.ts` | Gentle vibration at key moments on Android; Still mode plus a notice when the phone asks to save data. |
+| Faster first load | `src/scripts/world/handle.ts` | The 3D world is its own download, fetched after the page has painted; a stand-in keeps the page colours blending meanwhile. Still, Calm and data saver never download it. |
+| Search, list, menu | `src/scripts/search.ts`, `keep.ts`, `menu.ts`, `src/pages/search-index.json.ts` | Search every service ("/" or Ctrl+K), keep services in a list that fills the Connect form, full-screen menu. |
+| Festival days, moon | `src/scripts/festivals.ts` | Festival looks (Kali Puja, Diwali, Navratri, eclipse) by date, next new/full moons, calendar (.ics) files. |
+| Daily practice | `src/pages/practice.astro`, `src/scripts/practice.ts` | 108-bead mala, offer to the fire, diya, sacred days, moon reminders, install on phone. |
+| Invoice maker | `src/pages/invoice.astro`, `src/scripts/invoice.ts` | Branded invoice with a UPI QR code for the exact amount; print or save as PDF. Not linked publicly, not indexed. |
+| Install, offline | `public/manifest.webmanifest`, `public/sw.js`, `src/scripts/pwa.ts` | Add to home screen, shortcuts, visited pages work offline. |
+| Device test | `src/scripts/devicetest.ts` | "Test this device" in the panel: smoothness per quality level and a copyable report. |
+| Link previews | `tools/make-previews.cjs`, `public/og/` | A preview picture per page, taken from the real page. |
 | AI depth demo | `src/pages/depth.astro`, `src/scripts/depth.ts`, `public/depth/` | Kalighat paintings (Cleveland Museum of Art, CC0) with depth maps made ahead of time by Depth Anything V2 Small (Apache-2.0). |
 
 ## Next
 
-Art direction per pillar, the commissioned Kali painting (layers + depth map), the hero, Cal.com booking on the Connect page, the content editor (Keystatic) and the invoice maker.
+Art direction per pillar, the commissioned Kali painting (layers + depth map), Cal.com booking on the Connect page, the content editor (Keystatic), real-phone testing, and the accounts for email reminders and visitor counts. The WhatsApp button is waiting for a decision.

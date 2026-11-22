@@ -1,6 +1,6 @@
 import gsap from 'gsap';
 import { read, store } from './tiers';
-import type { World } from './world/World';
+import type { WorldHandle as World } from './world/handle';
 
 /* -------------------------------------------------------------- state */
 
@@ -20,15 +20,17 @@ export type Exp = {
   dust: OnOff;
   haptics: OnOff;
   saver: OnOff;
+  festival: 'auto' | 'kalipuja' | 'diwali' | 'navratri' | 'eclipse' | 'none';
 };
 
 const DEFAULTS: Exp = {
-  forms: 'on', hero: 'dawneye', page: 'eye', bend: 'on', cursor: 'flame', sky: 'now', touch: 'on', dust: 'on', haptics: 'on', saver: 'off',
+  forms: 'on', hero: 'dawneye', page: 'eye', bend: 'on', cursor: 'flame', sky: 'now', touch: 'on', dust: 'on', haptics: 'on', saver: 'off', festival: 'auto',
 };
 const ALLOWED: Record<keyof Exp, string[]> = {
   forms: ['on', 'off'], hero: ['dawneye', 'eye', 'name', 'dawn'], page: ['eye', 'smoke', 'ink', 'morph', 'fade'], bend: ['on', 'off'],
   cursor: ['flame', 'incense', 'off'], sky: ['now', 'amavasya', 'purnima', 'night', 'day', 'off'],
   touch: ['on', 'off'], dust: ['on', 'off'], haptics: ['on', 'off'], saver: ['on', 'off'],
+  festival: ['auto', 'kalipuja', 'diwali', 'navratri', 'eclipse', 'none'],
 };
 export const exp: Exp = { ...DEFAULTS };
 export type ToggleKey = 'bend' | 'touch' | 'dust' | 'haptics' | 'saver';

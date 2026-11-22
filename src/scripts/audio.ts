@@ -358,6 +358,45 @@ export function ring(kind: 'diya' | 'card' | 'choice' = 'diya') {
   else chimeAt(at, SA * 6, 0.05, dry);
 }
 
+/** a soft wooden click for each bead of the mala */
+export function tick(last = false) {
+  if (!ctx || !on) return;
+  const at = ctx.currentTime + 0.005;
+  if (last) { bellAt(at, 330, 0.24, dry, 8); return; }
+  const o = ctx.createOscillator();
+  o.type = 'triangle';
+  o.frequency.setValueAtTime(1800, at);
+  o.frequency.exponentialRampToValueAtTime(700, at + 0.03);
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(0, at);
+  g.gain.linearRampToValueAtTime(0.09, at + 0.002);
+  g.gain.exponentialRampToValueAtTime(0.0001, at + 0.06);
+  o.connect(g); g.connect(dry);
+  o.start(at); o.stop(at + 0.08);
+}
+
+/** the fire taking an offering: a whoosh and a few crackles */
+export function crackle() {
+  if (!ctx || !on) return;
+  const c = ctx;
+  const at = c.currentTime + 0.01;
+  const len = c.sampleRate * 2.6;
+  const buf = c.createBuffer(1, len, c.sampleRate);
+  const d = buf.getChannelData(0);
+  for (let i = 0; i < len; i++) {
+    const t = i / len;
+    const env = Math.sin(Math.PI * Math.min(1, t * 1.6)) * (1 - t);
+    d[i] = (Math.random() * 2 - 1) * env * 0.5 + (Math.random() < 0.0009 ? (Math.random() * 2 - 1) * 0.9 : 0);
+  }
+  const s = c.createBufferSource();
+  s.buffer = buf;
+  const f = c.createBiquadFilter();
+  f.type = 'bandpass'; f.frequency.setValueAtTime(400, at); f.frequency.exponentialRampToValueAtTime(2200, at + 1.6); f.Q.value = 0.7;
+  const g = c.createGain(); g.gain.value = 0.35;
+  s.connect(f); f.connect(g); g.connect(dry); g.connect(wet);
+  s.start(at);
+}
+
 /** loudness, 0..1, so the world's glow can breathe with the sound */
 export function soundLevel() {
   if (!ctx || !on || !levelBuf) { levelSmooth *= 0.9; return levelSmooth; }

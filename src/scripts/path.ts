@@ -1,7 +1,7 @@
 import gsap from 'gsap';
 import { buzz, PATTERNS } from './haptics';
 import { ring } from './audio';
-import type { World } from './world/World';
+import type { WorldHandle as World } from './world/handle';
 
 /**
  * Find your path: three questions that point to a pillar, a category and a
