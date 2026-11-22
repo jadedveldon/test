@@ -130,6 +130,82 @@ export const PRESETS: Record<string, Preset> = {
     a: '#010102', b: '#0a0a14', c: '#3a3a55', glow: '#fff2d0',
     ink: '#f2f0ee', inkSoft: '#b8b6c0', scale: 1.3, warp: 1.6, speed: 0.03, light: 0, motes: 0.3, form: 'halo', shift: 0,
   },
+  /* ---------------- Pillar 1, Devotion & the Unseen: three directions to compare */
+  // A · Midnight temple
+  devA_hero: {
+    a: '#0a0405', b: '#3a0a0c', c: '#c8321e', glow: '#f2a52b',
+    ink: '#f7ecd9', inkSoft: '#d9bfa2', scale: 1.6, warp: 2.6, speed: 0.06, light: 0, motes: 0.8, form: 'flames', shift: 4.4,
+  },
+  devA_deity: {
+    a: '#0b0404', b: '#4a0f0e', c: '#b8892f', glow: '#f2c66b',
+    ink: '#f7ecd9', inkSoft: '#d9bfa2', scale: 1.5, warp: 2.4, speed: 0.05, light: 0, motes: 0.7, form: 'halo', shift: 0, fade: 0.7,
+  },
+  devA_spirits: {
+    a: '#05060a', b: '#1a1424', c: '#c27a2a', glow: '#ffd27a',
+    ink: '#f7ecd9', inkSoft: '#cdbba6', scale: 1.3, warp: 1.8, speed: 0.04, light: 0, motes: 0.4, form: 'lamps', shift: 0,
+  },
+  devA_shaman: {
+    a: '#0a0302', b: '#3a0c06', c: '#e0521f', glow: '#ffc06a',
+    ink: '#fbeee2', inkSoft: '#d9b5a0', scale: 1.5, warp: 2.6, speed: 0.08, light: 0, motes: 0.6, form: 'agni', shift: 2.8,
+  },
+  devA_close: {
+    a: '#0a0405', b: '#2e0809', c: '#c8321e', glow: '#f2a52b',
+    ink: '#f7ecd9', inkSoft: '#d9bfa2', scale: 1.5, warp: 2.4, speed: 0.06, light: 0, motes: 0.5, form: 'eye', shift: 0,
+  },
+  devA_home: {
+    a: '#0a0405', b: '#3a0a0c', c: '#c8321e', glow: '#f2a52b',
+    ink: '#f7ecd9', inkSoft: '#d9bfa2', scale: 1.6, warp: 2.6, speed: 0.06, light: 0, motes: 0.8, form: 'flames', shift: 5.6,
+  },
+  // B · Smoke and ash
+  devB_hero: {
+    a: '#0b0b0c', b: '#1d1c1e', c: '#5a5654', glow: '#e9e4da',
+    ink: '#e9e4da', inkSoft: '#a9a39c', scale: 1.3, warp: 3.2, speed: 0.04, light: 0, motes: 0.35, form: 'eye', shift: 4.4,
+  },
+  devB_deity: {
+    a: '#0a0909', b: '#1f1416', c: '#a1121a', glow: '#e9e4da',
+    ink: '#e9e4da', inkSoft: '#a9a39c', scale: 1.4, warp: 3.0, speed: 0.04, light: 0, motes: 0.3, form: 'eye', shift: 4.2, fade: 0.3,
+  },
+  devB_spirits: {
+    a: '#08080a', b: '#17161a', c: '#6f6a75', glow: '#d8d4e0',
+    ink: '#e9e4da', inkSoft: '#a9a39c', scale: 1.2, warp: 3.4, speed: 0.035, light: 0, motes: 0.25, form: 'silk', shift: 0,
+  },
+  devB_shaman: {
+    a: '#060606', b: '#141210', c: '#7a3a1a', glow: '#ff6a2a',
+    ink: '#e9e4da', inkSoft: '#a9a39c', scale: 1.2, warp: 2.2, speed: 0.04, light: 0, motes: 0.3, form: 'water', shift: 0,
+  },
+  devB_close: {
+    a: '#080606', b: '#1a0c0a', c: '#a1121a', glow: '#ff6a2a',
+    ink: '#e9e4da', inkSoft: '#a9a39c', scale: 1.4, warp: 2.8, speed: 0.06, light: 0, motes: 0.4, form: 'agni', shift: 0,
+  },
+  devB_home: {
+    a: '#0b0b0c', b: '#1d1c1e', c: '#5a5654', glow: '#e9e4da',
+    ink: '#e9e4da', inkSoft: '#a9a39c', scale: 1.3, warp: 3.2, speed: 0.04, light: 0, motes: 0.35, form: 'eye', shift: 7.2, fade: 0.4,
+  },
+  // C · Cosmic mother
+  devC_hero: {
+    a: '#050617', b: '#1f1450', c: '#3a4fb8', glow: '#e7c46a',
+    ink: '#f1efff', inkSoft: '#b9b4d8', scale: 1.8, warp: 2.6, speed: 0.05, light: 0, motes: 1.0, form: 'mala', shift: 4.4,
+  },
+  devC_deity: {
+    a: '#060418', b: '#261246', c: '#d98cb3', glow: '#e7c46a',
+    ink: '#f1efff', inkSoft: '#b9b4d8', scale: 2.0, warp: 2.4, speed: 0.05, light: 0, motes: 1.0, form: 'stars', shift: 0, fade: 0.8,
+  },
+  devC_spirits: {
+    a: '#04040f', b: '#2a1460', c: '#6a5ad8', glow: '#f1efff',
+    ink: '#f1efff', inkSoft: '#b9b4d8', scale: 1.6, warp: 3.0, speed: 0.04, light: 0, motes: 0.9, form: 'dust', shift: 0,
+  },
+  devC_shaman: {
+    a: '#040816', b: '#13204a', c: '#3a8fb8', glow: '#e7c46a',
+    ink: '#f1efff', inkSoft: '#b9b4d8', scale: 1.7, warp: 2.6, speed: 0.06, light: 0, motes: 0.8, form: 'vortex', shift: 3.6,
+  },
+  devC_home: {
+    a: '#050617', b: '#1f1450', c: '#3a4fb8', glow: '#e7c46a',
+    ink: '#f1efff', inkSoft: '#b9b4d8', scale: 1.8, warp: 2.6, speed: 0.05, light: 0, motes: 1.0, form: 'mala', shift: 5.6,
+  },
+  devC_close: {
+    a: '#050617', b: '#1f1450', c: '#3a4fb8', glow: '#e7c46a',
+    ink: '#f1efff', inkSoft: '#b9b4d8', scale: 1.8, warp: 2.6, speed: 0.05, light: 0, motes: 0.9, form: 'halo', shift: 0,
+  },
   close: {
     a: '#050203', b: '#240809', c: '#8e2a1a', glow: '#f0b34a',
     ink: '#f6ece2', inkSoft: '#c4ada0', scale: 1.5, warp: 2.4, speed: 0.06, light: 0, motes: 0.5, form: 'eye', shift: 0,

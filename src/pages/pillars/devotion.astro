@@ -1,0 +1,163 @@
+---
+import Base from '../../layouts/Base.astro';
+import Yantra from '../../components/Yantra.astro';
+import PillarSubs from '../../components/PillarSubs.astro';
+import { pillars, categoryCount } from '../../data/site';
+import { DIRECTIONS, MAHAVIDYAS } from '../../data/devotion';
+
+const index = pillars.findIndex((p) => p.slug === 'devotion');
+const p = pillars[index];
+const prev = pillars[(index + pillars.length - 1) % pillars.length];
+const next = pillars[(index + 1) % pillars.length];
+const anchor = (s: string) => s.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const [deity, spirits, shaman] = p.categories;
+const CH = ['deity', 'spirits', 'shaman'];
+const INTRO: Record<string, string> = {
+  deity: 'Kali and the ten Mahavidyas first, then the Devi in all her forms, and deities from many traditions, from Hecate to Freyja.',
+  spirits: 'Speaking with those who have gone before: loved ones, animals, ancestors. And, where it is needed, releasing what should not stay.',
+  shaman: 'Journeying, power animals, soul retrieval and the drum: the shaman’s way of walking between the worlds.',
+};
+// the yantra for direction C (same geometry as the scroll yantra, drawn in gold)
+const tri = (r: number) => [90, 210, 330].map((d) => { const a = (d * Math.PI) / 180; return `${(Math.cos(a) * r).toFixed(1)} ${(Math.sin(a) * r).toFixed(1)}`; });
+const triPath = (r: number) => { const t = tri(r); return `M${t[0]} L${t[1]} L${t[2]} Z`; };
+---
+<Base title={`${p.name} · Sarvakali`} sequence="devA_hero" description={p.line}>
+  <Yantra />
+  <div class="dv" data-devotion>
+    <section class="chapter dv-hero" data-chapter="devA_hero" data-dev-chapter="hero">
+      <div class="chapter-inner dv-hero-grid">
+        <div class="dv-hero-copy">
+          <a class="back-link" href="/#paths">← All pillars</a>
+          <p class="kicker" data-hero>Pillar {index + 1} of {pillars.length}</p>
+          <h1 class="display-l dv-title" data-hero data-split transition:name="pt-devotion" data-pt>{p.name}</h1>
+          <p class="lede" data-hero>{p.line}</p>
+          <ul class="pp-index" data-hero>
+            {p.categories.map((c) => <li><a href={`#${anchor(c.name)}`}>{c.name}</a></li>)}
+          </ul>
+        </div>
+
+        <div class="dv-sig" data-hero>
+          <!-- A · offer aarti -->
+          <div class="aarti" data-only="a" data-aarti>
+            <svg class="aarti-ring" viewBox="-160 -160 320 320" aria-hidden="true">
+              <circle r="118" fill="none" class="aarti-path" />
+              <g class="aarti-eye"><path d="M0 -40 Q30 0 0 40 Q-30 0 0 -40Z" /><circle r="11" /></g>
+              <g class="aarti-lamp" data-aarti-lamp>
+                <ellipse cx="0" cy="12" rx="30" ry="9" class="aarti-plate" />
+                <path d="M-14 6 Q0 18 14 6 Z" class="aarti-bowl" />
+                <path d="M0 4 C-7 -6 -5 -16 0 -28 C5 -16 7 -6 0 4 Z" class="aarti-flame" />
+              </g>
+            </svg>
+            <p class="dv-sig-hint"><span data-aarti-count>Circle the lamp around the eye</span></p>
+            <button type="button" class="btn btn-ghost btn-sm" data-aarti-auto>Offer aarti</button>
+          </div>
+          <!-- C · turn the yantra -->
+          <div class="yantra-turn" data-only="c" data-yantra>
+            <svg viewBox="-150 -150 300 300" class="yt-svg" tabindex="0" role="slider" aria-label="Turn the yantra" aria-valuemin="0" aria-valuemax="360" aria-valuenow="47">
+              <g class="yt-rot" data-yt-rot>
+                <circle r="132" class="yt-line" />
+                <circle r="124" class="yt-line thin" />
+                {Array.from({ length: 16 }, (_, i) => <path class="yt-line" d="M0 -100 Q9 -112 0 -124 Q-9 -112 0 -100Z" transform={`rotate(${i * 22.5})`} />)}
+                <circle r="96" class="yt-line" />
+                {[28, 44, 60, 76].map((r) => <path class="yt-line" d={triPath(r)} />)}
+              </g>
+              <g class="yt-fixed">
+                {[36, 52, 68].map((r) => <path class="yt-line ghost" d={triPath(r)} transform="rotate(180)" />)}
+              </g>
+              <circle r="5" class="yt-bindu" />
+            </svg>
+            <ul class="yt-names" aria-hidden="true">
+              {MAHAVIDYAS.map((v, i) => <li style={`--i:${i}`}>{v.name}</li>)}
+            </ul>
+            <p class="dv-sig-hint" data-yt-hint>Drag to turn the yantra into alignment</p>
+          </div>
+        </div>
+      </div>
+      <!-- B · part the smoke -->
+      <canvas class="smoke-veil" data-only="b" data-smoke aria-hidden="true"></canvas>
+    </section>
+
+    {[deity, spirits, shaman].map((c, k) => (
+      <section class={`chapter dv-cat dv-${CH[k]}`} id={anchor(c.name)} data-chapter={`devA_${CH[k]}`} data-dev-chapter={CH[k]}>
+        <div class="chapter-inner dv-cat-inner">
+          <div class="dv-cat-head">
+            <p class="kicker" data-fade>{k + 1} · {categoryCount(c)} services</p>
+            <h2 class="display-l" data-split data-dust>{c.name}</h2>
+            <p class="lede" data-fade>{INTRO[CH[k]]}</p>
+            <div class="cta-row" data-fade><a class="btn btn-ghost btn-sm" href="/connect" data-topic={c.name}>Ask about this</a></div>
+          </div>
+          {k === 0 && (
+            <div class="vidyas-wrap" data-fade>
+              <p class="kicker">The ten Mahavidyas</p>
+              <ol class="vidyas">
+                {MAHAVIDYAS.map((v, i) => (
+                  <li class="vidya" style={`--i:${i}`}>
+                    <span class="vidya-n">{i + 1}</span>
+                    <span class="vidya-deva" lang="sa">{v.deva}</span>
+                    <span class="vidya-name">{v.name}</span>
+                    <span class="vidya-line">{v.line}</span>
+                    <button type="button" class="vidya-keep" data-keep={v.service} data-keep-p={p.name} aria-pressed="false" aria-label={`Keep ${v.service} in your list`}>Keep</button>
+                  </li>
+                ))}
+                <li class="vidya-bindu" aria-hidden="true"></li>
+              </ol>
+              <p class="vidya-all"><button type="button" class="pp-item" data-keep="Dashamahavidya Working" data-keep-p={p.name} aria-pressed="false">Dashamahavidya Working: all ten together</button></p>
+              <p class="pp-tip">Tap a name to keep it in your list. Your list goes with you to the booking form.</p>
+            </div>
+          )}
+          <PillarSubs category={c} pillar={p.name} skip={k === 0 ? ['Kali & the Mahavidyas'] : []} />
+        </div>
+      </section>
+    ))}
+
+    <section class="chapter dv-close" data-chapter="devA_close" data-dev-chapter="close">
+      <div class="chapter-inner narrow center">
+        <p class="kicker" data-fade>When you are ready</p>
+        <h2 class="display-l" data-split>Come and sit with the Mother</h2>
+        <div class="cta-row center" data-fade>
+          <a class="btn btn-solid" href="/connect" data-topic={p.name}>Request a conversation</a>
+          <a class="btn btn-ghost" href="/path">Find your path</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="dv-brief" aria-labelledby="dv-brief-title">
+      <p class="kicker">Design exploration · this pillar</p>
+      <h2 id="dv-brief-title" class="display-m">Three directions for Devotion &amp; the Unseen</h2>
+      <p class="hint">Switch between them with the buttons at the bottom of the screen, or in the Prototype panel. The whole page, the homepage chapter, the worlds, the type and the sound all change.</p>
+      <div class="dv-briefs">
+        {DIRECTIONS.map((d) => (
+          <article class="dv-card" data-dir-card={d.key}>
+            <header><span class="dv-card-key">{d.key.toUpperCase()}</span><h3>{d.name}</h3></header>
+            <p class="dv-card-essence">{d.essence}</p>
+            <ul class="dv-swatches" aria-label="Colours">
+              {d.palette.map((c) => <li style={`--c:${c.hex}`}><span></span>{c.name}<small>{c.hex}</small></li>)}
+            </ul>
+            <dl>
+              <div><dt>Feeling</dt><dd>{d.feeling.join(' · ')}</dd></div>
+              <div><dt>Type</dt><dd>{d.type.display}, {d.type.note}</dd></div>
+              <div><dt>Worlds</dt><dd>Opening: {d.worlds.hero}. Deities: {d.worlds.deity}. Spirits and ancestors: {d.worlds.spirits}. Shamanic: {d.worlds.shaman}.</dd></div>
+              <div><dt>Layout</dt><dd>{d.layout}</dd></div>
+              <div><dt>Signature</dt><dd><b>{d.signature.name}.</b> {d.signature.how}</dd></div>
+              <div><dt>Sound</dt><dd>{d.sound}</dd></div>
+              <div><dt>Art needed</dt><dd>{d.imagery}</dd></div>
+              <div><dt>Voice</dt><dd>{d.voice}</dd></div>
+            </dl>
+            <button type="button" class="btn btn-ghost btn-sm" data-dev-set={d.key}>See direction {d.key.toUpperCase()}</button>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <nav class="pp-nav" aria-label="Other pillars">
+      <a href={`/pillars/${prev.slug}`}><span>Previous pillar</span><b transition:name={`pt-${prev.slug}`} data-pt>{prev.name}</b></a>
+      <a href={`/pillars/${next.slug}`}><span>Next pillar</span><b transition:name={`pt-${next.slug}`} data-pt>{next.name}</b></a>
+    </nav>
+
+    <div class="dv-switch" role="group" aria-label="Design direction">
+      <span>Direction</span>
+      {DIRECTIONS.map((d) => <button type="button" data-dev-set={d.key} aria-pressed="false" aria-label={`Direction ${d.key.toUpperCase()}: ${d.name}`}><b>{d.key.toUpperCase()}</b><span> · {d.name}</span></button>)}
+    </div>
+    {DIRECTIONS.filter((d) => d.type.fontHref).map((d) => <link rel="prefetch" data-dev-font={d.key} href={d.type.fontHref} as="style" />)}
+  </div>
+</Base>

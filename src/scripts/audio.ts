@@ -11,8 +11,8 @@
  * recorded instruments chosen with the institute.
  */
 
-type Layer = 'devotion' | 'magic' | 'healing' | 'identity' | 'divination' | 'learning';
-const LAYERS: Layer[] = ['devotion', 'magic', 'healing', 'identity', 'divination', 'learning'];
+type Layer = 'devotion' | 'magic' | 'healing' | 'identity' | 'divination' | 'learning' | 'ash' | 'cosmic';
+const LAYERS: Layer[] = ['devotion', 'magic', 'healing', 'identity', 'divination', 'learning', 'ash', 'cosmic'];
 
 const SA = 138.59;
 const PA_LOW = 103.83;
@@ -195,6 +195,23 @@ function build() {
   breath.connect(breathG); breathG.connect(layerGain.learning);
   lfo(0.12, 0.2, breathG.gain);
 
+  // ash (Devotion direction B): wind over the cremation ground
+  const wind = c.createBiquadFilter();
+  wind.type = 'lowpass'; wind.frequency.value = 380; wind.Q.value = 0.4;
+  noiseSrc().connect(wind);
+  const windG = c.createGain(); windG.gain.value = 0.22;
+  wind.connect(windG); windG.connect(layerGain.ash);
+  lfo(0.06, 180, wind.frequency);
+  lfo(0.09, 0.1, windG.gain);
+
+  // cosmic (Devotion direction C): a slow, shimmering chord
+  const cos = c.createBiquadFilter();
+  cos.type = 'lowpass'; cos.frequency.value = 2400;
+  cos.connect(layerGain.cosmic);
+  osc('sine', SA * 3, 0.04, cos, -6);
+  osc('sine', SA * 4.5, 0.03, cos, 5);
+  osc('triangle', SA * 6, 0.018, cos, 2);
+
   // divination has no bed: only chimes, like stars
 
   levelBuf = new Uint8Array(analyser.fftSize);
@@ -304,6 +321,8 @@ function schedule() {
     else if (l === 'healing') { dropAt(at, 0.06, to); nextEvent[l] = at + 1.2 + Math.random() * 3; }
     else if (l === 'learning') { tokAt(at, 0.22, to); nextEvent[l] = at + (Math.random() < 0.5 ? 1.6 : 3.2); }
     else if (l === 'magic') { chimeAt(at, SA * 6 * PENTA[Math.floor(Math.random() * PENTA.length)], 0.035, to); nextEvent[l] = at + 2 + Math.random() * 3; }
+    else if (l === 'ash') { bellAt(at, 98, 0.2, to, 9); nextEvent[l] = at + 11 + Math.random() * 5; }
+    else if (l === 'cosmic') { chimeAt(at, SA * 8 * PENTA[Math.floor(Math.random() * PENTA.length)], 0.05, to); nextEvent[l] = at + 1.4 + Math.random() * 2.6; }
     else nextEvent[l] = at + 4;
   }
 }

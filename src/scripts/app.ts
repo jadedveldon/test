@@ -48,6 +48,7 @@ import { closeMenu, initMenu } from './menu';
 import { initPractice } from './practice';
 import { initPwa } from './pwa';
 import { runDeviceTest } from './devicetest';
+import { applyDirection, startDevotion, stopDevotion } from './devotion';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -250,8 +251,16 @@ function heroKey() {
   return HERO_PRESET[exp.hero];
 }
 
+/** pillar 1 is being designed in three directions; its worlds follow the one chosen */
+const devKey = (part: string) => `dev${exp.devdir.toUpperCase()}_${part}`;
+
 function chapterKeys() {
-  return chapters.map((c) => (c.hasAttribute('data-hero-chapter') ? heroKey() : c.dataset.chapter!));
+  return chapters.map((c) => {
+    if (c.hasAttribute('data-hero-chapter')) return heroKey();
+    if (c.dataset.devChapter) return devKey(c.dataset.devChapter);
+    if (c.dataset.chapter === 'devotion') return devKey('home');
+    return c.dataset.chapter!;
+  });
 }
 
 /* ----------------------------------------------------------- reveals */
@@ -513,9 +522,11 @@ function renderSound() {
 function soundTick() {
   if (!soundIsOn()) { world.setAudioLevel(soundLevel()); return; }
   const [a, b, t] = world.blend;
+  // the Devotion directions each have their own sound layer
+  const layer = (k: string) => (k.startsWith('devA_') ? 'devotion' : k.startsWith('devB_') ? 'ash' : k.startsWith('devC_') ? 'cosmic' : k);
   const w: Record<string, number> = {};
-  w[a] = (w[a] ?? 0) + (1 - t);
-  w[b] = (w[b] ?? 0) + t;
+  w[layer(a)] = (w[layer(a)] ?? 0) + (1 - t);
+  w[layer(b)] = (w[layer(b)] ?? 0) + t;
   setMix(w);
   world.setAudioLevel(soundLevel());
 }
@@ -530,7 +541,7 @@ function initPage() {
   heroWanted = false;
 
   chapters = Array.from(document.querySelectorAll<HTMLElement>('[data-chapter]'));
-  const seq = chapters.length ? chapterKeys() : (main.dataset.sequence || 'hero').split(',');
+  const seq = chapters.length ? chapterKeys() : (main.dataset.sequence || 'hero').split(',').map((k) => (k === 'devotion' ? devKey('hero') : k));
   world.setSequence(seq);
   if (!chapters.length) world.setPosition(0);
   world.forceCss();
@@ -586,6 +597,8 @@ function initPage() {
   renderKeep();
   applyFestival();
   renderMoonLine();
+  applyDirection(exp.devdir);
+  if (tier !== 'calm') startDevotion(world, exp.devdir);
   initDiya(world);
   initPath(world, () => { ScrollTrigger.refresh(); lenis?.resize(); });
   depthDispose = initDepth(world.isLive && tier !== 'calm');
@@ -618,6 +631,7 @@ function cleanupPage() {
   html.classList.remove('locked', 'menu-open', 'search-open');
   closeSearch();
   world.setDustBurn(0);
+  stopDevotion();
 }
 
 /* ------------------------------------------------- experiment switches */
@@ -628,6 +642,12 @@ function onExpChange(k: keyof Exp, v: string) {
   if (k === 'cursor') applyCursor();
   if (k === 'sky') applySky();
   if (k === 'festival') { applyFestival(); applySky(); }
+  if (k === 'devdir') {
+    applyDirection(v as 'a' | 'b' | 'c');
+    if (chapters.length) world.setSequence(chapterKeys());
+    if (tier !== 'calm') startDevotion(world, v as 'a' | 'b' | 'c');
+    buzz(PATTERNS.choice);
+  }
   if (k === 'haptics') { setHaptics(v === 'on'); if (v === 'on') buzz(PATTERNS.choice); }
   if (k === 'page') html.dataset.pageStyle = v;
   if (k === 'dust' && v === 'off' && dustOwner) { dustOwner.style.opacity = ''; world.setDust(null, 0); dustOwner = null; }
@@ -762,7 +782,9 @@ function hudTick(dt: number) {
   const f = hud.querySelector('[data-hud-fps]');
   if (f) f.textContent = `${Math.round(meter.fps)} fps`;
   const c = hud.querySelector('[data-hud-chapter]');
-  if (c) c.textContent = LABELS[world.chapterKey] ?? world.chapterKey;
+  const ck = world.chapterKey;
+  const dv = /^dev([ABC])_(\w+)$/.exec(ck);
+  if (c) c.textContent = LABELS[ck] ?? (dv ? `Devotion ${dv[1]} · ${dv[2]}` : ck);
   const p = hud.querySelector('[data-hud-points]');
   if (p) {
     const n = world.pointCount;
@@ -858,6 +880,15 @@ function boot() {
   onSoundChange((on) => { renderSound(); if (on) ring('choice'); });
   initKeep();
   initMenu(world);
+  applyDirection(exp.devdir);
+  document.addEventListener('click', (e) => {
+    const b = (e.target as Element | null)?.closest<HTMLElement>('[data-dev-set]');
+    if (!b) return;
+    const v = b.dataset.devSet as 'a' | 'b' | 'c';
+    setExp('devdir', v);
+    onExpChange('devdir', v);
+    renderExpPanel();
+  });
   initPwa();
   initSearch({
     preview: (preset) => world.setSequence([preset]),
@@ -905,6 +936,7 @@ function boot() {
     if (world.ready) html.dataset.world = 'ready';
     html.dataset.festival = festival?.f.kind ?? '';
     if (festival) html.dataset.festivalOn = '1';
+    html.dataset.dev = exp.devdir;
     markParticles();
     if (read('sk-intro-seen')) html.dataset.intro = 'seen';
     world.forceCss();

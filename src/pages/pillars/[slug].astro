@@ -3,8 +3,9 @@ import Base from '../../layouts/Base.astro';
 import Yantra from '../../components/Yantra.astro';
 import { pillars, categoryCount, type Pillar } from '../../data/site';
 
+// Devotion has its own page while its design is being explored (pillars/devotion.astro)
 export function getStaticPaths() {
-  return pillars.map((p, i) => ({ params: { slug: p.slug }, props: { index: i } }));
+  return pillars.map((p, i) => ({ params: { slug: p.slug }, props: { index: i } })).filter((x) => x.params.slug !== 'devotion');
 }
 
 const { index } = Astro.props as { index: number };

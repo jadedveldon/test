@@ -1,0 +1,19 @@
+---
+import type { Category } from '../data/site';
+/** a category's subcategories as expandable lists of keepable services */
+interface Props { category: Category; pillar: string; skip?: string[] }
+const { category, pillar, skip = [] } = Astro.props;
+---
+<div class="pp-subs">
+  {category.subs.filter((s) => !skip.includes(s.name)).map((s) => (
+    <details class="pp-sub" data-fade>
+      <summary>
+        <span>{s.name}</span>
+        <span class="pp-n">{s.items.length}</span>
+      </summary>
+      <ul>
+        {s.items.map((item) => <li><button type="button" class="pp-item" data-keep={item} data-keep-p={pillar} aria-pressed="false">{item}</button></li>)}
+      </ul>
+    </details>
+  ))}
+</div>

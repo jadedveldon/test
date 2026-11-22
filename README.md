@@ -57,6 +57,15 @@ Experiments can be set by URL too: `?hero=dawneye|eye|name|dawn`, `?page=eye|smo
 | Link previews | `tools/make-previews.cjs`, `public/og/` | A preview picture per page, taken from the real page. |
 | AI depth demo | `src/pages/depth.astro`, `src/scripts/depth.ts`, `public/depth/` | Kalighat paintings (Cleveland Museum of Art, CC0) with depth maps made ahead of time by Depth Anything V2 Small (Apache-2.0). |
 
+## Designing the pillars
+
+Each pillar is designed one at a time, by comparing complete directions live.
+
+| Pillar | Status | Where |
+|---|---|---|
+| 1 · Devotion & the Unseen | Three directions to choose from: A Midnight temple, B Smoke and ash, C Cosmic mother (`?devdir=a|b|c`, or the switch at the bottom of the page) | `src/pages/pillars/devotion.astro`, `src/data/devotion.ts`, `src/scripts/devotion.ts`, presets `devA_*`, `devB_*`, `devC_*` |
+| 2–6 | Next, one at a time | generic template `src/pages/pillars/[slug].astro` |
+
 ## Next
 
 Art direction per pillar, the commissioned Kali painting (layers + depth map), Cal.com booking on the Connect page, the content editor (Keystatic), real-phone testing, and the accounts for email reminders and visitor counts. The WhatsApp button is waiting for a decision.
