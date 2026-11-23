@@ -33,6 +33,8 @@ export type Preset = {
   fade?: number;
   /** 0 hides tonight's moon in this chapter (where something else stands in its place) */
   moon?: number;
+  /** the form's size in this chapter (1 = as drawn), so it can sit inside or beside the layout */
+  zoom?: number;
 };
 
 export const PRESETS: Record<string, Preset> = {
@@ -133,9 +135,10 @@ export const PRESETS: Record<string, Preset> = {
     ink: '#f2f0ee', inkSoft: '#b8b6c0', scale: 1.3, warp: 1.6, speed: 0.03, light: 0, motes: 0.3, form: 'halo', shift: 0,
   },
   /* ---------------- Pillar 1, Devotion & the Unseen · direction C, Cosmic mother */
+  // the opening: soft drifting dust; the yantra and its mala are drawn on the page itself
   devC_hero: {
     a: '#050617', b: '#1f1450', c: '#3a4fb8', glow: '#e7c46a',
-    ink: '#f1efff', inkSoft: '#b9b4d8', scale: 1.8, warp: 2.6, speed: 0.05, light: 0, motes: 1.0, form: 'mala', shift: 4.4,
+    ink: '#f1efff', inkSoft: '#b9b4d8', scale: 1.8, warp: 2.6, speed: 0.05, light: 0, motes: 1.0, form: 'dust', shift: 4.4, fade: 0.5,
   },
   devC_home: {
     a: '#050617', b: '#1f1450', c: '#3a4fb8', glow: '#e7c46a',
@@ -144,7 +147,7 @@ export const PRESETS: Record<string, Preset> = {
   // I · Kali and the Mahavidyas: the Kali yantra, with a breath of red
   devC_vidyas: {
     a: '#06040f', b: '#241040', c: '#b8325a', glow: '#e7c46a',
-    ink: '#f3efff', inkSoft: '#bfb6da', scale: 1.8, warp: 2.4, speed: 0.045, light: 0, motes: 0.8, form: 'yantra', shift: 0, fade: 0.85,
+    ink: '#f3efff', inkSoft: '#bfb6da', scale: 1.8, warp: 2.4, speed: 0.045, light: 0, motes: 0.8, form: 'yantra', shift: 0, fade: 0.8, zoom: 0.74,
   },
   // II · the Devi and the Hindu deities: the yantra continues, rose and gold
   devC_devi: {
@@ -243,114 +246,42 @@ export const PRESETS: Record<string, Preset> = {
     a: '#050505', b: '#0d3b2e', c: '#b8693a', glow: '#d9b25a',
     ink: '#f3ecdd', inkSoft: '#c2b59a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'crossroads', shift: 0, fade: 0.42,
   },
-  /* ---------------- Pillar 3, Healing & Inner Work: three directions to compare */
-  // A · Still water
-  // the opening: a lotus on the water
-  healA_hero: {
-    a: '#04161a', b: '#0d3a3f', c: '#7fc4b8', glow: '#e9f1ec',
-    ink: '#eef5f1', inkSoft: '#a9c4bd', scale: 1.2, warp: 1.8, speed: 0.03, light: 0, motes: 0.45, form: 'lotus', shift: 4.4, fade: 0.95,
+  /* ---------------- Pillar 3, Healing & Inner Work · still water, with gold
+     Teal night water and pearl text, gold for accents and for the light itself. */
+  // the opening: a lotus opening on the water, inside the breathing circle
+  heal_hero: {
+    a: '#04161a', b: '#0d3a3f', c: '#7fc4b8', glow: '#e2c27a',
+    ink: '#eef5f1', inkSoft: '#a9c4bd', scale: 1.2, warp: 1.8, speed: 0.03, light: 0, motes: 0.4, form: 'lotus', shift: 4.4, fade: 0.7, zoom: 0.74, moon: 0,
   },
   // the homepage chapter
-  healA_home: {
-    a: '#04161a', b: '#0d3a3f', c: '#7fc4b8', glow: '#e9f1ec',
-    ink: '#eef5f1', inkSoft: '#a9c4bd', scale: 1.2, warp: 1.8, speed: 0.03, light: 0, motes: 0.45, form: 'lotus', shift: 5.4, fade: 0.95,
+  heal_home: {
+    a: '#04161a', b: '#0d3a3f', c: '#7fc4b8', glow: '#e2c27a',
+    ink: '#eef5f1', inkSoft: '#a9c4bd', scale: 1.2, warp: 1.8, speed: 0.03, light: 0, motes: 0.4, form: 'lotus', shift: 5.4, fade: 0.9,
   },
-  // energy: a halo of light
-  healA_energy: {
-    a: '#04161a', b: '#0d3a3f', c: '#9ed3c9', glow: '#e9f1ec',
-    ink: '#eef5f1', inkSoft: '#a9c4bd', scale: 1.2, warp: 1.8, speed: 0.03, light: 0, motes: 0.45, form: 'halo', shift: 4.2, fade: 0.6,
+  // I · energy: a wide, faint aura around the body of light
+  heal_energy: {
+    a: '#04161a', b: '#0d3a3f', c: '#9ed3c9', glow: '#e2c27a',
+    ink: '#eef5f1', inkSoft: '#a9c4bd', scale: 1.2, warp: 1.8, speed: 0.03, light: 0, motes: 0.4, form: 'halo', shift: 1.8, fade: 0.3, zoom: 0.85,
   },
-  // mind: a slow spiral
-  healA_mind: {
-    a: '#04161a', b: '#0d3a3f', c: '#6aa6b8', glow: '#dfeef3',
-    ink: '#eef5f1', inkSoft: '#a9c4bd', scale: 1.2, warp: 1.8, speed: 0.03, light: 0, motes: 0.45, form: 'vortex', shift: 4.2, fade: 0.5,
+  // II · mind: a slow spiral beside the text
+  heal_mind: {
+    a: '#04161a', b: '#0d3a3f', c: '#6aa6b8', glow: '#e2c27a',
+    ink: '#eef5f1', inkSoft: '#a9c4bd', scale: 1.2, warp: 1.8, speed: 0.03, light: 0, motes: 0.4, form: 'vortex', shift: 4.2, fade: 0.45,
   },
-  // shadow: the water itself
-  healA_shadow: {
-    a: '#04161a', b: '#0d3a3f', c: '#e7a9b8', glow: '#f4e3e8',
-    ink: '#eef5f1', inkSoft: '#a9c4bd', scale: 1.2, warp: 1.8, speed: 0.03, light: 0, motes: 0.45, form: 'water', shift: 0, fade: 0.55,
+  // III · shadow: the water itself, low and quiet, under the golden repair
+  heal_shadow: {
+    a: '#04161a', b: '#0d3a3f', c: '#e7a9b8', glow: '#e2c27a',
+    ink: '#eef5f1', inkSoft: '#a9c4bd', scale: 1.2, warp: 1.8, speed: 0.03, light: 0, motes: 0.4, form: 'water', shift: 0, fade: 0.3,
   },
-  // journaling: threads of silk
-  healA_journal: {
-    a: '#04161a', b: '#0d3a3f', c: '#d9c8a6', glow: '#f1ead8',
-    ink: '#eef5f1', inkSoft: '#a9c4bd', scale: 1.2, warp: 1.8, speed: 0.03, light: 0, motes: 0.45, form: 'silk', shift: 0, fade: 0.5,
+  // IV · journaling: threads of silk
+  heal_journal: {
+    a: '#04161a', b: '#0d3a3f', c: '#d9c8a6', glow: '#e2c27a',
+    ink: '#eef5f1', inkSoft: '#a9c4bd', scale: 1.2, warp: 1.8, speed: 0.03, light: 0, motes: 0.4, form: 'silk', shift: 0, fade: 0.35,
   },
-  // the close
-  healA_close: {
-    a: '#04161a', b: '#0d3a3f', c: '#7fc4b8', glow: '#e9f1ec',
-    ink: '#eef5f1', inkSoft: '#a9c4bd', scale: 1.2, warp: 1.8, speed: 0.03, light: 0, motes: 0.45, form: 'lotus', shift: 0, fade: 0.7,
-  },
-  // B · The body of light (dawn paper)
-  // the opening: a faint halo, so the figure of light leads
-  healB_hero: {
-    a: '#f6efe4', b: '#ecdcc4', c: '#e08a2e', glow: '#fff8ec',
-    ink: '#2b2230', inkSoft: '#655563', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'halo', shift: 4.4, fade: 0.35,
-  },
-  // the homepage chapter
-  healB_home: {
-    a: '#f6efe4', b: '#ecdcc4', c: '#e08a2e', glow: '#fff8ec',
-    ink: '#2b2230', inkSoft: '#655563', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'chakras', shift: 5.4, fade: 0.9,
-  },
-  // energy
-  healB_energy: {
-    a: '#f6efe4', b: '#ecdcc4', c: '#c7607a', glow: '#fff8ec',
-    ink: '#2b2230', inkSoft: '#655563', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'chakras', shift: 4.2, fade: 0.5,
-  },
-  // mind: a halo
-  healB_mind: {
-    a: '#f6efe4', b: '#ecdcc4', c: '#3b3a7a', glow: '#fff8ec',
-    ink: '#2b2230', inkSoft: '#655563', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'halo', shift: 4.2, fade: 0.55,
-  },
-  // shadow: the tree, roots and branches
-  healB_shadow: {
-    a: '#f6efe4', b: '#ecdcc4', c: '#4f8a63', glow: '#fff8ec',
-    ink: '#2b2230', inkSoft: '#655563', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'tree', shift: 3.6, fade: 0.5,
-  },
-  // journaling: a lotus
-  healB_journal: {
-    a: '#f6efe4', b: '#ecdcc4', c: '#c7607a', glow: '#fff8ec',
-    ink: '#2b2230', inkSoft: '#655563', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'lotus', shift: 4.2, fade: 0.5,
-  },
-  // the close
-  healB_close: {
-    a: '#f6efe4', b: '#ecdcc4', c: '#e08a2e', glow: '#fff8ec',
-    ink: '#2b2230', inkSoft: '#655563', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'chakras', shift: 0, fade: 0.6,
-  },
-  // C · Golden repair (kintsugi)
-  // the opening: drifting dust, so the bowl you mend leads
-  healC_hero: {
-    a: '#121110', b: '#2a2420', c: '#8a5a44', glow: '#d4a63c',
-    ink: '#f1ebe3', inkSoft: '#bdb2a6', scale: 1.5, warp: 2.2, speed: 0.035, light: 0, motes: 0.5, form: 'dust', shift: 4.4, fade: 0.55,
-  },
-  // the homepage chapter
-  healC_home: {
-    a: '#121110', b: '#2a2420', c: '#8a5a44', glow: '#d4a63c',
-    ink: '#f1ebe3', inkSoft: '#bdb2a6', scale: 1.5, warp: 2.2, speed: 0.035, light: 0, motes: 0.5, form: 'bowl', shift: 5.4, fade: 0.95,
-  },
-  // energy: a halo
-  healC_energy: {
-    a: '#121110', b: '#2a2420', c: '#8a5a44', glow: '#e2bd62',
-    ink: '#f1ebe3', inkSoft: '#bdb2a6', scale: 1.5, warp: 2.2, speed: 0.035, light: 0, motes: 0.5, form: 'halo', shift: 4.2, fade: 0.55,
-  },
-  // mind: a slow spiral
-  healC_mind: {
-    a: '#121110', b: '#2a2420', c: '#5d5a55', glow: '#d4a63c',
-    ink: '#f1ebe3', inkSoft: '#bdb2a6', scale: 1.5, warp: 2.2, speed: 0.035, light: 0, motes: 0.5, form: 'vortex', shift: 4.2, fade: 0.5,
-  },
-  // shadow: the bowl again, quieter
-  healC_shadow: {
-    a: '#121110', b: '#2a2420', c: '#8c2a22', glow: '#d4a63c',
-    ink: '#f1ebe3', inkSoft: '#bdb2a6', scale: 1.5, warp: 2.2, speed: 0.035, light: 0, motes: 0.5, form: 'bowl', shift: 4.2, fade: 0.45,
-  },
-  // journaling: falling dust
-  healC_journal: {
-    a: '#121110', b: '#2a2420', c: '#5d5a55', glow: '#cfc6bb',
-    ink: '#f1ebe3', inkSoft: '#bdb2a6', scale: 1.5, warp: 2.2, speed: 0.035, light: 0, motes: 0.5, form: 'dust', shift: 0, fade: 0.6,
-  },
-  // the close
-  healC_close: {
-    a: '#121110', b: '#2a2420', c: '#8a5a44', glow: '#d4a63c',
-    ink: '#f1ebe3', inkSoft: '#bdb2a6', scale: 1.5, warp: 2.2, speed: 0.035, light: 0, motes: 0.5, form: 'bowl', shift: 0, fade: 0.7,
+  // the close: the lotus again, smaller
+  heal_close: {
+    a: '#04161a', b: '#0d3a3f', c: '#7fc4b8', glow: '#e2c27a',
+    ink: '#eef5f1', inkSoft: '#a9c4bd', scale: 1.2, warp: 1.8, speed: 0.03, light: 0, motes: 0.4, form: 'lotus', shift: 0, fade: 0.6, zoom: 0.8,
   },
   close: {
     a: '#050203', b: '#240809', c: '#8e2a1a', glow: '#f0b34a',
@@ -361,7 +292,7 @@ export const PRESETS: Record<string, Preset> = {
 export type Numeric = {
   a: number[]; b: number[]; c: number[]; glow: number[]; ink: number[]; inkSoft: number[];
   scale: number; warp: number; speed: number; light: number; motes: number;
-  shift: number; dawn: number; fade: number; moon: number;
+  shift: number; dawn: number; fade: number; moon: number; zoom: number;
   /** one weight per form, blended: drives each form's own motion */
   w: number[];
   form: FormKey;
@@ -377,14 +308,14 @@ export function toNumeric(p: Preset): Numeric {
     a: hexToRgb(p.a), b: hexToRgb(p.b), c: hexToRgb(p.c), glow: hexToRgb(p.glow),
     ink: hexToRgb(p.ink), inkSoft: hexToRgb(p.inkSoft),
     scale: p.scale, warp: p.warp, speed: p.speed, light: p.light, motes: p.motes,
-    shift: p.shift ?? 0, dawn: p.dawn ?? 0, fade: p.fade ?? 1, moon: p.moon ?? 1,
+    shift: p.shift ?? 0, dawn: p.dawn ?? 0, fade: p.fade ?? 1, moon: p.moon ?? 1, zoom: p.zoom ?? 1,
     w: FORM_KEYS.map((k) => (k === p.form ? 1 : 0)),
     form: p.form,
   };
 }
 
 const COLOR_KEYS = ['a', 'b', 'c', 'glow', 'ink', 'inkSoft'] as const;
-const NUM_KEYS = ['scale', 'warp', 'speed', 'light', 'motes', 'shift', 'dawn', 'fade', 'moon'] as const;
+const NUM_KEYS = ['scale', 'warp', 'speed', 'light', 'motes', 'shift', 'dawn', 'fade', 'moon', 'zoom'] as const;
 
 /** out = lerp(x, y, t), written into out */
 export function mixInto(out: Numeric, x: Numeric, y: Numeric, t: number) {

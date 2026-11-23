@@ -55,6 +55,8 @@ const MOVES = [
         <div class="dv-sig" data-hero>
           <div class="yantra-turn" data-yantra>
             <svg viewBox="-150 -150 300 300" class="yt-svg" tabindex="0" role="slider" aria-label="Turn the yantra" aria-valuemin="0" aria-valuemax="360" aria-valuenow="47">
+              <!-- a mala of 108 beads round the yantra, drawn in the same figure so it always shares its centre -->
+              <g class="yt-mala" aria-hidden="true">{Array.from({ length: 108 }, (_, i) => { const a = (i / 108) * Math.PI * 2 - Math.PI / 2; return <circle cx={(Math.cos(a) * 143).toFixed(1)} cy={(Math.sin(a) * 143).toFixed(1)} r={i === 0 ? 3.4 : 1.6} class={i === 0 ? 'yt-bead meru' : 'yt-bead'} />; })}</g>
               <g class="yt-rot" data-yt-rot>
                 <circle r="132" class="yt-line" />
                 <circle r="124" class="yt-line thin" />

@@ -242,6 +242,7 @@ uniform float uScatter;
 uniform float uSize;
 uniform float uPR;
 uniform float uFit;
+uniform float uZoom;
 uniform vec2 uShift;
 uniform vec4 uW1; // flames, water, silk, stars
 uniform vec4 uW2; // letters, eye, horizon, sigils
@@ -313,7 +314,7 @@ void main() {
 
   // yantra: breathes and turns a few degrees, never more
   vec2 yc = vec2(0.0, 0.3);
-  p.xy = mix(p.xy, yc + rot(p.xy - yc, sin(uTime * 0.12) * 0.07) * (1.0 + 0.015 * sin(uTime * 0.7)), uW5.x);
+  p.xy = mix(p.xy, yc + (p.xy - yc) * (1.0 + 0.015 * sin(uTime * 0.7)), uW5.x);
   // temple: floats, like a memory of marble
   p.y += sin(uTime * 0.35) * 0.06 * uW5.y;
   p.z += sin(uTime * 0.5 + p.x * 0.8) * 0.12 * uW5.y;
@@ -336,7 +337,7 @@ void main() {
   p.xy *= mix(1.0, 1.0 + 0.04 * at, uW7.x);
   // bowl: floats, turning a few degrees
   vec2 bc = vec2(0.0, -0.2);
-  p.xy = mix(p.xy, bc + rot(p.xy - bc, sin(uTime * 0.2) * 0.04), uW7.y);
+  p.xy = mix(p.xy, bc + (p.xy - bc) * (1.0 + 0.012 * sin(uTime * 0.5)), uW7.y);
   p.y += sin(uTime * 0.4) * 0.05 * uW7.y;
 
   // the astrolabe turns slowly; the rose opens and closes a little; the pentacle and moons glow in place
@@ -344,7 +345,7 @@ void main() {
   p.xy = mix(p.xy, ac + rot(p.xy - ac, uTime * 0.03), uW6.z);
   p.xy = mix(p.xy, ac + (p.xy - ac) * (1.0 + 0.03 * sin(uTime * 0.6)), uW6.x);
 
-  p.xy = p.xy * uFit + uShift;
+  p.xy = p.xy * uFit * uZoom + uShift;
 
   // touch: the form parts and swirls around a finger or cursor, then settles back
   vec2 td = p.xy - uTouch;
@@ -691,7 +692,7 @@ export class World {
       blending: CustomBlending, blendSrc: OneFactor, blendDst: OneMinusSrcAlphaFactor,
       uniforms: {
         uTime: { value: 0 }, uMix: { value: 0 }, uT: { value: 0 }, uScatter: { value: 0.9 },
-        uSize: { value: 1.9 }, uPR: { value: 1 }, uFit: { value: 1 }, uShift: { value: new Vector2() },
+        uSize: { value: 1.9 }, uPR: { value: 1 }, uFit: { value: 1 }, uZoom: { value: 1 }, uShift: { value: new Vector2() },
         uW1: { value: [0, 0, 0, 0] }, uW2: { value: [0, 0, 0, 0] }, uW3: { value: [0, 0, 0, 0] }, uW4: { value: [0, 0, 0, 0] }, uW5: { value: [0, 0, 0, 0] }, uW6: { value: [0, 0, 0, 0] }, uW7: { value: [0, 0, 0, 0] }, uAngMala: { value: 0 },
         uAngFlame: { value: 0 }, uAngVortex: { value: 0 }, uAngHalo: { value: 0 }, uRise: { value: 1 }, uVeil: { value: 0 },
         uColor: { value: new Vector3(1, 0.8, 0.5) }, uColor2: { value: new Vector3(1, 0.5, 0.3) }, uInk: { value: new Vector3() },
@@ -1142,6 +1143,7 @@ export class World {
       fu.uMix.value = this.fMix;
       fu.uT.value = this.tE;
       fu.uFit.value = this.fit;
+      fu.uZoom.value = c.zoom;
       fu.uShift.value.set(c.shift * this.shiftScale * this.fit, 0);
       fu.uW1.value = [w[idx('flames')], w[idx('water')], w[idx('silk')], w[idx('stars')]];
       fu.uW2.value = [w[idx('letters')], w[idx('eye')], w[idx('horizon')], w[idx('sigils')]];
@@ -1189,9 +1191,11 @@ export class World {
       du.uLight.value = c.light;
     }
 
-    this.camera.position.x += (this.pointer.x * 0.6 - this.camera.position.x) * 0.05;
-    this.camera.position.y += (this.pointer.y * 0.4 - this.camera.position.y) * 0.05;
-    this.camera.lookAt(this.camera.position.x * 0.3, this.camera.position.y * 0.3, -10);
+    // the camera drifts a little with the pointer but always looks straight ahead,
+    // so the forms keep their true shape and never appear tilted
+    this.camera.position.x += (this.pointer.x * 0.35 - this.camera.position.x) * 0.04;
+    this.camera.position.y += (this.pointer.y * 0.22 - this.camera.position.y) * 0.04;
+    this.camera.lookAt(this.camera.position.x, this.camera.position.y, -10);
 
     // 1) smoke at reduced resolution
     this.renderer.setRenderTarget(this.bgRT);

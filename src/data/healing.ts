@@ -1,10 +1,13 @@
 /**
- * Pillar 3, Healing & Inner Work: three art directions to compare live, all
- * built on the catalogue's four categories. Short descriptive lines are DRAFT
- * copy for Sarvakali to refine. Facts were checked in November 2026 (see the
- * fact-check table on the preview cover); nothing here claims a health effect.
+ * Pillar 3, Healing & Inner Work · Still water, with gold.
+ * The chosen direction mixes A (Still water: night pool, sea glass, pearl) with
+ * the gold of C (Golden repair). Signatures: breathing patterns in the opening,
+ * the body of light in Energy, the golden repair puzzle in Shadow, and a
+ * journaling prompt. (Directions A, B and C remain in the project history.)
+ * Short descriptive lines are DRAFT copy for Sarvakali to refine. Facts were
+ * checked in November 2026 (see the cover's fact check); nothing here claims a
+ * health effect.
  */
-export type HealDir = 'a' | 'b' | 'c';
 
 export const CHAPTERS: { key: string; category: string; title: string; line: string; care?: boolean }[] = [
   { key: 'energy', category: 'Energy Healing, Aura & Chakra', title: 'Energy, aura and chakras', line: 'Reiki, aura and chakra work, readings of your energy, and cutting the cords that drain you.' },
@@ -75,60 +78,58 @@ export const SUB_ICON: Record<string, string> = {
   'Journaling Combined with Other Tools': 'sparkle',
 };
 
-export type HealDirection = {
-  key: HealDir; name: string; essence: string; feeling: string[];
-  palette: { name: string; hex: string }[];
-  type: { display: string; note: string; fontHref: string };
-  worlds: string; layout: string; signature: { name: string; how: string }; sound: string; imagery: string; voice: string;
-};
-
-export const HEAL_DIRECTIONS: HealDirection[] = [
+/**
+ * Breathing patterns for the guide. Each phase: what to do, how long, and how
+ * full the circle is (0 empty, 1 full). Sources are on the cover's fact check;
+ * the page describes each pattern without promising an effect.
+ */
+export type BreathPhase = { say: string; kind: 'in' | 'hold' | 'out'; secs: number; to: number; side?: 'left' | 'right' };
+export const BREATHS: { key: string; name: string; short: string; about: string; rounds?: number; phases: BreathPhase[] }[] = [
   {
-    key: 'a', name: 'Still water',
-    essence: 'A pool at night under the moon: deep teal, sea glass and pearl. Slow, quiet and kind, with a lotus opening on the water.',
-    feeling: ['calm', 'soft', 'slow', 'safe'],
-    palette: [
-      { name: 'Night pool', hex: '#04161a' }, { name: 'Deep teal', hex: '#0d3a3f' }, { name: 'Sea glass', hex: '#7fc4b8' },
-      { name: 'Pearl', hex: '#e9f1ec' }, { name: 'Lotus pink', hex: '#e7a9b8' }, { name: 'Sand', hex: '#d9c8a6' },
-    ],
-    type: { display: 'Spectral', note: 'a light, airy serif, often in italic', fontHref: 'https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;1,300&display=swap' },
-    worlds: 'Light on water: a lotus, ripples, a halo, a slow spiral, threads of silk.',
-    layout: 'Wide, quiet spaces; subcategories float like stones in water.',
-    signature: { name: 'Breathe with the water', how: 'A circle of light grows as you breathe in and settles as you breathe out, slowly; the water ripples with each breath. Stop whenever you like.' },
-    sound: 'Water drops and a low hum.',
-    imagery: 'Photography of still water, lotus leaves, moonlight on a pond.',
-    voice: 'Gentle and unhurried, like someone sitting beside you.',
+    key: 'soft', name: 'Long out-breath', short: 'In 4 · out 6',
+    about: 'The simplest: a breath out that is a little longer than the breath in.',
+    phases: [{ say: 'Breathe in', kind: 'in', secs: 4, to: 1 }, { say: 'And out, slowly', kind: 'out', secs: 6, to: 0 }],
   },
   {
-    key: 'b', name: 'The body of light',
-    essence: 'Dawn: warm ivory paper with saffron, rose and indigo. The seven chakras rise along a figure of light.',
-    feeling: ['warm', 'hopeful', 'embodied', 'bright'],
-    palette: [
-      { name: 'Dawn paper', hex: '#f6efe4' }, { name: 'Saffron', hex: '#e08a2e' }, { name: 'Rose', hex: '#c7607a' },
-      { name: 'Indigo', hex: '#3b3a7a' }, { name: 'Ink', hex: '#2b2230' }, { name: 'Leaf', hex: '#4f8a63' },
-    ],
-    type: { display: 'Marcellus', note: 'classical, open letters', fontHref: 'https://fonts.googleapis.com/css2?family=Marcellus&display=swap' },
-    worlds: 'Ink-light on dawn paper: the seven chakras on one line, a halo, a lotus, the tree.',
-    layout: 'A bright page; each chapter opens with a coloured band; subcategories as soft cards.',
-    signature: { name: 'The body of light', how: 'Tap any of the seven chakras on the figure to see its Sanskrit name, where it is placed and the working for it. The page says which parts are modern.' },
-    sound: 'A soft wooden knock and a bell.',
-    imagery: 'Warm photography of hands, light through cloth, morning rooms.',
-    voice: 'Clear and encouraging, like a good teacher.',
+    key: 'box', name: 'Box breathing', short: 'In 4 · hold 4 · out 4 · hold 4',
+    about: 'Four equal sides: in, hold, out, hold.',
+    phases: [{ say: 'Breathe in', kind: 'in', secs: 4, to: 1 }, { say: 'Hold', kind: 'hold', secs: 4, to: 1 }, { say: 'Breathe out', kind: 'out', secs: 4, to: 0 }, { say: 'Hold', kind: 'hold', secs: 4, to: 0 }],
   },
   {
-    key: 'c', name: 'Golden repair',
-    essence: 'Kintsugi: charcoal, clay and ash, mended with gold. What broke is not hidden; it becomes part of the story.',
-    feeling: ['honest', 'grounded', 'tender', 'strong'],
-    palette: [
-      { name: 'Charcoal', hex: '#121110' }, { name: 'Clay', hex: '#8a5a44' }, { name: 'Ash', hex: '#cfc6bb' },
-      { name: 'Gold', hex: '#d4a63c' }, { name: 'Lacquer red', hex: '#8c2a22' }, { name: 'Stone', hex: '#5d5a55' },
+    key: '478', name: '4-7-8, the relaxing breath', short: 'In 4 · hold 7 · out 8',
+    about: 'Taught by Dr Andrew Weil: in through the nose for four, hold for seven, out through the mouth for eight. Four rounds is plenty to begin with.',
+    rounds: 4,
+    phases: [{ say: 'In through the nose', kind: 'in', secs: 4, to: 1 }, { say: 'Hold', kind: 'hold', secs: 7, to: 1 }, { say: 'Out through the mouth', kind: 'out', secs: 8, to: 0 }],
+  },
+  {
+    key: 'sigh', name: 'Cyclic sighing', short: 'In · a little more · long out',
+    about: 'A full breath in, a short second sip of air on top, then a long, slow breath out. In a 2023 Stanford study it lifted mood the most of the practices compared, at five minutes a day.',
+    phases: [{ say: 'Breathe in', kind: 'in', secs: 2.5, to: 0.8 }, { say: 'A little more', kind: 'in', secs: 1, to: 1 }, { say: 'Long breath out', kind: 'out', secs: 6, to: 0 }],
+  },
+  {
+    key: 'coherent', name: 'Coherent breathing', short: 'In 5 · out 5',
+    about: 'Even and unhurried: about six breaths a minute.',
+    phases: [{ say: 'Breathe in', kind: 'in', secs: 5, to: 1 }, { say: 'Breathe out', kind: 'out', secs: 5, to: 0 }],
+  },
+  {
+    key: 'bhramari', name: 'Bhramari, the humming bee', short: 'In 4 · hum out 8',
+    about: 'A pranayama: breathe in, then breathe out slowly with a soft, steady hum, the lips closed. Some cover the ears gently with the thumbs.',
+    phases: [{ say: 'Breathe in', kind: 'in', secs: 4, to: 1 }, { say: 'Hum softly as you breathe out', kind: 'out', secs: 8, to: 0 }],
+  },
+  {
+    key: 'nadi', name: 'Nadi shodhana, alternate nostril', short: 'Left in · right out · right in · left out',
+    about: 'A pranayama: rest the thumb on the right nostril and the ring finger on the left, and let the breath change sides. Without holds, which is how most begin.',
+    phases: [
+      { say: 'In through the left', kind: 'in', secs: 4, to: 1, side: 'left' }, { say: 'Out through the right', kind: 'out', secs: 4, to: 0, side: 'right' },
+      { say: 'In through the right', kind: 'in', secs: 4, to: 1, side: 'right' }, { say: 'Out through the left', kind: 'out', secs: 4, to: 0, side: 'left' },
     ],
-    type: { display: 'Shippori Mincho', note: 'a calm Japanese-style serif', fontHref: 'https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500&display=swap' },
-    worlds: 'A bowl mended with gold, a halo, a slow spiral, falling dust.',
-    layout: 'Dark, still pages; gold seams divide the chapters; subcategories as ceramic tiles.',
-    signature: { name: 'Mend the bowl', how: 'A bowl lies in pieces. Touch each piece to set it back, and the seam fills with gold. When it is whole, a line on kintsugi.' },
-    sound: 'A single low bell, and clay set down on wood.',
-    imagery: 'Close photography of mended ceramics, hands, raw clay.',
-    voice: 'Honest and steady: nothing to hide, nothing to fix in a hurry.',
   },
 ];
+
+/** a grounding exercise with the five senses, offered next to the breathing */
+export const GROUNDING = [
+  { n: 5, sense: 'things you can see' }, { n: 4, sense: 'things you can touch' }, { n: 3, sense: 'things you can hear' },
+  { n: 2, sense: 'things you can smell' }, { n: 1, sense: 'thing you can taste' },
+];
+
+export const BREATH_CARE = 'Breathe gently and never strain. If you feel dizzy or uneasy, return to your normal breath. Skip the holds if you are pregnant or have a heart, blood-pressure or breathing condition, and ask your doctor if unsure.';

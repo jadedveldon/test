@@ -368,15 +368,24 @@ function agni(n: number, seeds: Float32Array) {
 
 /* line art drawn in points: helpers */
 type Seg = [number, number, number, number];
+/**
+ * Points spread evenly along the lines (stratified, not random), so every form
+ * reads as a clean engraved line rather than a scatter; a whisper of jitter
+ * keeps it alive.
+ */
 function alongSegments(n: number, segs: Seg[], r: () => number, jitter: number, cy = 0) {
   const lens = segs.map(([a, b, c, d]) => Math.hypot(c - a, d - b));
   const total = lens.reduce((x, y) => x + y, 0);
   const o = new Float32Array(n * 3);
+  const step = total / Math.max(1, n);
+  let k = 0, acc = 0;
   for (let i = 0; i < n; i++) {
-    let t = r() * total, k = 0;
-    while (k < segs.length - 1 && t > lens[k]) { t -= lens[k]; k++; }
-    const [a, b, c, d] = segs[k], f = lens[k] ? t / lens[k] : 0;
-    put(o, i, a + (c - a) * f + gauss(r) * jitter, cy + b + (d - b) * f + gauss(r) * jitter, CZ + gauss(r) * jitter * 3);
+    let t = (i + 0.25 + r() * 0.5) * step;
+    while (k < segs.length - 1 && t > acc + lens[k]) { acc += lens[k]; k++; }
+    t -= acc;
+    const [a, b, c, d] = segs[k], f = lens[k] ? Math.min(1, t / lens[k]) : 0;
+    const j = jitter * 0.7;
+    put(o, i, a + (c - a) * f + gauss(r) * j, cy + b + (d - b) * f + gauss(r) * j, CZ + gauss(r) * j * 1.5);
   }
   return o;
 }

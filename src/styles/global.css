@@ -855,6 +855,12 @@ body:has(.dv) .yantra { opacity: 0.6; }
 .yt-line.thin { stroke-width: 0.6; }
 .yt-line.ghost { stroke: rgb(var(--ink) / 0.25); stroke-dasharray: 2 4; }
 .yt-bindu { fill: rgb(var(--glow) / 0.5); transition: fill 0.6s ease, filter 0.6s ease; }
+.yt-bead { fill: rgb(var(--glow) / 0.55); }
+.yt-bead.meru { fill: rgb(var(--glow)); }
+.yt-mala { transform-origin: 0 0; animation: yt-mala-turn 240s linear infinite; }
+@keyframes yt-mala-turn { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .yt-mala { animation: none; } }
+.yantra-turn [data-yt-hint] { margin-top: 104px; }
 .yantra-turn.is-aligned .yt-bindu { fill: #fff6dc; filter: drop-shadow(0 0 14px rgb(var(--glow))); }
 .yantra-turn.is-aligned .yt-line.ghost { stroke: rgb(var(--glow) / 0.9); stroke-dasharray: none; }
 .yt-names { list-style: none; margin: 0; padding: 0; position: absolute; left: 50%; top: min(200px, 50%); width: 0; height: 0; pointer-events: none; }
@@ -893,7 +899,7 @@ li.is-found > .chip-keep, li.is-found > .vidya-keep, li.is-found .deity-name { b
 .vidya-keep { font: 500 0.72rem/1 var(--f-body); color: rgb(var(--ink)); background: none; border: 1px solid rgb(var(--glow) / 0.5); border-radius: 999px; padding: 5px 10px; cursor: pointer; }
 .vidya-keep[aria-pressed="true"] { background: rgb(var(--glow)); color: rgb(var(--bg-a)); border-color: rgb(var(--glow)); }
 .vidya-keep[aria-pressed="true"]::before { content: "✓ "; }
-.vidya-bindu { position: absolute; left: 50%; top: 50%; width: 14px; height: 14px; translate: -50% -50%; border-radius: 50%; background: rgb(var(--glow)); box-shadow: 0 0 30px 8px rgb(var(--glow) / 0.5); }
+.vidya-bindu { position: absolute; left: 50%; top: 50%; width: 14px; height: 14px; translate: -50% -50%; border-radius: 50%; } /* the yantra in the world holds the bindu; only its ring is drawn here */
 .vidya-bindu::after { content: ""; position: absolute; left: 50%; top: 50%; width: calc(var(--r) * 1.3); aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; border: 1px solid rgb(var(--glow) / 0.22); }
 .vidya-lines { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 40px; font-size: 0.92rem; color: rgb(var(--ink-soft)); }
 .vidya-lines li { break-inside: avoid; padding: 5px 0; }
@@ -1240,92 +1246,102 @@ html[data-light="1"] .sub-icon { stroke: #b1261a; }
 }
 
 /* ======================================== pillar 3 · Healing & Inner Work
-   Three directions to compare: A Still water, B The body of light, C Golden repair. */
-html[data-heal="a"] { --f-heal: "Spectral", "Iowan Old Style", Georgia, serif; }
-html[data-heal="b"] { --f-heal: "Marcellus", "Iowan Old Style", Georgia, serif; }
-html[data-heal="c"] { --f-heal: "Shippori Mincho", "Iowan Old Style", Georgia, serif; }
-.hl .display-l, .hl .display-m, [data-chapter="healing"] .display-l { font-family: var(--f-heal); font-weight: 300; }
-html[data-heal="a"] .hl .display-l, html[data-heal="a"] [data-chapter="healing"] .display-l { font-style: italic; letter-spacing: -0.01em; }
-html[data-heal="b"] .hl .display-l, html[data-heal="b"] [data-chapter="healing"] .display-l { font-weight: 400; letter-spacing: 0.01em; }
-html[data-heal="c"] .hl .display-l, html[data-heal="c"] [data-chapter="healing"] .display-l { font-weight: 400; letter-spacing: 0.02em; }
-[data-heal-only] { display: none !important; }
-html[data-heal="a"] [data-heal-only="a"], html[data-heal="b"] [data-heal-only="b"], html[data-heal="c"] [data-heal-only="c"] { display: grid !important; }
-html[data-heal="a"] [data-heal-card="a"], html[data-heal="b"] [data-heal-card="b"], html[data-heal="c"] [data-heal-card="c"] { box-shadow: inset 0 0 0 2px rgb(var(--glow)); }
-html[data-light="1"][data-heal="b"] [data-heal-card="b"] { box-shadow: inset 0 0 0 2px rgb(var(--ink)); }
-.hl .dv-card h3 { font-family: var(--f-heal); }
+   Still water, with gold: teal night, pearl text, gold accents. */
+.hl { --gold: 226 194 122; --gold-deep: 196 160 84; --pearl: 233 241 236; --sea: 127 196 184; }
+.hl .display-l, .hl .display-m, [data-chapter="healing"] .display-l { font-family: "Spectral", "Iowan Old Style", Georgia, serif; font-weight: 300; font-style: italic; letter-spacing: -0.01em; }
+.hl .kicker { color: rgb(var(--gold)); }
+.hl .lede::first-letter { color: inherit; }
 
 .hl-hero { min-height: 100svh; }
-.hl-hero-grid { max-width: 1180px; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: 32px; align-items: center; }
+.hl-hero-grid { max-width: 1180px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 36px; align-items: center; }
 .hl-hero-copy { display: grid; gap: 18px; justify-items: start; }
 .hl-title { font-size: clamp(3rem, 7vw, 6rem); }
-.hl-index { list-style: none; margin: 4px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 18px; width: 100%; max-width: 36rem; }
+.hl-index { list-style: none; margin: 4px 0 0; padding: 14px 0 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 18px; width: 100%; max-width: 36rem; border-top: 1px solid rgb(var(--gold) / 0.35); }
 .hl-index a { display: grid; grid-template-columns: 2rem minmax(0, 1fr); column-gap: 8px; align-items: baseline; text-decoration: none; padding: 7px 8px; border-radius: 12px; }
 .hl-index a:hover { background: rgb(var(--ink) / 0.06); }
-.hl-num { font: 500 0.82rem/1 var(--f-heal); color: rgb(var(--glow)); grid-row: span 2; }
-html[data-light="1"] .hl-num { color: rgb(var(--ink-soft)); }
-.hl-ix-title { font: 400 1.08rem/1.2 var(--f-heal); }
+.hl-num { font: 400 0.9rem/1 "Spectral", Georgia, serif; color: rgb(var(--gold)); grid-row: span 2; }
+.hl-ix-title { font: 300 italic 1.12rem/1.2 "Spectral", Georgia, serif; }
 .hl-ix-n { font-size: 0.74rem; color: rgb(var(--ink-soft)); }
-.hl-sig { display: grid; justify-items: center; }
 .hl-move { min-height: auto; padding-block: 16vh 10vh; }
 .hl-inner { max-width: 1140px; justify-items: stretch; gap: 26px; }
+.hl-split { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 44px; align-items: center; }
+.hl-split > .sub-cards { grid-column: 1 / -1; }
 .hl-head { display: grid; gap: 14px; justify-items: start; max-width: 46rem; }
-.hl-care { font-size: 0.88rem; line-height: 1.55; padding: 12px 16px; border-radius: 12px; background: rgb(var(--bg-a) / 0.45); box-shadow: inset 0 0 0 1px rgb(var(--ink) / 0.25); max-width: 42rem; }
+.hl-care { font-size: 0.88rem; line-height: 1.55; padding: 12px 16px; border-radius: 12px; background: rgb(4 22 26 / 0.55); box-shadow: inset 0 0 0 1px rgb(var(--gold) / 0.3); max-width: 42rem; }
 .hl-care a { color: rgb(var(--ink)); }
 
+/* subcategory cards: smooth stones in the water, edged in gold */
+.hl .sub-card { border-radius: 26px; background: rgb(4 22 26 / 0.5); box-shadow: inset 0 0 0 1px rgb(var(--gold) / 0.22), 0 24px 60px -36px rgb(var(--sea) / 0.45); }
+.hl .sub-card h3 { font: 300 italic 1.3rem/1.15 "Spectral", Georgia, serif; }
+.hl .sub-icon { stroke: rgb(var(--gold)); }
+.hl .sub-card .chip-keep:hover { box-shadow: inset 0 0 0 1px rgb(var(--gold) / 0.7); }
+
 /* journaling prompt card */
-.prompt-card { display: grid; gap: 10px; justify-items: start; max-width: 40rem; padding: 22px 24px; border-radius: 18px; background: rgb(var(--bg-a) / 0.5); box-shadow: inset 0 0 0 1px rgb(var(--glow) / 0.35); -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); }
-html[data-light="1"] .prompt-card { box-shadow: inset 0 0 0 1px rgb(var(--ink) / 0.2); }
-.prompt-text { font: 300 clamp(1.4rem, 2.6vw, 2rem)/1.25 var(--f-heal); }
-html[data-heal="a"] .prompt-text { font-style: italic; }
+.prompt-card { display: grid; gap: 10px; justify-items: start; max-width: 40rem; padding: 22px 24px; border-radius: 22px; background: rgb(4 22 26 / 0.55); box-shadow: inset 0 0 0 1px rgb(var(--gold) / 0.35); -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); }
+.prompt-text { font: 300 italic clamp(1.4rem, 2.6vw, 2rem)/1.25 "Spectral", Georgia, serif; }
 
-/* subcategory cards per direction */
-html[data-heal="a"] .hl .sub-card { border-radius: 28px; box-shadow: inset 0 0 0 1px rgb(var(--glow) / 0.22), 0 24px 60px -36px rgb(var(--glow) / 0.45); }
-html[data-heal="a"] .hl .sub-card h3 { font-style: italic; }
-html[data-heal="b"] .hl .sub-card { border-radius: 14px; background: rgb(255 252 246 / 0.6); box-shadow: inset 0 3px 0 rgb(var(--glow) / 0.85), inset 0 0 0 1px rgb(var(--ink) / 0.14); }
-html[data-heal="b"] .hl .sub-icon { stroke: rgb(var(--glow)); }
-html[data-heal="c"] .hl .sub-card { border-radius: 4px 14px 6px 12px; background: rgb(28 25 23 / 0.62); box-shadow: inset 0 0 0 1px rgb(207 198 187 / 0.18); position: relative; }
-html[data-heal="c"] .hl .sub-card::after { content: ""; position: absolute; left: 18%; top: 0; width: 1.5px; height: 34%; background: linear-gradient(rgb(212 166 60 / 0.9), rgb(212 166 60 / 0)); transform: skewX(-14deg); pointer-events: none; }
-html[data-heal="c"] .hl .sub-icon { stroke: #d4a63c; }
-html[data-heal="c"] .hl .btn { border-radius: 3px; }
+/* breathe */
+.breath { display: grid; justify-items: center; gap: 10px; text-align: center; }
+.br-modes { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; max-width: 34rem; }
+.br-modes button { font: 500 0.74rem/1 var(--f-body); color: rgb(var(--ink)); background: rgb(4 22 26 / 0.5); border: 0; border-radius: 999px; padding: 8px 12px; cursor: pointer; box-shadow: inset 0 0 0 1px rgb(var(--gold) / 0.3); transition: background 0.25s ease, box-shadow 0.25s ease; }
+.br-modes button:hover { box-shadow: inset 0 0 0 1px rgb(var(--gold) / 0.8); }
+.br-modes button[aria-pressed="true"] { background: rgb(var(--gold)); color: #0b1a1c; box-shadow: none; }
+.br-stage { position: relative; display: grid; place-items: center; width: min(100%, 340px); }
+.breath-svg { width: 100%; height: auto; overflow: visible; grid-area: 1 / 1; }
+.br-ring { fill: none; stroke: rgb(var(--gold) / 0.3); stroke-width: 1; stroke-dasharray: 2 6; }
+.br-full { fill: none; stroke: rgb(var(--pearl) / 0.12); stroke-width: 1; }
+.br-core { fill: rgb(var(--sea) / 0.12); stroke: rgb(var(--pearl) / 0.85); stroke-width: 1.4; filter: drop-shadow(0 0 18px rgb(var(--sea) / 0.5)); }
+.br-hold { fill: none; stroke: rgb(var(--gold)); stroke-width: 2; opacity: 0; r: 104px; stroke-dasharray: 4 6; }
+.br-ripple { fill: none; stroke: rgb(var(--sea) / 0.8); stroke-width: 1; }
+.br-sides { opacity: 0; transition: opacity 0.4s ease; }
+.breath.is-nadi .br-sides { opacity: 1; }
+.br-side { font: 500 15px/1 var(--f-body); fill: rgb(var(--ink-soft) / 0.6); text-anchor: middle; transition: fill 0.3s ease; }
+.br-side.is-on { fill: rgb(var(--gold)); }
+.br-read { grid-area: 1 / 1; display: grid; gap: 4px; justify-items: center; pointer-events: none; padding: 0 22%; }
+.br-word { font: 300 italic 1.35rem/1.2 "Spectral", Georgia, serif; min-height: 1.3em; }
+.br-count { font: 300 2.2rem/1 "Spectral", Georgia, serif; color: rgb(var(--gold)); min-height: 1em; }
+.br-ground { list-style: none; margin: 0; padding: 0; display: flex; gap: 8px; justify-content: center; }
+.br-ground li { font-size: 0.8rem; color: rgb(var(--ink-soft)); padding: 6px 10px; border-radius: 999px; box-shadow: inset 0 0 0 1px rgb(var(--ink) / 0.15); transition: all 0.3s ease; }
+.br-ground li b { color: rgb(var(--gold)); margin-right: 2px; }
+.br-ground li.is-on { color: rgb(var(--ink)); box-shadow: inset 0 0 0 1px rgb(var(--gold)); }
+.br-ground li.is-done { opacity: 0.5; }
+.br-short { font: 500 0.78rem/1.3 var(--f-body); letter-spacing: 0.08em; color: rgb(var(--gold)); }
+.br-about { font-size: 0.9rem; line-height: 1.5; max-width: 32rem; color: rgb(var(--ink) / 0.88); }
+.br-care { font-size: 0.74rem; line-height: 1.45; max-width: 30rem; color: rgb(var(--ink-soft)); }
 
-/* A · breathe with the water */
-.breath { justify-items: center; gap: 10px; text-align: center; }
-.breath-svg { width: min(100%, 360px); height: auto; overflow: visible; }
-.br-ring { fill: none; stroke: rgb(var(--glow) / 0.25); stroke-width: 1; stroke-dasharray: 2 6; }
-.br-core { fill: rgb(var(--glow) / 0.14); stroke: rgb(var(--glow) / 0.85); stroke-width: 1.4; filter: drop-shadow(0 0 18px rgb(var(--glow) / 0.55)); }
-.br-ripple { fill: none; stroke: rgb(var(--glow) / 0.8); stroke-width: 1; }
-.br-word { font: 300 italic 1.5rem/1.2 var(--f-heal); min-height: 1.3em; }
-.breath .br-word { margin-top: 26px; }
-
-/* B · the body of light */
-.bodylight { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); align-items: center; gap: 18px; width: 100%; }
-.body-svg { width: 100%; max-width: 300px; height: auto; overflow: visible; justify-self: center; }
-.bl-figure { fill: rgb(255 250 240 / 0.5); stroke: rgb(var(--ink) / 0.35); stroke-width: 1.2; }
-.bl-line { stroke: rgb(var(--ink) / 0.25); stroke-width: 1; stroke-dasharray: 2 4; }
+/* the body of light, on night water */
+.bodylight { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); align-items: center; gap: 18px; width: 100%; }
+.body-svg { width: 100%; max-width: 280px; height: auto; overflow: visible; justify-self: center; }
+.bl-figure { fill: rgb(var(--pearl) / 0.05); stroke: rgb(var(--gold) / 0.55); stroke-width: 1.2; }
+.bl-line { stroke: rgb(var(--pearl) / 0.25); stroke-width: 1; stroke-dasharray: 2 4; }
 .bl-node { cursor: pointer; outline: none; }
-.bl-halo { fill: var(--ck); opacity: 0.16; transition: opacity 0.3s ease, r 0.3s ease; }
-.bl-dot { fill: var(--ck); stroke: #fff8ec; stroke-width: 1.5; }
-.bl-node:hover .bl-halo, .bl-node:focus-visible .bl-halo { opacity: 0.35; }
-.bl-node.is-on .bl-halo { opacity: 0.45; r: 20px; }
+.bl-halo { fill: var(--ck); opacity: 0.18; transition: opacity 0.3s ease; }
+.bl-dot { fill: var(--ck); stroke: rgb(var(--pearl)); stroke-width: 1.2; }
+.bl-node:hover .bl-halo, .bl-node:focus-visible .bl-halo { opacity: 0.4; }
+.bl-node.is-on .bl-halo { opacity: 0.55; r: 20px; }
 .bl-info { display: grid; gap: 8px; justify-items: start; text-align: left; }
-.bl-deva { font: 400 2.2rem/1.1 "Tiro Devanagari Sanskrit", serif; color: var(--ck, rgb(var(--ink))); }
-.bl-name { font: 400 1.5rem/1.2 var(--f-heal); }
+.bl-deva { font: 400 2.2rem/1.1 "Tiro Devanagari Sanskrit", serif; color: var(--ck, rgb(var(--gold))); filter: brightness(1.25); }
+.bl-name { font: 300 italic 1.6rem/1.2 "Spectral", Georgia, serif; }
 .bl-place { color: rgb(var(--ink-soft)); }
 
-/* C · mend the bowl */
-.mend { justify-items: center; gap: 10px; text-align: center; }
-.mend-svg { width: min(100%, 400px); height: auto; overflow: visible; }
-.md-shard { cursor: pointer; outline: none; }
-.md-clay { fill: #8a5a44; stroke: #5a3a2c; stroke-width: 1; transition: fill 0.4s ease; }
-.md-shard:hover .md-clay, .md-shard:focus-visible .md-clay { fill: #9a6851; }
-.md-shard.is-home { cursor: default; }
-.md-seam { fill: none; stroke: #e2bd62; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 4px rgb(226 189 98 / 0.8)); }
-.md-foot { fill: #6f4636; }
-.mend.is-whole .md-clay { fill: #93604a; }
+/* golden repair: a puzzle of straight-cut pieces */
+.mend { display: grid; justify-items: center; gap: 8px; text-align: center; }
+.mend-svg { width: min(100%, 420px); height: auto; overflow: visible; touch-action: none; -webkit-user-select: none; user-select: none; }
+.md-guide { fill: rgb(var(--pearl) / 0.03); stroke: rgb(var(--gold) / 0.35); stroke-width: 1; stroke-dasharray: 3 5; }
+.md-foot { fill: none; stroke: rgb(var(--pearl) / 0.1); stroke-width: 1; }
+.md-piece { cursor: grab; outline: none; }
+.md-piece.is-held { cursor: grabbing; }
+.md-piece.is-held .md-clay { filter: drop-shadow(0 10px 14px rgb(0 0 0 / 0.5)); }
+.md-clay { fill: #2c4a4e; stroke: rgb(var(--pearl) / 0.25); stroke-width: 0.8; transition: fill 0.4s ease; }
+.md-piece:hover .md-clay, .md-piece:focus-visible .md-clay { fill: #355a5f; }
+.md-seam { fill: none; stroke: rgb(var(--gold)); stroke-width: 2.6; stroke-linecap: round; opacity: 0; transition: opacity 0.6s ease 0.25s; }
+.md-piece.is-home { cursor: default; }
+.md-piece.is-home .md-seam { opacity: 1; filter: drop-shadow(0 0 4px rgb(var(--gold) / 0.7)); }
+.mend.is-whole .md-foot { stroke: rgb(var(--gold) / 0.5); }
+.mend.is-whole .md-clay { fill: #315357; }
 
 @media (max-width: 860px) {
-  .hl-hero-grid { grid-template-columns: minmax(0, 1fr); }
+  .hl-hero-grid, .hl-split, .bodylight { grid-template-columns: minmax(0, 1fr); }
   .hl-index { grid-template-columns: minmax(0, 1fr); }
-  .bodylight { grid-template-columns: minmax(0, 1fr); }
   .bl-info { justify-items: center; text-align: center; }
 }
