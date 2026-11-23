@@ -161,13 +161,14 @@ export function initSearch(h: Hooks) {
 export function revealFound(scrollTo: (el: HTMLElement) => void) {
   const q = new URLSearchParams(location.search).get('find');
   if (!q) return;
-  const target = Array.from(document.querySelectorAll<HTMLElement>('.pp-sub li')).find((li) => li.textContent?.trim() === q);
+  const target = Array.from(document.querySelectorAll<HTMLElement>('#main [data-keep]')).find((b) => b.dataset.keep === q);
   if (!target) return;
   const det = target.closest('details');
   if (det) det.open = true;
+  const mark = target.closest<HTMLElement>('li') || target;
   setTimeout(() => {
-    scrollTo(target);
-    target.classList.add('is-found');
-    setTimeout(() => target.classList.remove('is-found'), 4200);
+    scrollTo(mark);
+    mark.classList.add('is-found');
+    setTimeout(() => mark.classList.remove('is-found'), 4200);
   }, 500);
 }

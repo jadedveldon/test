@@ -130,77 +130,49 @@ export const PRESETS: Record<string, Preset> = {
     a: '#010102', b: '#0a0a14', c: '#3a3a55', glow: '#fff2d0',
     ink: '#f2f0ee', inkSoft: '#b8b6c0', scale: 1.3, warp: 1.6, speed: 0.03, light: 0, motes: 0.3, form: 'halo', shift: 0,
   },
-  /* ---------------- Pillar 1, Devotion & the Unseen: three directions to compare */
-  // A · Midnight temple
-  devA_hero: {
-    a: '#0a0405', b: '#3a0a0c', c: '#c8321e', glow: '#f2a52b',
-    ink: '#f7ecd9', inkSoft: '#d9bfa2', scale: 1.6, warp: 2.6, speed: 0.06, light: 0, motes: 0.8, form: 'flames', shift: 4.4,
-  },
-  devA_deity: {
-    a: '#0b0404', b: '#4a0f0e', c: '#b8892f', glow: '#f2c66b',
-    ink: '#f7ecd9', inkSoft: '#d9bfa2', scale: 1.5, warp: 2.4, speed: 0.05, light: 0, motes: 0.7, form: 'halo', shift: 0, fade: 0.7,
-  },
-  devA_spirits: {
-    a: '#05060a', b: '#1a1424', c: '#c27a2a', glow: '#ffd27a',
-    ink: '#f7ecd9', inkSoft: '#cdbba6', scale: 1.3, warp: 1.8, speed: 0.04, light: 0, motes: 0.4, form: 'lamps', shift: 0,
-  },
-  devA_shaman: {
-    a: '#0a0302', b: '#3a0c06', c: '#e0521f', glow: '#ffc06a',
-    ink: '#fbeee2', inkSoft: '#d9b5a0', scale: 1.5, warp: 2.6, speed: 0.08, light: 0, motes: 0.6, form: 'agni', shift: 2.8,
-  },
-  devA_close: {
-    a: '#0a0405', b: '#2e0809', c: '#c8321e', glow: '#f2a52b',
-    ink: '#f7ecd9', inkSoft: '#d9bfa2', scale: 1.5, warp: 2.4, speed: 0.06, light: 0, motes: 0.5, form: 'eye', shift: 0,
-  },
-  devA_home: {
-    a: '#0a0405', b: '#3a0a0c', c: '#c8321e', glow: '#f2a52b',
-    ink: '#f7ecd9', inkSoft: '#d9bfa2', scale: 1.6, warp: 2.6, speed: 0.06, light: 0, motes: 0.8, form: 'flames', shift: 5.6,
-  },
-  // B · Smoke and ash
-  devB_hero: {
-    a: '#0b0b0c', b: '#1d1c1e', c: '#5a5654', glow: '#e9e4da',
-    ink: '#e9e4da', inkSoft: '#a9a39c', scale: 1.3, warp: 3.2, speed: 0.04, light: 0, motes: 0.35, form: 'eye', shift: 4.4,
-  },
-  devB_deity: {
-    a: '#0a0909', b: '#1f1416', c: '#a1121a', glow: '#e9e4da',
-    ink: '#e9e4da', inkSoft: '#a9a39c', scale: 1.4, warp: 3.0, speed: 0.04, light: 0, motes: 0.3, form: 'eye', shift: 4.2, fade: 0.3,
-  },
-  devB_spirits: {
-    a: '#08080a', b: '#17161a', c: '#6f6a75', glow: '#d8d4e0',
-    ink: '#e9e4da', inkSoft: '#a9a39c', scale: 1.2, warp: 3.4, speed: 0.035, light: 0, motes: 0.25, form: 'silk', shift: 0,
-  },
-  devB_shaman: {
-    a: '#060606', b: '#141210', c: '#7a3a1a', glow: '#ff6a2a',
-    ink: '#e9e4da', inkSoft: '#a9a39c', scale: 1.2, warp: 2.2, speed: 0.04, light: 0, motes: 0.3, form: 'water', shift: 0,
-  },
-  devB_close: {
-    a: '#080606', b: '#1a0c0a', c: '#a1121a', glow: '#ff6a2a',
-    ink: '#e9e4da', inkSoft: '#a9a39c', scale: 1.4, warp: 2.8, speed: 0.06, light: 0, motes: 0.4, form: 'agni', shift: 0,
-  },
-  devB_home: {
-    a: '#0b0b0c', b: '#1d1c1e', c: '#5a5654', glow: '#e9e4da',
-    ink: '#e9e4da', inkSoft: '#a9a39c', scale: 1.3, warp: 3.2, speed: 0.04, light: 0, motes: 0.35, form: 'eye', shift: 7.2, fade: 0.4,
-  },
-  // C · Cosmic mother
+  /* ---------------- Pillar 1, Devotion & the Unseen · direction C, Cosmic mother */
   devC_hero: {
     a: '#050617', b: '#1f1450', c: '#3a4fb8', glow: '#e7c46a',
     ink: '#f1efff', inkSoft: '#b9b4d8', scale: 1.8, warp: 2.6, speed: 0.05, light: 0, motes: 1.0, form: 'mala', shift: 4.4,
   },
-  devC_deity: {
-    a: '#060418', b: '#261246', c: '#d98cb3', glow: '#e7c46a',
-    ink: '#f1efff', inkSoft: '#b9b4d8', scale: 2.0, warp: 2.4, speed: 0.05, light: 0, motes: 1.0, form: 'stars', shift: 0, fade: 0.8,
+  devC_home: {
+    a: '#050617', b: '#1f1450', c: '#3a4fb8', glow: '#e7c46a',
+    ink: '#f1efff', inkSoft: '#b9b4d8', scale: 1.8, warp: 2.6, speed: 0.05, light: 0, motes: 1.0, form: 'yantra', shift: 5.4,
   },
+  // I · Kali and the Mahavidyas: the Kali yantra, with a breath of red
+  devC_vidyas: {
+    a: '#06040f', b: '#241040', c: '#b8325a', glow: '#e7c46a',
+    ink: '#f3efff', inkSoft: '#bfb6da', scale: 1.8, warp: 2.4, speed: 0.045, light: 0, motes: 0.8, form: 'yantra', shift: 0, fade: 0.85,
+  },
+  // II · the Devi and the Hindu deities: the yantra continues, rose and gold
+  devC_devi: {
+    a: '#070414', b: '#2a1048', c: '#d98cb3', glow: '#f0cf7a',
+    ink: '#f6f0ff', inkSoft: '#c6b8d8', scale: 1.7, warp: 2.4, speed: 0.045, light: 0, motes: 0.8, form: 'yantra', shift: 0, fade: 0.55,
+  },
+  // III · the Greek gods: a temple of light on a deep Aegean night
+  devC_greek: {
+    a: '#03081a', b: '#0f2250', c: '#7fa4e8', glow: '#f3ead8',
+    ink: '#f3f1ff', inkSoft: '#b8c0dc', scale: 1.6, warp: 2.2, speed: 0.04, light: 0, motes: 0.7, form: 'temple', shift: 0, fade: 0.6,
+  },
+  // IV · many lands: constellations
+  devC_lands: {
+    a: '#04061a', b: '#1a1a52', c: '#5a8ad8', glow: '#e9edff',
+    ink: '#f1efff', inkSoft: '#b9b4d8', scale: 2.1, warp: 2.6, speed: 0.05, light: 0, motes: 1.0, form: 'stars', shift: 0, fade: 0.8,
+  },
+  // V · altars and devotion: lamps
+  devC_altar: {
+    a: '#05040f', b: '#1d1440', c: '#c2902a', glow: '#ffd98a',
+    ink: '#f6f0ff', inkSoft: '#c6bcd8', scale: 1.5, warp: 2.0, speed: 0.04, light: 0, motes: 0.5, form: 'lamps', shift: 0,
+  },
+  // VI · spirits and ancestors: a nebula
   devC_spirits: {
     a: '#04040f', b: '#2a1460', c: '#6a5ad8', glow: '#f1efff',
     ink: '#f1efff', inkSoft: '#b9b4d8', scale: 1.6, warp: 3.0, speed: 0.04, light: 0, motes: 0.9, form: 'dust', shift: 0,
   },
+  // VII · shamanic work: the world tree
   devC_shaman: {
-    a: '#040816', b: '#13204a', c: '#3a8fb8', glow: '#e7c46a',
-    ink: '#f1efff', inkSoft: '#b9b4d8', scale: 1.7, warp: 2.6, speed: 0.06, light: 0, motes: 0.8, form: 'vortex', shift: 3.6,
-  },
-  devC_home: {
-    a: '#050617', b: '#1f1450', c: '#3a4fb8', glow: '#e7c46a',
-    ink: '#f1efff', inkSoft: '#b9b4d8', scale: 1.8, warp: 2.6, speed: 0.05, light: 0, motes: 1.0, form: 'mala', shift: 5.6,
+    a: '#030a10', b: '#0e2a32', c: '#3a9a8a', glow: '#e7d38a',
+    ink: '#eef6f3', inkSoft: '#a9c4bf', scale: 1.6, warp: 2.4, speed: 0.05, light: 0, motes: 0.6, form: 'tree', shift: 3.6,
   },
   devC_close: {
     a: '#050617', b: '#1f1450', c: '#3a4fb8', glow: '#e7c46a',

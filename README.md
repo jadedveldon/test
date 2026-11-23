@@ -63,7 +63,7 @@ Each pillar is designed one at a time, by comparing complete directions live.
 
 | Pillar | Status | Where |
 |---|---|---|
-| 1 · Devotion & the Unseen | Three directions to choose from: A Midnight temple, B Smoke and ash, C Cosmic mother (`?devdir=a|b|c`, or the switch at the bottom of the page) | `src/pages/pillars/devotion.astro`, `src/data/devotion.ts`, `src/scripts/devotion.ts`, presets `devA_*`, `devB_*`, `devC_*` |
+| 1 · Devotion & the Unseen | Direction chosen: C, Cosmic mother. Seven movements, each with its own world: the Kali yantra (Mahavidyas, the Devi and Hindu deities), a Greek temple and the five elements (Greek gods), constellations (many traditions), lamps (altars), a nebula (spirits and ancestors), the world tree (shamanic work). Directions A and B are in the history (commit 7050a47). | `src/pages/pillars/devotion.astro`, `src/data/devotion.ts`, `src/scripts/devotion.ts`, presets `devC_*`, forms `yantra`, `temple`, `tree` |
 | 2–6 | Next, one at a time | generic template `src/pages/pillars/[slug].astro` |
 
 ## Next

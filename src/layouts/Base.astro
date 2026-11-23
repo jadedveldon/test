@@ -53,7 +53,7 @@ const pageUrl = new URL(path || '/', site.url).href;
     {analytics.provider === 'plausible' && analytics.id && <script defer src="https://plausible.io/js/script.js" data-domain={analytics.id}></script>}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=Tiro+Devanagari+Sanskrit&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=Tiro+Devanagari+Sanskrit&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" />
     <script is:inline>
       (function () {
         var h = document.documentElement;
@@ -63,8 +63,6 @@ const pageUrl = new URL(path || '/', site.url).href;
           var q = new URLSearchParams(location.search);
           var hero = q.get('hero') || sessionStorage.getItem('sk-x-hero');
           h.dataset.heroVariant = hero === 'name' || hero === 'dawn' || hero === 'eye' ? hero : 'dawneye';
-          var dev = q.get('devdir') || sessionStorage.getItem('sk-x-devdir');
-          h.dataset.dev = dev === 'b' || dev === 'c' ? dev : 'a';
           var page = q.get('page') || sessionStorage.getItem('sk-x-page');
           h.dataset.pageStyle = page || 'eye';
           if (q.has('og')) h.dataset.og = '1';
@@ -261,15 +259,6 @@ const pageUrl = new URL(path || '/', site.url).href;
             <button type="button" data-v="eye">Living eye</button>
             <button type="button" data-v="name">Name of light</button>
             <button type="button" data-v="dawn">Dawn</button>
-          </div>
-        </div>
-
-        <div class="hud-group">
-          <p class="hud-label">Pillar 1 · Devotion direction</p>
-          <div class="hud-seg" role="group" aria-label="Devotion design direction" data-x="devdir">
-            <button type="button" data-v="a">A · Midnight temple</button>
-            <button type="button" data-v="b">B · Smoke and ash</button>
-            <button type="button" data-v="c">C · Cosmic mother</button>
           </div>
         </div>
 

@@ -8,7 +8,7 @@
  */
 export const CZ = -10;
 
-export const FORM_KEYS = ['dust', 'halo', 'name', 'vortex', 'flames', 'sigils', 'water', 'silk', 'stars', 'letters', 'eye', 'horizon', 'mala', 'lamps', 'agni'] as const;
+export const FORM_KEYS = ['dust', 'halo', 'name', 'vortex', 'flames', 'sigils', 'water', 'silk', 'stars', 'letters', 'eye', 'horizon', 'mala', 'lamps', 'agni', 'yantra', 'temple', 'tree'] as const;
 export type FormKey = (typeof FORM_KEYS)[number];
 
 export const FLAMES = 108;
@@ -366,6 +366,102 @@ function agni(n: number, seeds: Float32Array) {
   return o;
 }
 
+/* line art drawn in points: helpers */
+type Seg = [number, number, number, number];
+function alongSegments(n: number, segs: Seg[], r: () => number, jitter: number, cy = 0) {
+  const lens = segs.map(([a, b, c, d]) => Math.hypot(c - a, d - b));
+  const total = lens.reduce((x, y) => x + y, 0);
+  const o = new Float32Array(n * 3);
+  for (let i = 0; i < n; i++) {
+    let t = r() * total, k = 0;
+    while (k < segs.length - 1 && t > lens[k]) { t -= lens[k]; k++; }
+    const [a, b, c, d] = segs[k], f = lens[k] ? t / lens[k] : 0;
+    put(o, i, a + (c - a) * f + gauss(r) * jitter, cy + b + (d - b) * f + gauss(r) * jitter, CZ + gauss(r) * jitter * 3);
+  }
+  return o;
+}
+const polySegs = (pts: number[][], closed = true): Seg[] => {
+  const out: Seg[] = [];
+  for (let i = 0; i < pts.length - (closed ? 0 : 1); i++) { const p = pts[i], q = pts[(i + 1) % pts.length]; out.push([p[0], p[1], q[0], q[1]]); }
+  return out;
+};
+const circleSegs = (r: number, steps = 72, cx = 0, cy = 0): Seg[] =>
+  polySegs(Array.from({ length: steps }, (_, i) => [cx + Math.cos((i / steps) * Math.PI * 2) * r, cy + Math.sin((i / steps) * Math.PI * 2) * r]));
+
+/** the Kali yantra in light: bindu, five downward triangles, circles, eight petals, the gated square */
+function yantra(n: number) {
+  const r = rng(59);
+  const segs: Seg[] = [];
+  [0.55, 0.85, 1.15, 1.45, 1.75].forEach((R) => {
+    segs.push(...polySegs([90, 210, 330].map((d) => [Math.cos(((d + 180) * Math.PI) / 180) * R, Math.sin(((d + 180) * Math.PI) / 180) * R])));
+  });
+  segs.push(...circleSegs(1.95), ...circleSegs(2.75), ...circleSegs(2.85));
+  for (let k = 0; k < 8; k++) {
+    const a = (k * Math.PI) / 4, w = Math.PI / 8;
+    const pts: number[][] = [];
+    for (let j = 0; j <= 12; j++) {
+      const t = -w + (2 * w * j) / 12, bulge = Math.cos((t / w) * (Math.PI / 2));
+      const R = 1.95 + 0.72 * bulge;
+      pts.push([Math.cos(a + t) * R, Math.sin(a + t) * R]);
+    }
+    segs.push(...polySegs(pts, false));
+  }
+  const s = 3.25, g = 0.45, d = 0.32;
+  segs.push(...polySegs([[-s, -s], [-g, -s], [-g, -s - d], [g, -s - d], [g, -s], [s, -s], [s, -g], [s + d, -g], [s + d, g], [s, g], [s, s], [g, s], [g, s + d], [-g, s + d], [-g, s], [-s, s], [-s, g], [-s - d, g], [-s - d, -g], [-s, -g]]));
+  const line = alongSegments(Math.floor(n * 0.94), segs, r, 0.018, 0.3);
+  const o = new Float32Array(n * 3);
+  o.set(line);
+  for (let i = Math.floor(n * 0.94); i < n; i++) { // the bindu
+    const a = r() * Math.PI * 2, rad = Math.pow(r(), 1.4) * 0.16;
+    put(o, i, Math.cos(a) * rad, 0.3 + Math.sin(a) * rad, CZ + gauss(r) * 0.05);
+  }
+  return o;
+}
+
+/** a Greek temple front in light: three steps, six fluted columns, the frieze and the pediment */
+function temple(n: number) {
+  const r = rng(61);
+  const segs: Seg[] = [];
+  const W = 3.6, base = -1.9;
+  [0, 1, 2].forEach((k) => { const w = W + 0.35 * (2 - k), y = base + k * 0.18; segs.push(...polySegs([[-w, y], [w, y], [w, y + 0.18], [-w, y + 0.18]])); });
+  const top = 0.95, foot = base + 0.54;
+  [-2.9, -1.74, -0.58, 0.58, 1.74, 2.9].forEach((x) => {
+    const cw = 0.24;
+    segs.push([x - cw, foot, x - cw * 0.85, top], [x + cw, foot, x + cw * 0.85, top]);
+    segs.push([x - cw * 0.35, foot, x - cw * 0.3, top], [x + cw * 0.35, foot, x + cw * 0.3, top], [x, foot, x, top]);
+    segs.push(...polySegs([[x - cw * 1.45, top], [x + cw * 1.45, top], [x + cw * 1.45, top + 0.1], [x - cw * 1.45, top + 0.1]]));
+  });
+  segs.push(...polySegs([[-W - 0.2, top + 0.1], [W + 0.2, top + 0.1], [W + 0.2, top + 0.42], [-W - 0.2, top + 0.42]]));
+  segs.push(...polySegs([[-W - 0.2, top + 0.42], [W + 0.2, top + 0.42], [W + 0.2, top + 0.78], [-W - 0.2, top + 0.78]]));
+  for (let x = -W; x <= W + 0.01; x += 0.6) segs.push([x, top + 0.46, x, top + 0.74], [x + 0.08, top + 0.46, x + 0.08, top + 0.74]);
+  segs.push(...polySegs([[-W - 0.45, top + 0.78], [0, top + 1.75], [W + 0.45, top + 0.78]]));
+  segs.push(...circleSegs(0.22, 24, 0, top + 1.18));
+  return alongSegments(n, segs, r, 0.014, 0);
+}
+
+/** the world tree of the shamanic journey: roots below, branches above, three worlds */
+function tree(n: number) {
+  const r = rng(67);
+  const segs: Seg[] = [];
+  const grow = (x: number, y: number, ang: number, len: number, depth: number, dir: number) => {
+    if (depth === 0) return;
+    const x2 = x + Math.cos(ang) * len, y2 = y + Math.sin(ang) * len;
+    segs.push([x, y, x2, y2]);
+    const spread = 0.42 + (r() - 0.5) * 0.2;
+    grow(x2, y2, ang - spread * dir, len * 0.74, depth - 1, dir);
+    grow(x2, y2, ang + spread * dir, len * 0.74, depth - 1, dir);
+    if (depth > 3 && r() < 0.5) grow(x2, y2, ang + (r() - 0.5) * 0.3, len * 0.6, depth - 2, dir);
+  };
+  segs.push([-0.08, -1.1, -0.06, 0.6], [0.08, -1.1, 0.06, 0.6], [0, -1.1, 0, 0.6]);
+  grow(0, 0.6, Math.PI / 2, 0.95, 7, 1);
+  grow(0, -1.1, -Math.PI / 2, 0.7, 6, 1);
+  // the three worlds: faint rings around the tree
+  segs.push(...circleSegs(3.2, 90).map(([a, b, c, d]) => [a, b * 0.18 + 2.6, c, d * 0.18 + 2.6] as Seg));
+  segs.push(...circleSegs(3.0, 90).map(([a, b, c, d]) => [a, b * 0.16 - 0.2, c, d * 0.16 - 0.2] as Seg));
+  segs.push(...circleSegs(2.6, 90).map(([a, b, c, d]) => [a, b * 0.14 - 2.7, c, d * 0.14 - 2.7] as Seg));
+  return alongSegments(n, segs, r, 0.016, 0.1);
+}
+
 /* ------------------------------------------------- forms drawn from type */
 
 function sampleCanvas(n: number, draw: (ctx: CanvasRenderingContext2D) => void, w: number, h: number, map: (x: number, y: number) => [number, number], seed: number, extra?: (o: Out, i: number, r: () => number) => boolean) {
@@ -436,6 +532,9 @@ export function buildForms(n: number, seeds: Float32Array): Record<FormKey, Floa
     mala: mala(n),
     lamps: shuffled(lamps(n), 127),
     agni: agni(n, seeds),
+    yantra: shuffled(yantra(n), 131),
+    temple: shuffled(temple(n), 137),
+    tree: shuffled(tree(n), 139),
   };
 }
 
@@ -467,6 +566,7 @@ export async function buildFormsAsync(n: number, seeds: Float32Array, textFrom?:
     ['sigils', () => shuffleForm(sigils(n), 101)], ['water', () => shuffleForm(water(n), 103)], ['silk', () => shuffleForm(silk(n), 107)],
     ['stars', () => shuffleForm(stars(n), 109)], ['eye', () => shuffleForm(eye(n), 113)], ['horizon', () => horizon(n, seeds)],
     ['mala', () => mala(n)], ['lamps', () => shuffleForm(lamps(n), 127)], ['agni', () => agni(n, seeds)],
+    ['yantra', () => shuffleForm(yantra(n), 131)], ['temple', () => shuffleForm(temple(n), 137)], ['tree', () => shuffleForm(tree(n), 139)],
     ['name', () => (textFrom ? upsample(textFrom.name, n, 0.01, 61) : dust(n))],
     ['letters', () => (textFrom ? upsample(textFrom.letters, n, 0.008, 67) : dust(n))],
   ];

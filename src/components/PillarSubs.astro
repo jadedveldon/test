@@ -1,11 +1,11 @@
 ---
 import type { Category } from '../data/site';
 /** a category's subcategories as expandable lists of keepable services */
-interface Props { category: Category; pillar: string; skip?: string[] }
-const { category, pillar, skip = [] } = Astro.props;
+interface Props { category: Category; pillar: string; skip?: string[]; only?: string[] }
+const { category, pillar, skip = [], only } = Astro.props;
 ---
 <div class="pp-subs">
-  {category.subs.filter((s) => !skip.includes(s.name)).map((s) => (
+  {category.subs.filter((s) => !skip.includes(s.name) && (!only || only.includes(s.name))).map((s) => (
     <details class="pp-sub" data-fade>
       <summary>
         <span>{s.name}</span>

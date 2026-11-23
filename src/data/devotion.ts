@@ -1,101 +1,26 @@
 /**
- * Pillar 1, Devotion & the Unseen: three art directions to compare live.
- * Each is a complete answer to "what does this pillar feel like": colour,
- * type, the world behind each category, how the services are laid out, a
- * signature moment, and its sound. Pick one, or mix parts of them.
+ * Pillar 1, Devotion & the Unseen. Chosen direction: C · Cosmic mother.
+ * Kali as time and space itself: night sky, gold geometry, every tradition
+ * orbiting one bindu. Each tradition gets its own movement with its own
+ * iconography in the world behind it.
+ *
+ * Short descriptive lines are DRAFT copy for Sarvakali to refine.
  */
-export type DirKey = 'a' | 'b' | 'c';
-
-export type Direction = {
-  key: DirKey;
-  name: string;
-  essence: string;
-  feeling: string[];
-  palette: { name: string; hex: string }[];
-  type: { display: string; note: string; fontHref?: string };
-  worlds: { hero: string; deity: string; spirits: string; shaman: string };
-  layout: string;
-  signature: { name: string; how: string };
-  sound: string;
-  imagery: string;
-  voice: string;
+export const DIRECTION = {
+  name: 'Cosmic mother',
+  palette: [
+    { name: 'Deep night', hex: '#050617' },
+    { name: 'Violet', hex: '#1f1450' },
+    { name: 'Nebula', hex: '#3a4fb8' },
+    { name: 'Gold', hex: '#e7c46a' },
+    { name: 'Rose', hex: '#d98cb3' },
+    { name: 'Starlight', hex: '#f1efff' },
+  ],
+  type: 'Cormorant Garamond (light italic, wide spacing) for titles; Inter for reading; Tiro Devanagari and Greek script for names',
+  imagery: 'Fine gold line drawings: yantras, a temple, the world tree, constellations; deities in outline',
 };
 
-export const DIRECTIONS: Direction[] = [
-  {
-    key: 'a',
-    name: 'Midnight temple',
-    essence: 'Kalighat after dark: oil lamps, vermilion, marigolds and brass. Warm, intimate and devotional.',
-    feeling: ['warm', 'devotional', 'close', 'Bengal'],
-    palette: [
-      { name: 'Lamp-black', hex: '#0a0405' },
-      { name: 'Temple maroon', hex: '#3a0a0c' },
-      { name: 'Sindoor', hex: '#c8321e' },
-      { name: 'Marigold', hex: '#f2a52b' },
-      { name: 'Brass', hex: '#c9a24a' },
-      { name: 'Ivory', hex: '#f7ecd9' },
-    ],
-    type: { display: 'Instrument Serif', note: 'with Devanagari names in Tiro Devanagari, and gilded arches' },
-    worlds: { hero: 'a ring of 108 lamp flames', deity: 'the ring of flames', spirits: 'lamps floating on the river, for the ancestors', shaman: 'the sacred fire' },
-    layout: 'The ten Mahavidyas stand in arched temple niches; the rest as offerings on brass plates.',
-    signature: { name: 'Offer aarti', how: 'Circle the lamp around the eye three times: the bell rings and marigold petals fall.' },
-    sound: 'Temple bells and a low hum under the tanpura.',
-    imagery: 'Commissioned Kalighat-style paintings: one for each Mahavidya.',
-    voice: 'Tender, like speaking to Ma.',
-  },
-  {
-    key: 'b',
-    name: 'Smoke and ash',
-    essence: 'The cremation ground at moonrise, where Kali dances: ash, bone, smoke and one drop of red. Fierce, stark and honest.',
-    feeling: ['fierce', 'stark', 'tantric', 'unafraid'],
-    palette: [
-      { name: 'Ash-black', hex: '#0b0b0c' },
-      { name: 'Charcoal', hex: '#1d1c1e' },
-      { name: 'Ash', hex: '#8f8a86' },
-      { name: 'Bone', hex: '#e9e4da' },
-      { name: 'Blood', hex: '#a1121a' },
-      { name: 'Ember', hex: '#ff6a2a' },
-    ],
-    type: {
-      display: 'Bodoni Moda',
-      note: 'high contrast, very large, set like an inscription; few words, lots of space',
-      fontHref: 'https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;1,6..96,400&display=swap',
-    },
-    worlds: { hero: "Kali's eye in the smoke", deity: 'the eye', spirits: 'veils of silk between the worlds', shaman: 'drum rings spreading on dark water' },
-    layout: 'The Mahavidyas as a numbered litany, one name per line; services as a manuscript index.',
-    signature: { name: 'Part the smoke', how: 'The page begins veiled in smoke. Move through it and it parts, then slowly drifts back.' },
-    sound: 'Wind over ash and a deep, slow gong.',
-    imagery: 'Black-and-white photography of smoke, ash and flame; no faces.',
-    voice: 'Direct, few words, no softening.',
-  },
-  {
-    key: 'c',
-    name: 'Cosmic mother',
-    essence: 'Kali as time and space itself: night sky, gold geometry, every tradition orbiting one bindu. Vast, inclusive and luminous.',
-    feeling: ['vast', 'luminous', 'inclusive', 'mystic'],
-    palette: [
-      { name: 'Deep night', hex: '#050617' },
-      { name: 'Violet', hex: '#1f1450' },
-      { name: 'Nebula', hex: '#3a4fb8' },
-      { name: 'Gold', hex: '#e7c46a' },
-      { name: 'Rose', hex: '#d98cb3' },
-      { name: 'Starlight', hex: '#f1efff' },
-    ],
-    type: {
-      display: 'Cormorant Garamond',
-      note: 'light italic with wide spacing; fine gold lines',
-      fontHref: 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap',
-    },
-    worlds: { hero: 'a ring of light around the bindu', deity: 'deities as constellations', spirits: 'a nebula of ancestors', shaman: 'the spiral journey' },
-    layout: 'The ten Mahavidyas orbit a central bindu; other traditions are constellations around them.',
-    signature: { name: 'Turn the yantra', how: 'Drag the great yantra to turn it. When it comes into alignment, the bindu lights and a chime sounds.' },
-    sound: 'Crystal chimes and a shimmering, slow chord.',
-    imagery: 'Fine gold line drawings: yantras, constellations, the deities in outline.',
-    voice: 'Spacious and wondering.',
-  },
-];
-
-/** the ten Mahavidyas: names, Devanagari, a short line (draft copy for Sarvakali to refine) */
+/** the ten Mahavidyas */
 export const MAHAVIDYAS = [
   { name: 'Kali', deva: 'काली', line: 'Time, and freedom from it', service: 'Kali Working' },
   { name: 'Tara', deva: 'तारा', line: 'The star who carries you across', service: 'Tara Working' },
@@ -107,4 +32,73 @@ export const MAHAVIDYAS = [
   { name: 'Bagalamukhi', deva: 'बगलामुखी', line: 'She who stills and silences', service: 'Baglamukhi Working' },
   { name: 'Matangi', deva: 'मातङ्गी', line: 'Speech, music and outsider wisdom', service: 'Matangi Working' },
   { name: 'Kamala', deva: 'कमला', line: 'The lotus: abundance and grace', service: 'Kamala Working' },
+];
+
+/** the Devi and the Hindu deities */
+export const HINDU = [
+  { name: 'Durga', deva: 'दुर्गा', line: 'The invincible mother', service: 'Durga Working' },
+  { name: 'Pratyangira', deva: 'प्रत्यङ्गिरा', line: 'The lion-faced shield', service: 'Pratyangira Working' },
+  { name: 'Kamakhya', deva: 'कामाख्या', line: 'Desire, power and the source', service: 'Kamakhya Devotional Working' },
+  { name: 'Lakshmi', deva: 'लक्ष्मी', line: 'Abundance and grace', service: 'Lakshmi Working' },
+  { name: 'Saraswati', deva: 'सरस्वती', line: 'Knowledge, music and speech', service: 'Saraswati Working' },
+  { name: 'Shiva', deva: 'शिव', line: 'Stillness, the auspicious one', service: 'Shiva Working' },
+  { name: 'Bhairava', deva: 'भैरव', line: 'The fierce guardian of time', service: 'Bhairava Working' },
+  { name: 'Narasimha', deva: 'नरसिंह', line: 'The man-lion who protects', service: 'Narasimha Working' },
+  { name: 'Krishna', deva: 'कृष्ण', line: 'Love, play and devotion', service: 'Krishna Working' },
+  { name: 'Hanuman', deva: 'हनुमान्', line: 'Strength in service', service: 'Hanuman Working' },
+  { name: 'Ganesha', deva: 'गणेश', line: 'The remover of obstacles', service: 'Ganesha Working' },
+  { name: 'Kartikeya', deva: 'कार्तिकेय', line: 'Courage and the spear; Murugan', service: 'Kartikeya / Murugan Working' },
+];
+export const HINDU_ALSO = ['Devi Protection Working', 'Devi Invocation & Prayer', 'Goddess-Centred Spiritual Guidance'];
+export const TANTRA = ['Mantra-Based Devotional Working', 'Yantra-Based Devotional Working', 'Tantric Symbolic Ritual Work', 'Personalised Devi Sadhana Guidance'];
+
+/** the Greek gods, gathered by the five elements (a draft grouping, for Sarvakali to confirm) */
+export type Element = { key: string; name: string; greek: string; symbol: string };
+export const ELEMENTS: Element[] = [
+  { key: 'fire', name: 'Fire', greek: 'Πῦρ', symbol: 'M0 -18 L16 12 L-16 12 Z' },
+  { key: 'air', name: 'Air', greek: 'Ἀήρ', symbol: 'M0 -18 L16 12 L-16 12 Z M-10 1 L10 1' },
+  { key: 'water', name: 'Water', greek: 'Ὕδωρ', symbol: 'M0 18 L16 -12 L-16 -12 Z' },
+  { key: 'earth', name: 'Earth', greek: 'Γῆ', symbol: 'M0 18 L16 -12 L-16 -12 Z M-10 -1 L10 -1' },
+  { key: 'aether', name: 'Aether', greek: 'Αἰθήρ', symbol: 'M-15 0 A15 15 0 1 0 15 0 A15 15 0 1 0 -15 0 M-5 0 A5 5 0 1 0 5 0 A5 5 0 1 0 -5 0' },
+];
+export const GREEK = [
+  { name: 'Hephaestus', greek: 'Ἥφαιστος', el: 'fire', line: 'The forge and every craft' },
+  { name: 'Hestia', greek: 'Ἑστία', el: 'fire', line: 'The hearth and the home' },
+  { name: 'Apollo', greek: 'Ἀπόλλων', el: 'fire', line: 'Light, music, prophecy' },
+  { name: 'Ares', greek: 'Ἄρης', el: 'fire', line: 'Courage and the fight' },
+  { name: 'Zeus', greek: 'Ζεύς', el: 'air', line: 'Sky, thunder and order' },
+  { name: 'Hermes', greek: 'Ἑρμῆς', el: 'air', line: 'Messages, roads and luck' },
+  { name: 'Athena', greek: 'Ἀθηνᾶ', el: 'air', line: 'Wisdom and strategy' },
+  { name: 'Eros', greek: 'Ἔρως', el: 'air', line: "Desire's arrow" },
+  { name: 'Nike', greek: 'Νίκη', el: 'air', line: 'Victory' },
+  { name: 'Poseidon', greek: 'Ποσειδῶν', el: 'water', line: 'The sea and its depths' },
+  { name: 'Aphrodite', greek: 'Ἀφροδίτη', el: 'water', line: 'Love and beauty, born of sea foam' },
+  { name: 'Dionysus', greek: 'Διόνυσος', el: 'water', line: 'Ecstasy and release' },
+  { name: 'Gaia', greek: 'Γαῖα', el: 'earth', line: 'The Earth herself' },
+  { name: 'Demeter', greek: 'Δημήτηρ', el: 'earth', line: 'Harvest, and a mother’s grief' },
+  { name: 'Persephone', greek: 'Περσεφόνη', el: 'earth', line: 'Spring and the underworld' },
+  { name: 'Hades', greek: 'ᾍδης', el: 'earth', line: 'The underworld and the ancestors' },
+  { name: 'Rhea', greek: 'Ῥέα', el: 'earth', line: 'Mother of the gods' },
+  { name: 'Kronos', greek: 'Κρόνος', el: 'earth', line: 'Time and the harvest' },
+  { name: 'Nyx', greek: 'Νύξ', el: 'aether', line: 'Primordial night' },
+  { name: 'Selene', greek: 'Σελήνη', el: 'aether', line: 'The moon' },
+  { name: 'Hecate', greek: 'Ἑκάτη', el: 'aether', line: 'Crossroads, keys and torches' },
+  { name: 'Artemis', greek: 'Ἄρτεμις', el: 'aether', line: 'The wild and the free' },
+  { name: 'Hera', greek: 'Ἥρα', el: 'aether', line: 'Queen of the heavens' },
+  { name: 'Nemesis', greek: 'Νέμεσις', el: 'aether', line: 'Balance restored' },
+  { name: 'Psyche', greek: 'Ψυχή', el: 'aether', line: 'The soul' },
+];
+
+/** goddesses and gods of many lands */
+export const LANDS = [
+  { land: 'Mesopotamian and Jewish lore', names: ['Lilith Devotional Working'] },
+  { land: 'Egyptian', names: ['Isis Devotional Working'] },
+  { land: 'Celtic', names: ['Brigid Devotional Working'] },
+  { land: 'Norse', names: ['Odin Devotional Working', 'Loki Devotional Working', 'Freyja Devotional Working', 'Frigg Devotional Working', 'Sunna Devotional Working'] },
+  { land: 'Canaanite', names: ['Asherah Devotional Working'] },
+  { land: 'Roman', names: ['Flora Devotional Working'] },
+  { land: 'Japanese', names: ['Benzaiten Devotional Working'] },
+  { land: 'Chinese', names: ['Mazu Devotional Working', 'Nüwa Devotional Working'] },
+  { land: 'Tibetan Buddhist', names: ['Kurukulla Devotional Study', 'Vajrayogini-Inspired Devotional Study', 'Vajravarahi-Inspired Devotional Study'] },
+  { land: 'Across traditions', names: ['Lilith & Aphrodite Combined Working', 'Custom Cross-Pantheon Devotional Ritual'] },
 ];

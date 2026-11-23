@@ -830,46 +830,25 @@ html[data-festival] .chapter-hero .kicker { letter-spacing: 0.2em; }
   .menu-main a, .writing-card { transition: none; }
 }
 
-/* ======================================== pillar 1 · Devotion & the Unseen */
-:root { --f-dev: var(--f-display); }
-html[data-dev="b"] { --f-dev: "Bodoni Moda", "Didot", Georgia, serif; }
-html[data-dev="c"] { --f-dev: "Cormorant Garamond", "Garamond", Georgia, serif; }
-.dv .display-l, .dv .display-m, [data-chapter="devotion"] .display-l, .dv-card h3 { font-family: var(--f-dev); }
-html[data-dev="b"] .dv .display-l, html[data-dev="b"] [data-chapter="devotion"] .display-l { letter-spacing: -0.035em; line-height: 0.9; }
-html[data-dev="c"] .dv .display-l, html[data-dev="c"] [data-chapter="devotion"] .display-l { font-weight: 300; font-style: italic; letter-spacing: 0.01em; }
-html[data-dev="b"] .dv .kicker, html[data-dev="b"] [data-chapter="devotion"] .kicker { color: rgb(var(--ink-soft)); letter-spacing: 0.4em; }
-html[data-dev="b"] .dv .btn, html[data-dev="b"] [data-chapter="devotion"] .btn { border-radius: 2px; text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.78rem; }
-html[data-dev="c"] .dv .btn-ghost, html[data-dev="c"] [data-chapter="devotion"] .btn-ghost { box-shadow: inset 0 0 0 1px rgb(var(--glow) / 0.55); }
-[data-only] { display: none !important; }
-html[data-dev="a"] [data-only="a"], html[data-dev="b"] [data-only="b"], html[data-dev="c"] [data-only="c"] { display: block !important; }
-body:has(.dv) .yantra { display: none; }
-html[data-dev="c"] body:has(.dv) .yantra { display: block; }
+/* ======================================== pillar 1 · Devotion & the Unseen (C · Cosmic mother) */
+:root { --f-dev: "Cormorant Garamond", "Garamond", Georgia, serif; }
+.dv .display-l, .dv .display-m, [data-chapter="devotion"] .display-l { font-family: var(--f-dev); font-weight: 300; font-style: italic; letter-spacing: 0.01em; }
+.dv .btn-ghost, [data-chapter="devotion"] .btn-ghost { box-shadow: inset 0 0 0 1px rgb(var(--glow) / 0.55); }
+body:has(.dv) .yantra { opacity: 0.6; }
+.anchor-alias { position: absolute; top: 0; }
 
-.dv-hero { min-height: 100svh; }
+.dv-hero { min-height: 100svh; position: relative; }
 .dv-hero-grid { max-width: 1180px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 32px; align-items: center; }
 .dv-hero-copy { display: grid; gap: 20px; justify-items: start; }
 .dv-title { font-size: clamp(3rem, 7.6vw, 6.6rem); }
+.dv-moves { list-style: none; margin: 6px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, max-content)); gap: 6px 22px; }
+.dv-moves a { display: inline-flex; gap: 10px; align-items: baseline; text-decoration: none; color: rgb(var(--ink-soft)); font: 400 1.12rem/1.3 var(--f-dev); font-style: italic; }
+.dv-moves a:hover { color: rgb(var(--ink)); }
+.dv-moves span { font: 500 0.66rem/1 var(--f-body); font-style: normal; letter-spacing: 0.14em; color: rgb(var(--glow)); min-width: 1.8em; }
 .dv-sig { display: grid; justify-items: center; }
 .dv-sig-hint { font-size: 0.86rem; color: rgb(var(--ink-soft)); text-align: center; margin: 8px 0 10px; }
 
-/* A · aarti */
-.aarti { text-align: center; }
-.aarti-ring { width: min(100%, 380px); height: auto; touch-action: none; cursor: grab; overflow: visible; }
-.aarti.is-holding .aarti-ring { cursor: grabbing; }
-.aarti-path { stroke: rgb(var(--glow) / 0.35); stroke-width: 1.2; stroke-dasharray: 3 7; }
-.aarti-eye path { fill: #1c0807; stroke: #f0b34a; stroke-width: 2; }
-.aarti-eye circle { fill: #e2622f; }
-.aarti-plate { fill: #b8862c; stroke: #f2c66b; stroke-width: 1.4; }
-.aarti-bowl { fill: #7a3a18; }
-.aarti-flame { fill: #ffd27a; filter: drop-shadow(0 0 10px rgb(255 190 90 / 0.95)); animation: diya-flicker 1.8s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
-.petals { position: fixed; inset: 0; z-index: 66; pointer-events: none; overflow: hidden; }
-.petals span { position: absolute; top: 0; width: 13px; height: 9px; border-radius: 60% 40% 60% 40%; box-shadow: inset -2px -1px 0 rgb(0 0 0 / 0.15); }
-
-/* B · smoke veil */
-.smoke-veil { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; pointer-events: none; filter: blur(14px); opacity: 0.92; }
-.dv-hero { position: relative; }
-
-/* C · turn the yantra */
+/* turn the yantra */
 .yantra-turn { position: relative; text-align: center; }
 .yt-svg { width: min(100%, 400px); height: auto; overflow: visible; cursor: grab; touch-action: none; border-radius: 50%; }
 .yt-line { fill: none; stroke: rgb(var(--glow) / 0.85); stroke-width: 1.1; }
@@ -886,108 +865,115 @@ html[data-dev="c"] body:has(.dv) .yantra { display: block; }
 }
 .yantra-turn.is-aligned .yt-names li { opacity: 1; }
 
-/* categories as chapters */
-.dv-cat { min-height: auto; padding-block: 18vh 10vh; }
-.dv-cat-inner { max-width: 1100px; justify-items: stretch; gap: 30px; }
-.dv-cat-head { display: grid; gap: 16px; justify-items: start; max-width: 46rem; }
-
-/* the ten Mahavidyas: one list, three layouts */
-.vidyas-wrap { display: grid; gap: 14px; }
-.vidyas { list-style: none; margin: 0; padding: 0; }
-.vidya { position: relative; }
-.vidya-deva { font: 400 1.6rem/1.1 "Tiro Devanagari Sanskrit", serif; color: rgb(var(--glow)); }
-.vidya-name { font: 400 1.5rem/1.1 var(--f-dev); }
-.vidya-line { font-size: 0.82rem; color: rgb(var(--ink-soft)); line-height: 1.35; }
-.vidya-n { font: 400 0.8rem/1 var(--f-body); color: rgb(var(--ink-soft)); }
-.vidya-keep { font: 500 0.72rem/1 var(--f-body); color: rgb(var(--ink)); background: none; border: 1px solid rgb(var(--ink) / 0.3); border-radius: 999px; padding: 6px 10px; cursor: pointer; }
-.vidya-keep[aria-pressed="true"] { background: rgb(var(--glow)); color: rgb(var(--bg-a)); border-color: rgb(var(--glow)); }
-.vidya-keep[aria-pressed="true"]::before { content: "✓ "; }
-.vidya-bindu { display: none; }
-.vidya-all { font-size: 0.95rem; }
-
-/* A: temple niches */
-html[data-dev="a"] .vidyas { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
-html[data-dev="a"] .vidya {
-  display: grid; justify-items: center; align-content: start; gap: 8px; text-align: center; padding: 34px 12px 16px; min-height: 230px;
-  border-radius: 999px 999px 14px 14px; background: linear-gradient(rgb(var(--bg-b) / 0.65), rgb(var(--bg-a) / 0.7));
-  box-shadow: inset 0 0 0 1px rgb(var(--glow) / 0.45), inset 0 0 0 5px rgb(var(--bg-a) / 0.4), inset 0 0 0 6px rgb(var(--glow) / 0.18);
+/* the movements */
+.dv-move { min-height: auto; padding-block: 16vh 10vh; position: relative; }
+.dv-inner { max-width: 1100px; justify-items: stretch; gap: 28px; }
+.dv-head { display: grid; gap: 14px; justify-items: start; max-width: 46rem; }
+.dv-chips { display: grid; gap: 10px; }
+.dv-chips ul { list-style: none; margin: 0 0 8px; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.chip-keep {
+  font: 400 0.9rem/1.2 var(--f-body); color: rgb(var(--ink)); cursor: pointer; text-align: left;
+  padding: 8px 14px; border-radius: 999px; background: rgb(var(--bg-b) / 0.35); border: 0; box-shadow: inset 0 0 0 1px rgb(var(--glow) / 0.3);
+  transition: box-shadow 0.25s ease, background 0.25s ease;
 }
-html[data-dev="a"] .vidya-n { position: absolute; top: 12px; }
-html[data-dev="a"] .vidya-keep { margin-top: auto; }
+.chip-keep:hover { box-shadow: inset 0 0 0 1px rgb(var(--glow) / 0.8); }
+.chip-keep[aria-pressed="true"] { background: rgb(var(--glow)); color: rgb(var(--bg-a)); box-shadow: none; }
+.chip-keep[aria-pressed="true"]::before { content: "✓ "; }
+.dv-also { font-size: 1rem; }
+li.is-found > .chip-keep, li.is-found > .vidya-keep, li.is-found .deity-name { box-shadow: 0 0 0 4px rgb(var(--glow) / 0.45); border-radius: 999px; }
 
-/* B: a litany, one name per line */
-html[data-dev="b"] .vidyas { display: grid; border-top: 1px solid rgb(var(--ink) / 0.2); }
-html[data-dev="b"] .vidya { display: grid; grid-template-columns: 3rem minmax(0, 1fr) minmax(0, 1.1fr) 6rem auto; align-items: baseline; gap: 18px; padding: 16px 0; border-bottom: 1px solid rgb(var(--ink) / 0.2); }
-html[data-dev="b"] .vidya-name { font-size: clamp(1.8rem, 3.6vw, 3rem); order: 2; letter-spacing: -0.02em; }
-html[data-dev="b"] .vidya-n { order: 1; font: 400 1.2rem/1 var(--f-dev); }
-html[data-dev="b"] .vidya-line { order: 3; font-size: 0.95rem; }
-html[data-dev="b"] .vidya-deva { order: 4; font-size: 1.1rem; color: rgb(var(--ink-soft)); }
-html[data-dev="b"] .vidya-keep { order: 5; border-radius: 2px; }
-html[data-dev="b"] .vidya:first-child .vidya-name { color: #c8262f; }
-
-/* C: an orbit around the bindu */
-html[data-dev="c"] .vidyas { position: relative; width: min(100%, 720px); aspect-ratio: 1; margin: 10px auto; --r: min(290px, 36vw); }
-html[data-dev="c"] .vidya {
-  position: absolute; left: 50%; top: 50%; width: 132px; display: grid; justify-items: center; gap: 4px; text-align: center;
+/* I · the ten Mahavidyas orbit the bindu */
+.vidyas { list-style: none; margin: 10px auto; padding: 0; position: relative; width: min(100%, 720px); aspect-ratio: 1; --r: min(290px, 38vw); }
+.vidya {
+  position: absolute; left: 50%; top: 50%; width: 138px; display: grid; justify-items: center; gap: 4px; text-align: center;
   transform: rotate(calc(var(--i) * 36deg - 90deg)) translateX(var(--r)) rotate(calc(90deg - var(--i) * 36deg)) translate(-50%, -50%);
 }
-html[data-dev="c"] .vidya-name { font-size: 1.3rem; font-style: italic; font-weight: 400; }
-html[data-dev="c"] .vidya-line { display: none; }
-html[data-dev="c"] .vidya-n { display: none; }
-html[data-dev="c"] .vidya-keep { padding: 4px 9px; border-color: rgb(var(--glow) / 0.5); }
-html[data-dev="c"] .vidya-bindu { display: block; position: absolute; left: 50%; top: 50%; width: 14px; height: 14px; translate: -50% -50%; border-radius: 50%; background: rgb(var(--glow)); box-shadow: 0 0 30px 8px rgb(var(--glow) / 0.5), 0 0 0 1px rgb(var(--glow) / 0.4); }
-html[data-dev="c"] .vidya-bindu::after { content: ""; position: absolute; left: 50%; top: 50%; width: calc(var(--r) * 1.3); aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; border: 1px solid rgb(var(--glow) / 0.22); }
+.vidya-deva { font: 400 1.55rem/1.1 "Tiro Devanagari Sanskrit", serif; color: rgb(var(--glow)); }
+.vidya-name { font: 400 italic 1.35rem/1.1 var(--f-dev); }
+.vidya-keep { font: 500 0.72rem/1 var(--f-body); color: rgb(var(--ink)); background: none; border: 1px solid rgb(var(--glow) / 0.5); border-radius: 999px; padding: 5px 10px; cursor: pointer; }
+.vidya-keep[aria-pressed="true"] { background: rgb(var(--glow)); color: rgb(var(--bg-a)); border-color: rgb(var(--glow)); }
+.vidya-keep[aria-pressed="true"]::before { content: "✓ "; }
+.vidya-bindu { position: absolute; left: 50%; top: 50%; width: 14px; height: 14px; translate: -50% -50%; border-radius: 50%; background: rgb(var(--glow)); box-shadow: 0 0 30px 8px rgb(var(--glow) / 0.5); }
+.vidya-bindu::after { content: ""; position: absolute; left: 50%; top: 50%; width: calc(var(--r) * 1.3); aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; border: 1px solid rgb(var(--glow) / 0.22); }
+.vidya-lines { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 40px; font-size: 0.92rem; color: rgb(var(--ink-soft)); }
+.vidya-lines li { break-inside: avoid; padding: 5px 0; }
+.vidya-lines b { font: 400 italic 1.1rem/1 var(--f-dev); color: rgb(var(--ink)); margin-right: 6px; }
 
-/* the service lists, in each direction's material */
-html[data-dev="a"] .dv .pp-sub { background: rgb(var(--bg-b) / 0.45); box-shadow: inset 0 0 0 1px rgb(var(--glow) / 0.3); }
-html[data-dev="b"] .dv .pp-subs { gap: 0 24px; }
-html[data-dev="b"] .dv .pp-sub { background: none; border-radius: 0; box-shadow: none; border-top: 1px solid rgb(var(--ink) / 0.22); }
-html[data-dev="b"] .dv .pp-sub summary { padding: 16px 0; font-family: var(--f-dev); font-size: 1.25rem; font-weight: 400; }
-html[data-dev="b"] .dv .pp-sub ul { padding: 0 0 18px; }
-html[data-dev="c"] .dv .pp-sub { background: rgb(var(--bg-b) / 0.3); box-shadow: inset 0 0 0 1px rgb(var(--glow) / 0.28); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
-html[data-dev="c"] .dv .pp-sub summary { font-family: var(--f-dev); font-size: 1.2rem; font-style: italic; font-weight: 400; }
-
-/* the brief at the end of the page, and the switch */
-.dv-brief { max-width: 1180px; margin: 6vh auto 0; padding: 0 var(--gutter-r) 4vh var(--gutter-l); display: grid; gap: 14px; position: relative; z-index: 2; }
-.dv-briefs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 10px; }
-.dv-card { display: grid; gap: 14px; align-content: start; padding: 22px; border-radius: 20px; background: rgb(var(--bg-a) / 0.6); box-shadow: inset 0 0 0 1px rgb(var(--ink) / 0.14); }
-html[data-dev="a"] [data-dir-card="a"], html[data-dev="b"] [data-dir-card="b"], html[data-dev="c"] [data-dir-card="c"] { box-shadow: inset 0 0 0 2px rgb(var(--glow)); }
-.dv-card header { display: flex; align-items: center; gap: 12px; }
-.dv-card-key { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: rgb(var(--ink)); color: rgb(var(--bg-a)); font-weight: 600; }
-.dv-card h3 { font-size: 1.7rem; font-weight: 400; }
-.dv-card-essence { color: rgb(var(--ink-soft)); font-size: 0.92rem; }
-.dv-swatches { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-.dv-swatches li { display: grid; gap: 2px; font-size: 0.74rem; }
-.dv-swatches span { height: 34px; border-radius: 8px; background: var(--c); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.12); }
-.dv-swatches small { color: rgb(var(--ink-soft)); font-size: 0.68rem; }
-.dv-card dl { margin: 0; display: grid; gap: 8px; font-size: 0.85rem; }
-.dv-card dt { font: 600 0.66rem/1 var(--f-body); letter-spacing: 0.16em; text-transform: uppercase; color: rgb(var(--glow)); margin-bottom: 3px; }
-.dv-card dd { margin: 0; color: rgb(var(--ink) / 0.88); }
-.dv-switch {
-  position: fixed; z-index: 61; left: 50%; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); translate: -50% 0;
-  display: flex; align-items: center; gap: 4px; padding: 5px; border-radius: 999px; font: 500 0.74rem/1 var(--f-body);
-  color: #f2ece6; background: rgb(14 11 11 / 0.86); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.14);
+/* II · the Devi and the Hindu deities */
+.deity-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.deity-card, .greek-card {
+  display: grid; gap: 6px; justify-items: center; align-content: start; text-align: center; padding: 22px 14px 16px; border-radius: 18px;
+  background: rgb(var(--bg-b) / 0.35); box-shadow: inset 0 0 0 1px rgb(var(--glow) / 0.28); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
 }
-.dv-switch > span { padding: 0 8px 0 10px; color: #b9aea6; }
-.dv-switch button { font: inherit; color: inherit; background: none; border: 0; border-radius: 999px; padding: 8px 12px; cursor: pointer; white-space: nowrap; }
-.dv-switch button[aria-pressed="true"] { background: #f2ece6; color: #141010; }
-.dv-switch button b { font-weight: 600; }
+.deity-script { font: 400 1.7rem/1.1 "Tiro Devanagari Sanskrit", serif; color: rgb(var(--glow)); }
+.deity-name { font: 400 italic 1.45rem/1.1 var(--f-dev); }
+.deity-line { font-size: 0.8rem; color: rgb(var(--ink-soft)); line-height: 1.35; min-height: 2.2em; }
+.deity-card .vidya-keep { margin-top: 4px; }
 
-@media (max-width: 960px) {
+/* III · the Greek gods */
+.meander {
+  position: absolute; left: 0; right: 0; top: 7vh; height: 22px; opacity: 0.55; pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='22' viewBox='0 0 44 22'%3E%3Cpath d='M0 21 H40 V1 H8 V15 H32 V7 H16' fill='none' stroke='%23f3ead8' stroke-width='1.4'/%3E%3C/svg%3E") repeat-x center / 44px 22px;
+}
+.elements { display: flex; flex-wrap: wrap; gap: 8px; }
+.elements button {
+  display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px 8px 10px; border-radius: 999px; cursor: pointer;
+  font: 500 0.86rem/1 var(--f-body); color: rgb(var(--ink)); background: rgb(var(--bg-b) / 0.35); border: 0; box-shadow: inset 0 0 0 1px rgb(var(--glow) / 0.35);
+}
+.elements button small { font: 400 italic 0.95rem/1 var(--f-dev); color: rgb(var(--ink-soft)); }
+.elements svg { width: 20px; height: 20px; fill: none; stroke: rgb(var(--glow)); stroke-width: 2.2; stroke-linejoin: round; }
+.elements .el-all { padding-left: 6px; }
+.elements button[aria-pressed="true"] { background: rgb(var(--ink)); color: rgb(var(--bg-a)); box-shadow: none; }
+.elements button[aria-pressed="true"] small { color: rgb(var(--bg-a) / 0.7); }
+.elements button[aria-pressed="true"] svg { stroke: rgb(var(--bg-a)); }
+.greek-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.greek-card { justify-items: stretch; text-align: left; padding: 18px 16px 16px; position: relative; overflow: hidden; }
+.greek-card::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: rgb(var(--glow) / 0.5); }
+.greek-script { font: 400 1.6rem/1.1 var(--f-dev); color: rgb(var(--glow)); }
+.greek-card .deity-line { min-height: 0; }
+.greek-work { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.greek-work .chip-keep { font-size: 0.78rem; padding: 6px 10px; }
+.greek-grid[data-show]:not([data-show="all"]) .greek-card { display: none; }
+.greek-grid[data-show="fire"] .greek-card[data-el="fire"], .greek-grid[data-show="air"] .greek-card[data-el="air"],
+.greek-grid[data-show="water"] .greek-card[data-el="water"], .greek-grid[data-show="earth"] .greek-card[data-el="earth"],
+.greek-grid[data-show="aether"] .greek-card[data-el="aether"] { display: grid; }
+
+/* IV · many lands */
+.lands { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.land { padding: 18px; border-radius: 18px; background: rgb(var(--bg-b) / 0.3); box-shadow: inset 0 0 0 1px rgb(var(--glow) / 0.22); display: grid; gap: 10px; align-content: start; }
+.land-name { font: 500 0.7rem/1 var(--f-body); letter-spacing: 0.18em; text-transform: uppercase; color: rgb(var(--glow)); }
+.land ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.land .chip-keep { font: 400 italic 1.15rem/1.1 var(--f-dev); padding: 6px 12px; }
+
+/* lists inside the movements */
+.dv .pp-sub { background: rgb(var(--bg-b) / 0.3); box-shadow: inset 0 0 0 1px rgb(var(--glow) / 0.28); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.dv .pp-sub summary { font-family: var(--f-dev); font-size: 1.2rem; font-style: italic; font-weight: 400; }
+
+/* VII · shamanic: the drum */
+.dv-split { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+.dv-split-full { grid-column: 1 / -1; }
+.drum { width: min(260px, 60vw); height: auto; }
+.drum-rim { fill: none; stroke: rgb(var(--glow) / 0.85); stroke-width: 3; }
+.drum-skin { fill: rgb(var(--bg-b) / 0.5); stroke: rgb(var(--glow) / 0.3); }
+.drum-line { fill: none; stroke: rgb(var(--glow)); stroke-width: 2; stroke-linecap: round; }
+.drum-line.thin { stroke-width: 1; opacity: 0.6; }
+.drum-dot { fill: rgb(var(--glow)); }
+
+@media (max-width: 1100px) {
+  .deity-grid, .greek-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 860px) {
   .dv-hero-grid { grid-template-columns: minmax(0, 1fr); }
-  html[data-dev="a"] .vidyas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  html[data-dev="b"] .vidya { grid-template-columns: 2.2rem minmax(0, 1fr) auto; }
-  html[data-dev="b"] .vidya-line { grid-column: 2 / -1; order: 6; }
-  html[data-dev="b"] .vidya-deva { order: 3; }
-  html[data-dev="c"] .vidyas { aspect-ratio: auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-  html[data-dev="c"] .vidya { position: static; transform: none; width: auto; }
-  html[data-dev="c"] .vidya-bindu { display: none; }
-  .dv-briefs { grid-template-columns: minmax(0, 1fr); }
+  .vidyas { aspect-ratio: auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .vidya { position: static; transform: none; width: auto; padding: 14px; border-radius: 16px; box-shadow: inset 0 0 0 1px rgb(var(--glow) / 0.25); }
+  .vidya-bindu { display: none; }
+  .vidya-lines { columns: 1; }
+  .deity-grid, .greek-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lands { grid-template-columns: minmax(0, 1fr); }
+  .dv-split { grid-template-columns: minmax(0, 1fr); }
+  .dv-moves { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 600px) {
-  .dv-switch > span { display: none; }
-  .dv-switch button { padding: 8px 13px; }
-  .dv-switch button span { display: none; }
   .yt-names li { font-size: 0.78rem; transform: rotate(calc(var(--i) * 36deg - 90deg)) translateX(40vw) rotate(calc(90deg - var(--i) * 36deg)) translate(-50%, -50%); }
-  .keep { bottom: calc(112px + env(safe-area-inset-bottom, 0px)); }
+  .greek-grid { grid-template-columns: minmax(0, 1fr); }
 }

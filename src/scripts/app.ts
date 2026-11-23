@@ -48,7 +48,7 @@ import { closeMenu, initMenu } from './menu';
 import { initPractice } from './practice';
 import { initPwa } from './pwa';
 import { runDeviceTest } from './devicetest';
-import { applyDirection, startDevotion, stopDevotion } from './devotion';
+import { startDevotion, stopDevotion } from './devotion';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -251,8 +251,8 @@ function heroKey() {
   return HERO_PRESET[exp.hero];
 }
 
-/** pillar 1 is being designed in three directions; its worlds follow the one chosen */
-const devKey = (part: string) => `dev${exp.devdir.toUpperCase()}_${part}`;
+/** pillar 1 (direction C, Cosmic mother): each movement of the page has its own world */
+const devKey = (part: string) => `devC_${part}`;
 
 function chapterKeys() {
   return chapters.map((c) => {
@@ -372,19 +372,24 @@ function dustUpdate(h: HTMLElement, p: number) {
 }
 
 function setupReveals() {
+  // Reveals play once and stay. (They used to reverse when scrolled back past,
+  // which, with positions measured before late layout changes, could leave
+  // content invisible while scrolling down.)
   document.querySelectorAll<HTMLElement>('[data-split]:not([data-hero])').forEach((el) => {
     tweens.push(gsap.from(splitWords(el), {
       yPercent: 118, duration: 1.15, ease: 'expo.out', stagger: 0.05,
-      scrollTrigger: { trigger: el, start: 'top 86%', toggleActions: 'play none none reverse' },
+      scrollTrigger: { trigger: el, start: 'top 92%', once: true },
     }));
   });
   document.querySelectorAll<HTMLElement>('[data-fade]').forEach((el) => {
     tweens.push(gsap.from(el, {
-      opacity: 0, y: 32, duration: 1.0, ease: 'power3.out',
-      scrollTrigger: { trigger: el, start: 'top 92%', toggleActions: 'play none none reverse' },
+      opacity: 0, y: 28, duration: 0.9, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 96%', once: true },
     }));
   });
+  // a short chapter fades as it leaves; a long one never does, so its last lines stay readable
   document.querySelectorAll<HTMLElement>('[data-chapter] > .chapter-inner').forEach((inner) => {
+    if (inner.parentElement!.offsetHeight > innerHeight * 1.25) return;
     tweens.push(gsap.to(inner, {
       opacity: 0, y: -80, ease: 'none',
       scrollTrigger: { trigger: inner.parentElement, start: 'bottom 72%', end: 'bottom 16%', scrub: true },
@@ -523,7 +528,7 @@ function soundTick() {
   if (!soundIsOn()) { world.setAudioLevel(soundLevel()); return; }
   const [a, b, t] = world.blend;
   // the Devotion directions each have their own sound layer
-  const layer = (k: string) => (k.startsWith('devA_') ? 'devotion' : k.startsWith('devB_') ? 'ash' : k.startsWith('devC_') ? 'cosmic' : k);
+  const layer = (k: string) => (k.startsWith('devC_') ? 'cosmic' : k);
   const w: Record<string, number> = {};
   w[layer(a)] = (w[layer(a)] ?? 0) + (1 - t);
   w[layer(b)] = (w[layer(b)] ?? 0) + t;
@@ -539,6 +544,9 @@ function initPage() {
   main.dataset.init = '1';
   mainEl = main;
   heroWanted = false;
+  lastMainHeight = 0;
+  mainSizeWatch?.disconnect();
+  mainSizeWatch?.observe(main);
 
   chapters = Array.from(document.querySelectorAll<HTMLElement>('[data-chapter]'));
   const seq = chapters.length ? chapterKeys() : (main.dataset.sequence || 'hero').split(',').map((k) => (k === 'devotion' ? devKey('hero') : k));
@@ -597,8 +605,7 @@ function initPage() {
   renderKeep();
   applyFestival();
   renderMoonLine();
-  applyDirection(exp.devdir);
-  if (tier !== 'calm') startDevotion(world, exp.devdir);
+  startDevotion(world, tier === 'calm');
   initDiya(world);
   initPath(world, () => { ScrollTrigger.refresh(); lenis?.resize(); });
   depthDispose = initDepth(world.isLive && tier !== 'calm');
@@ -642,12 +649,7 @@ function onExpChange(k: keyof Exp, v: string) {
   if (k === 'cursor') applyCursor();
   if (k === 'sky') applySky();
   if (k === 'festival') { applyFestival(); applySky(); }
-  if (k === 'devdir') {
-    applyDirection(v as 'a' | 'b' | 'c');
-    if (chapters.length) world.setSequence(chapterKeys());
-    if (tier !== 'calm') startDevotion(world, v as 'a' | 'b' | 'c');
-    buzz(PATTERNS.choice);
-  }
+
   if (k === 'haptics') { setHaptics(v === 'on'); if (v === 'on') buzz(PATTERNS.choice); }
   if (k === 'page') html.dataset.pageStyle = v;
   if (k === 'dust' && v === 'off' && dustOwner) { dustOwner.style.opacity = ''; world.setDust(null, 0); dustOwner = null; }
@@ -720,10 +722,19 @@ document.addEventListener('keydown', (e) => {
 });
 
 let refreshTimer = 0;
-document.addEventListener('toggle', () => {
+function refreshSoon(ms = 120) {
   clearTimeout(refreshTimer);
-  refreshTimer = window.setTimeout(() => { ScrollTrigger.refresh(); lenis?.resize(); }, 60);
-}, true);
+  refreshTimer = window.setTimeout(() => { ScrollTrigger.refresh(); lenis?.resize(); }, ms);
+}
+document.addEventListener('toggle', () => refreshSoon(60), true);
+// fonts that arrive late change the height of headings, and so where everything below sits
+(document as Document & { fonts?: FontFaceSet }).fonts?.addEventListener?.('loadingdone', () => refreshSoon());
+// any other change in the page's height (lists opening, images, layout) re-measures the scroll positions
+let lastMainHeight = 0;
+const mainSizeWatch = typeof ResizeObserver !== 'undefined' ? new ResizeObserver((entries) => {
+  const h = Math.round(entries[0].contentRect.height);
+  if (Math.abs(h - lastMainHeight) > 4) { lastMainHeight = h; refreshSoon(200); }
+}) : null;
 
 /* --------------------------------------------------- prototype panel */
 
@@ -783,8 +794,8 @@ function hudTick(dt: number) {
   if (f) f.textContent = `${Math.round(meter.fps)} fps`;
   const c = hud.querySelector('[data-hud-chapter]');
   const ck = world.chapterKey;
-  const dv = /^dev([ABC])_(\w+)$/.exec(ck);
-  if (c) c.textContent = LABELS[ck] ?? (dv ? `Devotion ${dv[1]} · ${dv[2]}` : ck);
+  const dv = /^devC_(\w+)$/.exec(ck);
+  if (c) c.textContent = LABELS[ck] ?? (dv ? `Devotion · ${dv[1]}` : ck);
   const p = hud.querySelector('[data-hud-points]');
   if (p) {
     const n = world.pointCount;
@@ -880,15 +891,7 @@ function boot() {
   onSoundChange((on) => { renderSound(); if (on) ring('choice'); });
   initKeep();
   initMenu(world);
-  applyDirection(exp.devdir);
-  document.addEventListener('click', (e) => {
-    const b = (e.target as Element | null)?.closest<HTMLElement>('[data-dev-set]');
-    if (!b) return;
-    const v = b.dataset.devSet as 'a' | 'b' | 'c';
-    setExp('devdir', v);
-    onExpChange('devdir', v);
-    renderExpPanel();
-  });
+
   initPwa();
   initSearch({
     preview: (preset) => world.setSequence([preset]),
@@ -936,7 +939,6 @@ function boot() {
     if (world.ready) html.dataset.world = 'ready';
     html.dataset.festival = festival?.f.kind ?? '';
     if (festival) html.dataset.festivalOn = '1';
-    html.dataset.dev = exp.devdir;
     markParticles();
     if (read('sk-intro-seen')) html.dataset.intro = 'seen';
     world.forceCss();

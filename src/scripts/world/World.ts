@@ -218,6 +218,7 @@ uniform vec4 uW1; // flames, water, silk, stars
 uniform vec4 uW2; // letters, eye, horizon, sigils
 uniform vec4 uW3; // vortex, halo, name, dust
 uniform vec4 uW4; // mala, lamps, agni, (spare)
+uniform vec4 uW5; // yantra, temple, tree, (spare)
 uniform float uAngMala;
 uniform float uAngFlame;
 uniform float uAngVortex;
@@ -278,6 +279,16 @@ void main() {
   p.y += rise * 2.7 * fl;
   p.x = mix(p.x, p.x * narrow + sin(uTime * 2.2 + aSeed * 30.0 + rise * 6.0) * 0.14 * rise, fl);
   p.z = mix(p.z, CZ + (p.z - CZ) * narrow, fl);
+
+  // yantra: breathes and turns a few degrees, never more
+  vec2 yc = vec2(0.0, 0.3);
+  p.xy = mix(p.xy, yc + rot(p.xy - yc, sin(uTime * 0.12) * 0.07) * (1.0 + 0.015 * sin(uTime * 0.7)), uW5.x);
+  // temple: floats, like a memory of marble
+  p.y += sin(uTime * 0.35) * 0.06 * uW5.y;
+  p.z += sin(uTime * 0.5 + p.x * 0.8) * 0.12 * uW5.y;
+  // tree: the branches sway, more towards their tips
+  float sway = max(0.0, p.y - 0.6);
+  p.x += sin(uTime * 0.6 + p.y * 1.3) * 0.05 * sway * uW5.z;
 
   p.xy = p.xy * uFit + uShift;
 
@@ -624,7 +635,7 @@ export class World {
       uniforms: {
         uTime: { value: 0 }, uMix: { value: 0 }, uT: { value: 0 }, uScatter: { value: 0.9 },
         uSize: { value: 1.9 }, uPR: { value: 1 }, uFit: { value: 1 }, uShift: { value: new Vector2() },
-        uW1: { value: [0, 0, 0, 0] }, uW2: { value: [0, 0, 0, 0] }, uW3: { value: [0, 0, 0, 0] }, uW4: { value: [0, 0, 0, 0] }, uAngMala: { value: 0 },
+        uW1: { value: [0, 0, 0, 0] }, uW2: { value: [0, 0, 0, 0] }, uW3: { value: [0, 0, 0, 0] }, uW4: { value: [0, 0, 0, 0] }, uW5: { value: [0, 0, 0, 0] }, uAngMala: { value: 0 },
         uAngFlame: { value: 0 }, uAngVortex: { value: 0 }, uAngHalo: { value: 0 }, uRise: { value: 1 }, uVeil: { value: 0 },
         uColor: { value: new Vector3(1, 0.8, 0.5) }, uColor2: { value: new Vector3(1, 0.5, 0.3) }, uInk: { value: new Vector3() },
         uOpacity: { value: 0.8 }, uLight: { value: 0 },
@@ -1064,6 +1075,7 @@ export class World {
       fu.uW2.value = [w[idx('letters')], w[idx('eye')], w[idx('horizon')], w[idx('sigils')]];
       fu.uW3.value = [w[idx('vortex')], w[idx('halo')], w[idx('name')], w[idx('dust')]];
       fu.uW4.value = [w[idx('mala')], w[idx('lamps')], w[idx('agni')], 0];
+      fu.uW5.value = [w[idx('yantra')], w[idx('temple')], w[idx('tree')], 0];
       this.malaAng += (this.malaTarget - this.malaAng) * (1 - Math.exp(-dt * 7));
       fu.uAngMala.value = this.malaAng;
       fu.uAngFlame.value = this.angFlame;

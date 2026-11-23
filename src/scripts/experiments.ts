@@ -21,19 +21,16 @@ export type Exp = {
   haptics: OnOff;
   saver: OnOff;
   festival: 'auto' | 'kalipuja' | 'diwali' | 'navratri' | 'eclipse' | 'none';
-  /** pillar 1 design direction being compared */
-  devdir: 'a' | 'b' | 'c';
 };
 
 const DEFAULTS: Exp = {
-  forms: 'on', hero: 'dawneye', page: 'eye', bend: 'on', cursor: 'flame', sky: 'now', touch: 'on', dust: 'on', haptics: 'on', saver: 'off', festival: 'auto', devdir: 'a',
+  forms: 'on', hero: 'dawneye', page: 'eye', bend: 'on', cursor: 'flame', sky: 'now', touch: 'on', dust: 'on', haptics: 'on', saver: 'off', festival: 'auto',
 };
 const ALLOWED: Record<keyof Exp, string[]> = {
   forms: ['on', 'off'], hero: ['dawneye', 'eye', 'name', 'dawn'], page: ['eye', 'smoke', 'ink', 'morph', 'fade'], bend: ['on', 'off'],
   cursor: ['flame', 'incense', 'off'], sky: ['now', 'amavasya', 'purnima', 'night', 'day', 'off'],
   touch: ['on', 'off'], dust: ['on', 'off'], haptics: ['on', 'off'], saver: ['on', 'off'],
   festival: ['auto', 'kalipuja', 'diwali', 'navratri', 'eclipse', 'none'],
-  devdir: ['a', 'b', 'c'],
 };
 export const exp: Exp = { ...DEFAULTS };
 export type ToggleKey = 'bend' | 'touch' | 'dust' | 'haptics' | 'saver';
