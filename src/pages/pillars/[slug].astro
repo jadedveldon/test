@@ -5,7 +5,7 @@ import { pillars, categoryCount, type Pillar } from '../../data/site';
 
 // Devotion, Magic and Healing have their own pages (pillars/devotion.astro, magic.astro, healing.astro)
 export function getStaticPaths() {
-  return pillars.map((p, i) => ({ params: { slug: p.slug }, props: { index: i } })).filter((x) => !['devotion', 'magic', 'healing'].includes(x.params.slug));
+  return pillars.map((p, i) => ({ params: { slug: p.slug }, props: { index: i } })).filter((x) => !['devotion', 'magic', 'healing', 'identity', 'divination', 'learning'].includes(x.params.slug));
 }
 
 const { index } = Astro.props as { index: number };

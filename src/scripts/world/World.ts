@@ -250,7 +250,9 @@ uniform vec4 uW3; // vortex, halo, name, dust
 uniform vec4 uW4; // mala, lamps, agni, lotus
 uniform vec4 uW5; // yantra, temple, tree, crossroads
 uniform vec4 uW6; // rose, pentacle, astrolabe, moons
-uniform vec4 uW7; // chakras, bowl, (spare), (spare)
+uniform vec4 uW7; // chakras, bowl, halves, prism
+uniform vec4 uW8; // figure, cards, mirror, pendulum
+uniform vec4 uW9; // book, path, (spare), (spare)
 uniform float uAngMala;
 uniform float uAngFlame;
 uniform float uAngVortex;
@@ -339,6 +341,18 @@ void main() {
   vec2 bc = vec2(0.0, -0.2);
   p.xy = mix(p.xy, bc + (p.xy - bc) * (1.0 + 0.012 * sin(uTime * 0.5)), uW7.y);
   p.y += sin(uTime * 0.4) * 0.05 * uW7.y;
+  // halves and figure breathe; the prism's rays shimmer; cards and book float
+  vec2 hc2 = vec2(0.0, 0.3);
+  p.xy = mix(p.xy, hc2 + (p.xy - hc2) * (1.0 + 0.018 * sin(uTime * 0.6)), uW7.z);
+  p.y += sin(uTime * 1.6 + p.x * 2.4) * 0.025 * step(0.9, p.x) * uW7.w;
+  p.xy = mix(p.xy, vec2(p.x * (1.0 + 0.012 * sin(uTime * 0.8)), p.y), uW8.x);
+  p.y += sin(uTime * 0.5) * 0.05 * (uW8.y + uW9.x);
+  // the mirror's rings widen slowly, as on still water
+  float mr = length((p.xy - vec2(0.0, 0.1)) * vec2(1.0, 0.76));
+  p.xy = mix(p.xy, vec2(0.0, 0.1) + (p.xy - vec2(0.0, 0.1)) * (1.0 + 0.03 * sin(uTime * 1.1 - mr * 3.0) * step(mr, 1.3)), uW8.z);
+  // the pendulum swings from its pivot
+  vec2 pv = vec2(0.0, 2.8);
+  p.xy = mix(p.xy, pv + rot(p.xy - pv, sin(uTime * 1.25) * 0.26 * step(length(p.xy - pv), 4.82)), uW8.w); // the arc of its path stays still
 
   // the astrolabe turns slowly; the rose opens and closes a little; the pentacle and moons glow in place
   vec2 ac = vec2(0.0, 0.3);
@@ -693,7 +707,7 @@ export class World {
       uniforms: {
         uTime: { value: 0 }, uMix: { value: 0 }, uT: { value: 0 }, uScatter: { value: 0.9 },
         uSize: { value: 1.9 }, uPR: { value: 1 }, uFit: { value: 1 }, uZoom: { value: 1 }, uShift: { value: new Vector2() },
-        uW1: { value: [0, 0, 0, 0] }, uW2: { value: [0, 0, 0, 0] }, uW3: { value: [0, 0, 0, 0] }, uW4: { value: [0, 0, 0, 0] }, uW5: { value: [0, 0, 0, 0] }, uW6: { value: [0, 0, 0, 0] }, uW7: { value: [0, 0, 0, 0] }, uAngMala: { value: 0 },
+        uW1: { value: [0, 0, 0, 0] }, uW2: { value: [0, 0, 0, 0] }, uW3: { value: [0, 0, 0, 0] }, uW4: { value: [0, 0, 0, 0] }, uW5: { value: [0, 0, 0, 0] }, uW6: { value: [0, 0, 0, 0] }, uW7: { value: [0, 0, 0, 0] }, uW8: { value: [0, 0, 0, 0] }, uW9: { value: [0, 0, 0, 0] }, uAngMala: { value: 0 },
         uAngFlame: { value: 0 }, uAngVortex: { value: 0 }, uAngHalo: { value: 0 }, uRise: { value: 1 }, uVeil: { value: 0 },
         uColor: { value: new Vector3(1, 0.8, 0.5) }, uColor2: { value: new Vector3(1, 0.5, 0.3) }, uInk: { value: new Vector3() },
         uOpacity: { value: 0.8 }, uLight: { value: 0 },
@@ -1151,7 +1165,9 @@ export class World {
       fu.uW4.value = [w[idx('mala')], w[idx('lamps')], w[idx('agni')], w[idx('lotus')]];
       fu.uW5.value = [w[idx('yantra')], w[idx('temple')], w[idx('tree')], w[idx('crossroads')]];
       fu.uW6.value = [w[idx('rose')], w[idx('pentacle')], w[idx('astrolabe')], w[idx('moons')]];
-      fu.uW7.value = [w[idx('chakras')], w[idx('bowl')], 0, 0];
+      fu.uW7.value = [w[idx('chakras')], w[idx('bowl')], w[idx('halves')], w[idx('prism')]];
+      fu.uW8.value = [w[idx('figure')], w[idx('cards')], w[idx('mirror')], w[idx('pendulum')]];
+      fu.uW9.value = [w[idx('book')], w[idx('path')], 0, 0];
       this.malaAng += (this.malaTarget - this.malaAng) * (1 - Math.exp(-dt * 7));
       fu.uAngMala.value = this.malaAng;
       fu.uAngFlame.value = this.angFlame;

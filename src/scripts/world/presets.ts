@@ -283,6 +283,378 @@ export const PRESETS: Record<string, Preset> = {
     a: '#04161a', b: '#0d3a3f', c: '#7fc4b8', glow: '#e2c27a',
     ink: '#eef5f1', inkSoft: '#a9c4bd', scale: 1.2, warp: 1.8, speed: 0.03, light: 0, motes: 0.4, form: 'lotus', shift: 0, fade: 0.6, zoom: 0.8,
   },
+  /* ---------------- Pillar 4, Identity, Intimacy & the Body: three directions to compare */
+  // A · Two halves, one whole (dusk indigo and saffron, a gold seam)
+  // the opening: a faint halo around the circle of two halves
+  idA_hero: {
+    a: '#0d0c26', b: '#2c1f57', c: '#e48b3c', glow: '#e6c06a',
+    ink: '#efe9f7', inkSoft: '#c9bfdc', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'halo', shift: 4.4, fade: 0.3, zoom: 1.15,
+  },
+  // the homepage chapter
+  idA_home: {
+    a: '#0d0c26', b: '#2c1f57', c: '#e48b3c', glow: '#e6c06a',
+    ink: '#efe9f7', inkSoft: '#c9bfdc', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'halves', shift: 5.4, fade: 0.9,
+  },
+  // I · two halves, one whole
+  idA_queer: {
+    a: '#0d0c26', b: '#2c1f57', c: '#e48b3c', glow: '#e6c06a',
+    ink: '#efe9f7', inkSoft: '#c9bfdc', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'halves', shift: 4.2, fade: 0.6,
+  },
+  // II · a rose
+  idA_intimacy: {
+    a: '#0d0c26', b: '#2c1f57', c: '#c9472f', glow: '#f0b38a',
+    ink: '#efe9f7', inkSoft: '#c9bfdc', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'rose', shift: 4.2, fade: 0.55,
+  },
+  // III · a figure of light
+  idA_body: {
+    a: '#0d0c26', b: '#2c1f57', c: '#e48b3c', glow: '#e6c06a',
+    ink: '#efe9f7', inkSoft: '#c9bfdc', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'figure', shift: 4.2, fade: 0.55,
+  },
+  // IV · the moon’s faces, the cycle
+  idA_womb: {
+    a: '#0d0c26', b: '#2c1f57', c: '#9a7fd0', glow: '#efe9f7',
+    ink: '#efe9f7', inkSoft: '#c9bfdc', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'moons', shift: 4.2, fade: 0.55,
+  },
+  // V · fire
+  idA_lilith: {
+    a: '#0d0c26', b: '#2c1f57', c: '#c9472f', glow: '#e6c06a',
+    ink: '#efe9f7', inkSoft: '#c9bfdc', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'flames', shift: 0, fade: 0.45,
+  },
+  // the close
+  idA_close: {
+    a: '#0d0c26', b: '#2c1f57', c: '#e48b3c', glow: '#e6c06a',
+    ink: '#efe9f7', inkSoft: '#c9bfdc', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'halves', shift: 0, fade: 0.6, zoom: 0.8,
+  },
+  // B · Soft prism (cream, a gentle spectrum)
+  // the opening: a faint halo around the comfort note
+  idB_hero: {
+    a: '#fbf6f0', b: '#f3e6ea', c: '#cdb8ea', glow: '#fffaf4',
+    ink: '#2f2433', inkSoft: '#6c5d6e', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'halo', shift: 4.4, fade: 0.25, zoom: 1.2,
+  },
+  // the homepage chapter
+  idB_home: {
+    a: '#fbf6f0', b: '#f3e6ea', c: '#f2b8c6', glow: '#fffaf4',
+    ink: '#2f2433', inkSoft: '#6c5d6e', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'prism', shift: 5.4, fade: 0.85,
+  },
+  // I · a prism, one light into many
+  idB_queer: {
+    a: '#fbf6f0', b: '#f3e6ea', c: '#b9d3f2', glow: '#fffaf4',
+    ink: '#2f2433', inkSoft: '#6c5d6e', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'prism', shift: 4.2, fade: 0.55,
+  },
+  // II · a rose
+  idB_intimacy: {
+    a: '#fbf6f0', b: '#f3e6ea', c: '#f2b8c6', glow: '#fffaf4',
+    ink: '#2f2433', inkSoft: '#6c5d6e', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'rose', shift: 4.2, fade: 0.5,
+  },
+  // III · a figure of light
+  idB_body: {
+    a: '#fbf6f0', b: '#f3e6ea', c: '#bfe3cf', glow: '#fffaf4',
+    ink: '#2f2433', inkSoft: '#6c5d6e', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'figure', shift: 4.2, fade: 0.5,
+  },
+  // IV · the moon’s faces
+  idB_womb: {
+    a: '#fbf6f0', b: '#f3e6ea', c: '#cdb8ea', glow: '#fffaf4',
+    ink: '#2f2433', inkSoft: '#6c5d6e', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'moons', shift: 4.2, fade: 0.5,
+  },
+  // V · fire
+  idB_lilith: {
+    a: '#fbf6f0', b: '#f3e6ea', c: '#f6c89f', glow: '#fffaf4',
+    ink: '#2f2433', inkSoft: '#6c5d6e', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'flames', shift: 0, fade: 0.4,
+  },
+  // the close
+  idB_close: {
+    a: '#fbf6f0', b: '#f3e6ea', c: '#f2b8c6', glow: '#fffaf4',
+    ink: '#2f2433', inkSoft: '#6c5d6e', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'prism', shift: 0, fade: 0.5, zoom: 0.8,
+  },
+  // C · Night rose (plum, rose and moonlight)
+  // the opening: a faint halo around the figure
+  idC_hero: {
+    a: '#14080f', b: '#3a1430', c: '#d77a92', glow: '#f2e6ea',
+    ink: '#f6ecef', inkSoft: '#c9aeb8', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'halo', shift: 4.4, fade: 0.3, zoom: 1.15,
+  },
+  // the homepage chapter
+  idC_home: {
+    a: '#14080f', b: '#3a1430', c: '#d77a92', glow: '#f2e6ea',
+    ink: '#f6ecef', inkSoft: '#c9aeb8', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'rose', shift: 5.4, fade: 0.9,
+  },
+  // I · two halves
+  idC_queer: {
+    a: '#14080f', b: '#3a1430', c: '#c99a7a', glow: '#f2e6ea',
+    ink: '#f6ecef', inkSoft: '#c9aeb8', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'halves', shift: 4.2, fade: 0.55,
+  },
+  // II · a rose opening
+  idC_intimacy: {
+    a: '#14080f', b: '#3a1430', c: '#d77a92', glow: '#f6d3dc',
+    ink: '#f6ecef', inkSoft: '#c9aeb8', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'rose', shift: 4.2, fade: 0.6,
+  },
+  // III · a figure of light
+  idC_body: {
+    a: '#14080f', b: '#3a1430', c: '#c99a7a', glow: '#f2e6ea',
+    ink: '#f6ecef', inkSoft: '#c9aeb8', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'figure', shift: 4.2, fade: 0.55,
+  },
+  // IV · the moon’s faces
+  idC_womb: {
+    a: '#14080f', b: '#3a1430', c: '#d77a92', glow: '#f2e6ea',
+    ink: '#f6ecef', inkSoft: '#c9aeb8', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'moons', shift: 4.2, fade: 0.55,
+  },
+  // V · fire
+  idC_lilith: {
+    a: '#14080f', b: '#3a1430', c: '#b8452e', glow: '#f2c6a0',
+    ink: '#f6ecef', inkSoft: '#c9aeb8', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'flames', shift: 0, fade: 0.5,
+  },
+  // the close
+  idC_close: {
+    a: '#14080f', b: '#3a1430', c: '#d77a92', glow: '#f2e6ea',
+    ink: '#f6ecef', inkSoft: '#c9aeb8', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'rose', shift: 0, fade: 0.6, zoom: 0.8,
+  },
+  /* ---------------- Pillar 5, Divination & Insight: three directions to compare */
+  // A · The reading table (wine, gold leaf, candlelight)
+  // the opening: a faint halo around the spread
+  divA_hero: {
+    a: '#170a0e', b: '#3d1420', c: '#7c2230', glow: '#d8b062',
+    ink: '#f6ead8', inkSoft: '#c9b49a', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'halo', shift: 4.4, fade: 0.3, zoom: 1.2,
+  },
+  // the homepage chapter
+  divA_home: {
+    a: '#170a0e', b: '#3d1420', c: '#7c2230', glow: '#d8b062',
+    ink: '#f6ead8', inkSoft: '#c9b49a', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'cards', shift: 5.4, fade: 0.9,
+  },
+  // I · three cards
+  divA_readings: {
+    a: '#170a0e', b: '#3d1420', c: '#7c2230', glow: '#d8b062',
+    ink: '#f6ead8', inkSoft: '#c9b49a', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'cards', shift: 4.2, fade: 0.6,
+  },
+  // II · a mirror
+  divA_seeing: {
+    a: '#170a0e', b: '#3d1420', c: '#7c2230', glow: '#d8b062',
+    ink: '#f6ead8', inkSoft: '#c9b49a', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'mirror', shift: 4.2, fade: 0.55,
+  },
+  // III · the moon’s faces
+  divA_dreams: {
+    a: '#170a0e', b: '#3d1420', c: '#7c2230', glow: '#d8b062',
+    ink: '#f6ead8', inkSoft: '#c9b49a', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'moons', shift: 4.2, fade: 0.55,
+  },
+  // IV · the inner eye
+  divA_eye: {
+    a: '#170a0e', b: '#3d1420', c: '#7c2230', glow: '#d8b062',
+    ink: '#f6ead8', inkSoft: '#c9b49a', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'eye', shift: 4.2, fade: 0.5,
+  },
+  // V · the stars
+  divA_astral: {
+    a: '#170a0e', b: '#3d1420', c: '#7c2230', glow: '#d8b062',
+    ink: '#f6ead8', inkSoft: '#c9b49a', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'stars', shift: 0, fade: 0.6,
+  },
+  // the close
+  divA_close: {
+    a: '#170a0e', b: '#3d1420', c: '#7c2230', glow: '#d8b062',
+    ink: '#f6ead8', inkSoft: '#c9b49a', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'cards', shift: 0, fade: 0.55, zoom: 0.8,
+  },
+  // B · Black mirror (obsidian and silver)
+  // the opening: barely a ring; the mirror leads
+  divB_hero: {
+    a: '#060708', b: '#1b1f24', c: '#6d8fb4', glow: '#c9ced6',
+    ink: '#eef0f4', inkSoft: '#a7aeb8', scale: 1.1, warp: 1.6, speed: 0.025, light: 0, motes: 0.35, form: 'halo', shift: 4.4, fade: 0.22, zoom: 1.2,
+  },
+  // the homepage chapter
+  divB_home: {
+    a: '#060708', b: '#1b1f24', c: '#6d8fb4', glow: '#c9ced6',
+    ink: '#eef0f4', inkSoft: '#a7aeb8', scale: 1.1, warp: 1.6, speed: 0.025, light: 0, motes: 0.35, form: 'mirror', shift: 5.4, fade: 0.9,
+  },
+  // I · three cards
+  divB_readings: {
+    a: '#060708', b: '#1b1f24', c: '#6d8fb4', glow: '#c9ced6',
+    ink: '#eef0f4', inkSoft: '#a7aeb8', scale: 1.1, warp: 1.6, speed: 0.025, light: 0, motes: 0.35, form: 'cards', shift: 4.2, fade: 0.5,
+  },
+  // II · the scrying mirror
+  divB_seeing: {
+    a: '#060708', b: '#1b1f24', c: '#6d8fb4', glow: '#c9ced6',
+    ink: '#eef0f4', inkSoft: '#a7aeb8', scale: 1.1, warp: 1.6, speed: 0.025, light: 0, motes: 0.35, form: 'mirror', shift: 4.2, fade: 0.6,
+  },
+  // III · the moon’s faces
+  divB_dreams: {
+    a: '#060708', b: '#1b1f24', c: '#6d8fb4', glow: '#c9ced6',
+    ink: '#eef0f4', inkSoft: '#a7aeb8', scale: 1.1, warp: 1.6, speed: 0.025, light: 0, motes: 0.35, form: 'moons', shift: 4.2, fade: 0.5,
+  },
+  // IV · the inner eye
+  divB_eye: {
+    a: '#060708', b: '#1b1f24', c: '#6d8fb4', glow: '#c9ced6',
+    ink: '#eef0f4', inkSoft: '#a7aeb8', scale: 1.1, warp: 1.6, speed: 0.025, light: 0, motes: 0.35, form: 'eye', shift: 4.2, fade: 0.5,
+  },
+  // V · the stars
+  divB_astral: {
+    a: '#060708', b: '#1b1f24', c: '#6d8fb4', glow: '#c9ced6',
+    ink: '#eef0f4', inkSoft: '#a7aeb8', scale: 1.1, warp: 1.6, speed: 0.025, light: 0, motes: 0.35, form: 'stars', shift: 0, fade: 0.55,
+  },
+  // the close
+  divB_close: {
+    a: '#060708', b: '#1b1f24', c: '#6d8fb4', glow: '#c9ced6',
+    ink: '#eef0f4', inkSoft: '#a7aeb8', scale: 1.1, warp: 1.6, speed: 0.025, light: 0, motes: 0.35, form: 'mirror', shift: 0, fade: 0.5, zoom: 0.8,
+  },
+  // C · Moon and pendulum (indigo, lavender, starlight)
+  // the opening: stars behind the pendulum board
+  divC_hero: {
+    a: '#0b0d2a', b: '#241a52', c: '#b9a7e8', glow: '#e9cf8a',
+    ink: '#f1eefc', inkSoft: '#b6b0d6', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'stars', shift: 0, fade: 0.2,
+  },
+  // the homepage chapter
+  divC_home: {
+    a: '#0b0d2a', b: '#241a52', c: '#b9a7e8', glow: '#e9cf8a',
+    ink: '#f1eefc', inkSoft: '#b6b0d6', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'pendulum', shift: 5.4, fade: 0.9,
+  },
+  // I · three cards
+  divC_readings: {
+    a: '#0b0d2a', b: '#241a52', c: '#b9a7e8', glow: '#e9cf8a',
+    ink: '#f1eefc', inkSoft: '#b6b0d6', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'cards', shift: 4.2, fade: 0.55,
+  },
+  // II · the pendulum
+  divC_seeing: {
+    a: '#0b0d2a', b: '#241a52', c: '#b9a7e8', glow: '#e9cf8a',
+    ink: '#f1eefc', inkSoft: '#b6b0d6', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'pendulum', shift: 4.2, fade: 0.6,
+  },
+  // III · the moon’s faces
+  divC_dreams: {
+    a: '#0b0d2a', b: '#241a52', c: '#b9a7e8', glow: '#e9cf8a',
+    ink: '#f1eefc', inkSoft: '#b6b0d6', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'moons', shift: 4.2, fade: 0.6,
+  },
+  // IV · the inner eye
+  divC_eye: {
+    a: '#0b0d2a', b: '#241a52', c: '#b9a7e8', glow: '#e9cf8a',
+    ink: '#f1eefc', inkSoft: '#b6b0d6', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'eye', shift: 4.2, fade: 0.5,
+  },
+  // V · the stars
+  divC_astral: {
+    a: '#0b0d2a', b: '#241a52', c: '#b9a7e8', glow: '#e9cf8a',
+    ink: '#f1eefc', inkSoft: '#b6b0d6', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'stars', shift: 0, fade: 0.65,
+  },
+  // the close
+  divC_close: {
+    a: '#0b0d2a', b: '#241a52', c: '#b9a7e8', glow: '#e9cf8a',
+    ink: '#f1eefc', inkSoft: '#b6b0d6', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'pendulum', shift: 0, fade: 0.55, zoom: 0.8,
+  },
+  /* ---------------- Pillar 6, Learning: three directions to compare */
+  // A · The library (walnut, lamp green, brass)
+  // the opening: a faint halo around the class finder
+  lrnA_hero: {
+    a: '#1d140d', b: '#3a2a1c', c: '#3f6b4e', glow: '#c9a35a',
+    ink: '#f3ead8', inkSoft: '#c4b296', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'halo', shift: 4.4, fade: 0.25, zoom: 1.25,
+  },
+  // the homepage chapter
+  lrnA_home: {
+    a: '#1d140d', b: '#3a2a1c', c: '#3f6b4e', glow: '#c9a35a',
+    ink: '#f3ead8', inkSoft: '#c4b296', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'book', shift: 5.4, fade: 0.9,
+  },
+  // I · lamps
+  lrnA_foundations: {
+    a: '#1d140d', b: '#3a2a1c', c: '#3f6b4e', glow: '#c9a35a',
+    ink: '#f3ead8', inkSoft: '#c4b296', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'lamps', shift: 4.2, fade: 0.5,
+  },
+  // II · sigils
+  lrnA_craft: {
+    a: '#1d140d', b: '#3a2a1c', c: '#3f6b4e', glow: '#c9a35a',
+    ink: '#f3ead8', inkSoft: '#c4b296', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'sigils', shift: 4.2, fade: 0.55,
+  },
+  // III · the yantra
+  lrnA_tantra: {
+    a: '#1d140d', b: '#3a2a1c', c: '#3f6b4e', glow: '#c9a35a',
+    ink: '#f3ead8', inkSoft: '#c4b296', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'yantra', shift: 4.2, fade: 0.5, zoom: 0.85,
+  },
+  // IV · a temple
+  lrnA_deity: {
+    a: '#1d140d', b: '#3a2a1c', c: '#3f6b4e', glow: '#c9a35a',
+    ink: '#f3ead8', inkSoft: '#c4b296', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'temple', shift: 4.2, fade: 0.5, zoom: 0.9,
+  },
+  // V · an open book
+  lrnA_mentoring: {
+    a: '#1d140d', b: '#3a2a1c', c: '#3f6b4e', glow: '#c9a35a',
+    ink: '#f3ead8', inkSoft: '#c4b296', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'book', shift: 4.2, fade: 0.55,
+  },
+  // the close
+  lrnA_close: {
+    a: '#1d140d', b: '#3a2a1c', c: '#3f6b4e', glow: '#c9a35a',
+    ink: '#f3ead8', inkSoft: '#c4b296', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'book', shift: 0, fade: 0.55, zoom: 0.8,
+  },
+  // B · The path of study (midnight, chalk, star gold)
+  // the opening: faint stars behind the map
+  lrnB_hero: {
+    a: '#0b1424', b: '#2b3a52', c: '#6ea0d6', glow: '#f0d48a',
+    ink: '#eef3f9', inkSoft: '#a9b6c8', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'stars', shift: 0, fade: 0.25,
+  },
+  // the homepage chapter
+  lrnB_home: {
+    a: '#0b1424', b: '#2b3a52', c: '#6ea0d6', glow: '#f0d48a',
+    ink: '#eef3f9', inkSoft: '#a9b6c8', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'path', shift: 5.4, fade: 0.9,
+  },
+  // I · the path begins
+  lrnB_foundations: {
+    a: '#0b1424', b: '#2b3a52', c: '#6ea0d6', glow: '#f0d48a',
+    ink: '#eef3f9', inkSoft: '#a9b6c8', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'path', shift: 4.2, fade: 0.55,
+  },
+  // II · sigils
+  lrnB_craft: {
+    a: '#0b1424', b: '#2b3a52', c: '#6ea0d6', glow: '#f0d48a',
+    ink: '#eef3f9', inkSoft: '#a9b6c8', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'sigils', shift: 4.2, fade: 0.5,
+  },
+  // III · the yantra
+  lrnB_tantra: {
+    a: '#0b1424', b: '#2b3a52', c: '#6ea0d6', glow: '#f0d48a',
+    ink: '#eef3f9', inkSoft: '#a9b6c8', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'yantra', shift: 4.2, fade: 0.5, zoom: 0.85,
+  },
+  // IV · a temple
+  lrnB_deity: {
+    a: '#0b1424', b: '#2b3a52', c: '#6ea0d6', glow: '#f0d48a',
+    ink: '#eef3f9', inkSoft: '#a9b6c8', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'temple', shift: 4.2, fade: 0.5, zoom: 0.9,
+  },
+  // V · the path
+  lrnB_mentoring: {
+    a: '#0b1424', b: '#2b3a52', c: '#6ea0d6', glow: '#f0d48a',
+    ink: '#eef3f9', inkSoft: '#a9b6c8', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'path', shift: 4.2, fade: 0.55,
+  },
+  // the close
+  lrnB_close: {
+    a: '#0b1424', b: '#2b3a52', c: '#6ea0d6', glow: '#f0d48a',
+    ink: '#eef3f9', inkSoft: '#a9b6c8', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'path', shift: 0, fade: 0.5, zoom: 0.8,
+  },
+  // C · Palm leaf (ochre leaf, black ink, turmeric)
+  // the opening: a faint halo; the yantra is drawn on the leaf
+  lrnC_hero: {
+    a: '#ead6a6', b: '#d9bf88', c: '#a8321e', glow: '#fff4da',
+    ink: '#1d1410', inkSoft: '#5a4632', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'halo', shift: 4.4, fade: 0.2, zoom: 1.25,
+  },
+  // the homepage chapter
+  lrnC_home: {
+    a: '#ead6a6', b: '#d9bf88', c: '#a8321e', glow: '#fff4da',
+    ink: '#1d1410', inkSoft: '#5a4632', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'yantra', shift: 5.4, fade: 0.85, zoom: 0.9,
+  },
+  // I · lamps
+  lrnC_foundations: {
+    a: '#ead6a6', b: '#d9bf88', c: '#a8321e', glow: '#fff4da',
+    ink: '#1d1410', inkSoft: '#5a4632', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'lamps', shift: 4.2, fade: 0.5,
+  },
+  // II · sigils
+  lrnC_craft: {
+    a: '#ead6a6', b: '#d9bf88', c: '#a8321e', glow: '#fff4da',
+    ink: '#1d1410', inkSoft: '#5a4632', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'sigils', shift: 4.2, fade: 0.5,
+  },
+  // III · the yantra
+  lrnC_tantra: {
+    a: '#ead6a6', b: '#d9bf88', c: '#a8321e', glow: '#fff4da',
+    ink: '#1d1410', inkSoft: '#5a4632', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'yantra', shift: 4.2, fade: 0.55, zoom: 0.85,
+  },
+  // IV · a lotus
+  lrnC_deity: {
+    a: '#ead6a6', b: '#d9bf88', c: '#a8321e', glow: '#fff4da',
+    ink: '#1d1410', inkSoft: '#5a4632', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'lotus', shift: 4.2, fade: 0.5,
+  },
+  // V · an open book
+  lrnC_mentoring: {
+    a: '#ead6a6', b: '#d9bf88', c: '#a8321e', glow: '#fff4da',
+    ink: '#1d1410', inkSoft: '#5a4632', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'book', shift: 4.2, fade: 0.5,
+  },
+  // the close
+  lrnC_close: {
+    a: '#ead6a6', b: '#d9bf88', c: '#a8321e', glow: '#fff4da',
+    ink: '#1d1410', inkSoft: '#5a4632', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'yantra', shift: 0, fade: 0.5, zoom: 0.75,
+  },
   close: {
     a: '#050203', b: '#240809', c: '#8e2a1a', glow: '#f0b34a',
     ink: '#f6ece2', inkSoft: '#c4ada0', scale: 1.5, warp: 2.4, speed: 0.06, light: 0, motes: 0.5, form: 'eye', shift: 0,

@@ -1,0 +1,38 @@
+---
+/**
+ * The three design directions for a pillar: a brief for each, and the switch at
+ * the bottom of the screen. Used by the pillars still being compared.
+ */
+import type { Direction } from '../data/directions';
+interface Props { title: string; directions: Direction[] }
+const { title, directions } = Astro.props;
+---
+<section class="dv-brief" aria-labelledby="dir-brief-title">
+  <p class="kicker">Design exploration · this pillar</p>
+  <h2 id="dir-brief-title" class="display-m">{title}</h2>
+  <p class="hint">All three share the same chapters, words and care notes. Switch between them with the buttons at the bottom of the screen: the page, the homepage chapter, the worlds, the type and the signature moment all change.</p>
+  <div class="dv-briefs">
+    {directions.map((d) => (
+      <article class="dv-card" data-dir-card={d.key}>
+        <header><span class="dv-card-key">{d.key.toUpperCase()}</span><h3 style={`font-family:${d.type.family}`}>{d.name}</h3></header>
+        <p class="dv-card-essence">{d.essence}</p>
+        <ul class="dv-swatches" aria-label="Colours">{d.palette.map((c) => <li style={`--c:${c.hex}`}><span></span>{c.name}<small>{c.hex}</small></li>)}</ul>
+        <dl>
+          <div><dt>Feeling</dt><dd>{d.feeling.join(' · ')}</dd></div>
+          <div><dt>Type</dt><dd>{d.type.display}, {d.type.note}</dd></div>
+          <div><dt>Worlds</dt><dd>{d.worlds}</dd></div>
+          <div><dt>Layout</dt><dd>{d.layout}</dd></div>
+          <div><dt>Signature</dt><dd><b>{d.signature.name}.</b> {d.signature.how}</dd></div>
+          <div><dt>Sound</dt><dd>{d.sound}</dd></div>
+          <div><dt>Art needed</dt><dd>{d.imagery}</dd></div>
+          <div><dt>Voice</dt><dd>{d.voice}</dd></div>
+        </dl>
+        <button type="button" class="btn btn-ghost btn-sm" data-dir-set={d.key} data-font={d.type.fontHref}>See direction {d.key.toUpperCase()}</button>
+      </article>
+    ))}
+  </div>
+</section>
+<div class="dv-switch" role="group" aria-label="Design direction">
+  <span>Direction</span>
+  {directions.map((d) => <button type="button" data-dir-set={d.key} data-font={d.type.fontHref} aria-pressed="false" aria-label={`Direction ${d.key.toUpperCase()}: ${d.name}`}><b>{d.key.toUpperCase()}</b><span> · {d.name}</span></button>)}
+</div>

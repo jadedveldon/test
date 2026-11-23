@@ -8,7 +8,7 @@
  */
 export const CZ = -10;
 
-export const FORM_KEYS = ['dust', 'halo', 'name', 'vortex', 'flames', 'sigils', 'water', 'silk', 'stars', 'letters', 'eye', 'horizon', 'mala', 'lamps', 'agni', 'yantra', 'temple', 'tree', 'rose', 'pentacle', 'astrolabe', 'moons', 'crossroads', 'lotus', 'chakras', 'bowl'] as const;
+export const FORM_KEYS = ['dust', 'halo', 'name', 'vortex', 'flames', 'sigils', 'water', 'silk', 'stars', 'letters', 'eye', 'horizon', 'mala', 'lamps', 'agni', 'yantra', 'temple', 'tree', 'rose', 'pentacle', 'astrolabe', 'moons', 'crossroads', 'lotus', 'chakras', 'bowl', 'halves', 'prism', 'figure', 'cards', 'mirror', 'pendulum', 'book', 'path'] as const;
 export type FormKey = (typeof FORM_KEYS)[number];
 
 export const FLAMES = 108;
@@ -631,6 +631,99 @@ function bowl(n: number) {
   return o;
 }
 
+/* ---- pillars 4 to 6 ---- */
+const arcPts = (cx: number, cy: number, r: number, a0: number, a1: number, steps = 48) => Array.from({ length: steps + 1 }, (_, k) => { const a = a0 + ((a1 - a0) * k) / steps; return [cx + Math.cos(a) * r, cy + Math.sin(a) * r]; });
+
+/** two halves, one whole: a circle with a crescent moon on one side and a small sun on the other, joined by one seam */
+function halves(n: number) {
+  const r = rng(191);
+  const segs: Seg[] = [...circleSegs(2.6, 120), [0, -2.6, 0, 2.6]];
+  segs.push(...polySegs(arcPts(-1.15, 0, 1.05, Math.PI * 0.5, Math.PI * 1.5), false), ...polySegs(arcPts(-0.75, 0, 0.92, Math.PI * 0.62, Math.PI * 1.38), false));
+  segs.push(...circleSegs(0.5, 40, 1.25, 0));
+  for (let k = 0; k < 10; k++) { const a = (k / 10) * Math.PI * 2; segs.push([1.25 + Math.cos(a) * 0.7, Math.sin(a) * 0.7, 1.25 + Math.cos(a) * 1.0, Math.sin(a) * 1.0]); }
+  return alongSegments(n, segs, r, 0.013, 0.3);
+}
+
+/** a prism: one ray of light in, a fan of colours out */
+function prism(n: number) {
+  const r = rng(193);
+  const h = 2.6, tri = [[0, h * 0.62], [-h * 0.62, -h * 0.45], [h * 0.62, -h * 0.45]];
+  const segs: Seg[] = [...polySegs(tri)];
+  const inAt = [-h * 0.31, h * 0.085], outAt = [h * 0.31, h * 0.085];
+  segs.push([-4.3, -0.7, inAt[0], inAt[1]], [inAt[0], inAt[1], outAt[0], outAt[1] - 0.05]);
+  for (let k = 0; k < 7; k++) { const y = -1.7 + k * 0.42; segs.push([outAt[0], outAt[1], 4.3, y]); }
+  return alongSegments(n, segs, r, 0.012, 0.3);
+}
+
+/** a human figure in light, gently drawn, not gendered: head, shoulders, arms, the body standing */
+function figure(n: number) {
+  const r = rng(197);
+  const half = [[0.18, 1.62], [0.62, 1.42], [0.92, 1.18], [1.02, 0.6], [1.08, -0.2], [1.12, -0.7], [0.98, -0.72], [0.86, -0.1], [0.74, 0.5], [0.62, 0.0], [0.6, -0.6], [0.66, -1.05], [0.56, -1.9], [0.46, -2.75], [0.16, -2.75], [0.1, -1.6], [0.0, -1.1]];
+  const segs: Seg[] = [...polySegs(half, false), ...polySegs(half.map(([x, y]) => [-x, y]), false), ...circleSegs(0.48, 48, 0, 2.15)];
+  return alongSegments(n, segs, r, 0.012, 0.1);
+}
+
+/** three cards, fanned: a crescent, a sun, a star */
+function cards(n: number) {
+  const r = rng(199);
+  const segs: Seg[] = [];
+  const W = 0.78, H = 1.32, pivot = [0, -2.0];
+  [-15, 0, 15].forEach((deg, k) => {
+    const a = (deg * Math.PI) / 180, c = Math.cos(a), s = Math.sin(a);
+    const tr = (x: number, y: number) => { const dx = x, dy = y - pivot[1]; return [pivot[0] + dx * c - dy * s, pivot[1] + dx * s + dy * c]; };
+    const cy = 0.05 + (k === 1 ? 0.25 : 0);
+    const rect = (w: number, h: number) => polySegs([tr(-w, cy - h), tr(w, cy - h), tr(w, cy + h), tr(-w, cy + h)]);
+    segs.push(...rect(W, H), ...rect(W - 0.1, H - 0.1));
+    const sym: number[][] = k === 0 ? [...arcPts(0, cy, 0.36, Math.PI * 0.35, Math.PI * 1.65, 30), ...arcPts(0.14, cy, 0.3, Math.PI * 1.5, Math.PI * 0.5, 30).reverse()]
+      : k === 1 ? arcPts(0, cy, 0.34, 0, Math.PI * 2, 40)
+      : Array.from({ length: 11 }, (_, j) => { const aa = Math.PI / 2 + (j * Math.PI) / 5, rr = j % 2 ? 0.16 : 0.4; return [Math.cos(aa) * rr, cy + Math.sin(aa) * rr]; });
+    segs.push(...polySegs(sym.map(([x, y]) => tr(x, y)), k !== 0));
+  });
+  return alongSegments(n, segs, r, 0.011, 0.3);
+}
+
+/** a scrying mirror on its stand, with rings on its dark surface */
+function mirror(n: number) {
+  const r = rng(211);
+  const ell = (rx: number, ry: number, cy = 0.3, steps = 96) => polySegs(Array.from({ length: steps }, (_, k) => { const a = (k / steps) * Math.PI * 2; return [Math.cos(a) * rx, cy + Math.sin(a) * ry]; }));
+  const segs: Seg[] = [...ell(1.7, 2.35), ...ell(1.52, 2.17), ...ell(0.42, 0.56, 0.1, 40), ...ell(0.86, 1.14, 0.1, 60), ...ell(1.22, 1.62, 0.1, 72)];
+  segs.push([-0.5, -2.05, -0.9, -2.75], [0.5, -2.05, 0.9, -2.75], [-1.2, -2.75, 1.2, -2.75]);
+  return alongSegments(n, segs, r, 0.011, 0);
+}
+
+/** a pendulum on its chain, a crystal at its end */
+function pendulum(n: number) {
+  const r = rng(223);
+  const segs: Seg[] = [...circleSegs(0.12, 16, 0, 2.6), [0, 2.48, 0, -0.75]];
+  for (let k = 0; k < 14; k++) { const y = 2.4 - k * 0.23; segs.push(...circleSegs(0.05, 8, 0, y)); }
+  segs.push(...polySegs([[0, -0.75], [0.34, -1.25], [0, -2.15], [-0.34, -1.25]]), [-0.34, -1.25, 0.34, -1.25], [0, -0.75, 0, -2.15]);
+  segs.push(...polySegs(arcPts(0, 2.6, 4.9, -Math.PI / 2 - 0.42, -Math.PI / 2 + 0.42, 60), false));
+  return alongSegments(n, segs, r, 0.01, 0.2);
+}
+
+/** an open book: two pages curving from the spine, a few lines of text on each */
+function book(n: number) {
+  const r = rng(227);
+  const segs: Seg[] = [[0, -1.5, 0, 1.6]];
+  [-1, 1].forEach((side) => {
+    const top = Array.from({ length: 30 }, (_, k) => { const t = k / 29; return [side * 3.1 * t, 1.6 + Math.sin(t * Math.PI) * 0.35 - t * 0.1]; });
+    const bot = Array.from({ length: 30 }, (_, k) => { const t = k / 29; return [side * 3.1 * t, -1.5 + Math.sin(t * Math.PI) * 0.3 - t * 0.1]; });
+    segs.push(...polySegs(top, false), ...polySegs(bot, false), [side * 3.1, 1.5, side * 3.1, -1.6]);
+    for (let k = 0; k < 6; k++) { const y = 1.05 - k * 0.4, x0 = side * 0.35, x1 = side * (k === 5 ? 1.6 : 2.7); segs.push([x0, y + 0.18, x1, y + 0.12]); }
+  });
+  return alongSegments(n, segs, r, 0.01, 0.2);
+}
+
+/** a path of study: stations joined like a constellation, from the first step to the last */
+function path(n: number) {
+  const r = rng(229);
+  const pts = [[-3.4, -2.2], [-2.5, -1.5], [-1.5, -1.6], [-0.7, -0.8], [0.1, -0.5], [0.7, 0.4], [1.5, 0.7], [2.3, 1.5], [3.3, 2.2]];
+  const branch = [[[-1.5, -1.6], [-1.1, -2.5]], [[0.7, 0.4], [0.2, 1.4]], [[1.5, 0.7], [2.5, 0.1]]];
+  const segs: Seg[] = [...polySegs(pts, false), ...branch.map(([a, b]) => [a[0], a[1], b[0], b[1]] as Seg)];
+  [...pts, ...branch.map(([, b]) => b)].forEach(([x, y], k) => segs.push(...circleSegs(k === pts.length - 1 ? 0.3 : 0.16, 20, x, y)));
+  return alongSegments(n, segs, r, 0.01, 0.2);
+}
+
 /* ------------------------------------------------- forms drawn from type */
 
 function sampleCanvas(n: number, draw: (ctx: CanvasRenderingContext2D) => void, w: number, h: number, map: (x: number, y: number) => [number, number], seed: number, extra?: (o: Out, i: number, r: () => number) => boolean) {
@@ -712,6 +805,14 @@ export function buildForms(n: number, seeds: Float32Array): Record<FormKey, Floa
     lotus: shuffled(lotus(n), 173),
     chakras: shuffled(chakras(n), 179),
     bowl: shuffled(bowl(n), 181),
+    halves: shuffled(halves(n), 233),
+    prism: shuffled(prism(n), 239),
+    figure: shuffled(figure(n), 241),
+    cards: shuffled(cards(n), 251),
+    mirror: shuffled(mirror(n), 257),
+    pendulum: shuffled(pendulum(n), 263),
+    book: shuffled(book(n), 269),
+    path: shuffled(path(n), 271),
   };
 }
 
@@ -747,6 +848,8 @@ export async function buildFormsAsync(n: number, seeds: Float32Array, textFrom?:
     ['rose', () => shuffleForm(rose(n), 149)], ['pentacle', () => shuffleForm(pentacle(n), 151)], ['astrolabe', () => shuffleForm(astrolabe(n), 157)], ['moons', () => shuffleForm(moons(n), 163)],
     ['crossroads', () => shuffleForm(crossroads(n), 167)],
     ['lotus', () => shuffleForm(lotus(n), 173)], ['chakras', () => shuffleForm(chakras(n), 179)], ['bowl', () => shuffleForm(bowl(n), 181)],
+    ['halves', () => shuffleForm(halves(n), 233)], ['prism', () => shuffleForm(prism(n), 239)], ['figure', () => shuffleForm(figure(n), 241)], ['cards', () => shuffleForm(cards(n), 251)],
+    ['mirror', () => shuffleForm(mirror(n), 257)], ['pendulum', () => shuffleForm(pendulum(n), 263)], ['book', () => shuffleForm(book(n), 269)], ['path', () => shuffleForm(path(n), 271)],
     ['name', () => (textFrom ? upsample(textFrom.name, n, 0.01, 61) : dust(n))],
     ['letters', () => (textFrom ? upsample(textFrom.letters, n, 0.008, 67) : dust(n))],
   ];

@@ -1,0 +1,138 @@
+---
+/**
+ * Pillar 6, Learning: classes and mentoring in five chapters, in three
+ * directions to compare (A The library · B The path of study · C Palm leaf).
+ */
+import Base from '../../layouts/Base.astro';
+import SubCards from '../../components/SubCards.astro';
+import DirBriefs from '../../components/DirBriefs.astro';
+import { pillars, categoryCount } from '../../data/site';
+import { gather } from '../../data/chapters';
+import { CHAPTERS, DIRECTIONS, FINDER, FORMATS, SIDE_FROM, STATION_XY, STATIONS, SUB_ICON, YANTRA_STEPS } from '../../data/learning';
+
+const index = pillars.findIndex((p) => p.slug === 'learning');
+const p = pillars[index];
+const prev = pillars[(index + pillars.length - 1) % pillars.length];
+const next = pillars[(index + 1) % pillars.length];
+const ROMAN = ['I', 'II', 'III', 'IV', 'V'];
+const moves = CHAPTERS.map((ch) => ({ ...ch, cat: gather(p, ch), id: ch.key }));
+const road = STATION_XY.slice(0, 9).map(([x, y]) => `${x} ${y}`).join(' L');
+/* C · the yantra's parts, drawn in order */
+const tri = (r: number, up: boolean) => [90, 210, 330].map((d) => { const a = ((up ? d + 180 : d) * Math.PI) / 180; return `${(Math.cos(a) * r).toFixed(1)} ${(Math.sin(a) * r).toFixed(1)}`; });
+const petals = Array.from({ length: 8 }, (_, k) => {
+  const a = (k * Math.PI) / 4, w = Math.PI / 8, pts: string[] = [];
+  for (let j = 0; j <= 12; j++) { const t = -w + (2 * w * j) / 12, R = 74 + 26 * Math.cos((t / w) * (Math.PI / 2)); pts.push(`${(Math.cos(a + t) * R).toFixed(1)} ${(Math.sin(a + t) * R).toFixed(1)}`); }
+  return `M${pts.join(' L')}`;
+}).join(' ');
+const S = 112, G = 18, D = 12;
+const square = `M${-S} ${-S} L${-G} ${-S} L${-G} ${-S - D} L${G} ${-S - D} L${G} ${-S} L${S} ${-S} L${S} ${-G} L${S + D} ${-G} L${S + D} ${G} L${S} ${G} L${S} ${S} L${G} ${S} L${G} ${S + D} L${-G} ${S + D} L${-G} ${S} L${-S} ${S} L${-S} ${G} L${-S - D} ${G} L${-S - D} ${-G} L${-S} ${-G} Z`;
+---
+<Base title={`${p.name} · Sarvakali`} sequence="lrnA_hero" description={p.line}>
+  <div class="pd pd-learning" data-dir-pillar="learning">
+    <section class="chapter pd-hero" data-chapter="lrn_hero" data-dir-chapter="hero">
+      <div class="chapter-inner pd-hero-grid">
+        <div class="pd-hero-copy">
+          <a class="back-link" href="/#paths">← All pillars</a>
+          <p class="kicker" data-hero>Pillar {index + 1} of {pillars.length} · {p.count} classes and services</p>
+          <h1 class="display-l pd-title" data-hero data-split transition:name="pt-learning" data-pt>{p.name}</h1>
+          <p class="lede" data-hero>{p.line}</p>
+          <div class="ln-formats" data-hero>
+            <p class="kicker">Ways to learn</p>
+            <ul>{FORMATS.map((f) => <li><button type="button" class="chip-keep" data-keep={f} data-keep-p={p.name} aria-pressed="false">{f}</button></li>)}</ul>
+          </div>
+          <ol class="pd-index" data-hero aria-label="The chapters">
+            {moves.map((m, i) => <li><a href={`#${m.id}`}><span class="pd-num" aria-hidden="true">{ROMAN[i]}</span><span class="pd-ix-title">{m.title}</span><span class="pd-ix-n">{categoryCount(m.cat)} {categoryCount(m.cat) === 1 ? 'class' : 'classes and services'}</span></a></li>)}
+          </ol>
+        </div>
+
+        <div class="pd-sig" data-hero>
+          <!-- A · find your class -->
+          <form class="finder" data-dir-only="a" data-finder>
+            <p class="kicker">Find your class</p>
+            {FINDER.map((f, qi) => (
+              <fieldset data-finder-q={qi}>
+                <legend><span>{qi + 1}</span> {f.q}</legend>
+                <div class="fd-opts">{f.a.map((a, ai) => <label><input type="radio" name={`fd-${qi}`} value={ai} /><span>{a.label}</span></label>)}</div>
+              </fieldset>
+            ))}
+            <div class="fd-result" data-finder-result hidden>
+              <p class="kicker">Classes that fit</p>
+              <ul data-finder-list></ul>
+              <a class="btn btn-ghost btn-sm" href="/connect" data-topic={p.name}>Ask about these</a>
+            </div>
+          </form>
+
+          <!-- B · your path -->
+          <div class="pathmap" data-dir-only="b" data-studypath>
+            <svg viewBox="-160 -130 320 260" class="pm-svg">
+              <path d={`M${road}`} class="pm-road" />
+              {SIDE_FROM.map((from, k) => <path d={`M${STATION_XY[from][0]} ${STATION_XY[from][1]} L${STATION_XY[9 + k][0]} ${STATION_XY[9 + k][1]}`} class="pm-road side" />)}
+              {STATIONS.map((s, i) => (
+                <g class={`pm-station${i === 8 ? ' is-end' : ''}${i > 8 ? ' is-side' : ''}`} data-station={i} transform={`translate(${STATION_XY[i][0]} ${STATION_XY[i][1]})`} tabindex="0" role="button" aria-label={s.name}>
+                  <circle r="14" class="pm-hit" /><circle r={i === 8 ? 7 : 4.5} class="pm-star" />
+                </g>
+              ))}
+              <text x="-130" y="118" class="pm-cap">Begin</text><text x="128" y="-104" class="pm-cap" text-anchor="end">Mentoring</text>
+            </svg>
+            <div class="pm-card" aria-live="polite">
+              <p class="kicker" data-station-ch>{STATIONS[0].ch}</p>
+              <h3 data-station-name>{STATIONS[0].name}</h3>
+              <p data-station-line>{STATIONS[0].line}</p>
+              <button type="button" class="chip-keep" data-station-keep data-keep={STATIONS[0].name} data-keep-p={p.name} aria-pressed="false">Keep this class</button>
+            </div>
+            <p class="dv-sig-hint small">A suggested road, not a rule: tap any star, and begin wherever you like.</p>
+          </div>
+
+          <!-- C · draw a yantra -->
+          <div class="ydraw" data-dir-only="c" data-yantra-draw>
+            <svg viewBox="-150 -150 300 300" class="yd-svg" aria-hidden="true">
+              <g class="yd-part" data-yd="5"><path d={square} /></g>
+              <g class="yd-part" data-yd="4"><path d={petals} /></g>
+              <g class="yd-part" data-yd="3"><circle r="72" /></g>
+              <g class="yd-part" data-yd="2"><path d={`M${tri(56, true).join(' L')} Z`} /></g>
+              <g class="yd-part" data-yd="1"><path d={`M${tri(56, false).join(' L')} Z`} /></g>
+              <g class="yd-part is-on" data-yd="0"><circle r="4.5" class="yd-bindu" /></g>
+            </svg>
+            <p class="yd-step" data-yantra-step aria-live="polite">{YANTRA_STEPS[0]}</p>
+            <div class="cta-row center"><button type="button" class="btn btn-ghost btn-sm" data-yantra-next>Next step</button></div>
+            <p class="dv-sig-hint small">A simple teaching figure, not the yantra of a particular deity.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {moves.map((m, i) => (
+      <section class={`chapter pd-move ln-${m.key}`} id={m.id} data-chapter={`lrn_${m.key}`} data-dir-chapter={m.key}>
+        <div class="chapter-inner pd-inner">
+          <header class="pd-head">
+            <p class="kicker" data-fade><span class="pd-num">{ROMAN[i]}</span> · {categoryCount(m.cat)} {categoryCount(m.cat) === 1 ? 'class' : 'classes and services'}</p>
+            <h2 class="display-l" data-split data-dust>{m.title}</h2>
+            <p class="lede" data-fade>{m.line}</p>
+            {m.note && <p class="pd-note" data-fade>{m.note}</p>}
+            <div class="cta-row" data-fade><a class="btn btn-ghost btn-sm" href="/connect" data-topic={m.title}>Ask about this</a></div>
+          </header>
+          <SubCards category={m.cat} pillar={p.name} icons={SUB_ICON} show={6} />
+        </div>
+      </section>
+    ))}
+
+    <section class="chapter pd-close" data-chapter="lrn_close" data-dir-chapter="close">
+      <div class="chapter-inner narrow center">
+        <p class="kicker" data-fade>When you are ready</p>
+        <h2 class="display-l" data-split>Every practice begins as a beginner’s</h2>
+        <p class="lede" data-fade>Tell Sarvakali what you would like to learn, and how. One to one, in a group, or a programme made for you.</p>
+        <div class="cta-row center" data-fade>
+          <a class="btn btn-solid" href="/connect" data-topic={p.name}>Ask about a class</a>
+          <a class="btn btn-ghost" href="/path">Find your path</a>
+        </div>
+      </div>
+    </section>
+
+    <DirBriefs title="Three directions for Learning" directions={DIRECTIONS} />
+
+    <nav class="pp-nav" aria-label="Other pillars">
+      <a href={`/pillars/${prev.slug}`}><span>Previous pillar</span><b transition:name={`pt-${prev.slug}`} data-pt>{prev.name}</b></a>
+      <a href={`/pillars/${next.slug}`}><span>Next pillar</span><b transition:name={`pt-${next.slug}`} data-pt>{next.name}</b></a>
+    </nav>
+  </div>
+</Base>

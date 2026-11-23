@@ -79,6 +79,8 @@ export function initKeep() {
   ready = true;
   onKeepChange(renderKeep);
   window.addEventListener('storage', (e) => { if (e.key === KEY) renderKeep(); });
+  // chips drawn after the page loads (answers, results) ask to be marked
+  document.addEventListener('sk:keep-refresh', () => renderKeep());
   document.addEventListener('click', (e) => {
     const t = e.target as Element | null;
     const btn = t?.closest<HTMLElement>('[data-keep]');

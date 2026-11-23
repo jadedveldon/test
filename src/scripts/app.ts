@@ -52,6 +52,8 @@ import { startDevotion, stopDevotion } from './devotion';
 import { loadMagicFonts, startMagic, stopMagic } from './magic';
 import { PAGES } from '../data/magic';
 import { loadHealingFont, startHealing, stopHealing } from './healing';
+import { DIR_PILLARS, dirKey, pagePillar, setDir, type Dir, type DirPillar } from './dirs';
+import { startDirPage, stopDirPage } from './dirpages';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -270,6 +272,11 @@ const devKey = (part: string) => `devC_${part}`;
 const magKey = (part: string) => `magG_${part}`;
 /** pillar 3 (still water, with gold): each chapter has its own world */
 const healKey = (part: string) => `heal_${part}`;
+/** pillars 4, 5 and 6 are being designed in three directions each (see dirs.ts) */
+const dirChapterKey = (c: HTMLElement) => {
+  const p = c.closest<HTMLElement>('[data-dir-pillar]')?.dataset.dirPillar as DirPillar | undefined;
+  return p ? dirKey(p, c.dataset.dirChapter!) : c.dataset.chapter!;
+};
 
 function chapterKeys() {
   return chapters.map((c) => {
@@ -278,6 +285,8 @@ function chapterKeys() {
     if (c.dataset.magChapter) return magKey(c.dataset.magChapter);
     if (c.dataset.healChapter) return healKey(c.dataset.healChapter);
     if (c.dataset.chapter === 'healing') return healKey('home');
+    if (c.dataset.dirChapter) return dirChapterKey(c);
+    if (DIR_PILLARS.includes(c.dataset.chapter as DirPillar)) return dirKey(c.dataset.chapter as DirPillar, 'home');
     if (c.dataset.chapter === 'magic') return magKey('home');
     if (c.dataset.chapter === 'devotion') return devKey('home');
     return c.dataset.chapter!;
@@ -551,7 +560,7 @@ function soundTick() {
   // the Devotion directions each have their own sound layer
   // Magic's night pages share Devotion's cosmic layer; its day pages are the quiet room of the book
   const layer = (k: string) => (k.startsWith('devC_') ? 'cosmic' : k.startsWith('magG_') ? (PAGES[k.slice(5)] === 'day' ? 'learning' : 'cosmic')
-    : k.startsWith('heal_') ? 'healing' : k);
+    : k.startsWith('heal_') ? 'healing' : /^id[ABC]_/.test(k) ? 'identity' : /^div[ABC]_/.test(k) ? 'divination' : /^lrn[ABC]_/.test(k) ? 'learning' : k);
   const w: Record<string, number> = {};
   w[layer(a)] = (w[layer(a)] ?? 0) + (1 - t);
   w[layer(b)] = (w[layer(b)] ?? 0) + t;
@@ -631,6 +640,7 @@ function initPage() {
   startDevotion(world, tier === 'calm');
   startMagic(world, tier === 'calm');
   startHealing(world);
+  startDirPage(world);
   initDiya(world);
   initPath(world, () => { ScrollTrigger.refresh(); lenis?.resize(); });
   depthDispose = initDepth(world.isLive && tier !== 'calm');
@@ -666,6 +676,7 @@ function cleanupPage() {
   stopDevotion();
   stopMagic();
   stopHealing();
+  stopDirPage();
 }
 
 /* ------------------------------------------------- experiment switches */
@@ -825,7 +836,8 @@ function hudTick(dt: number) {
   const dv = /^devC_(\w+)$/.exec(ck);
   const mg = /^magG_(\w+)$/.exec(ck);
   const hl = /^heal_(\w+)$/.exec(ck);
-  if (c) c.textContent = LABELS[ck] ?? (dv ? `Devotion · ${dv[1]}` : mg ? `Magic · ${mg[1]} (${PAGES[mg[1]] ?? ''} page)` : hl ? `Healing · ${hl[1]}` : ck);
+  const dp = /^(id|div|lrn)([ABC])_(\w+)$/.exec(ck);
+  if (c) c.textContent = LABELS[ck] ?? (dv ? `Devotion · ${dv[1]}` : mg ? `Magic · ${mg[1]} (${PAGES[mg[1]] ?? ''} page)` : hl ? `Healing · ${hl[1]}` : dp ? `${({ id: 'Identity', div: 'Divination', lrn: 'Learning' } as Record<string, string>)[dp[1]]} ${dp[2]} · ${dp[3]}` : ck);
   const p = hud.querySelector('[data-hud-points]');
   if (p) {
     const n = world.pointCount;
@@ -923,6 +935,15 @@ function boot() {
   initMenu(world);
   loadMagicFonts();
   loadHealingFont();
+  document.addEventListener('click', (e) => {
+    const b = (e.target as Element | null)?.closest<HTMLElement>('[data-dir-set]');
+    const p = pagePillar();
+    if (!b || !p) return;
+    setDir(p, b.dataset.dirSet as Dir);
+    startDirPage(world);
+    if (chapters.length) world.setSequence(chapterKeys());
+    buzz(PATTERNS.choice);
+  });
 
   initPwa();
   initSearch({

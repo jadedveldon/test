@@ -63,6 +63,9 @@ const pageUrl = new URL(path || '/', site.url).href;
           var q = new URLSearchParams(location.search);
           var hero = q.get('hero') || sessionStorage.getItem('sk-x-hero');
           h.dataset.heroVariant = hero === 'name' || hero === 'dawn' || hero === 'eye' ? hero : 'dawneye';
+          // pillars 4 to 6 are compared in three directions; mark the chosen one before paint
+          var dp = /pillars[-\/](identity|divination|learning)/.exec(location.pathname);
+          if (dp) { var dd = q.get('dir') || sessionStorage.getItem('sk-dir-' + dp[1]); h.dataset.dir = dd === 'b' || dd === 'c' ? dd : 'a'; }
           var page = q.get('page') || sessionStorage.getItem('sk-x-page');
           h.dataset.pageStyle = page || 'eye';
           if (q.has('og')) h.dataset.og = '1';
