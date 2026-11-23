@@ -219,6 +219,7 @@ uniform vec4 uW2; // letters, eye, horizon, sigils
 uniform vec4 uW3; // vortex, halo, name, dust
 uniform vec4 uW4; // mala, lamps, agni, (spare)
 uniform vec4 uW5; // yantra, temple, tree, (spare)
+uniform vec4 uW6; // rose, pentacle, astrolabe, moons
 uniform float uAngMala;
 uniform float uAngFlame;
 uniform float uAngVortex;
@@ -289,6 +290,11 @@ void main() {
   // tree: the branches sway, more towards their tips
   float sway = max(0.0, p.y - 0.6);
   p.x += sin(uTime * 0.6 + p.y * 1.3) * 0.05 * sway * uW5.z;
+
+  // the astrolabe turns slowly; the rose opens and closes a little; the pentacle and moons glow in place
+  vec2 ac = vec2(0.0, 0.3);
+  p.xy = mix(p.xy, ac + rot(p.xy - ac, uTime * 0.03), uW6.z);
+  p.xy = mix(p.xy, ac + (p.xy - ac) * (1.0 + 0.03 * sin(uTime * 0.6)), uW6.x);
 
   p.xy = p.xy * uFit + uShift;
 
@@ -635,7 +641,7 @@ export class World {
       uniforms: {
         uTime: { value: 0 }, uMix: { value: 0 }, uT: { value: 0 }, uScatter: { value: 0.9 },
         uSize: { value: 1.9 }, uPR: { value: 1 }, uFit: { value: 1 }, uShift: { value: new Vector2() },
-        uW1: { value: [0, 0, 0, 0] }, uW2: { value: [0, 0, 0, 0] }, uW3: { value: [0, 0, 0, 0] }, uW4: { value: [0, 0, 0, 0] }, uW5: { value: [0, 0, 0, 0] }, uAngMala: { value: 0 },
+        uW1: { value: [0, 0, 0, 0] }, uW2: { value: [0, 0, 0, 0] }, uW3: { value: [0, 0, 0, 0] }, uW4: { value: [0, 0, 0, 0] }, uW5: { value: [0, 0, 0, 0] }, uW6: { value: [0, 0, 0, 0] }, uAngMala: { value: 0 },
         uAngFlame: { value: 0 }, uAngVortex: { value: 0 }, uAngHalo: { value: 0 }, uRise: { value: 1 }, uVeil: { value: 0 },
         uColor: { value: new Vector3(1, 0.8, 0.5) }, uColor2: { value: new Vector3(1, 0.5, 0.3) }, uInk: { value: new Vector3() },
         uOpacity: { value: 0.8 }, uLight: { value: 0 },
@@ -1076,6 +1082,7 @@ export class World {
       fu.uW3.value = [w[idx('vortex')], w[idx('halo')], w[idx('name')], w[idx('dust')]];
       fu.uW4.value = [w[idx('mala')], w[idx('lamps')], w[idx('agni')], 0];
       fu.uW5.value = [w[idx('yantra')], w[idx('temple')], w[idx('tree')], 0];
+      fu.uW6.value = [w[idx('rose')], w[idx('pentacle')], w[idx('astrolabe')], w[idx('moons')]];
       this.malaAng += (this.malaTarget - this.malaAng) * (1 - Math.exp(-dt * 7));
       fu.uAngMala.value = this.malaAng;
       fu.uAngFlame.value = this.angFlame;

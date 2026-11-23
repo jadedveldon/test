@@ -178,6 +178,130 @@ export const PRESETS: Record<string, Preset> = {
     a: '#050617', b: '#1f1450', c: '#3a4fb8', glow: '#e7c46a',
     ink: '#f1efff', inkSoft: '#b9b4d8', scale: 1.8, warp: 2.6, speed: 0.05, light: 0, motes: 0.9, form: 'halo', shift: 0,
   },
+  /* ---------------- Pillar 2, Witchcraft & Magic: three directions to compare */
+  // A · The grimoire (parchment; Saturn's chapter is a black page)
+  magA_hero: {
+    a: '#e8dcc0', b: '#cdb98f', c: '#9c2a1c', glow: '#fff6e2',
+    ink: '#2a1d14', inkSoft: '#5e4634', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'sigils', shift: 4.4, fade: 0.8,
+  },
+  magA_home: {
+    a: '#e8dcc0', b: '#cdb98f', c: '#9c2a1c', glow: '#fff6e2',
+    ink: '#2a1d14', inkSoft: '#5e4634', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'sigils', shift: 5.4, fade: 0.8,
+  },
+  magA_venus: {
+    a: '#e8dcc0', b: '#cdb98f', c: '#9c2a1c', glow: '#fff6e2',
+    ink: '#2a1d14', inkSoft: '#5e4634', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'rose', shift: 4.2, fade: 0.55,
+  },
+  magA_jupiter: {
+    a: '#e8dcc0', b: '#cdb98f', c: '#8a6a1c', glow: '#fff6e2',
+    ink: '#2a1d14', inkSoft: '#5e4634', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'vortex', shift: 4.2, fade: 0.55,
+  },
+  magA_mars: {
+    a: '#e8dcc0', b: '#cdb98f', c: '#3f8f78', glow: '#fff6e2',
+    ink: '#2a1d14', inkSoft: '#5e4634', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'pentacle', shift: 4.2, fade: 0.55,
+  },
+  magA_saturn: {
+    a: '#0d0b08', b: '#1f1712', c: '#6b2a1c', glow: '#e8dcc0',
+    ink: '#e8dcc0', inkSoft: '#a89a80', scale: 1.4, warp: 2.6, speed: 0.04, light: 0, motes: 0.3, form: 'eye', shift: 4.2, fade: 0.5,
+  },
+  magA_mercury: {
+    a: '#e8dcc0', b: '#cdb98f', c: '#3f8f78', glow: '#fff6e2',
+    ink: '#2a1d14', inkSoft: '#5e4634', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'sigils', shift: 4.2, fade: 0.55,
+  },
+  magA_sun: {
+    a: '#e8dcc0', b: '#cdb98f', c: '#c06a1c', glow: '#fff6e2',
+    ink: '#2a1d14', inkSoft: '#5e4634', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'agni', shift: 2.8, fade: 0.55,
+  },
+  magA_moon: {
+    a: '#e8dcc0', b: '#cdb98f', c: '#5e6a8a', glow: '#fff6e2',
+    ink: '#2a1d14', inkSoft: '#5e4634', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'moons', shift: 4.2, fade: 0.55,
+  },
+  magA_close: {
+    a: '#e8dcc0', b: '#cdb98f', c: '#9c2a1c', glow: '#fff6e2',
+    ink: '#2a1d14', inkSoft: '#5e4634', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'rose', shift: 0, fade: 0.7,
+  },
+  // B · Moon garden
+  magB_hero: {
+    a: '#06120e', b: '#1f3a2a', c: '#8fb89a', glow: '#dfe6f0',
+    ink: '#eef4ee', inkSoft: '#a9c2b2', scale: 1.4, warp: 2.2, speed: 0.045, light: 0, motes: 0.6, form: 'moons', shift: 4.4, fade: 0.9,
+  },
+  magB_home: {
+    a: '#06120e', b: '#1f3a2a', c: '#8fb89a', glow: '#dfe6f0',
+    ink: '#eef4ee', inkSoft: '#a9c2b2', scale: 1.4, warp: 2.2, speed: 0.045, light: 0, motes: 0.6, form: 'moons', shift: 5.4, fade: 0.9,
+  },
+  magB_venus: {
+    a: '#06120e', b: '#1f3a2a', c: '#d98ca0', glow: '#f6dfe6',
+    ink: '#eef4ee', inkSoft: '#a9c2b2', scale: 1.4, warp: 2.2, speed: 0.045, light: 0, motes: 0.6, form: 'rose', shift: 4.2, fade: 0.85,
+  },
+  magB_jupiter: {
+    a: '#06120e', b: '#1f3a2a', c: '#c9b86a', glow: '#f3ecc4',
+    ink: '#eef4ee', inkSoft: '#a9c2b2', scale: 1.4, warp: 2.2, speed: 0.045, light: 0, motes: 0.6, form: 'tree', shift: 3.8, fade: 0.85,
+  },
+  magB_mars: {
+    a: '#06120e', b: '#1f3a2a', c: '#8fb89a', glow: '#dfe6f0',
+    ink: '#eef4ee', inkSoft: '#a9c2b2', scale: 1.4, warp: 2.2, speed: 0.045, light: 0, motes: 0.6, form: 'pentacle', shift: 4.2, fade: 0.85,
+  },
+  magB_saturn: {
+    a: '#040806', b: '#121a16', c: '#4a5a66', glow: '#c6c6d8',
+    ink: '#eef4ee', inkSoft: '#a9c2b2', scale: 1.4, warp: 2.2, speed: 0.045, light: 0, motes: 0.6, form: 'silk', shift: 0, fade: 0.85,
+  },
+  magB_mercury: {
+    a: '#06120e', b: '#1f3a2a', c: '#e8c37a', glow: '#ffe6a8',
+    ink: '#eef4ee', inkSoft: '#a9c2b2', scale: 1.4, warp: 2.2, speed: 0.045, light: 0, motes: 0.6, form: 'lamps', shift: 0, fade: 0.9,
+  },
+  magB_sun: {
+    a: '#06120e', b: '#1f3a2a', c: '#e8c37a', glow: '#fff1c8',
+    ink: '#eef4ee', inkSoft: '#a9c2b2', scale: 1.4, warp: 2.2, speed: 0.045, light: 0, motes: 0.6, form: 'halo', shift: 0, fade: 0.85,
+  },
+  magB_moon: {
+    a: '#06120e', b: '#1f3a2a', c: '#b9a3d8', glow: '#eae4ff',
+    ink: '#eef4ee', inkSoft: '#a9c2b2', scale: 1.4, warp: 2.2, speed: 0.045, light: 0, motes: 0.6, form: 'moons', shift: 4.2, fade: 0.85,
+  },
+  magB_close: {
+    a: '#06120e', b: '#1f3a2a', c: '#8fb89a', glow: '#dfe6f0',
+    ink: '#eef4ee', inkSoft: '#a9c2b2', scale: 1.4, warp: 2.2, speed: 0.045, light: 0, motes: 0.6, form: 'tree', shift: 0, fade: 0.8,
+  },
+  // C · Alchemical sky
+  magC_hero: {
+    a: '#050505', b: '#0d3b2e', c: '#b8693a', glow: '#d9b25a',
+    ink: '#f3ecdd', inkSoft: '#bdb29a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'astrolabe', shift: 4.4, fade: 0.9,
+  },
+  magC_home: {
+    a: '#050505', b: '#0d3b2e', c: '#b8693a', glow: '#d9b25a',
+    ink: '#f3ecdd', inkSoft: '#bdb29a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'astrolabe', shift: 5.4, fade: 0.9,
+  },
+  magC_venus: {
+    a: '#050505', b: '#0d3b2e', c: '#c8321e', glow: '#d9b25a',
+    ink: '#f3ecdd', inkSoft: '#bdb29a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'rose', shift: 4.2, fade: 0.65,
+  },
+  magC_jupiter: {
+    a: '#050505', b: '#0d3b2e', c: '#d9b25a', glow: '#f3d98a',
+    ink: '#f3ecdd', inkSoft: '#bdb29a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'halo', shift: 0, fade: 0.6,
+  },
+  magC_mars: {
+    a: '#050505', b: '#0d3b2e', c: '#c8321e', glow: '#d9b25a',
+    ink: '#f3ecdd', inkSoft: '#bdb29a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'pentacle', shift: 4.2, fade: 0.65,
+  },
+  magC_saturn: {
+    a: '#030303', b: '#141414', c: '#5a5a62', glow: '#c9d1dc',
+    ink: '#f3ecdd', inkSoft: '#bdb29a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'eye', shift: 4.2, fade: 0.5,
+  },
+  magC_mercury: {
+    a: '#050505', b: '#0d3b2e', c: '#c9d1dc', glow: '#e6ebf2',
+    ink: '#f3ecdd', inkSoft: '#bdb29a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'sigils', shift: 4.2, fade: 0.65,
+  },
+  magC_sun: {
+    a: '#050505', b: '#0d3b2e', c: '#d9b25a', glow: '#ffe4a0',
+    ink: '#f3ecdd', inkSoft: '#bdb29a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'flames', shift: 4.2, fade: 0.7,
+  },
+  magC_moon: {
+    a: '#050505', b: '#0d3b2e', c: '#c9d1dc', glow: '#eef2f8',
+    ink: '#f3ecdd', inkSoft: '#bdb29a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'moons', shift: 4.2, fade: 0.65,
+  },
+  magC_close: {
+    a: '#050505', b: '#0d3b2e', c: '#b8693a', glow: '#d9b25a',
+    ink: '#f3ecdd', inkSoft: '#bdb29a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'astrolabe', shift: 0, fade: 0.8,
+  },
   close: {
     a: '#050203', b: '#240809', c: '#8e2a1a', glow: '#f0b34a',
     ink: '#f6ece2', inkSoft: '#c4ada0', scale: 1.5, warp: 2.4, speed: 0.06, light: 0, motes: 0.5, form: 'eye', shift: 0,

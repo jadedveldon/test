@@ -64,7 +64,8 @@ Each pillar is designed one at a time, by comparing complete directions live.
 | Pillar | Status | Where |
 |---|---|---|
 | 1 · Devotion & the Unseen | Direction chosen: C, Cosmic mother. Seven movements, each with its own world: the Kali yantra (Mahavidyas, the Devi and Hindu deities), a Greek temple and the five elements (Greek gods), constellations (many traditions), lamps (altars), a nebula (spirits and ancestors), the world tree (shamanic work). Directions A and B are in the history (commit 7050a47). | `src/pages/pillars/devotion.astro`, `src/data/devotion.ts`, `src/scripts/devotion.ts`, presets `devC_*`, forms `yantra`, `temple`, `tree` |
-| 2–6 | Next, one at a time | generic template `src/pages/pillars/[slug].astro` |
+| 2 · Witchcraft & Magic | Three directions to choose from, all on a seven-planet structure (Venus love, Jupiter abundance, Mars protection, Saturn baneful, Mercury spellcraft, Sun rituals, Moon nature): A The grimoire, B Moon garden, C Alchemical sky (`?magdir=a|b|c`, or the switch at the bottom of the page) | `src/pages/pillars/magic.astro`, `src/data/magic.ts`, `src/scripts/magic.ts`, `src/components/SubCards.astro`, presets `magA_*`, `magB_*`, `magC_*`, forms `rose`, `pentacle`, `astrolabe`, `moons` |
+| 3–6 | Next, one at a time | generic template `src/pages/pillars/[slug].astro` |
 
 ## Next
 

@@ -8,7 +8,7 @@
  */
 export const CZ = -10;
 
-export const FORM_KEYS = ['dust', 'halo', 'name', 'vortex', 'flames', 'sigils', 'water', 'silk', 'stars', 'letters', 'eye', 'horizon', 'mala', 'lamps', 'agni', 'yantra', 'temple', 'tree'] as const;
+export const FORM_KEYS = ['dust', 'halo', 'name', 'vortex', 'flames', 'sigils', 'water', 'silk', 'stars', 'letters', 'eye', 'horizon', 'mala', 'lamps', 'agni', 'yantra', 'temple', 'tree', 'rose', 'pentacle', 'astrolabe', 'moons'] as const;
 export type FormKey = (typeof FORM_KEYS)[number];
 
 export const FLAMES = 108;
@@ -462,6 +462,71 @@ function tree(n: number) {
   return alongSegments(n, segs, r, 0.016, 0.1);
 }
 
+/** Venus: two roses of eight petals, one inside the other */
+function rose(n: number) {
+  const r = rng(71);
+  const segs: Seg[] = [];
+  const curve = (R: number, k: number, off: number, steps = 360) => {
+    const pts: number[][] = [];
+    for (let i = 0; i <= steps; i++) {
+      const t = (i / steps) * Math.PI * 2, rr = R * Math.cos(k * t);
+      pts.push([Math.cos(t + off) * rr, Math.sin(t + off) * rr]);
+    }
+    return polySegs(pts, false);
+  };
+  segs.push(...curve(2.7, 4, 0), ...curve(1.55, 4, Math.PI / 8), ...circleSegs(2.95, 96), ...circleSegs(0.22, 24));
+  return alongSegments(n, segs, r, 0.016, 0.3);
+}
+
+/** protection: a pentacle, point upward, inside two circles */
+function pentacle(n: number) {
+  const r = rng(73);
+  const R = 2.55;
+  const pts = [0, 1, 2, 3, 4].map((k) => { const a = Math.PI / 2 + (k * 4 * Math.PI) / 5; return [Math.cos(a) * R, Math.sin(a) * R]; });
+  return alongSegments(n, [...polySegs(pts), ...circleSegs(2.6, 96), ...circleSegs(2.85, 96)], r, 0.015, 0.3);
+}
+
+/** the astrolabe: rim and degree scale, the zodiac ring, the ecliptic and the rete */
+function astrolabe(n: number) {
+  const r = rng(79);
+  const segs: Seg[] = [...circleSegs(3.0, 120), ...circleSegs(2.82, 120), ...circleSegs(2.25, 96), ...circleSegs(1.25, 72, 0, 0.55)];
+  for (let k = 0; k < 72; k++) { const a = (k / 72) * Math.PI * 2, len = k % 6 === 0 ? 0.18 : 0.09; segs.push([Math.cos(a) * 3.0, Math.sin(a) * 3.0, Math.cos(a) * (3.0 - len), Math.sin(a) * (3.0 - len)]); }
+  for (let k = 0; k < 12; k++) { const a = (k / 12) * Math.PI * 2; segs.push([Math.cos(a) * 2.25, Math.sin(a) * 2.25, Math.cos(a) * 2.82, Math.sin(a) * 2.82]); }
+  for (let k = 0; k < 9; k++) { // the rete's star pointers
+    const a = (k / 9) * Math.PI * 2 + 0.3, R1 = 1.6 + (k % 3) * 0.2;
+    segs.push([Math.cos(a) * 0.9, Math.sin(a) * 0.9, Math.cos(a) * R1, Math.sin(a) * R1]);
+    segs.push([Math.cos(a) * R1, Math.sin(a) * R1, Math.cos(a + 0.06) * (R1 - 0.2), Math.sin(a + 0.06) * (R1 - 0.2)]);
+  }
+  segs.push([-2.9, -0.6, 2.9, 0.6]); // the alidade
+  return alongSegments(n, segs, r, 0.013, 0.3);
+}
+
+/** the moon's eight faces in an arc, each lit as it is in the sky */
+function moons(n: number) {
+  const r = rng(83); const o = new Float32Array(n * 3);
+  const M = 8, R = 0.46, arc = 3.0;
+  for (let i = 0; i < n; i++) {
+    const k = i % M, phase = k / M;
+    const a = Math.PI * (1.05 - (k / (M - 1)) * 1.1), cx = Math.cos(a) * arc, cy = 0.2 + Math.sin(a) * arc * 0.55;
+    if (r() < 0.3) { // outline
+      const t = r() * Math.PI * 2;
+      put(o, i, cx + Math.cos(t) * R, cy + Math.sin(t) * R, CZ + gauss(r) * 0.02);
+      continue;
+    }
+    let x = 0, y = 0;
+    for (let tries = 0; tries < 12; tries++) { // a point on the lit part of this moon
+      x = (r() * 2 - 1); y = (r() * 2 - 1);
+      if (x * x + y * y > 1) continue;
+      const edge = Math.sqrt(Math.max(0, 1 - y * y)), c = Math.cos(phase * Math.PI * 2);
+      const lit = phase < 0.5 ? x > edge * c : x < -edge * c;
+      if (lit || k === 0) break;
+    }
+    if (k === 0) { const t = r() * Math.PI * 2; x = Math.cos(t); y = Math.sin(t); } // the new moon: only its rim
+    put(o, i, cx + x * R, cy + y * R, CZ + gauss(r) * 0.03);
+  }
+  return o;
+}
+
 /* ------------------------------------------------- forms drawn from type */
 
 function sampleCanvas(n: number, draw: (ctx: CanvasRenderingContext2D) => void, w: number, h: number, map: (x: number, y: number) => [number, number], seed: number, extra?: (o: Out, i: number, r: () => number) => boolean) {
@@ -535,6 +600,10 @@ export function buildForms(n: number, seeds: Float32Array): Record<FormKey, Floa
     yantra: shuffled(yantra(n), 131),
     temple: shuffled(temple(n), 137),
     tree: shuffled(tree(n), 139),
+    rose: shuffled(rose(n), 149),
+    pentacle: shuffled(pentacle(n), 151),
+    astrolabe: shuffled(astrolabe(n), 157),
+    moons: shuffled(moons(n), 163),
   };
 }
 
@@ -567,6 +636,7 @@ export async function buildFormsAsync(n: number, seeds: Float32Array, textFrom?:
     ['stars', () => shuffleForm(stars(n), 109)], ['eye', () => shuffleForm(eye(n), 113)], ['horizon', () => horizon(n, seeds)],
     ['mala', () => mala(n)], ['lamps', () => shuffleForm(lamps(n), 127)], ['agni', () => agni(n, seeds)],
     ['yantra', () => shuffleForm(yantra(n), 131)], ['temple', () => shuffleForm(temple(n), 137)], ['tree', () => shuffleForm(tree(n), 139)],
+    ['rose', () => shuffleForm(rose(n), 149)], ['pentacle', () => shuffleForm(pentacle(n), 151)], ['astrolabe', () => shuffleForm(astrolabe(n), 157)], ['moons', () => shuffleForm(moons(n), 163)],
     ['name', () => (textFrom ? upsample(textFrom.name, n, 0.01, 61) : dust(n))],
     ['letters', () => (textFrom ? upsample(textFrom.letters, n, 0.008, 67) : dust(n))],
   ];

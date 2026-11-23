@@ -1,0 +1,32 @@
+---
+import type { Category } from '../data/site';
+import { ICONS } from '../data/magic';
+/**
+ * A category's subcategories as cards: a line icon, the name, the first few
+ * services on show, and the rest a tap away. Every service can be kept.
+ */
+interface Props { category: Category; pillar: string; icons: Record<string, string>; show?: number }
+const { category, pillar, icons, show = 4 } = Astro.props;
+---
+<ul class="sub-cards">
+  {category.subs.map((s) => (
+    <li class="sub-card" data-fade>
+      <header>
+        <svg class="sub-icon" viewBox="0 0 24 24" aria-hidden="true"><path d={ICONS[icons[s.name]] ?? ICONS.circle} /></svg>
+        <h3>{s.name}</h3>
+        <span class="sub-n">{s.items.length}</span>
+      </header>
+      <ul class="sub-chips">
+        {s.items.slice(0, show).map((item) => <li><button type="button" class="chip-keep" data-keep={item} data-keep-p={pillar} aria-pressed="false">{item}</button></li>)}
+      </ul>
+      {s.items.length > show && (
+        <details class="sub-more">
+          <summary>All {s.items.length}</summary>
+          <ul class="sub-chips">
+            {s.items.slice(show).map((item) => <li><button type="button" class="chip-keep" data-keep={item} data-keep-p={pillar} aria-pressed="false">{item}</button></li>)}
+          </ul>
+        </details>
+      )}
+    </li>
+  ))}
+</ul>
