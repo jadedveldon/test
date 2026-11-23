@@ -10,7 +10,7 @@
 import Base from '../../layouts/Base.astro';
 import SubCards from '../../components/SubCards.astro';
 import { pillars, categoryCount } from '../../data/site';
-import { CHAPTERS, HECATE, RITUS, SABBATS, SUB_ICON } from '../../data/magic';
+import { CHAPTERS, HECATE, RITUS, SABBATS, SATURN, SIGIL_METHODS, SUB_ICON } from '../../data/magic';
 
 const index = pillars.findIndex((p) => p.slug === 'magic');
 const p = pillars[index];
@@ -70,25 +70,15 @@ const roads = [-90, 30, 150].map((d) => pos(d, 30).map((v) => v.toFixed(1)).join
           <p class="hk-greek" lang="grc" data-fade>Ἑκάτη</p>
         </header>
 
-        <div class="hk-grid">
-          <figure class="hk-words" data-fade>
-            <blockquote>
-              {HECATE.words.map((w) => <p>{w}</p>)}
-            </blockquote>
-            <figcaption>
-              <p>{HECATE.wordsLine}</p>
-              <p class="hk-draft">In Sarvakali’s words · a placeholder until Sarvakali writes these lines</p>
-            </figcaption>
-          </figure>
-          <div class="hk-facts" data-fade>
-            <p class="kicker">What the old sources say</p>
-            <ol>
-              {HECATE.facts.map((f) => (
-                <li><p>{f.text}</p><a class="hk-src" href={f.href} target="_blank" rel="noopener">{f.source}</a></li>
-              ))}
-            </ol>
-          </div>
-        </div>
+        <figure class="hk-words" data-fade>
+          <blockquote>
+            {HECATE.words.map((w) => <p>{w}</p>)}
+          </blockquote>
+          <figcaption>
+            <p>{HECATE.wordsLine}</p>
+            <p class="hk-draft">In Sarvakali’s words · a placeholder until Sarvakali writes these lines</p>
+          </figcaption>
+        </figure>
 
         <div class="hk-supper" data-supper data-fade>
           <svg class="hk-moon" viewBox="-60 -60 120 120" aria-hidden="true">
@@ -117,27 +107,43 @@ const roads = [-90, 30, 150].map((d) => pos(d, 30).map((v) => v.toFixed(1)).join
       </div>
     </section>
 
-    <!-- day · make a sigil -->
+    <!-- day · make a sigil, five ways -->
     <section class="chapter mg-move mg-day mg-sigil-sec" id="make-a-sigil" data-chapter="magG_sigil" data-mag-chapter="sigil">
       <div class="chapter-inner mg-sigil-grid">
         <header class="mg-head">
           <p class="kicker" data-fade>Begin with an intention</p>
           <h2 class="display-l" data-split data-dust>Make a sigil</h2>
-          <p class="lede" data-fade>Write what you wish for in a few words. The letters fall away until only a shape is left, and the shape is sealed in wax.</p>
-          <p class="hk-note" data-fade>One common modern method: vowels and repeated letters are dropped, and the rest are joined on a letter wheel. Sarvakali may make sigils differently. Nothing you type here is saved or sent.</p>
+          <p class="lede" data-fade>Write what you wish for in a few words, then choose a way to turn it into a sigil. The same words give a different shape each way, and each is sealed in wax.</p>
+          <div class="sg-methods" role="group" aria-label="Ways of making a sigil" data-fade>
+            {SIGIL_METHODS.map((m, i) => <button type="button" data-sigil-method={m.key} aria-pressed={i === 0 ? 'true' : 'false'}>{m.name}</button>)}
+          </div>
+          <div class="sg-method-note" data-fade aria-live="polite">
+            <p class="sg-how" data-sigil-how>{SIGIL_METHODS[0].how}</p>
+            <p class="sg-origin" data-sigil-origin>{SIGIL_METHODS[0].origin}</p>
+          </div>
+          <p class="hk-note" data-fade>Sarvakali may make sigils differently. Nothing you type or draw here is saved or sent.</p>
         </header>
-        <div class="sigil-maker" data-sigil data-fade>
-          <svg viewBox="-130 -130 260 260" class="sigil-svg" aria-hidden="true">
-            <circle r="122" class="sg-gild" /><circle r="114" class="sg-ring" /><circle r="88" class="sg-ring thin" />
+        <div class="sigil-maker" data-sigil data-method={SIGIL_METHODS[0].key} data-fade>
+          <svg viewBox="-130 -130 260 260" class="sigil-svg" data-sigil-svg aria-label="Your sigil" role="img">
+            <circle r="122" class="sg-gild" /><circle r="114" class="sg-ring" />
             {Array.from({ length: 52 }, (_, k) => { const [x1, y1] = pos(k * (360 / 52), 114); const [x2, y2] = pos(k * (360 / 52), k % 2 ? 118 : 121); return <line x1={x1.toFixed(1)} y1={y1.toFixed(1)} x2={x2.toFixed(1)} y2={y2.toFixed(1)} class="sg-tick" />; })}
-            {LETTERS.map((L, i) => { const [x, y] = pos(-90 + (i * 360) / 26, 101); return <text x={x.toFixed(1)} y={(y + 3.5).toFixed(1)} class="sg-letter" data-letter={L}>{L}</text>; })}
-            <path class="sg-path" data-sigil-path d="" />
-            <circle class="sg-start" data-sigil-start r="5" cx="0" cy="-900" />
-            <line class="sg-end" data-sigil-end x1="0" y1="-900" x2="0" y2="-900" />
-            <g class="sg-seal" data-sigil-seal transform="scale(0)">
-              <circle r="30" class="sg-wax" /><circle r="22" class="sg-wax-ring" />
-              {roads.map((r) => <path class="sg-wax-mark" d={`M0 0 L${r.split(' ').map((v) => (Number(v) * 0.5).toFixed(1)).join(' ')}`} />)}
-              <circle r="3.5" class="sg-wax-dot" />
+            <g class="sg-board" data-board="wheel">
+              <circle r="88" class="sg-ring thin" />
+              {LETTERS.map((L, i) => { const [x, y] = pos(-90 + (i * 360) / 26, 101); return <text x={x.toFixed(1)} y={(y + 3.5).toFixed(1)} class="sg-letter" data-letter={L}>{L}</text>; })}
+            </g>
+            <g class="sg-board" data-board="square">
+              <rect x="-78" y="-78" width="156" height="156" class="sg-cell" />
+              <path d="M-26 -78V78M26 -78V78M-78 -26H78M-78 26H78" class="sg-cell" />
+              {SATURN.map((row, r) => row.map((n, c) => <text x={(c - 1) * 52 + 16} y={(r - 1) * 52 + 21} class="sg-num" data-num={n}>{n}</text>))}
+            </g>
+            <g class="sg-board" data-board="draw"><circle r="88" class="sg-ring thin" /></g>
+            <g class="sg-mark" data-sigil-mark></g>
+            <g transform="translate(94 94)">
+              <g class="sg-seal" data-sigil-seal transform="scale(0)">
+                <circle r="27" class="sg-wax" /><circle r="20" class="sg-wax-ring" />
+                {roads.map((r) => <path class="sg-wax-mark" d={`M0 0 L${r.split(' ').map((v) => (Number(v) * 0.45).toFixed(1)).join(' ')}`} />)}
+                <circle r="3.2" class="sg-wax-dot" />
+              </g>
             </g>
           </svg>
           <form class="sigil-form" data-sigil-form>
@@ -145,6 +151,10 @@ const roads = [-90, 30, 150].map((d) => pos(d, 30).map((v) => v.toFixed(1)).join
             <input id="sigil-word" maxlength="40" autocomplete="off" placeholder="Your intention, in a few words" />
             <button type="submit" class="btn btn-ghost btn-sm">Make my sigil</button>
           </form>
+          <div class="sg-draw-controls" data-draw-controls>
+            <button type="button" class="btn btn-ghost btn-sm" data-draw-clear>Clear</button>
+            <button type="button" class="btn btn-ghost btn-sm" data-draw-seal>Seal it</button>
+          </div>
           <p class="dv-sig-hint" data-sigil-hint aria-live="polite">Your sigil will be drawn here.</p>
           <button type="button" class="btn btn-ghost btn-sm" data-sigil-save hidden>Save it as a picture</button>
         </div>

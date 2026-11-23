@@ -193,10 +193,10 @@ export const PRESETS: Record<string, Preset> = {
     a: '#050505', b: '#0d3b2e', c: '#b8693a', glow: '#d9b25a',
     ink: '#f3ecdd', inkSoft: '#c2b59a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'crossroads', shift: 5.4, fade: 0.95,
   },
-  // night · Hecate, presiding goddess
+  // night · Hecate, presiding goddess: her crossroads beside Sarvakali's words
   magG_hecate: {
     a: '#050505', b: '#0b2f25', c: '#c8321e', glow: '#d9b25a',
-    ink: '#f3ecdd', inkSoft: '#c2b59a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'crossroads', shift: 0, fade: 0.22, moon: 0,
+    ink: '#f3ecdd', inkSoft: '#c2b59a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'crossroads', shift: 4.2, fade: 0.6, moon: 0,
   },
   // day · make a sigil (the page itself is the focus, the world stays faint)
   magG_sigil: {

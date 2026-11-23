@@ -31,8 +31,10 @@ export const PAGES: Record<string, Page> = {
 /**
  * Hecate. Two kinds of text, kept apart on the page:
  *  - WORDS: Sarvakali's own devotion (a placeholder until Sarvakali writes it).
- *  - FACTS: what the ancient sources say, each with where it comes from.
- * Checked in November 2026; see the fact-check table on the preview cover.
+ *  - the dark-moon supper, which is sourced (Deipnon).
+ * The sourced facts about her (torch, Medea, Diodorus, hekataia) were checked in
+ * November 2026 and are kept in the fact-check table on the preview cover; the
+ * page itself no longer lists them.
  */
 export const HECATE = {
   words: [
@@ -41,13 +43,6 @@ export const HECATE = {
     'Fierce protector.',
   ],
   wordsLine: 'Hecate is one of the presiding deities of Sarvakali, and this pillar is under her keeping.',
-  facts: [
-    { text: 'A Greek goddess of magic and witchcraft, of crossroads and doorways, of the night, ghosts and herbs.', source: 'Theoi; Wikipedia', href: 'https://www.theoi.com/Khthonios/Hekate.html' },
-    { text: 'In the Homeric Hymn to Demeter she meets the grieving Demeter with a torch in her hands: she alone had heard Persephone cry out when she was taken.', source: 'Homeric Hymn to Demeter', href: 'https://en.wikisource.org/wiki/Hesiod,_the_Homeric_Hymns_and_Homerica/Hymn_II_(To_Demeter)' },
-    { text: 'Medea, the great witch of Greek tragedy, was her priestess. In Euripides’ Medea she calls on Hecate as her chosen helper.', source: 'Euripides, Medea; Wikipedia', href: 'https://en.wikipedia.org/wiki/Hecate' },
-    { text: 'The historian Diodorus Siculus tells it differently: in his version Hecate is a sorceress-queen and the mother of Circe and Medea, the two great witches of Greek myth.', source: 'Diodorus Siculus 4.45; Theoi', href: 'https://www.theoi.com/Khthonios/Hekate.html' },
-    { text: 'Images of her in triple form, the hekataia, stood at entrances. One guarded the gateway of the Athenian Acropolis.', source: 'Wikipedia', href: 'https://en.wikipedia.org/wiki/Hecate' },
-  ],
   supper: {
     title: 'The dark moon is hers',
     text: 'In ancient Athens the last day of the lunar month, the dark moon, belonged to Hecate. Households set out a supper for her and the restless dead, at crossroads and on doorsteps: the Deipnon. The same dark moon is Amavasya, a night especially kept for Kali.',
@@ -166,3 +161,41 @@ export const RITUS = [
   { name: 'Hemanta', deva: 'हेमन्त', english: 'pre-winter', months: 'Margashirsha and Pausha', from: [10, 23], line: 'The cool season' },
   { name: 'Shishira', deva: 'शिशिर', english: 'winter', months: 'Magha and Phalguna', from: [12, 21], line: 'Winter' },
 ];
+
+/**
+ * Ways of making a sigil, to compare in the sigil maker. Each note says where
+ * the method comes from, as far as the sources go (checked November 2026; see
+ * the fact-check table on the preview cover). Sarvakali may make sigils
+ * differently; their own method can replace or join these.
+ */
+export type SigilMethod = 'monogram' | 'wheel' | 'square' | 'bindrune' | 'draw';
+export const SIGIL_METHODS: { key: SigilMethod; name: string; how: string; origin: string }[] = [
+  {
+    key: 'wheel', name: 'Letter wheel',
+    how: 'The alphabet is set round a circle. The line starts with a small ring on the first letter, runs from letter to letter, and ends with a short bar.',
+    origin: 'A modern way of tracing a name on letters set in a ring. The Golden Dawn’s Rose Cross, whose 22 petals carry the Hebrew letters, was called the key of sigils.',
+  },
+  {
+    key: 'monogram', name: 'Monogram',
+    how: 'The letters that repeat are struck out, and many modern versions drop the vowels too. What is left is folded into one figure, some letters turned back to front, until it no longer reads as words.',
+    origin: 'The way made known by the artist Austin Osman Spare in The Book of Pleasure (1913), and taken up by chaos magic.',
+  },
+  {
+    key: 'square', name: 'Magic square',
+    how: 'Each letter becomes a number (A to I count 1 to 9, then J starts again at 1). The numbers are found on the square and joined in order.',
+    origin: 'Old seals of spirits were drawn this way, on number squares. This is the 3 × 3 square, which Agrippa gave to Saturn; counting Latin letters 1 to 9 is a modern adaptation.',
+  },
+  {
+    key: 'bindrune', name: 'Bindrune',
+    how: 'The first letter of each word becomes its nearest Elder Futhark rune, and the runes are bound onto one shared stave.',
+    origin: 'Runes joined into one figure appear in old inscriptions, some along a single stave. Making one from your own words is a modern use of that old form.',
+  },
+  {
+    key: 'draw', name: 'Draw your own',
+    how: 'No letters and no rule: draw whatever shape comes to you, then seal it.',
+    origin: 'No tradition is claimed here: a free drawing, sealed like the others.',
+  },
+];
+
+/** the 3 × 3 magic square as Agrippa gives it (rows read across); every row, column and diagonal makes 15 */
+export const SATURN = [[4, 9, 2], [3, 5, 7], [8, 1, 6]];
