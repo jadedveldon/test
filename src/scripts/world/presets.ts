@@ -31,6 +31,8 @@ export type Preset = {
   dawn?: number;
   /** how strongly the living form shows (1 = fully); quieter behind long reading */
   fade?: number;
+  /** 0 hides tonight's moon in this chapter (where something else stands in its place) */
+  moon?: number;
 };
 
 export const PRESETS: Record<string, Preset> = {
@@ -178,129 +180,68 @@ export const PRESETS: Record<string, Preset> = {
     a: '#050617', b: '#1f1450', c: '#3a4fb8', glow: '#e7c46a',
     ink: '#f1efff', inkSoft: '#b9b4d8', scale: 1.8, warp: 2.6, speed: 0.05, light: 0, motes: 0.9, form: 'halo', shift: 0,
   },
-  /* ---------------- Pillar 2, Witchcraft & Magic: three directions to compare */
-  // A · The grimoire (parchment; the baneful chapter is a black page)
-  magA_hero: {
-    a: '#e8dcc0', b: '#cdb98f', c: '#9c2a1c', glow: '#fff6e2',
-    ink: '#2a1d14', inkSoft: '#5e4634', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'sigils', shift: 4.4, fade: 0.8,
-  },
-  magA_home: {
-    a: '#e8dcc0', b: '#cdb98f', c: '#9c2a1c', glow: '#fff6e2',
-    ink: '#2a1d14', inkSoft: '#5e4634', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'sigils', shift: 5.4, fade: 0.8,
-  },
-  magA_love: {
-    a: '#e8dcc0', b: '#cdb98f', c: '#9c2a1c', glow: '#fff6e2',
-    ink: '#2a1d14', inkSoft: '#5e4634', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'rose', shift: 4.2, fade: 0.55,
-  },
-  magA_abundance: {
-    a: '#e8dcc0', b: '#cdb98f', c: '#8a6a1c', glow: '#fff6e2',
-    ink: '#2a1d14', inkSoft: '#5e4634', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'vortex', shift: 4.2, fade: 0.55,
-  },
-  magA_protection: {
-    a: '#e8dcc0', b: '#cdb98f', c: '#3f8f78', glow: '#fff6e2',
-    ink: '#2a1d14', inkSoft: '#5e4634', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'pentacle', shift: 4.2, fade: 0.55,
-  },
-  magA_baneful: {
-    a: '#0d0b08', b: '#1f1712', c: '#6b2a1c', glow: '#e8dcc0',
-    ink: '#e8dcc0', inkSoft: '#a89a80', scale: 1.4, warp: 2.6, speed: 0.04, light: 0, motes: 0.3, form: 'eye', shift: 4.2, fade: 0.5,
-  },
-  magA_spellcraft: {
-    a: '#e8dcc0', b: '#cdb98f', c: '#3f8f78', glow: '#fff6e2',
-    ink: '#2a1d14', inkSoft: '#5e4634', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'sigils', shift: 4.2, fade: 0.55,
-  },
-  magA_rituals: {
-    a: '#e8dcc0', b: '#cdb98f', c: '#c06a1c', glow: '#fff6e2',
-    ink: '#2a1d14', inkSoft: '#5e4634', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'agni', shift: 2.8, fade: 0.55,
-  },
-  magA_nature: {
-    a: '#e8dcc0', b: '#cdb98f', c: '#5e6a8a', glow: '#fff6e2',
-    ink: '#2a1d14', inkSoft: '#5e4634', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'moons', shift: 4.2, fade: 0.55,
-  },
-  magA_close: {
-    a: '#e8dcc0', b: '#cdb98f', c: '#9c2a1c', glow: '#fff6e2',
-    ink: '#2a1d14', inkSoft: '#5e4634', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'rose', shift: 0, fade: 0.7,
-  },
-  // B · Moon garden
-  magB_hero: {
-    a: '#06120e', b: '#1f3a2a', c: '#8fb89a', glow: '#dfe6f0',
-    ink: '#eef4ee', inkSoft: '#a9c2b2', scale: 1.4, warp: 2.2, speed: 0.045, light: 0, motes: 0.6, form: 'moons', shift: 4.4, fade: 0.9,
-  },
-  magB_home: {
-    a: '#06120e', b: '#1f3a2a', c: '#8fb89a', glow: '#dfe6f0',
-    ink: '#eef4ee', inkSoft: '#a9c2b2', scale: 1.4, warp: 2.2, speed: 0.045, light: 0, motes: 0.6, form: 'moons', shift: 5.4, fade: 0.9,
-  },
-  magB_love: {
-    a: '#06120e', b: '#1f3a2a', c: '#d98ca0', glow: '#f6dfe6',
-    ink: '#eef4ee', inkSoft: '#a9c2b2', scale: 1.4, warp: 2.2, speed: 0.045, light: 0, motes: 0.6, form: 'rose', shift: 4.2, fade: 0.85,
-  },
-  magB_abundance: {
-    a: '#06120e', b: '#1f3a2a', c: '#c9b86a', glow: '#f3ecc4',
-    ink: '#eef4ee', inkSoft: '#a9c2b2', scale: 1.4, warp: 2.2, speed: 0.045, light: 0, motes: 0.6, form: 'tree', shift: 3.8, fade: 0.85,
-  },
-  magB_protection: {
-    a: '#06120e', b: '#1f3a2a', c: '#8fb89a', glow: '#dfe6f0',
-    ink: '#eef4ee', inkSoft: '#a9c2b2', scale: 1.4, warp: 2.2, speed: 0.045, light: 0, motes: 0.6, form: 'pentacle', shift: 4.2, fade: 0.85,
-  },
-  magB_baneful: {
-    a: '#040806', b: '#121a16', c: '#4a5a66', glow: '#c6c6d8',
-    ink: '#eef4ee', inkSoft: '#a9c2b2', scale: 1.4, warp: 2.2, speed: 0.045, light: 0, motes: 0.6, form: 'silk', shift: 0, fade: 0.85,
-  },
-  magB_spellcraft: {
-    a: '#06120e', b: '#1f3a2a', c: '#e8c37a', glow: '#ffe6a8',
-    ink: '#eef4ee', inkSoft: '#a9c2b2', scale: 1.4, warp: 2.2, speed: 0.045, light: 0, motes: 0.6, form: 'lamps', shift: 0, fade: 0.9,
-  },
-  magB_rituals: {
-    a: '#06120e', b: '#1f3a2a', c: '#e8c37a', glow: '#fff1c8',
-    ink: '#eef4ee', inkSoft: '#a9c2b2', scale: 1.4, warp: 2.2, speed: 0.045, light: 0, motes: 0.6, form: 'halo', shift: 0, fade: 0.85,
-  },
-  magB_nature: {
-    a: '#06120e', b: '#1f3a2a', c: '#b9a3d8', glow: '#eae4ff',
-    ink: '#eef4ee', inkSoft: '#a9c2b2', scale: 1.4, warp: 2.2, speed: 0.045, light: 0, motes: 0.6, form: 'moons', shift: 4.2, fade: 0.85,
-  },
-  magB_close: {
-    a: '#06120e', b: '#1f3a2a', c: '#8fb89a', glow: '#dfe6f0',
-    ink: '#eef4ee', inkSoft: '#a9c2b2', scale: 1.4, warp: 2.2, speed: 0.045, light: 0, motes: 0.6, form: 'tree', shift: 0, fade: 0.8,
-  },
-  // C · Alchemical sky
-  magC_hero: {
+  /* ---------------- Pillar 2, Witchcraft & Magic · the gilded grimoire
+     Day pages are parchment (light: 1); night pages are black, emerald and gold.
+     Between the two, the shader spreads the night in like ink. */
+  // night · the opening: Hecate's crossroads
+  magG_hero: {
     a: '#050505', b: '#0d3b2e', c: '#b8693a', glow: '#d9b25a',
-    ink: '#f3ecdd', inkSoft: '#bdb29a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'astrolabe', shift: 4.4, fade: 0.9,
+    ink: '#f3ecdd', inkSoft: '#c2b59a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'crossroads', shift: 4.4, fade: 0.95,
   },
-  magC_home: {
+  // night · the homepage chapter for this pillar
+  magG_home: {
     a: '#050505', b: '#0d3b2e', c: '#b8693a', glow: '#d9b25a',
-    ink: '#f3ecdd', inkSoft: '#bdb29a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'astrolabe', shift: 5.4, fade: 0.9,
+    ink: '#f3ecdd', inkSoft: '#c2b59a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'crossroads', shift: 5.4, fade: 0.95,
   },
-  magC_love: {
-    a: '#050505', b: '#0d3b2e', c: '#c8321e', glow: '#d9b25a',
-    ink: '#f3ecdd', inkSoft: '#bdb29a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'rose', shift: 4.2, fade: 0.65,
+  // night · Hecate, presiding goddess
+  magG_hecate: {
+    a: '#050505', b: '#0b2f25', c: '#c8321e', glow: '#d9b25a',
+    ink: '#f3ecdd', inkSoft: '#c2b59a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'crossroads', shift: 0, fade: 0.22, moon: 0,
   },
-  magC_abundance: {
-    a: '#050505', b: '#0d3b2e', c: '#d9b25a', glow: '#f3d98a',
-    ink: '#f3ecdd', inkSoft: '#bdb29a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'halo', shift: 0, fade: 0.6,
+  // day · make a sigil (the page itself is the focus, the world stays faint)
+  magG_sigil: {
+    a: '#e8dcc0', b: '#cdb98f', c: '#c8321e', glow: '#fff6e2',
+    ink: '#2a1d14', inkSoft: '#5a4330', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'sigils', shift: 0, fade: 0.3,
   },
-  magC_protection: {
-    a: '#050505', b: '#0d3b2e', c: '#c8321e', glow: '#d9b25a',
-    ink: '#f3ecdd', inkSoft: '#bdb29a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'pentacle', shift: 4.2, fade: 0.65,
+  // day · I love: a vermilion rose
+  magG_love: {
+    a: '#e8dcc0', b: '#cdb98f', c: '#c8321e', glow: '#fff6e2',
+    ink: '#2a1d14', inkSoft: '#5a4330', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'rose', shift: 4.2, fade: 0.55,
   },
-  magC_baneful: {
-    a: '#030303', b: '#141414', c: '#5a5a62', glow: '#c9d1dc',
-    ink: '#f3ecdd', inkSoft: '#bdb29a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'eye', shift: 4.2, fade: 0.5,
+  // day · II abundance: the road opening, in gold
+  magG_abundance: {
+    a: '#e8dcc0', b: '#cdb98f', c: '#b8893a', glow: '#fff6e2',
+    ink: '#2a1d14', inkSoft: '#5a4330', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'vortex', shift: 4.2, fade: 0.55,
   },
-  magC_spellcraft: {
-    a: '#050505', b: '#0d3b2e', c: '#c9d1dc', glow: '#e6ebf2',
-    ink: '#f3ecdd', inkSoft: '#bdb29a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'sigils', shift: 4.2, fade: 0.65,
-  },
-  magC_rituals: {
-    a: '#050505', b: '#0d3b2e', c: '#d9b25a', glow: '#ffe4a0',
-    ink: '#f3ecdd', inkSoft: '#bdb29a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'flames', shift: 4.2, fade: 0.7,
-  },
-  magC_nature: {
-    a: '#050505', b: '#0d3b2e', c: '#c9d1dc', glow: '#eef2f8',
-    ink: '#f3ecdd', inkSoft: '#bdb29a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'moons', shift: 4.2, fade: 0.65,
-  },
-  magC_close: {
+  // night · III protection: copper pentacle; Hecate keeps the doorways
+  magG_protection: {
     a: '#050505', b: '#0d3b2e', c: '#b8693a', glow: '#d9b25a',
-    ink: '#f3ecdd', inkSoft: '#bdb29a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'astrolabe', shift: 0, fade: 0.8,
+    ink: '#f3ecdd', inkSoft: '#c2b59a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'pentacle', shift: 4.2, fade: 0.65,
+  },
+  // night · IV baneful: the blackest page, quicksilver light
+  magG_baneful: {
+    a: '#030303', b: '#0a1a15', c: '#4a4a52', glow: '#c9d1dc',
+    ink: '#f3ecdd', inkSoft: '#c2b59a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'eye', shift: 4.2, fade: 0.5,
+  },
+  // day · V spellcraft: emerald sigils on parchment
+  magG_spellcraft: {
+    a: '#e8dcc0', b: '#cdb98f', c: '#0d3b2e', glow: '#fff6e2',
+    ink: '#2a1d14', inkSoft: '#5a4330', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'sigils', shift: 4.2, fade: 0.55,
+  },
+  // night · VI rituals: a ring of fire around the wheel of the year
+  magG_rituals: {
+    a: '#050505', b: '#0d3b2e', c: '#d9b25a', glow: '#d9b25a',
+    ink: '#f3ecdd', inkSoft: '#c2b59a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'flames', shift: 0, fade: 0.45, moon: 0,
+  },
+  // day · VII nature: the moon's faces in green ink
+  magG_nature: {
+    a: '#e8dcc0', b: '#cdb98f', c: '#3f6f5e', glow: '#fff6e2',
+    ink: '#2a1d14', inkSoft: '#5a4330', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'moons', shift: 4.2, fade: 0.55,
+  },
+  // night · the close: back to the crossroads
+  magG_close: {
+    a: '#050505', b: '#0d3b2e', c: '#b8693a', glow: '#d9b25a',
+    ink: '#f3ecdd', inkSoft: '#c2b59a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'crossroads', shift: 0, fade: 0.42,
   },
   close: {
     a: '#050203', b: '#240809', c: '#8e2a1a', glow: '#f0b34a',
@@ -311,7 +252,7 @@ export const PRESETS: Record<string, Preset> = {
 export type Numeric = {
   a: number[]; b: number[]; c: number[]; glow: number[]; ink: number[]; inkSoft: number[];
   scale: number; warp: number; speed: number; light: number; motes: number;
-  shift: number; dawn: number; fade: number;
+  shift: number; dawn: number; fade: number; moon: number;
   /** one weight per form, blended: drives each form's own motion */
   w: number[];
   form: FormKey;
@@ -327,14 +268,14 @@ export function toNumeric(p: Preset): Numeric {
     a: hexToRgb(p.a), b: hexToRgb(p.b), c: hexToRgb(p.c), glow: hexToRgb(p.glow),
     ink: hexToRgb(p.ink), inkSoft: hexToRgb(p.inkSoft),
     scale: p.scale, warp: p.warp, speed: p.speed, light: p.light, motes: p.motes,
-    shift: p.shift ?? 0, dawn: p.dawn ?? 0, fade: p.fade ?? 1,
+    shift: p.shift ?? 0, dawn: p.dawn ?? 0, fade: p.fade ?? 1, moon: p.moon ?? 1,
     w: FORM_KEYS.map((k) => (k === p.form ? 1 : 0)),
     form: p.form,
   };
 }
 
 const COLOR_KEYS = ['a', 'b', 'c', 'glow', 'ink', 'inkSoft'] as const;
-const NUM_KEYS = ['scale', 'warp', 'speed', 'light', 'motes', 'shift', 'dawn', 'fade'] as const;
+const NUM_KEYS = ['scale', 'warp', 'speed', 'light', 'motes', 'shift', 'dawn', 'fade', 'moon'] as const;
 
 /** out = lerp(x, y, t), written into out */
 export function mixInto(out: Numeric, x: Numeric, y: Numeric, t: number) {

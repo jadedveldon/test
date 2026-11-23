@@ -63,8 +63,6 @@ const pageUrl = new URL(path || '/', site.url).href;
           var q = new URLSearchParams(location.search);
           var hero = q.get('hero') || sessionStorage.getItem('sk-x-hero');
           h.dataset.heroVariant = hero === 'name' || hero === 'dawn' || hero === 'eye' ? hero : 'dawneye';
-          var mag = q.get('magdir') || sessionStorage.getItem('sk-x-magdir');
-          h.dataset.mag = mag === 'b' || mag === 'c' ? mag : 'a';
           var page = q.get('page') || sessionStorage.getItem('sk-x-page');
           h.dataset.pageStyle = page || 'eye';
           if (q.has('og')) h.dataset.og = '1';
@@ -261,15 +259,6 @@ const pageUrl = new URL(path || '/', site.url).href;
             <button type="button" data-v="eye">Living eye</button>
             <button type="button" data-v="name">Name of light</button>
             <button type="button" data-v="dawn">Dawn</button>
-          </div>
-        </div>
-
-        <div class="hud-group">
-          <p class="hud-label">Pillar 2 · Magic direction</p>
-          <div class="hud-seg" role="group" aria-label="Magic design direction" data-x="magdir">
-            <button type="button" data-v="a">A · The grimoire</button>
-            <button type="button" data-v="b">B · Moon garden</button>
-            <button type="button" data-v="c">C · Alchemical sky</button>
           </div>
         </div>
 

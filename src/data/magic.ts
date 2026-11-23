@@ -1,24 +1,60 @@
 /**
- * Pillar 2, Witchcraft & Magic: three art directions to compare live, all
- * built on the same seven chapters (the catalogue's seven categories).
+ * Pillar 2, Witchcraft & Magic · the gilded grimoire.
+ * One book with two kinds of page: bright parchment "day pages" (the grimoire)
+ * and black-and-emerald "night pages" in gold (the alchemical sky). Hecate,
+ * one of Sarvakali's presiding deities, opens the pillar.
  * Short descriptive lines are DRAFT copy for Sarvakali to refine.
  */
-export type MagDir = 'a' | 'b' | 'c';
+export type Page = 'day' | 'night';
 
 /**
  * The seven chapters follow the catalogue's own seven categories.
  * (An earlier draft paired them with the seven classical planets. That pairing
  * was not traditional and has been removed; see the fact-check notes.)
  */
-export const CHAPTERS = [
-  { key: 'love', category: 'Love, Attraction & Glamour', title: 'Love, attraction and glamour', line: 'Calling love in, mending what can be mended, letting go of what cannot, and learning to love yourself.' },
-  { key: 'abundance', category: 'Abundance, Career & Success', title: 'Abundance, career and success', line: 'Money, work, clients and luck: opening the road and keeping it open.' },
-  { key: 'protection', category: 'Protection, Cleansing & Uncrossing', title: 'Protection, cleansing and uncrossing', line: 'Shielding you and your home, clearing what clings, and lifting what was laid on you.' },
-  { key: 'baneful', category: 'Baneful & Dark Craft', title: 'Baneful and dark craft', line: 'Binding, justice and the older, darker arts, held with discernment.' },
-  { key: 'spellcraft', category: 'Spellcraft & Magical Objects', title: 'Spellcraft and magical objects', line: 'Candles, jars, sigils, talismans, oils and the old folk ways: spells made by hand, for you.' },
-  { key: 'rituals', category: 'Rituals, Ceremonies & Witchcraft Paths', title: 'Rituals, ceremonies and paths', line: 'Ceremony, fire and the four directions, rites of passage, and the many paths of the craft.' },
-  { key: 'nature', category: 'Nature, Moon & Cosmic Magic', title: 'Nature, moon and cosmic magic', line: 'The moon and the planets, the turning year, herbs, stones and the wild places.' },
+export const CHAPTERS: { key: string; category: string; title: string; line: string; page: Page }[] = [
+  { key: 'love', page: 'day', category: 'Love, Attraction & Glamour', title: 'Love, attraction and glamour', line: 'Calling love in, mending what can be mended, letting go of what cannot, and learning to love yourself.' },
+  { key: 'abundance', page: 'day', category: 'Abundance, Career & Success', title: 'Abundance, career and success', line: 'Money, work, clients and luck: opening the road and keeping it open.' },
+  { key: 'protection', page: 'night', category: 'Protection, Cleansing & Uncrossing', title: 'Protection, cleansing and uncrossing', line: 'Shielding you and your home, clearing what clings, and lifting what was laid on you.' },
+  { key: 'baneful', page: 'night', category: 'Baneful & Dark Craft', title: 'Baneful and dark craft', line: 'Binding, justice and the older, darker arts, held with discernment.' },
+  { key: 'spellcraft', page: 'day', category: 'Spellcraft & Magical Objects', title: 'Spellcraft and magical objects', line: 'Candles, jars, sigils, talismans, oils and the old folk ways: spells made by hand, for you.' },
+  { key: 'rituals', page: 'night', category: 'Rituals, Ceremonies & Witchcraft Paths', title: 'Rituals, ceremonies and paths', line: 'Ceremony, fire and the four directions, rites of passage, and the many paths of the craft.' },
+  { key: 'nature', page: 'day', category: 'Nature, Moon & Cosmic Magic', title: 'Nature, moon and cosmic magic', line: 'The moon and the planets, the turning year, herbs, stones and the wild places.' },
 ];
+
+/** which world each part of the page uses (day pages are parchment, night pages gold on black) */
+export const PAGES: Record<string, Page> = {
+  hero: 'night', hecate: 'night', sigil: 'day', close: 'night',
+  ...Object.fromEntries(CHAPTERS.map((c) => [c.key, c.page])),
+};
+
+/**
+ * Hecate. Two kinds of text, kept apart on the page:
+ *  - WORDS: Sarvakali's own devotion (a placeholder until Sarvakali writes it).
+ *  - FACTS: what the ancient sources say, each with where it comes from.
+ * Checked in November 2026; see the fact-check table on the preview cover.
+ */
+export const HECATE = {
+  words: [
+    'Mother of witchcraft.',
+    'Prime goddess of the craft.',
+    'Fierce protector.',
+  ],
+  wordsLine: 'Hecate is one of the presiding deities of Sarvakali, and this pillar is under her keeping.',
+  facts: [
+    { text: 'A Greek goddess of magic and witchcraft, of crossroads and doorways, of the night, ghosts and herbs.', source: 'Theoi; Wikipedia', href: 'https://www.theoi.com/Khthonios/Hekate.html' },
+    { text: 'In the Homeric Hymn to Demeter she meets the grieving Demeter with a torch in her hands: she alone had heard Persephone cry out when she was taken.', source: 'Homeric Hymn to Demeter', href: 'https://en.wikisource.org/wiki/Hesiod,_the_Homeric_Hymns_and_Homerica/Hymn_II_(To_Demeter)' },
+    { text: 'Medea, the great witch of Greek tragedy, was her priestess. In Euripides’ Medea she calls on Hecate as her chosen helper.', source: 'Euripides, Medea; Wikipedia', href: 'https://en.wikipedia.org/wiki/Hecate' },
+    { text: 'The historian Diodorus Siculus tells it differently: in his version Hecate is a sorceress-queen and the mother of Circe and Medea, the two great witches of Greek myth.', source: 'Diodorus Siculus 4.45; Theoi', href: 'https://www.theoi.com/Khthonios/Hekate.html' },
+    { text: 'Images of her in triple form, the hekataia, stood at entrances. One guarded the gateway of the Athenian Acropolis.', source: 'Wikipedia', href: 'https://en.wikipedia.org/wiki/Hecate' },
+  ],
+  supper: {
+    title: 'The dark moon is hers',
+    text: 'In ancient Athens the last day of the lunar month, the dark moon, belonged to Hecate. Households set out a supper for her and the restless dead, at crossroads and on doorsteps: the Deipnon. The same dark moon is Amavasya, a night especially kept for Kali.',
+    note: 'The Athenian month began with the first sliver of the new moon, so the old reckoning can differ from a modern calendar by a day. The two traditions are separate; here they simply share a night.',
+    href: 'https://en.wikipedia.org/wiki/Deipnon',
+  },
+};
 
 /** a small line icon for every subcategory (24 × 24, drawn as strokes) */
 export const ICONS: Record<string, string> = {
@@ -129,62 +165,4 @@ export const RITUS = [
   { name: 'Sharad', deva: 'शरद्', english: 'autumn', months: 'Ashvin and Kartika', from: [8, 23], line: 'Autumn after the rains' },
   { name: 'Hemanta', deva: 'हेमन्त', english: 'pre-winter', months: 'Margashirsha and Pausha', from: [10, 23], line: 'The cool season' },
   { name: 'Shishira', deva: 'शिशिर', english: 'winter', months: 'Magha and Phalguna', from: [12, 21], line: 'Winter' },
-];
-
-export type MagDirection = {
-  key: MagDir; name: string; essence: string; feeling: string[];
-  palette: { name: string; hex: string }[];
-  type: { display: string; note: string; fontHref: string };
-  worlds: string; layout: string; signature: { name: string; how: string }; sound: string; imagery: string; voice: string;
-};
-
-export const MAG_DIRECTIONS: MagDirection[] = [
-  {
-    key: 'a', name: 'The grimoire',
-    essence: 'A witch’s book of shadows, opened at night: parchment pages, iron-gall ink, red rubrics and wax seals. Only the chapter on baneful craft turns to black pages.',
-    feeling: ['handmade', 'old', 'tactile', 'scholarly'],
-    palette: [
-      { name: 'Parchment', hex: '#e8dcc0' }, { name: 'Vellum', hex: '#cdb98f' }, { name: 'Iron-gall ink', hex: '#2a1d14' },
-      { name: 'Rubric red', hex: '#9c2a1c' }, { name: 'Verdigris', hex: '#3f8f78' }, { name: 'Ink-black page', hex: '#0d0b08' },
-    ],
-    type: { display: 'IM Fell English', note: 'an old printing type, with red drop-capitals', fontHref: 'https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&display=swap' },
-    worlds: 'Ink-light on parchment: sigils, a rose, a spiral of luck, the pentacle, the eye on black pages, the ritual fire, the moon’s phases.',
-    layout: 'Each category is a chapter of the book with a red initial; subcategories are recipes in the margin.',
-    signature: { name: 'Make a sigil', how: 'Write your intention. The vowels and repeated letters fall away (one common modern method), the rest are joined on a letter wheel into a sigil, and a wax seal presses it.' },
-    sound: 'A quiet room: a breath through a reed, a soft knock of wood.',
-    imagery: 'Engraving-style line drawings of herbs, tools and seals; a real wax seal photographed for the stamp.',
-    voice: 'Like a teacher’s notes in the margin.',
-  },
-  {
-    key: 'b', name: 'Moon garden',
-    essence: 'A night garden under the moon: moss, silver, lavender and rose. Gentle, green and cyclical, turning with the wheel of the year.',
-    feeling: ['gentle', 'green', 'lunar', 'seasonal'],
-    palette: [
-      { name: 'Midnight green', hex: '#06120e' }, { name: 'Moss', hex: '#1f3a2a' }, { name: 'Sage', hex: '#8fb89a' },
-      { name: 'Moon silver', hex: '#dfe6f0' }, { name: 'Lavender', hex: '#b9a3d8' }, { name: 'Night rose', hex: '#d98ca0' },
-    ],
-    type: { display: 'Fraunces', note: 'a soft, organic serif, light and italic', fontHref: 'https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&display=swap' },
-    worlds: 'Silver light in a garden: the moon’s phases, a rose, the world tree, the pentacle, veils of night, candles, a ring of beads.',
-    layout: 'Subcategories grow as rounded garden beds; the wheel of the year turns at the top.',
-    signature: { name: 'Turn the wheel of the year', how: 'Two wheels to turn: the eight sabbats of modern pagan witchcraft, or the six Indian seasons (ritus). Today is marked on both.' },
-    sound: 'Water and night insects, soft drops.',
-    imagery: 'Pressed flowers and herbs photographed on dark paper; moonlit garden photography.',
-    voice: 'Warm and gentle, like advice over the garden wall.',
-  },
-  {
-    key: 'c', name: 'Alchemical sky',
-    essence: 'The alchemist’s heaven: black and gold, engraved plates, an astrolabe turning. A close cousin of Devotion’s Cosmic mother.',
-    feeling: ['precise', 'celestial', 'golden', 'ceremonial'],
-    palette: [
-      { name: 'Black', hex: '#050505' }, { name: 'Emerald night', hex: '#0d3b2e' }, { name: 'Gold', hex: '#d9b25a' },
-      { name: 'Copper', hex: '#b8693a' }, { name: 'Quicksilver', hex: '#c9d1dc' }, { name: 'Vermilion', hex: '#c8321e' },
-    ],
-    type: { display: 'Cinzel', note: 'inscriptional capitals, widely spaced, with fine gold rules', fontHref: 'https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&display=swap' },
-    worlds: 'Gold geometry: the astrolabe, a rose, a ring of light, the pentacle, the eye, sigils, a ring of flames, the moon’s phases.',
-    layout: 'Each category is a chapter in gold; subcategories are engraved plates.',
-    signature: { name: 'Cast a circle', how: 'Trace a circle around the centre, sunwise. As you pass East, South, West and North, each quarter’s candle lights (the quarter-elements follow common Wiccan practice; traditions differ), and the circle closes in gold.' },
-    sound: 'Crystal chimes and a shimmering chord.',
-    imagery: 'Fine gold line work: seals, alchemical symbols, instruments.',
-    voice: 'Measured and exact, like an old treatise.',
-  },
 ];

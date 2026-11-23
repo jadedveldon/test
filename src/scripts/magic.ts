@@ -1,30 +1,30 @@
 import gsap from 'gsap';
-import { MAG_DIRECTIONS, RITUS, SABBATS, type MagDir } from '../data/magic';
+import { RITUS, SABBATS } from '../data/magic';
 import { buzz, PATTERNS } from './haptics';
 import { ring } from './audio';
 import { moonIcon, readSky } from './sky';
+import { daysUntil, download, icsFile, inDays, moonEvents, niceDate } from './festivals';
 import type { WorldHandle as World } from './world/handle';
 
 /**
- * Pillar 2, Witchcraft & Magic: the three directions being compared, and each
- * one's signature moment.
- *   A · The grimoire:   make a sigil from your intention, sealed in wax
- *   B · Moon garden:    turn the wheel of the year, or the six Indian seasons
- *   C · Alchemical sky: cast a circle, lighting the four quarters
+ * Pillar 2, Witchcraft & Magic · the gilded grimoire.
+ *   Hecate's dark moon: the next Amavasya, which is also the night of her supper
+ *   Make a sigil: from your intention, drawn in vermilion and sealed in wax
+ *   The wheel of the year: the modern pagan sabbats, or the six Indian seasons
+ * (Directions A The grimoire, B Moon garden and C Alchemical sky were compared;
+ * this one mixes A and C. They remain in the project history.)
  */
 
-const fonts = new Set<string>();
-export function applyMagDirection(dir: MagDir) {
-  document.documentElement.dataset.mag = dir;
-  const d = MAG_DIRECTIONS.find((x) => x.key === dir);
-  if (d && !fonts.has(d.type.fontHref)) {
-    fonts.add(d.type.fontHref);
-    const l = document.createElement('link');
-    l.rel = 'stylesheet';
-    l.href = d.type.fontHref;
-    document.head.appendChild(l);
-  }
-  document.querySelectorAll<HTMLElement>('[data-mag-set]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.magSet === dir)));
+const FONTS = 'https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=IM+Fell+English:ital@0;1&display=swap';
+let fontsAdded = false;
+/** IM Fell English (the book) and Cinzel (the gilded capitals); font files load only where used */
+export function loadMagicFonts() {
+  if (fontsAdded) return;
+  fontsAdded = true;
+  const l = document.createElement('link');
+  l.rel = 'stylesheet';
+  l.href = FONTS;
+  document.head.appendChild(l);
 }
 
 const angleOf = (svg: SVGSVGElement, e: PointerEvent) => {
@@ -32,7 +32,7 @@ const angleOf = (svg: SVGSVGElement, e: PointerEvent) => {
   return (Math.atan2(e.clientY - (b.top + b.height / 2), e.clientX - (b.left + b.width / 2)) * 180) / Math.PI;
 };
 
-/* ---------------------------------------------- A · make a sigil */
+/* --------------------------------------------------- make a sigil */
 
 function initSigil(root: HTMLElement, world: World) {
   const form = root.querySelector<HTMLFormElement>('[data-sigil-form]')!;
@@ -42,6 +42,8 @@ function initSigil(root: HTMLElement, world: World) {
   const end = root.querySelector<SVGLineElement>('[data-sigil-end]')!;
   const seal = root.querySelector<SVGGElement>('[data-sigil-seal]')!;
   const hint = root.querySelector<HTMLElement>('[data-sigil-hint]')!;
+  const saveBtn = root.querySelector<HTMLButtonElement>('[data-sigil-save]');
+  let lastKept: string[] = [];
   const letterPos = (L: string) => {
     const i = L.charCodeAt(0) - 65, a = ((-90 + (i * 360) / 26) * Math.PI) / 180;
     return [Math.cos(a) * 84, Math.sin(a) * 84];
@@ -73,12 +75,46 @@ function initSigil(root: HTMLElement, world: World) {
       .to(seal, { scale: 1, duration: 0.7, ease: 'back.out(2.2)', svgOrigin: '0 0', onStart: () => { ring('card'); buzz(PATTERNS.cardFlip); world.flash(0.7); } }, 1.9);
     hint.textContent = `${kept.join(' · ')}: your sigil, sealed. Nothing you typed was saved.`;
     input.value = '';
+    lastKept = kept;
+    if (saveBtn) { saveBtn.hidden = false; saveBtn.textContent = 'Save it as a picture'; }
+  };
+  // a picture of the sigil to keep: parchment, a gold ring, the vermilion line and the seal (no letters, so the intention stays private)
+  const save = () => {
+    if (!lastKept.length) return;
+    const d = path.getAttribute('d') ?? '';
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-130 -130 260 260" width="1080" height="1080">`
+      + `<rect x="-130" y="-130" width="260" height="260" fill="#e8dcc0"/>`
+      + `<circle r="112" fill="none" stroke="#b8893a" stroke-width="1.6"/><circle r="106" fill="none" stroke="#b8893a" stroke-width="0.6"/>`
+      + `<path d="${d}" fill="none" stroke="#b1261a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`
+      + `<circle cx="${start.getAttribute('cx')}" cy="${start.getAttribute('cy')}" r="5" fill="none" stroke="#b1261a" stroke-width="2.4"/>`
+      + `<line x1="${end.getAttribute('x1')}" y1="${end.getAttribute('y1')}" x2="${end.getAttribute('x2')}" y2="${end.getAttribute('y2')}" stroke="#b1261a" stroke-width="3" stroke-linecap="round"/>`
+      + `<text x="0" y="122" text-anchor="middle" font-family="Georgia, serif" font-size="6" letter-spacing="2" fill="#7a5a2a">SARVAKALI</text></svg>`;
+    const img = new Image();
+    const url = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' }));
+    img.onload = () => {
+      const c = document.createElement('canvas');
+      c.width = c.height = 1080;
+      c.getContext('2d')?.drawImage(img, 0, 0, 1080, 1080);
+      URL.revokeObjectURL(url);
+      c.toBlob((b) => {
+        if (!b) return;
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(b);
+        a.download = 'my-sigil.png';
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+        if (saveBtn) saveBtn.textContent = 'Saved';
+        buzz(PATTERNS.choice);
+      }, 'image/png');
+    };
+    img.src = url;
   };
   form.addEventListener('submit', make);
-  return () => form.removeEventListener('submit', make);
+  saveBtn?.addEventListener('click', save);
+  return () => { form.removeEventListener('submit', make); saveBtn?.removeEventListener('click', save); };
 }
 
-/* ------------------------------------------ B · the wheel of the year */
+/* ------------------------------------------- the wheel of the year */
 
 const dayOfYear = (m: number, d: number) => Math.round((Date.UTC(2026, m - 1, d) - Date.UTC(2026, 0, 1)) / 864e5);
 const degOf = (m: number, d: number) => (dayOfYear(m, d) / 365) * 360;
@@ -216,75 +252,31 @@ function initWheel(root: HTMLElement, world: World) {
   return () => { cancelAnimationFrame(raf); root.removeEventListener('click', onMode); svg.removeEventListener('pointerdown', down); svg.removeEventListener('pointermove', move); svg.removeEventListener('keydown', key); };
 }
 
-/* ------------------------------------------------ C · cast a circle */
+/* -------------------------------------------- Hecate's dark moon */
 
-function initCast(root: HTMLElement, world: World) {
-  const svg = root.querySelector<SVGSVGElement>('svg')!;
-  const trace = root.querySelector<SVGPathElement>('[data-cast-trace]')!;
-  const hint = root.querySelector<HTMLElement>('[data-cast-hint]')!;
-  const quarters = Array.from(root.querySelectorAll<SVGGElement>('[data-quarter]'));
-  const R = 110;
-  const st = { start: 0, total: 0, done: false, lit: new Set<number>() };
-  let dragging = false, last = 0;
-  const draw = () => {
-    const sweep = Math.max(0, Math.min(359.9, st.total));
-    const a0 = (st.start * Math.PI) / 180, a1 = ((st.start + sweep) * Math.PI) / 180;
-    const large = sweep > 180 ? 1 : 0;
-    trace.setAttribute('d', sweep < 0.5 ? '' : `M${(Math.cos(a0) * R).toFixed(1)} ${(Math.sin(a0) * R).toFixed(1)} A${R} ${R} 0 ${large} 1 ${(Math.cos(a1) * R).toFixed(1)} ${(Math.sin(a1) * R).toFixed(1)}`);
-    quarters.forEach((q) => {
-      const qa = Number(q.dataset.quarter);
-      const passed = ((qa - st.start + 360) % 360) <= sweep + 0.5;
-      if (passed && !st.lit.has(qa)) { st.lit.add(qa); q.classList.add('is-lit'); ring('choice'); buzz([8]); world.flash(0.25); }
-    });
-    if (st.total >= 360 && !st.done) {
-      st.done = true;
-      trace.setAttribute('d', `M${R} 0 A${R} ${R} 0 1 1 -${R} 0 A${R} ${R} 0 1 1 ${R} 0`);
-      root.classList.add('is-cast');
-      hint.textContent = 'The circle is cast. Tap to release it.';
-      ring('card');
-      buzz(PATTERNS.diya);
-      world.flash(0.9);
-      world.impulse(1.5);
-    }
+function initSupper(root: HTMLElement) {
+  const when = root.querySelector<HTMLElement>('[data-supper-when]');
+  const btn = root.querySelector<HTMLButtonElement>('[data-supper-cal]');
+  const next = moonEvents(new Date(), 3).filter((e) => e.type === 'amavasya');
+  if (!next.length || !when) return () => {};
+  const n = daysUntil(next[0].at);
+  when.innerHTML = '';
+  const b = document.createElement('b');
+  b.textContent = niceDate(next[0].at);
+  const sp = document.createElement('span');
+  sp.textContent = ` · ${inDays(n)}`;
+  when.append(b, sp);
+  const save = () => {
+    download('sarvakali-dark-moon.ics', icsFile(next.slice(0, 3).map((e) => ({
+      title: 'Dark moon: Amavasya, and Hecate’s supper',
+      date: e.at,
+      description: 'Amavasya, a night especially kept for Kali; in ancient Athens, the night of Hecate’s supper (the Deipnon). From Sarvakali.',
+    }))));
+    buzz(PATTERNS.choice);
+    if (btn) btn.textContent = 'Saved to your calendar file';
   };
-  const reset = () => {
-    st.total = 0; st.done = false; st.lit.clear();
-    quarters.forEach((q) => q.classList.remove('is-lit'));
-    root.classList.remove('is-cast');
-    trace.setAttribute('d', '');
-    hint.textContent = 'Trace a circle around the star, going sunwise (clockwise)';
-  };
-  const down = (e: PointerEvent) => {
-    if (st.done) { reset(); return; }
-    dragging = true;
-    last = angleOf(svg, e);
-    if (st.total < 1) st.start = last;
-    svg.setPointerCapture(e.pointerId);
-  };
-  const move = (e: PointerEvent) => {
-    if (!dragging || st.done) return;
-    const a = angleOf(svg, e);
-    let d = a - last;
-    if (d > 180) d -= 360;
-    if (d < -180) d += 360;
-    last = a;
-    st.total = Math.max(0, st.total + d); // only sunwise counts
-    draw();
-  };
-  const up = () => { dragging = false; };
-  const autoBtn = root.querySelector<HTMLButtonElement>('[data-cast-auto]')!;
-  const auto = () => {
-    reset();
-    st.start = -90;
-    const o = { v: 0 };
-    gsap.to(o, { v: 361, duration: 4.2, ease: 'sine.inOut', onUpdate: () => { st.total = o.v; draw(); } });
-  };
-  svg.addEventListener('pointerdown', down);
-  svg.addEventListener('pointermove', move);
-  svg.addEventListener('pointerup', up);
-  svg.addEventListener('pointercancel', up);
-  autoBtn.addEventListener('click', auto);
-  return () => { svg.removeEventListener('pointerdown', down); svg.removeEventListener('pointermove', move); autoBtn.removeEventListener('click', auto); };
+  btn?.addEventListener('click', save);
+  return () => btn?.removeEventListener('click', save);
 }
 
 /* ------------------------------------------------------------- page */
@@ -295,12 +287,16 @@ export function stopMagic() {
   cleanups = [];
 }
 
-export function startMagic(world: World, dir: MagDir, calm: boolean) {
+export function startMagic(world: World, calm: boolean) {
   stopMagic();
   const page = document.querySelector('[data-magic]');
   if (!page) return;
+  loadMagicFonts();
+  const supper = page.querySelector<HTMLElement>('[data-supper]');
+  if (supper) cleanups.push(initSupper(supper));
   if (calm) return;
-  if (dir === 'a') { const el = page.querySelector<HTMLElement>('[data-sigil]'); if (el) cleanups.push(initSigil(el, world)); }
-  if (dir === 'b') { const el = page.querySelector<HTMLElement>('[data-wheel]'); if (el) cleanups.push(initWheel(el, world)); }
-  if (dir === 'c') { const el = page.querySelector<HTMLElement>('[data-cast]'); if (el) cleanups.push(initCast(el, world)); }
+  const sigil = page.querySelector<HTMLElement>('[data-sigil]');
+  if (sigil) cleanups.push(initSigil(sigil, world));
+  const wheel = page.querySelector<HTMLElement>('[data-wheel]');
+  if (wheel) cleanups.push(initWheel(wheel, world));
 }

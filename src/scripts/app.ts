@@ -49,7 +49,8 @@ import { initPractice } from './practice';
 import { initPwa } from './pwa';
 import { runDeviceTest } from './devicetest';
 import { startDevotion, stopDevotion } from './devotion';
-import { applyMagDirection, startMagic, stopMagic } from './magic';
+import { loadMagicFonts, startMagic, stopMagic } from './magic';
+import { PAGES } from '../data/magic';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -237,10 +238,20 @@ function renderSaverNote() {
 function trackChapters() {
   if (!chapters.length) return;
   const mid = innerHeight * 0.5;
+  // pages that change sharply (Magic's day and night pages) turn only near each edge, so the
+  // middle of a long chapter keeps its own colours instead of drifting between two
+  const edge = document.querySelector('[data-blend="edge"]') ? innerHeight * 0.6 : 0;
   let pos = 0;
   for (let i = 0; i < chapters.length; i++) {
     const r = chapters[i].getBoundingClientRect();
-    if (r.top <= mid && r.bottom > mid) { pos = i + (mid - r.top) / r.height - 0.5; break; }
+    if (r.top <= mid && r.bottom > mid) {
+      if (edge && r.height > edge) {
+        pos = i;
+        if (i > 0 && mid - r.top < edge / 2) pos = i - 0.5 + (mid - r.top) / edge;
+        else if (i < chapters.length - 1 && r.bottom - mid < edge / 2) pos = i + 0.5 - (r.bottom - mid) / edge;
+      } else pos = i + (mid - r.top) / r.height - 0.5;
+      break;
+    }
     if (i === chapters.length - 1 && r.bottom <= mid) pos = chapters.length - 1;
   }
   world.setPosition(pos);
@@ -254,8 +265,8 @@ function heroKey() {
 
 /** pillar 1 (direction C, Cosmic mother): each movement of the page has its own world */
 const devKey = (part: string) => `devC_${part}`;
-/** pillar 2 is being designed in three directions; its worlds follow the one chosen */
-const magKey = (part: string) => `mag${exp.magdir.toUpperCase()}_${part}`;
+/** pillar 2 (the gilded grimoire): day pages and night pages, each with its own world */
+const magKey = (part: string) => `magG_${part}`;
 
 function chapterKeys() {
   return chapters.map((c) => {
@@ -533,7 +544,8 @@ function soundTick() {
   if (!soundIsOn()) { world.setAudioLevel(soundLevel()); return; }
   const [a, b, t] = world.blend;
   // the Devotion directions each have their own sound layer
-  const layer = (k: string) => (k.startsWith('devC_') || k.startsWith('magC_') ? 'cosmic' : k.startsWith('magA_') ? 'learning' : k.startsWith('magB_') ? 'healing' : k);
+  // Magic's night pages share Devotion's cosmic layer; its day pages are the quiet room of the book
+  const layer = (k: string) => (k.startsWith('devC_') ? 'cosmic' : k.startsWith('magG_') ? (PAGES[k.slice(5)] === 'day' ? 'learning' : 'cosmic') : k);
   const w: Record<string, number> = {};
   w[layer(a)] = (w[layer(a)] ?? 0) + (1 - t);
   w[layer(b)] = (w[layer(b)] ?? 0) + t;
@@ -611,8 +623,7 @@ function initPage() {
   applyFestival();
   renderMoonLine();
   startDevotion(world, tier === 'calm');
-  applyMagDirection(exp.magdir);
-  startMagic(world, exp.magdir, tier === 'calm');
+  startMagic(world, tier === 'calm');
   initDiya(world);
   initPath(world, () => { ScrollTrigger.refresh(); lenis?.resize(); });
   depthDispose = initDepth(world.isLive && tier !== 'calm');
@@ -657,12 +668,6 @@ function onExpChange(k: keyof Exp, v: string) {
   if (k === 'cursor') applyCursor();
   if (k === 'sky') applySky();
   if (k === 'festival') { applyFestival(); applySky(); }
-  if (k === 'magdir') {
-    applyMagDirection(v as 'a' | 'b' | 'c');
-    if (chapters.length) world.setSequence(chapterKeys());
-    startMagic(world, v as 'a' | 'b' | 'c', tier === 'calm');
-    buzz(PATTERNS.choice);
-  }
 
   if (k === 'haptics') { setHaptics(v === 'on'); if (v === 'on') buzz(PATTERNS.choice); }
   if (k === 'page') html.dataset.pageStyle = v;
@@ -809,8 +814,8 @@ function hudTick(dt: number) {
   const c = hud.querySelector('[data-hud-chapter]');
   const ck = world.chapterKey;
   const dv = /^devC_(\w+)$/.exec(ck);
-  const mg = /^mag([ABC])_(\w+)$/.exec(ck);
-  if (c) c.textContent = LABELS[ck] ?? (dv ? `Devotion · ${dv[1]}` : mg ? `Magic ${mg[1]} · ${mg[2]}` : ck);
+  const mg = /^magG_(\w+)$/.exec(ck);
+  if (c) c.textContent = LABELS[ck] ?? (dv ? `Devotion · ${dv[1]}` : mg ? `Magic · ${mg[1]} (${PAGES[mg[1]] ?? ''} page)` : ck);
   const p = hud.querySelector('[data-hud-points]');
   if (p) {
     const n = world.pointCount;
@@ -906,15 +911,7 @@ function boot() {
   onSoundChange((on) => { renderSound(); if (on) ring('choice'); });
   initKeep();
   initMenu(world);
-  applyMagDirection(exp.magdir);
-  document.addEventListener('click', (e) => {
-    const b = (e.target as Element | null)?.closest<HTMLElement>('[data-mag-set]');
-    if (!b) return;
-    const v = b.dataset.magSet as 'a' | 'b' | 'c';
-    setExp('magdir', v);
-    onExpChange('magdir', v);
-    renderExpPanel();
-  });
+  loadMagicFonts();
 
   initPwa();
   initSearch({
@@ -961,7 +958,6 @@ function boot() {
     html.dataset.heroVariant = exp.hero;
     html.dataset.pageStyle = exp.page;
     if (world.ready) html.dataset.world = 'ready';
-    html.dataset.mag = exp.magdir;
     html.dataset.festival = festival?.f.kind ?? '';
     if (festival) html.dataset.festivalOn = '1';
     markParticles();

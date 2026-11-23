@@ -55,6 +55,16 @@ uniform float uFlash;
 uniform float uVeil;
 uniform float uDawn;
 uniform float uDawnW;
+// a page turning from light to dark: the night spreads in like ink (Magic's day and night pages)
+uniform float uInk;
+uniform float uInkT;
+uniform vec2 uInkL;
+uniform vec3 uDA;
+uniform vec3 uDB;
+uniform vec3 uDC;
+uniform vec3 uNA;
+uniform vec3 uNB;
+uniform vec3 uNC;
 
 float hash(vec2 p) {
   p = fract(p * vec2(123.34, 456.21));
@@ -94,15 +104,34 @@ void main() {
   }
   float n = fbm(sp + uWarp * r);
 
-  vec3 col = mix(uA, uB, smoothstep(0.18, 0.86, n));
+  float tone = smoothstep(0.18, 0.86, n);
+  vec3 col = mix(uA, uB, tone);
   float hi = smoothstep(0.52, 1.05, n + 0.35 * length(q) - 0.18);
   col = mix(col, uC, hi * 0.85);
+  float L = uLight;
+
+  if (uInk > 0.001) {
+    vec3 dayC = mix(mix(uDA, uDB, tone), uDC, hi * 0.85);
+    vec3 nightC = mix(mix(uNA, uNB, tone), uNC, hi * 0.85);
+    // ink creeps in from the edges of the page and pools in blots
+    float blot = fbm(p * 3.1 + vec2(3.1, 7.7) + uTime * 0.02);
+    float field = clamp(length(p * vec2(0.78, 1.0)) * 0.62 + blot * 0.75 - 0.3, 0.0, 1.0);
+    float th = mix(1.08, -0.08, uInkT);
+    float m = smoothstep(th - 0.035, th + 0.035, field);
+    vec3 inkCol = mix(dayC, nightC, m);
+    // the wet edge of the ink is darkest, with a thin line of gold where it dries
+    float edge = 1.0 - smoothstep(0.0, 0.05, abs(field - th));
+    inkCol = mix(inkCol, uNA * 0.6, edge * 0.55 * (1.0 - m));
+    inkCol += uNC * edge * 0.18 * m;
+    col = mix(col, inkCol, uInk);
+    L = mix(uLight, mix(uInkL.x, uInkL.y, m), uInk);
+  }
 
   float d = length(p - uPointer);
-  col += uGlow * (0.15 + 0.12 * uFlash) * exp(-d * d * 2.6) * (1.0 - 0.6 * uLight);
+  col += uGlow * (0.15 + 0.12 * uFlash) * exp(-d * d * 2.6) * (1.0 - 0.6 * L);
 
   float vig = smoothstep(1.35, 0.15, length(p * vec2(0.9, 1.0)));
-  col *= mix(1.0, mix(0.32, 1.0, vig), 1.0 - 0.75 * uLight);
+  col *= mix(1.0, mix(0.32, 1.0, vig), 1.0 - 0.75 * L);
 
   float sky = smoothstep(0.55, -0.75, p.y);
   float band = exp(-pow((p.y + 0.42) * 5.0, 2.0));
@@ -218,7 +247,7 @@ uniform vec4 uW1; // flames, water, silk, stars
 uniform vec4 uW2; // letters, eye, horizon, sigils
 uniform vec4 uW3; // vortex, halo, name, dust
 uniform vec4 uW4; // mala, lamps, agni, (spare)
-uniform vec4 uW5; // yantra, temple, tree, (spare)
+uniform vec4 uW5; // yantra, temple, tree, crossroads
 uniform vec4 uW6; // rose, pentacle, astrolabe, moons
 uniform float uAngMala;
 uniform float uAngFlame;
@@ -290,6 +319,13 @@ void main() {
   // tree: the branches sway, more towards their tips
   float sway = max(0.0, p.y - 0.6);
   p.x += sin(uTime * 0.6 + p.y * 1.3) * 0.05 * sway * uW5.z;
+  // crossroads: the light where the roads meet breathes, and a few lights walk in along the roads
+  vec2 xc = vec2(0.0, 0.3);
+  float xr = length(p.xy - xc);
+  p.xy = mix(p.xy, xc + (p.xy - xc) * (1.0 + 0.08 * sin(uTime * 1.1) * smoothstep(0.5, 0.0, xr)), uW5.w);
+  float walker = uW5.w * step(aSeed, 0.1) * step(0.5, xr);
+  float walk = fract(uTime * 0.05 + aSeed * 9.7);
+  p.xy = mix(p.xy, xc + (p.xy - xc) * (1.0 - walk * 0.86), walker);
 
   // the astrolabe turns slowly; the rose opens and closes a little; the pentacle and moons glow in place
   vec2 ac = vec2(0.0, 0.3);
@@ -556,6 +592,9 @@ export class World {
         uScale: { value: 1.5 }, uWarp: { value: 2 }, uLight: { value: 0 }, uOct: { value: 5 }, uDeep: { value: 1 },
         uPointer: { value: new Vector2() }, uDrift: { value: 0 }, uFlash: { value: 0 },
         uVeil: { value: 0 }, uDawn: { value: 1 }, uDawnW: { value: 0 },
+        uInk: { value: 0 }, uInkT: { value: 0 }, uInkL: { value: new Vector2(1, 0) },
+        uDA: { value: new Vector3() }, uDB: { value: new Vector3() }, uDC: { value: new Vector3() },
+        uNA: { value: new Vector3() }, uNB: { value: new Vector3() }, uNC: { value: new Vector3() },
       },
     });
     const bgQuad = new Mesh(new PlaneGeometry(2, 2), this.bgMat);
@@ -1045,12 +1084,27 @@ export class World {
     u.uVeil.value = this.veil;
     u.uDawn.value = this.dawnProgress;
     u.uDawnW.value = c.dawn;
+    // between a light page and a dark one, the dark spreads in like ink
+    {
+      const i0 = Math.floor(this.position), A = this.sequence[i0], B = this.sequence[Math.min(this.sequence.length - 1, i0 + 1)];
+      let w = 0;
+      if (A && B && Math.abs(A.light - B.light) > 0.5) {
+        const day = A.light > B.light ? A : B, night = day === A ? B : A;
+        const t = Math.max(0, Math.min(1, (day.light - this.current.light) / (day.light - night.light)));
+        w = Math.max(0, Math.min(1, Math.min(t, 1 - t) / 0.08));
+        u.uInkT.value = t;
+        u.uInkL.value.set(day.light, night.light);
+        u.uDA.value.set(day.a[0], day.a[1], day.a[2]); u.uDB.value.set(day.b[0], day.b[1], day.b[2]); u.uDC.value.set(day.c[0], day.c[1], day.c[2]);
+        u.uNA.value.set(night.a[0], night.a[1], night.a[2]); u.uNB.value.set(night.b[0], night.b[1], night.b[2]); u.uNC.value.set(night.c[0], night.c[1], night.c[2]);
+      }
+      u.uInk.value = w;
+    }
 
     const cu = this.copyMat.uniforms;
     cu.uTime.value = this.time;
     const sky = this.sky;
     cu.uMoonPhase.value = sky.phase;
-    cu.uMoonVis.value = this.moonMode > 0 ? (1 - c.light) * (1 - this.veil) : sky.on ? (0.35 + 0.65 * sky.night) * (1 - c.light) * (1 - this.veil) : 0;
+    cu.uMoonVis.value = (this.moonMode > 0 ? (1 - c.light) * (1 - this.veil) : sky.on ? (0.35 + 0.65 * sky.night) * (1 - c.light) * (1 - this.veil) : 0) * (this.moonMode > 0 ? 1 : c.moon);
     cu.uMoonMode.value = this.moonMode;
     if (this.moonMode === 2) cu.uMoonPhase.value = 0.5;
     if (sky.special === 'purnima') cu.uMoonTint.value.set(0.92, 0.95, 1.0);
@@ -1081,7 +1135,7 @@ export class World {
       fu.uW2.value = [w[idx('letters')], w[idx('eye')], w[idx('horizon')], w[idx('sigils')]];
       fu.uW3.value = [w[idx('vortex')], w[idx('halo')], w[idx('name')], w[idx('dust')]];
       fu.uW4.value = [w[idx('mala')], w[idx('lamps')], w[idx('agni')], 0];
-      fu.uW5.value = [w[idx('yantra')], w[idx('temple')], w[idx('tree')], 0];
+      fu.uW5.value = [w[idx('yantra')], w[idx('temple')], w[idx('tree')], w[idx('crossroads')]];
       fu.uW6.value = [w[idx('rose')], w[idx('pentacle')], w[idx('astrolabe')], w[idx('moons')]];
       this.malaAng += (this.malaTarget - this.malaAng) * (1 - Math.exp(-dt * 7));
       fu.uAngMala.value = this.malaAng;

@@ -8,7 +8,7 @@
  */
 export const CZ = -10;
 
-export const FORM_KEYS = ['dust', 'halo', 'name', 'vortex', 'flames', 'sigils', 'water', 'silk', 'stars', 'letters', 'eye', 'horizon', 'mala', 'lamps', 'agni', 'yantra', 'temple', 'tree', 'rose', 'pentacle', 'astrolabe', 'moons'] as const;
+export const FORM_KEYS = ['dust', 'halo', 'name', 'vortex', 'flames', 'sigils', 'water', 'silk', 'stars', 'letters', 'eye', 'horizon', 'mala', 'lamps', 'agni', 'yantra', 'temple', 'tree', 'rose', 'pentacle', 'astrolabe', 'moons', 'crossroads'] as const;
 export type FormKey = (typeof FORM_KEYS)[number];
 
 export const FLAMES = 108;
@@ -527,6 +527,30 @@ function moons(n: number) {
   return o;
 }
 
+/** Hecate's crossroads: three roads meeting, a light where they meet, and a faint boundary ring */
+function crossroads(n: number) {
+  const r = rng(89);
+  const segs: Seg[] = [];
+  const C = 0.3;
+  [-90, 30, 150].forEach((deg) => {
+    const a = (deg * Math.PI) / 180, ux = Math.cos(a), uy = Math.sin(a), nx = -uy, ny = ux;
+    const at = (t: number, side: number) => { const R = 0.42 + t * 2.75, w = 0.1 + t * 0.34; return [ux * R + nx * w * side, uy * R + ny * w * side]; };
+    // the two edges of the road, widening as it comes towards you
+    for (const side of [-1, 1]) { const p0 = at(0, side), p1 = at(1, side); segs.push([p0[0], p0[1], p1[0], p1[1]]); }
+    // a dashed line down the middle
+    for (let k = 0; k < 7; k++) { const t0 = 0.08 + k * 0.13, p0 = at(t0, 0), p1 = at(t0 + 0.06, 0); segs.push([p0[0], p0[1], p1[0], p1[1]]); }
+  });
+  segs.push(...circleSegs(0.46, 48), ...circleSegs(3.3, 120));
+  const line = alongSegments(Math.floor(n * 0.86), segs, r, 0.016, C);
+  const o = new Float32Array(n * 3);
+  o.set(line);
+  for (let i = Math.floor(n * 0.86); i < n; i++) { // the light at the meeting point
+    const a = r() * Math.PI * 2, rad = Math.pow(r(), 1.6) * 0.34;
+    put(o, i, Math.cos(a) * rad, C + Math.sin(a) * rad, CZ + gauss(r) * 0.06);
+  }
+  return o;
+}
+
 /* ------------------------------------------------- forms drawn from type */
 
 function sampleCanvas(n: number, draw: (ctx: CanvasRenderingContext2D) => void, w: number, h: number, map: (x: number, y: number) => [number, number], seed: number, extra?: (o: Out, i: number, r: () => number) => boolean) {
@@ -604,6 +628,7 @@ export function buildForms(n: number, seeds: Float32Array): Record<FormKey, Floa
     pentacle: shuffled(pentacle(n), 151),
     astrolabe: shuffled(astrolabe(n), 157),
     moons: shuffled(moons(n), 163),
+    crossroads: shuffled(crossroads(n), 167),
   };
 }
 
@@ -637,6 +662,7 @@ export async function buildFormsAsync(n: number, seeds: Float32Array, textFrom?:
     ['mala', () => mala(n)], ['lamps', () => shuffleForm(lamps(n), 127)], ['agni', () => agni(n, seeds)],
     ['yantra', () => shuffleForm(yantra(n), 131)], ['temple', () => shuffleForm(temple(n), 137)], ['tree', () => shuffleForm(tree(n), 139)],
     ['rose', () => shuffleForm(rose(n), 149)], ['pentacle', () => shuffleForm(pentacle(n), 151)], ['astrolabe', () => shuffleForm(astrolabe(n), 157)], ['moons', () => shuffleForm(moons(n), 163)],
+    ['crossroads', () => shuffleForm(crossroads(n), 167)],
     ['name', () => (textFrom ? upsample(textFrom.name, n, 0.01, 61) : dust(n))],
     ['letters', () => (textFrom ? upsample(textFrom.letters, n, 0.008, 67) : dust(n))],
   ];

@@ -144,10 +144,12 @@ const MOVES = [
         </div>
         <ul class="greek-grid" data-greek-grid data-fade>
           {greekCards.map((g) => (
-            <li class="greek-card" data-el={g.fam}>
+            <li class={`greek-card${g.name === 'Hecate' ? ' is-presiding' : ''}`} data-el={g.fam}>
+              {g.name === 'Hecate' && <span class="presiding-tag">Presiding goddess of Sarvakali’s craft</span>}
               <span class="greek-script" lang="grc">{g.greek}</span>
               <span class="deity-name">{g.name}</span>
               <span class="deity-line">{g.line}</span>
+              {g.name === 'Hecate' && <a class="presiding-link" href="/pillars/magic#hecate">Her page in Witchcraft &amp; Magic →</a>}
               <ul class="greek-work">{g.items.map((it) => <li><button type="button" class="chip-keep" data-keep={it} data-keep-p={p.name} aria-pressed="false">{it === g.name ? `${g.name} working` : it}</button></li>)}</ul>
             </li>
           ))}
