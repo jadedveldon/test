@@ -51,6 +51,8 @@ import { runDeviceTest } from './devicetest';
 import { startDevotion, stopDevotion } from './devotion';
 import { loadMagicFonts, startMagic, stopMagic } from './magic';
 import { PAGES } from '../data/magic';
+import { applyHealDirection, startHealing, stopHealing } from './healing';
+import type { HealDir } from '../data/healing';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -267,12 +269,16 @@ function heroKey() {
 const devKey = (part: string) => `devC_${part}`;
 /** pillar 2 (the gilded grimoire): day pages and night pages, each with its own world */
 const magKey = (part: string) => `magG_${part}`;
+/** pillar 3 is being designed in three directions; its worlds follow the one chosen */
+const healKey = (part: string) => `heal${exp.healdir.toUpperCase()}_${part}`;
 
 function chapterKeys() {
   return chapters.map((c) => {
     if (c.hasAttribute('data-hero-chapter')) return heroKey();
     if (c.dataset.devChapter) return devKey(c.dataset.devChapter);
     if (c.dataset.magChapter) return magKey(c.dataset.magChapter);
+    if (c.dataset.healChapter) return healKey(c.dataset.healChapter);
+    if (c.dataset.chapter === 'healing') return healKey('home');
     if (c.dataset.chapter === 'magic') return magKey('home');
     if (c.dataset.chapter === 'devotion') return devKey('home');
     return c.dataset.chapter!;
@@ -545,7 +551,8 @@ function soundTick() {
   const [a, b, t] = world.blend;
   // the Devotion directions each have their own sound layer
   // Magic's night pages share Devotion's cosmic layer; its day pages are the quiet room of the book
-  const layer = (k: string) => (k.startsWith('devC_') ? 'cosmic' : k.startsWith('magG_') ? (PAGES[k.slice(5)] === 'day' ? 'learning' : 'cosmic') : k);
+  const layer = (k: string) => (k.startsWith('devC_') ? 'cosmic' : k.startsWith('magG_') ? (PAGES[k.slice(5)] === 'day' ? 'learning' : 'cosmic')
+    : k.startsWith('healA_') ? 'healing' : k.startsWith('healB_') ? 'learning' : k.startsWith('healC_') ? 'ash' : k);
   const w: Record<string, number> = {};
   w[layer(a)] = (w[layer(a)] ?? 0) + (1 - t);
   w[layer(b)] = (w[layer(b)] ?? 0) + t;
@@ -624,6 +631,8 @@ function initPage() {
   renderMoonLine();
   startDevotion(world, tier === 'calm');
   startMagic(world, tier === 'calm');
+  applyHealDirection(exp.healdir);
+  startHealing(world, exp.healdir, tier === 'calm');
   initDiya(world);
   initPath(world, () => { ScrollTrigger.refresh(); lenis?.resize(); });
   depthDispose = initDepth(world.isLive && tier !== 'calm');
@@ -658,6 +667,7 @@ function cleanupPage() {
   world.setDustBurn(0);
   stopDevotion();
   stopMagic();
+  stopHealing();
 }
 
 /* ------------------------------------------------- experiment switches */
@@ -668,6 +678,12 @@ function onExpChange(k: keyof Exp, v: string) {
   if (k === 'cursor') applyCursor();
   if (k === 'sky') applySky();
   if (k === 'festival') { applyFestival(); applySky(); }
+  if (k === 'healdir') {
+    applyHealDirection(v as HealDir);
+    if (chapters.length) world.setSequence(chapterKeys());
+    startHealing(world, v as HealDir, tier === 'calm');
+    buzz(PATTERNS.choice);
+  }
 
   if (k === 'haptics') { setHaptics(v === 'on'); if (v === 'on') buzz(PATTERNS.choice); }
   if (k === 'page') html.dataset.pageStyle = v;
@@ -815,7 +831,8 @@ function hudTick(dt: number) {
   const ck = world.chapterKey;
   const dv = /^devC_(\w+)$/.exec(ck);
   const mg = /^magG_(\w+)$/.exec(ck);
-  if (c) c.textContent = LABELS[ck] ?? (dv ? `Devotion · ${dv[1]}` : mg ? `Magic · ${mg[1]} (${PAGES[mg[1]] ?? ''} page)` : ck);
+  const hl = /^heal([ABC])_(\w+)$/.exec(ck);
+  if (c) c.textContent = LABELS[ck] ?? (dv ? `Devotion · ${dv[1]}` : mg ? `Magic · ${mg[1]} (${PAGES[mg[1]] ?? ''} page)` : hl ? `Healing ${hl[1]} · ${hl[2]}` : ck);
   const p = hud.querySelector('[data-hud-points]');
   if (p) {
     const n = world.pointCount;
@@ -912,6 +929,15 @@ function boot() {
   initKeep();
   initMenu(world);
   loadMagicFonts();
+  applyHealDirection(exp.healdir);
+  document.addEventListener('click', (e) => {
+    const b = (e.target as Element | null)?.closest<HTMLElement>('[data-heal-set]');
+    if (!b) return;
+    const v = b.dataset.healSet as HealDir;
+    setExp('healdir', v);
+    onExpChange('healdir', v);
+    renderExpPanel();
+  });
 
   initPwa();
   initSearch({
@@ -960,6 +986,7 @@ function boot() {
     if (world.ready) html.dataset.world = 'ready';
     html.dataset.festival = festival?.f.kind ?? '';
     if (festival) html.dataset.festivalOn = '1';
+    html.dataset.heal = exp.healdir;
     markParticles();
     if (read('sk-intro-seen')) html.dataset.intro = 'seen';
     world.forceCss();

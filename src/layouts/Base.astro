@@ -63,6 +63,8 @@ const pageUrl = new URL(path || '/', site.url).href;
           var q = new URLSearchParams(location.search);
           var hero = q.get('hero') || sessionStorage.getItem('sk-x-hero');
           h.dataset.heroVariant = hero === 'name' || hero === 'dawn' || hero === 'eye' ? hero : 'dawneye';
+          var heal = q.get('healdir') || sessionStorage.getItem('sk-x-healdir');
+          h.dataset.heal = heal === 'b' || heal === 'c' ? heal : 'a';
           var page = q.get('page') || sessionStorage.getItem('sk-x-page');
           h.dataset.pageStyle = page || 'eye';
           if (q.has('og')) h.dataset.og = '1';
@@ -259,6 +261,15 @@ const pageUrl = new URL(path || '/', site.url).href;
             <button type="button" data-v="eye">Living eye</button>
             <button type="button" data-v="name">Name of light</button>
             <button type="button" data-v="dawn">Dawn</button>
+          </div>
+        </div>
+
+        <div class="hud-group">
+          <p class="hud-label">Pillar 3 · Healing direction</p>
+          <div class="hud-seg" role="group" aria-label="Healing design direction" data-x="healdir">
+            <button type="button" data-v="a">A · Still water</button>
+            <button type="button" data-v="b">B · The body of light</button>
+            <button type="button" data-v="c">C · Golden repair</button>
           </div>
         </div>
 

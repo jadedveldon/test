@@ -1238,3 +1238,94 @@ html[data-light="1"] .sub-icon { stroke: #b1261a; }
   .hk-supper { grid-template-columns: minmax(0, 1fr); justify-items: start; padding: 22px 18px; }
   .hk-moon { width: 96px; height: 96px; }
 }
+
+/* ======================================== pillar 3 · Healing & Inner Work
+   Three directions to compare: A Still water, B The body of light, C Golden repair. */
+html[data-heal="a"] { --f-heal: "Spectral", "Iowan Old Style", Georgia, serif; }
+html[data-heal="b"] { --f-heal: "Marcellus", "Iowan Old Style", Georgia, serif; }
+html[data-heal="c"] { --f-heal: "Shippori Mincho", "Iowan Old Style", Georgia, serif; }
+.hl .display-l, .hl .display-m, [data-chapter="healing"] .display-l { font-family: var(--f-heal); font-weight: 300; }
+html[data-heal="a"] .hl .display-l, html[data-heal="a"] [data-chapter="healing"] .display-l { font-style: italic; letter-spacing: -0.01em; }
+html[data-heal="b"] .hl .display-l, html[data-heal="b"] [data-chapter="healing"] .display-l { font-weight: 400; letter-spacing: 0.01em; }
+html[data-heal="c"] .hl .display-l, html[data-heal="c"] [data-chapter="healing"] .display-l { font-weight: 400; letter-spacing: 0.02em; }
+[data-heal-only] { display: none !important; }
+html[data-heal="a"] [data-heal-only="a"], html[data-heal="b"] [data-heal-only="b"], html[data-heal="c"] [data-heal-only="c"] { display: grid !important; }
+html[data-heal="a"] [data-heal-card="a"], html[data-heal="b"] [data-heal-card="b"], html[data-heal="c"] [data-heal-card="c"] { box-shadow: inset 0 0 0 2px rgb(var(--glow)); }
+html[data-light="1"][data-heal="b"] [data-heal-card="b"] { box-shadow: inset 0 0 0 2px rgb(var(--ink)); }
+.hl .dv-card h3 { font-family: var(--f-heal); }
+
+.hl-hero { min-height: 100svh; }
+.hl-hero-grid { max-width: 1180px; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: 32px; align-items: center; }
+.hl-hero-copy { display: grid; gap: 18px; justify-items: start; }
+.hl-title { font-size: clamp(3rem, 7vw, 6rem); }
+.hl-index { list-style: none; margin: 4px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 18px; width: 100%; max-width: 36rem; }
+.hl-index a { display: grid; grid-template-columns: 2rem minmax(0, 1fr); column-gap: 8px; align-items: baseline; text-decoration: none; padding: 7px 8px; border-radius: 12px; }
+.hl-index a:hover { background: rgb(var(--ink) / 0.06); }
+.hl-num { font: 500 0.82rem/1 var(--f-heal); color: rgb(var(--glow)); grid-row: span 2; }
+html[data-light="1"] .hl-num { color: rgb(var(--ink-soft)); }
+.hl-ix-title { font: 400 1.08rem/1.2 var(--f-heal); }
+.hl-ix-n { font-size: 0.74rem; color: rgb(var(--ink-soft)); }
+.hl-sig { display: grid; justify-items: center; }
+.hl-move { min-height: auto; padding-block: 16vh 10vh; }
+.hl-inner { max-width: 1140px; justify-items: stretch; gap: 26px; }
+.hl-head { display: grid; gap: 14px; justify-items: start; max-width: 46rem; }
+.hl-care { font-size: 0.88rem; line-height: 1.55; padding: 12px 16px; border-radius: 12px; background: rgb(var(--bg-a) / 0.45); box-shadow: inset 0 0 0 1px rgb(var(--ink) / 0.25); max-width: 42rem; }
+.hl-care a { color: rgb(var(--ink)); }
+
+/* journaling prompt card */
+.prompt-card { display: grid; gap: 10px; justify-items: start; max-width: 40rem; padding: 22px 24px; border-radius: 18px; background: rgb(var(--bg-a) / 0.5); box-shadow: inset 0 0 0 1px rgb(var(--glow) / 0.35); -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); }
+html[data-light="1"] .prompt-card { box-shadow: inset 0 0 0 1px rgb(var(--ink) / 0.2); }
+.prompt-text { font: 300 clamp(1.4rem, 2.6vw, 2rem)/1.25 var(--f-heal); }
+html[data-heal="a"] .prompt-text { font-style: italic; }
+
+/* subcategory cards per direction */
+html[data-heal="a"] .hl .sub-card { border-radius: 28px; box-shadow: inset 0 0 0 1px rgb(var(--glow) / 0.22), 0 24px 60px -36px rgb(var(--glow) / 0.45); }
+html[data-heal="a"] .hl .sub-card h3 { font-style: italic; }
+html[data-heal="b"] .hl .sub-card { border-radius: 14px; background: rgb(255 252 246 / 0.6); box-shadow: inset 0 3px 0 rgb(var(--glow) / 0.85), inset 0 0 0 1px rgb(var(--ink) / 0.14); }
+html[data-heal="b"] .hl .sub-icon { stroke: rgb(var(--glow)); }
+html[data-heal="c"] .hl .sub-card { border-radius: 4px 14px 6px 12px; background: rgb(28 25 23 / 0.62); box-shadow: inset 0 0 0 1px rgb(207 198 187 / 0.18); position: relative; }
+html[data-heal="c"] .hl .sub-card::after { content: ""; position: absolute; left: 18%; top: 0; width: 1.5px; height: 34%; background: linear-gradient(rgb(212 166 60 / 0.9), rgb(212 166 60 / 0)); transform: skewX(-14deg); pointer-events: none; }
+html[data-heal="c"] .hl .sub-icon { stroke: #d4a63c; }
+html[data-heal="c"] .hl .btn { border-radius: 3px; }
+
+/* A · breathe with the water */
+.breath { justify-items: center; gap: 10px; text-align: center; }
+.breath-svg { width: min(100%, 360px); height: auto; overflow: visible; }
+.br-ring { fill: none; stroke: rgb(var(--glow) / 0.25); stroke-width: 1; stroke-dasharray: 2 6; }
+.br-core { fill: rgb(var(--glow) / 0.14); stroke: rgb(var(--glow) / 0.85); stroke-width: 1.4; filter: drop-shadow(0 0 18px rgb(var(--glow) / 0.55)); }
+.br-ripple { fill: none; stroke: rgb(var(--glow) / 0.8); stroke-width: 1; }
+.br-word { font: 300 italic 1.5rem/1.2 var(--f-heal); min-height: 1.3em; }
+.breath .br-word { margin-top: 26px; }
+
+/* B · the body of light */
+.bodylight { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); align-items: center; gap: 18px; width: 100%; }
+.body-svg { width: 100%; max-width: 300px; height: auto; overflow: visible; justify-self: center; }
+.bl-figure { fill: rgb(255 250 240 / 0.5); stroke: rgb(var(--ink) / 0.35); stroke-width: 1.2; }
+.bl-line { stroke: rgb(var(--ink) / 0.25); stroke-width: 1; stroke-dasharray: 2 4; }
+.bl-node { cursor: pointer; outline: none; }
+.bl-halo { fill: var(--ck); opacity: 0.16; transition: opacity 0.3s ease, r 0.3s ease; }
+.bl-dot { fill: var(--ck); stroke: #fff8ec; stroke-width: 1.5; }
+.bl-node:hover .bl-halo, .bl-node:focus-visible .bl-halo { opacity: 0.35; }
+.bl-node.is-on .bl-halo { opacity: 0.45; r: 20px; }
+.bl-info { display: grid; gap: 8px; justify-items: start; text-align: left; }
+.bl-deva { font: 400 2.2rem/1.1 "Tiro Devanagari Sanskrit", serif; color: var(--ck, rgb(var(--ink))); }
+.bl-name { font: 400 1.5rem/1.2 var(--f-heal); }
+.bl-place { color: rgb(var(--ink-soft)); }
+
+/* C · mend the bowl */
+.mend { justify-items: center; gap: 10px; text-align: center; }
+.mend-svg { width: min(100%, 400px); height: auto; overflow: visible; }
+.md-shard { cursor: pointer; outline: none; }
+.md-clay { fill: #8a5a44; stroke: #5a3a2c; stroke-width: 1; transition: fill 0.4s ease; }
+.md-shard:hover .md-clay, .md-shard:focus-visible .md-clay { fill: #9a6851; }
+.md-shard.is-home { cursor: default; }
+.md-seam { fill: none; stroke: #e2bd62; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 4px rgb(226 189 98 / 0.8)); }
+.md-foot { fill: #6f4636; }
+.mend.is-whole .md-clay { fill: #93604a; }
+
+@media (max-width: 860px) {
+  .hl-hero-grid { grid-template-columns: minmax(0, 1fr); }
+  .hl-index { grid-template-columns: minmax(0, 1fr); }
+  .bodylight { grid-template-columns: minmax(0, 1fr); }
+  .bl-info { justify-items: center; text-align: center; }
+}

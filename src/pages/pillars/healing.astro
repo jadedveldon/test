@@ -1,0 +1,197 @@
+---
+/**
+ * Pillar 3, Healing & Inner Work: four chapters (the catalogue's four
+ * categories), in three directions to compare (A Still water, B The body of
+ * light, C Golden repair). The Mind and Shadow chapters carry a care note.
+ */
+import Base from '../../layouts/Base.astro';
+import SubCards from '../../components/SubCards.astro';
+import { pillars, categoryCount } from '../../data/site';
+import { CARE, CHAKRAS, CHAPTERS, HEAL_DIRECTIONS, PROMPTS, SUB_ICON } from '../../data/healing';
+
+const index = pillars.findIndex((p) => p.slug === 'healing');
+const p = pillars[index];
+const prev = pillars[(index + pillars.length - 1) % pillars.length];
+const next = pillars[(index + 1) % pillars.length];
+const anchor = (s: string) => s.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const ROMAN = ['I', 'II', 'III', 'IV'];
+const moves = CHAPTERS.map((ch) => ({ ...ch, cat: p.categories.find((c) => c.name === ch.category)! }));
+const chakraWork = p.categories.flatMap((c) => c.subs).find((s) => s.name === 'Chakra Work')!;
+
+/* B · the body of light: where each chakra sits on the figure, crown first */
+const CK_Y = [-156, -128, -97, -62, -28, 6, 38];
+
+/* C · the bowl, broken into five pieces along four zigzag seams */
+const RX = 120, RY = 100, TOP = -34;
+const under = (x: number) => TOP + RY * Math.sqrt(Math.max(0, 1 - (x / RX) ** 2));
+const SEAM_X = [-74, -26, 22, 70];
+const JIG = [[8, -10, 12, -6], [-10, 12, -8, 10], [10, -12, 6, -8], [-8, 10, -12, 6]];
+const seams = SEAM_X.map((x0, k) => {
+  const pts: number[][] = [[x0, TOP]];
+  let x = x0;
+  for (let j = 0; j < 4; j++) {
+    x += JIG[k][j];
+    const y = TOP + 24 * (j + 1);
+    if (y > under(x) - 8) break;
+    pts.push([x, y]);
+  }
+  pts.push([x, under(x)]);
+  return pts;
+});
+const arc = (x1: number, x2: number) => { // the bottom of the bowl from x1 to x2
+  const pts: number[][] = [];
+  for (let k = 0; k <= 16; k++) { const x = x1 + ((x2 - x1) * k) / 16; pts.push([x, under(x)]); }
+  return pts;
+};
+const fmt = (pts: number[][]) => pts.map((q) => `${q[0].toFixed(1)} ${q[1].toFixed(1)}`).join(' L');
+const shards = [0, 1, 2, 3, 4].map((i) => {
+  const left = i === 0 ? [[-RX, TOP]] : seams[i - 1];
+  const right = i === 4 ? [[RX, TOP]] : seams[i];
+  const pts = [...right, ...arc(right[right.length - 1][0], left[left.length - 1][0]), ...[...left].reverse()];
+  return `M${fmt(pts)} Z`;
+});
+const SCATTER = [[-52, 58, -24], [-26, 92, 16], [2, 112, -9], [30, 88, 20], [56, 54, -18]];
+---
+<Base title={`${p.name} · Sarvakali`} sequence="healA_hero" description={p.line}>
+  <div class="hl" data-healing>
+    <section class="chapter hl-hero" data-chapter="healA_hero" data-heal-chapter="hero">
+      <div class="chapter-inner hl-hero-grid">
+        <div class="hl-hero-copy">
+          <a class="back-link" href="/#paths">← All pillars</a>
+          <p class="kicker" data-hero>Pillar {index + 1} of {pillars.length} · {p.count} services</p>
+          <h1 class="display-l hl-title" data-hero data-split transition:name="pt-healing" data-pt>{p.name}</h1>
+          <p class="lede" data-hero>{p.line}</p>
+          <ol class="hl-index" data-hero aria-label="The four chapters">
+            {moves.map((m, i) => (
+              <li><a href={`#${anchor(m.category)}`}><span class="hl-num" aria-hidden="true">{ROMAN[i]}</span><span class="hl-ix-title">{m.title}</span><span class="hl-ix-n">{categoryCount(m.cat)} services</span></a></li>
+            ))}
+          </ol>
+        </div>
+
+        <div class="hl-sig" data-hero>
+          <!-- A · breathe with the water -->
+          <div class="breath" data-heal-only="a" data-breath>
+            <svg viewBox="-150 -150 300 300" class="breath-svg" aria-hidden="true">
+              <circle r="132" class="br-ring" />
+              <g data-breath-ripples></g>
+              <circle r="46" class="br-core" data-breath-core />
+            </svg>
+            <p class="br-word" data-breath-word aria-live="polite">Ready when you are</p>
+            <button type="button" class="btn btn-ghost btn-sm" data-breath-toggle>Begin</button>
+            <p class="dv-sig-hint">Breathe in for four counts as the light grows, and out for six as it settles. Stop whenever you like.</p>
+          </div>
+
+          <!-- B · the body of light -->
+          <div class="bodylight" data-heal-only="b" data-body>
+            <svg viewBox="-120 -182 240 290" class="body-svg">
+              <circle cx="0" cy="-128" r="22" class="bl-figure" />
+              <path class="bl-figure" d="M-11 -106 L-11 -97 C-40 -95 -58 -87 -62 -62 L-66 -2 C-69 18 -78 32 -94 50 C-104 62 -96 78 -70 78 L70 78 C96 78 104 62 94 50 C78 32 69 18 66 -2 L62 -62 C58 -87 40 -95 11 -97 L11 -106" />
+              <line x1="0" y1="-170" x2="0" y2="52" class="bl-line" />
+              {CHAKRAS.map((c, i) => (
+                <g class="bl-node" data-ck={i} transform={`translate(0 ${CK_Y[i]})`} style={`--ck:${c.color}`} tabindex="0" role="button" aria-label={`${c.english}: ${c.name}`}>
+                  <circle r="15" class="bl-halo" /><circle r="7.5" class="bl-dot" />
+                </g>
+              ))}
+            </svg>
+            <div class="bl-info" aria-live="polite">
+              <p class="bl-deva" lang="sa" data-bl-deva>{CHAKRAS[3].deva}</p>
+              <h3 class="bl-name" data-bl-name>{CHAKRAS[3].name} · {CHAKRAS[3].english}</h3>
+              <p class="bl-place" data-bl-place>Placed {CHAKRAS[3].place}.</p>
+              <button type="button" class="chip-keep" data-bl-work data-keep={CHAKRAS[3].working} data-keep-p={p.name} aria-pressed="false">{CHAKRAS[3].working}</button>
+              <p class="dv-sig-hint small">Tap a centre on the figure. These are the seven chakras of the modern system, shaped by John Woodroffe’s The Serpent Power (1919); older Indian traditions count and place them differently, and the rainbow colours were added in the twentieth century.</p>
+            </div>
+          </div>
+
+          <!-- C · mend the bowl -->
+          <div class="mend" data-heal-only="c" data-mend>
+            <svg viewBox="-150 -120 300 250" class="mend-svg">
+              <g class="md-shards">
+                {shards.map((d, i) => (
+                  <g class="md-shard" data-shard={i} transform={`translate(${SCATTER[i][0]} ${SCATTER[i][1]}) rotate(${SCATTER[i][2]})`} tabindex="0" role="button" aria-label={`Piece ${i + 1} of the bowl`}>
+                    <path d={d} class="md-clay" />
+                  </g>
+                ))}
+              </g>
+              {seams.map((pts, i) => <path d={`M${fmt(pts)}`} class="md-seam" data-seam={i} />)}
+              <rect x="-34" y={RY + TOP - 1} width="68" height="12" rx="2" class="md-foot" />
+            </svg>
+            <p class="br-word" data-mend-word aria-live="polite">Touch each piece to set it back</p>
+            <button type="button" class="btn btn-ghost btn-sm" data-mend-all>Mend it all</button>
+            <p class="dv-sig-hint" data-mend-note hidden>Kintsugi is the Japanese art of mending broken pottery with lacquer dusted or mixed with powdered gold. The break is not hidden; it becomes part of the bowl’s history.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {moves.map((m, i) => (
+      <section class={`chapter hl-move hl-${m.key}`} id={anchor(m.category)} data-chapter={`healA_${m.key}`} data-heal-chapter={m.key}>
+        <div class="chapter-inner hl-inner">
+          <header class="hl-head">
+            <p class="kicker" data-fade><span class="hl-num">{ROMAN[i]}</span> · {categoryCount(m.cat)} services</p>
+            <h2 class="display-l" data-split data-dust>{m.title}</h2>
+            <p class="lede" data-fade>{m.line}</p>
+            {m.care && <p class="hl-care" data-fade>{CARE} <a href="/care">Read Boundaries and care</a>.</p>}
+            <div class="cta-row" data-fade><a class="btn btn-ghost btn-sm" href="/connect" data-topic={m.category}>Ask about this</a></div>
+          </header>
+          {m.key === 'journal' && (
+            <div class="prompt-card" data-prompt data-fade>
+              <p class="kicker">A prompt for today</p>
+              <p class="prompt-text" data-prompt-text>{PROMPTS[0]}</p>
+              <div class="cta-row"><button type="button" class="btn btn-ghost btn-sm" data-prompt-next>Another prompt</button></div>
+              <p class="dv-sig-hint small">Draft prompts; Sarvakali will write their own. Nothing here is saved.</p>
+            </div>
+          )}
+          <SubCards category={m.cat} pillar={p.name} icons={SUB_ICON} />
+        </div>
+      </section>
+    ))}
+
+    <section class="chapter hl-close" data-chapter="healA_close" data-heal-chapter="close">
+      <div class="chapter-inner narrow center">
+        <p class="kicker" data-fade>When you are ready</p>
+        <h2 class="display-l" data-split>Healing begins with being heard</h2>
+        <p class="lede" data-fade>Tell Sarvakali what you are carrying. Together you will find a gentle place to start.</p>
+        <div class="cta-row center" data-fade>
+          <a class="btn btn-solid" href="/connect" data-topic={p.name}>Request a conversation</a>
+          <a class="btn btn-ghost" href="/care">Boundaries and care</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="dv-brief" aria-labelledby="hl-brief-title">
+      <p class="kicker">Design exploration · this pillar</p>
+      <h2 id="hl-brief-title" class="display-m">Three directions for Healing &amp; Inner Work</h2>
+      <p class="hint">All three share the same four chapters and care notes. Switch between them with the buttons at the bottom of the screen: the page, the homepage chapter, the worlds, the type and the sound all change.</p>
+      <div class="dv-briefs">
+        {HEAL_DIRECTIONS.map((d) => (
+          <article class="dv-card" data-heal-card={d.key}>
+            <header><span class="dv-card-key">{d.key.toUpperCase()}</span><h3>{d.name}</h3></header>
+            <p class="dv-card-essence">{d.essence}</p>
+            <ul class="dv-swatches" aria-label="Colours">{d.palette.map((c) => <li style={`--c:${c.hex}`}><span></span>{c.name}<small>{c.hex}</small></li>)}</ul>
+            <dl>
+              <div><dt>Feeling</dt><dd>{d.feeling.join(' · ')}</dd></div>
+              <div><dt>Type</dt><dd>{d.type.display}, {d.type.note}</dd></div>
+              <div><dt>Worlds</dt><dd>{d.worlds}</dd></div>
+              <div><dt>Layout</dt><dd>{d.layout}</dd></div>
+              <div><dt>Signature</dt><dd><b>{d.signature.name}.</b> {d.signature.how}</dd></div>
+              <div><dt>Sound</dt><dd>{d.sound}</dd></div>
+              <div><dt>Art needed</dt><dd>{d.imagery}</dd></div>
+              <div><dt>Voice</dt><dd>{d.voice}</dd></div>
+            </dl>
+            <button type="button" class="btn btn-ghost btn-sm" data-heal-set={d.key}>See direction {d.key.toUpperCase()}</button>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <nav class="pp-nav" aria-label="Other pillars">
+      <a href={`/pillars/${prev.slug}`}><span>Previous pillar</span><b transition:name={`pt-${prev.slug}`} data-pt>{prev.name}</b></a>
+      <a href={`/pillars/${next.slug}`}><span>Next pillar</span><b transition:name={`pt-${next.slug}`} data-pt>{next.name}</b></a>
+    </nav>
+
+    <div class="dv-switch" role="group" aria-label="Design direction">
+      <span>Direction</span>
+      {HEAL_DIRECTIONS.map((d) => <button type="button" data-heal-set={d.key} aria-pressed="false" aria-label={`Direction ${d.key.toUpperCase()}: ${d.name}`}><b>{d.key.toUpperCase()}</b><span> · {d.name}</span></button>)}
+    </div>
+  </div>
+</Base>

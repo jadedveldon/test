@@ -51,7 +51,7 @@ export const HECATE = {
   },
 };
 
-/** a small line icon for every subcategory (24 × 24, drawn as strokes) */
+/** a small line icon for every subcategory (24 × 24, drawn as strokes); shared by all pillars */
 export const ICONS: Record<string, string> = {
   heart: 'M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z',
   rings: 'M3 13a4 4 0 1 0 8 0a4 4 0 1 0 -8 0 M13 13a4 4 0 1 0 8 0a4 4 0 1 0 -8 0',
@@ -89,6 +89,20 @@ export const ICONS: Record<string, string> = {
   leaf: 'M5 19C5 10 11 5 19 5c0 8-5 14-14 14z M5 19l9-9',
   crystal: 'M8 3h8l3 6-7 12L5 9z M5 9h14 M12 21L9 9l3-6 3 6z',
   tree: 'M12 21v-7 M12 15l-4-3 M12 14l4-4 M6 10a6 6 0 1 1 12 0c0 3-3 4-6 4s-6-1-6-4z',
+  // used by Healing & Inner Work
+  hands: 'M7 13V7a1.5 1.5 0 0 1 3 0v5 M10 11V5.5a1.5 1.5 0 0 1 3 0V11 M13 11V6.5a1.5 1.5 0 0 1 3 0V13 M16 12a1.5 1.5 0 0 1 3 0v2c0 4-3 7-7 7s-6-2-7-5l-1.5-3a1.5 1.5 0 0 1 2.6-1.5L7 13',
+  wave: 'M3 12c2-4 4-4 6 0s4 4 6 0 4-4 6 0 M3 17c2-3 4-3 6 0s4 3 6 0 4-3 6 0',
+  aura: 'M12 6a2.5 2.5 0 1 0 0 5a2.5 2.5 0 1 0 0-5 M8 19c0-3 1.8-5 4-5s4 2 4 5 M12 2c5 0 8 4.5 8 10s-3 10-8 10-8-4.5-8-10 3-10 8-10z',
+  lotus: 'M12 4c2 3 2 6 0 9c-2-3-2-6 0-9z M12 13c-3-1-6-1-8 1c3 2 6 2 8-1z M12 13c3-1 6-1 8 1c-3 2-6 2-8-1z M5 18h14',
+  cut: 'M4 6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M4 18a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M7.5 7.5L19 18 M7.5 16.5L19 6',
+  thought: 'M5 10a6 5 0 0 1 12-1a4 4 0 0 1 1 7.5H7a3.5 3.5 0 0 1-2-6.5z M6 20a1 1 0 1 0 2 0a1 1 0 1 0 -2 0',
+  anchor: 'M10 5a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M12 7v14 M8 11h8 M5 14c0 4 3 7 7 7s7-3 7-7',
+  tap: 'M10 13V5a1.5 1.5 0 0 1 3 0v7 M13 10a1.5 1.5 0 0 1 3 0v2 M16 11a1.5 1.5 0 0 1 3 0v3c0 4-3 7-6 7h-1c-3 0-5-2-6-4l-2-4a1.5 1.5 0 0 1 2.5-1.5L10 15 M4 4l2 2 M8 1.5v2.5',
+  shadowfig: 'M7 5a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M9 7v6l-2 7 M9 13l2 7 M6 10h6 M12 21l9-3 M13 18l7-2',
+  compass: 'M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0 M15 9l-2 5-4 1 2-5z',
+  heartplus: 'M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z M12 9v5 M9.5 11.5h5',
+  breath: 'M3 9h11a3 3 0 1 0-3-3 M3 13h15a3 3 0 1 1-3 3 M3 17h7',
+  book: 'M5 4h11a2 2 0 0 1 2 2v14H7a2 2 0 0 1-2-2z M5 18a2 2 0 0 1 2-2h11 M9 8h6',
 };
 
 export const SUB_ICON: Record<string, string> = {

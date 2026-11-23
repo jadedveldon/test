@@ -8,7 +8,7 @@
  */
 export const CZ = -10;
 
-export const FORM_KEYS = ['dust', 'halo', 'name', 'vortex', 'flames', 'sigils', 'water', 'silk', 'stars', 'letters', 'eye', 'horizon', 'mala', 'lamps', 'agni', 'yantra', 'temple', 'tree', 'rose', 'pentacle', 'astrolabe', 'moons', 'crossroads'] as const;
+export const FORM_KEYS = ['dust', 'halo', 'name', 'vortex', 'flames', 'sigils', 'water', 'silk', 'stars', 'letters', 'eye', 'horizon', 'mala', 'lamps', 'agni', 'yantra', 'temple', 'tree', 'rose', 'pentacle', 'astrolabe', 'moons', 'crossroads', 'lotus', 'chakras', 'bowl'] as const;
 export type FormKey = (typeof FORM_KEYS)[number];
 
 export const FLAMES = 108;
@@ -551,6 +551,77 @@ function crossroads(n: number) {
   return o;
 }
 
+/** a lotus opening on still water: three layers of petals over two ripples */
+function lotus(n: number) {
+  const r = rng(97);
+  const segs: Seg[] = [];
+  const petal = (ang: number, len: number, wid: number, by: number) => {
+    const pts: number[][] = [];
+    const ux = Math.sin(ang), uy = Math.cos(ang), nx = uy, ny = -ux;
+    for (let k = 0; k <= 24; k++) { // up one side and down the other, a pointed leaf
+      const t = k / 24, side = k <= 12 ? 1 : -1, tt = k <= 12 ? t * 2 : 2 - t * 2;
+      const w = Math.sin(tt * Math.PI) * wid * (1 - tt * 0.35);
+      pts.push([ux * len * tt + nx * w * side, by + uy * len * tt + ny * w * side]);
+    }
+    segs.push(...polySegs(pts, false));
+  };
+  [-1.1, -0.55, 0, 0.55, 1.1].forEach((a) => petal(a, 2.1, 0.42, -1.2));
+  [-0.8, -0.27, 0.27, 0.8].forEach((a) => petal(a, 1.55, 0.36, -1.2));
+  [-1.45, 1.45].forEach((a) => petal(a, 1.7, 0.36, -1.2));
+  segs.push(...circleSegs(1, 72).map(([a, b, c, d]) => [a * 3.0, b * 0.32 - 1.45, c * 3.0, d * 0.32 - 1.45] as Seg));
+  segs.push(...circleSegs(1, 72).map(([a, b, c, d]) => [a * 3.6, b * 0.42 - 1.6, c * 3.6, d * 0.42 - 1.6] as Seg));
+  return alongSegments(n, segs, r, 0.015, 0.3);
+}
+
+/** the seven chakras of the modern system, one above another on a line of light */
+function chakras(n: number) {
+  const r = rng(101);
+  const segs: Seg[] = [[0, -3.1, 0, 3.1]];
+  for (let k = 0; k < 7; k++) {
+    const y = -2.7 + k * 0.9, R = 0.3;
+    segs.push(...circleSegs(R, 40, 0, y));
+    for (let j = 0; j < 8; j++) { // a small lotus round each
+      const a = (j / 8) * Math.PI * 2, a2 = a + Math.PI / 8;
+      segs.push([Math.cos(a) * R, y + Math.sin(a) * R, Math.cos(a + Math.PI / 16) * R * 1.55, y + Math.sin(a + Math.PI / 16) * R * 1.55]);
+      segs.push([Math.cos(a + Math.PI / 16) * R * 1.55, y + Math.sin(a + Math.PI / 16) * R * 1.55, Math.cos(a2) * R, y + Math.sin(a2) * R]);
+    }
+  }
+  const line = alongSegments(Math.floor(n * 0.85), segs, r, 0.014, 0.3);
+  const o = new Float32Array(n * 3);
+  o.set(line);
+  for (let i = Math.floor(n * 0.85); i < n; i++) { // a light at each centre
+    const k = i % 7, a = r() * Math.PI * 2, rad = Math.pow(r(), 1.5) * 0.14;
+    put(o, i, Math.cos(a) * rad, 0.3 - 2.7 + k * 0.9 + Math.sin(a) * rad, CZ + gauss(r) * 0.05);
+  }
+  return o;
+}
+
+/** a bowl mended with gold: its outline, the rim, and the seams where it broke */
+function bowl(n: number) {
+  const r = rng(103);
+  const segs: Seg[] = [];
+  const RX = 2.9, RY = 2.3, TOP = 0.9;
+  const below = (x: number) => TOP - RY * Math.sqrt(Math.max(0, 1 - (x / RX) ** 2));
+  const curve: number[][] = [];
+  for (let k = 0; k <= 60; k++) { const x = -RX + (2 * RX * k) / 60; curve.push([x, below(x)]); }
+  segs.push(...polySegs(curve, false));
+  segs.push(...circleSegs(1, 90).map(([a, b, c, d]) => [a * RX, b * 0.42 + TOP, c * RX, d * 0.42 + TOP] as Seg));
+  segs.push([-0.9, below(-0.9) - 0.02, -0.9, below(-0.9) - 0.32], [0.9, below(0.9) - 0.02, 0.9, below(0.9) - 0.32], [-0.9, below(-0.9) - 0.32, 0.9, below(0.9) - 0.32]);
+  const seams: number[][][] = [];
+  [-1.7, -0.4, 0.9, 2.0].forEach((x0, k) => { // zigzag seams from the rim down
+    const pts: number[][] = [];
+    let x = x0;
+    for (let j = 0; j <= 5; j++) { const y = TOP - 0.4 - j * 0.45; if (y < below(x) + 0.05) break; pts.push([x, y]); x += (j % 2 ? 0.28 : -0.22) * (k % 2 ? -1 : 1); }
+    seams.push(pts);
+  });
+  const outline = alongSegments(Math.floor(n * 0.62), segs, r, 0.014, 0);
+  const seam = alongSegments(n - Math.floor(n * 0.62), seams.flatMap((pp) => polySegs(pp, false)), r, 0.012, 0);
+  const o = new Float32Array(n * 3);
+  o.set(outline);
+  o.set(seam, Math.floor(n * 0.62) * 3);
+  return o;
+}
+
 /* ------------------------------------------------- forms drawn from type */
 
 function sampleCanvas(n: number, draw: (ctx: CanvasRenderingContext2D) => void, w: number, h: number, map: (x: number, y: number) => [number, number], seed: number, extra?: (o: Out, i: number, r: () => number) => boolean) {
@@ -629,6 +700,9 @@ export function buildForms(n: number, seeds: Float32Array): Record<FormKey, Floa
     astrolabe: shuffled(astrolabe(n), 157),
     moons: shuffled(moons(n), 163),
     crossroads: shuffled(crossroads(n), 167),
+    lotus: shuffled(lotus(n), 173),
+    chakras: shuffled(chakras(n), 179),
+    bowl: shuffled(bowl(n), 181),
   };
 }
 
@@ -663,6 +737,7 @@ export async function buildFormsAsync(n: number, seeds: Float32Array, textFrom?:
     ['yantra', () => shuffleForm(yantra(n), 131)], ['temple', () => shuffleForm(temple(n), 137)], ['tree', () => shuffleForm(tree(n), 139)],
     ['rose', () => shuffleForm(rose(n), 149)], ['pentacle', () => shuffleForm(pentacle(n), 151)], ['astrolabe', () => shuffleForm(astrolabe(n), 157)], ['moons', () => shuffleForm(moons(n), 163)],
     ['crossroads', () => shuffleForm(crossroads(n), 167)],
+    ['lotus', () => shuffleForm(lotus(n), 173)], ['chakras', () => shuffleForm(chakras(n), 179)], ['bowl', () => shuffleForm(bowl(n), 181)],
     ['name', () => (textFrom ? upsample(textFrom.name, n, 0.01, 61) : dust(n))],
     ['letters', () => (textFrom ? upsample(textFrom.letters, n, 0.008, 67) : dust(n))],
   ];

@@ -243,6 +243,115 @@ export const PRESETS: Record<string, Preset> = {
     a: '#050505', b: '#0d3b2e', c: '#b8693a', glow: '#d9b25a',
     ink: '#f3ecdd', inkSoft: '#c2b59a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'crossroads', shift: 0, fade: 0.42,
   },
+  /* ---------------- Pillar 3, Healing & Inner Work: three directions to compare */
+  // A · Still water
+  // the opening: a lotus on the water
+  healA_hero: {
+    a: '#04161a', b: '#0d3a3f', c: '#7fc4b8', glow: '#e9f1ec',
+    ink: '#eef5f1', inkSoft: '#a9c4bd', scale: 1.2, warp: 1.8, speed: 0.03, light: 0, motes: 0.45, form: 'lotus', shift: 4.4, fade: 0.95,
+  },
+  // the homepage chapter
+  healA_home: {
+    a: '#04161a', b: '#0d3a3f', c: '#7fc4b8', glow: '#e9f1ec',
+    ink: '#eef5f1', inkSoft: '#a9c4bd', scale: 1.2, warp: 1.8, speed: 0.03, light: 0, motes: 0.45, form: 'lotus', shift: 5.4, fade: 0.95,
+  },
+  // energy: a halo of light
+  healA_energy: {
+    a: '#04161a', b: '#0d3a3f', c: '#9ed3c9', glow: '#e9f1ec',
+    ink: '#eef5f1', inkSoft: '#a9c4bd', scale: 1.2, warp: 1.8, speed: 0.03, light: 0, motes: 0.45, form: 'halo', shift: 4.2, fade: 0.6,
+  },
+  // mind: a slow spiral
+  healA_mind: {
+    a: '#04161a', b: '#0d3a3f', c: '#6aa6b8', glow: '#dfeef3',
+    ink: '#eef5f1', inkSoft: '#a9c4bd', scale: 1.2, warp: 1.8, speed: 0.03, light: 0, motes: 0.45, form: 'vortex', shift: 4.2, fade: 0.5,
+  },
+  // shadow: the water itself
+  healA_shadow: {
+    a: '#04161a', b: '#0d3a3f', c: '#e7a9b8', glow: '#f4e3e8',
+    ink: '#eef5f1', inkSoft: '#a9c4bd', scale: 1.2, warp: 1.8, speed: 0.03, light: 0, motes: 0.45, form: 'water', shift: 0, fade: 0.55,
+  },
+  // journaling: threads of silk
+  healA_journal: {
+    a: '#04161a', b: '#0d3a3f', c: '#d9c8a6', glow: '#f1ead8',
+    ink: '#eef5f1', inkSoft: '#a9c4bd', scale: 1.2, warp: 1.8, speed: 0.03, light: 0, motes: 0.45, form: 'silk', shift: 0, fade: 0.5,
+  },
+  // the close
+  healA_close: {
+    a: '#04161a', b: '#0d3a3f', c: '#7fc4b8', glow: '#e9f1ec',
+    ink: '#eef5f1', inkSoft: '#a9c4bd', scale: 1.2, warp: 1.8, speed: 0.03, light: 0, motes: 0.45, form: 'lotus', shift: 0, fade: 0.7,
+  },
+  // B · The body of light (dawn paper)
+  // the opening: a faint halo, so the figure of light leads
+  healB_hero: {
+    a: '#f6efe4', b: '#ecdcc4', c: '#e08a2e', glow: '#fff8ec',
+    ink: '#2b2230', inkSoft: '#655563', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'halo', shift: 4.4, fade: 0.35,
+  },
+  // the homepage chapter
+  healB_home: {
+    a: '#f6efe4', b: '#ecdcc4', c: '#e08a2e', glow: '#fff8ec',
+    ink: '#2b2230', inkSoft: '#655563', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'chakras', shift: 5.4, fade: 0.9,
+  },
+  // energy
+  healB_energy: {
+    a: '#f6efe4', b: '#ecdcc4', c: '#c7607a', glow: '#fff8ec',
+    ink: '#2b2230', inkSoft: '#655563', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'chakras', shift: 4.2, fade: 0.5,
+  },
+  // mind: a halo
+  healB_mind: {
+    a: '#f6efe4', b: '#ecdcc4', c: '#3b3a7a', glow: '#fff8ec',
+    ink: '#2b2230', inkSoft: '#655563', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'halo', shift: 4.2, fade: 0.55,
+  },
+  // shadow: the tree, roots and branches
+  healB_shadow: {
+    a: '#f6efe4', b: '#ecdcc4', c: '#4f8a63', glow: '#fff8ec',
+    ink: '#2b2230', inkSoft: '#655563', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'tree', shift: 3.6, fade: 0.5,
+  },
+  // journaling: a lotus
+  healB_journal: {
+    a: '#f6efe4', b: '#ecdcc4', c: '#c7607a', glow: '#fff8ec',
+    ink: '#2b2230', inkSoft: '#655563', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'lotus', shift: 4.2, fade: 0.5,
+  },
+  // the close
+  healB_close: {
+    a: '#f6efe4', b: '#ecdcc4', c: '#e08a2e', glow: '#fff8ec',
+    ink: '#2b2230', inkSoft: '#655563', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'chakras', shift: 0, fade: 0.6,
+  },
+  // C · Golden repair (kintsugi)
+  // the opening: drifting dust, so the bowl you mend leads
+  healC_hero: {
+    a: '#121110', b: '#2a2420', c: '#8a5a44', glow: '#d4a63c',
+    ink: '#f1ebe3', inkSoft: '#bdb2a6', scale: 1.5, warp: 2.2, speed: 0.035, light: 0, motes: 0.5, form: 'dust', shift: 4.4, fade: 0.55,
+  },
+  // the homepage chapter
+  healC_home: {
+    a: '#121110', b: '#2a2420', c: '#8a5a44', glow: '#d4a63c',
+    ink: '#f1ebe3', inkSoft: '#bdb2a6', scale: 1.5, warp: 2.2, speed: 0.035, light: 0, motes: 0.5, form: 'bowl', shift: 5.4, fade: 0.95,
+  },
+  // energy: a halo
+  healC_energy: {
+    a: '#121110', b: '#2a2420', c: '#8a5a44', glow: '#e2bd62',
+    ink: '#f1ebe3', inkSoft: '#bdb2a6', scale: 1.5, warp: 2.2, speed: 0.035, light: 0, motes: 0.5, form: 'halo', shift: 4.2, fade: 0.55,
+  },
+  // mind: a slow spiral
+  healC_mind: {
+    a: '#121110', b: '#2a2420', c: '#5d5a55', glow: '#d4a63c',
+    ink: '#f1ebe3', inkSoft: '#bdb2a6', scale: 1.5, warp: 2.2, speed: 0.035, light: 0, motes: 0.5, form: 'vortex', shift: 4.2, fade: 0.5,
+  },
+  // shadow: the bowl again, quieter
+  healC_shadow: {
+    a: '#121110', b: '#2a2420', c: '#8c2a22', glow: '#d4a63c',
+    ink: '#f1ebe3', inkSoft: '#bdb2a6', scale: 1.5, warp: 2.2, speed: 0.035, light: 0, motes: 0.5, form: 'bowl', shift: 4.2, fade: 0.45,
+  },
+  // journaling: falling dust
+  healC_journal: {
+    a: '#121110', b: '#2a2420', c: '#5d5a55', glow: '#cfc6bb',
+    ink: '#f1ebe3', inkSoft: '#bdb2a6', scale: 1.5, warp: 2.2, speed: 0.035, light: 0, motes: 0.5, form: 'dust', shift: 0, fade: 0.6,
+  },
+  // the close
+  healC_close: {
+    a: '#121110', b: '#2a2420', c: '#8a5a44', glow: '#d4a63c',
+    ink: '#f1ebe3', inkSoft: '#bdb2a6', scale: 1.5, warp: 2.2, speed: 0.035, light: 0, motes: 0.5, form: 'bowl', shift: 0, fade: 0.7,
+  },
   close: {
     a: '#050203', b: '#240809', c: '#8e2a1a', glow: '#f0b34a',
     ink: '#f6ece2', inkSoft: '#c4ada0', scale: 1.5, warp: 2.4, speed: 0.06, light: 0, motes: 0.5, form: 'eye', shift: 0,
