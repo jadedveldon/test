@@ -177,7 +177,7 @@ export const SIGIL_METHODS: { key: SigilMethod; name: string; how: string; origi
   },
   {
     key: 'monogram', name: 'Monogram',
-    how: 'The letters that repeat are struck out, and many modern versions drop the vowels too. What is left is folded into one figure, some letters turned back to front, until it no longer reads as words.',
+    how: 'The letters that repeat are struck out, and many modern versions drop the vowels too. What is left is joined into one figure: hung on a central line, set around a ring, or stacked. Then move, turn or flip any letter until it feels right.',
     origin: 'The way made known by the artist Austin Osman Spare in The Book of Pleasure (1913), and taken up by chaos magic.',
   },
   {
@@ -192,8 +192,8 @@ export const SIGIL_METHODS: { key: SigilMethod; name: string; how: string; origi
   },
   {
     key: 'draw', name: 'Draw your own',
-    how: 'No letters and no rule: draw whatever shape comes to you, then seal it.',
-    origin: 'No tradition is claimed here: a free drawing, sealed like the others.',
+    how: 'No letters and no rule: draw whatever shape comes to you.',
+    origin: 'No tradition is claimed here: a free drawing.',
   },
 ];
 

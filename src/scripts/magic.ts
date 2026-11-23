@@ -133,55 +133,121 @@ function keptLetters(text: string) {
   return kept;
 }
 
+/** one letter of the monogram, where it sits and how it is turned */
+type Placed = { L: string; x: number; y: number; rot: number; mir: number; sx: number; sy: number };
+export type Arrangement = 'line' | 'ring' | 'stack';
+/** letters whose stem is on the left, so they can hang from a shared central line */
+const STEMMED = new Set('BDEFHKLMNPR'.split(''));
+
+/**
+ * Ways to join the monogram's letters, after the arrangements practitioners and
+ * sigil tools use: hung on one central line, set around a ring, or stacked on
+ * one centre. The visitor can then move, turn and flip any letter.
+ */
+function arrange(kept: string[], how: Arrangement): { letters: Placed[]; guide: string } {
+  if (how === 'ring') {
+    const n = kept.length, R = 58;
+    const h = Math.min(46, ((Math.PI * 2 * R) / n) * 1.05), sy = h / 2, sx = sy * 0.85;
+    return {
+      letters: kept.map((L, i) => {
+        const a = -90 + (i * 360) / n, r = ((a * Math.PI) / 180);
+        return { L, x: Math.cos(r) * (R + sy), y: Math.sin(r) * (R + sy), rot: a + 90, mir: 1, sx, sy };
+      }),
+      guide: `M${R} 0 A${R} ${R} 0 1 1 ${-R} 0 A${R} ${R} 0 1 1 ${R} 0`,
+    };
+  }
+  if (how === 'stack') {
+    const SIZE = [1, 0.66, 0.82, 0.58], LIFT = [0, -0.36, 0.3, 0.42], TURN = [0, 0, 90, 0, 0, -90];
+    return {
+      letters: kept.map((L, i) => { const s = SIZE[i % 4]; return { L, x: 0, y: LIFT[i % 4] * 64, rot: TURN[i % 6], mir: i % 2 ? -1 : 1, sx: s * 60, sy: s * 64 }; }),
+      guide: '',
+    };
+  }
+  // on a central line: letters with a stem hang from it, right or (turned back to front) left; the rest sit across it
+  const tiers: { right?: string; left?: string; centre?: string }[] = [];
+  kept.forEach((L) => {
+    const t = tiers[tiers.length - 1];
+    if (STEMMED.has(L) && t && !t.centre && !t.right) t.right = L;
+    else if (STEMMED.has(L) && t && !t.centre && !t.left) t.left = L;
+    else if (STEMMED.has(L)) tiers.push({ right: L });
+    else tiers.push({ centre: L });
+  });
+  const n = tiers.length, tierH = Math.min(48, 196 / n), sy = Math.min(30, tierH * 0.64), sx = sy * 1.12;
+  const letters: Placed[] = [];
+  tiers.forEach((t, i) => {
+    const y = (i - (n - 1) / 2) * tierH;
+    if (t.right) letters.push({ L: t.right, x: 0.6 * sx, y, rot: 0, mir: 1, sx, sy });
+    if (t.left) letters.push({ L: t.left, x: -0.6 * sx, y, rot: 0, mir: -1, sx, sy });
+    if (t.centre) letters.push({ L: t.centre, x: 0, y, rot: 0, mir: 1, sx, sy });
+  });
+  // keep the letters in the order they were written, so the hint reads the same way
+  letters.sort((a, b) => kept.indexOf(a.L) - kept.indexOf(b.L));
+  const top = -((n - 1) / 2) * tierH - sy, bottom = ((n - 1) / 2) * tierH + sy;
+  return { letters, guide: `M0 ${top.toFixed(1)} L0 ${bottom.toFixed(1)}` };
+}
+
 function initSigil(root: HTMLElement, world: World) {
   const svg = root.querySelector<SVGSVGElement>('[data-sigil-svg]')!;
   const mark = root.querySelector<SVGGElement>('[data-sigil-mark]')!;
-  const seal = root.querySelector<SVGGElement>('[data-sigil-seal]')!;
   const form = root.querySelector<HTMLFormElement>('[data-sigil-form]')!;
   const input = root.querySelector<HTMLInputElement>('input')!;
   const hint = root.querySelector<HTMLElement>('[data-sigil-hint]')!;
   const saveBtn = root.querySelector<HTMLButtonElement>('[data-sigil-save]')!;
+  const penBtn = root.querySelector<HTMLButtonElement>('[data-sigil-pen]')!;
+  const turnBtn = root.querySelector<HTMLButtonElement>('[data-mono-turn]')!;
+  const flipBtn = root.querySelector<HTMLButtonElement>('[data-mono-flip]')!;
+  const clearBtn = root.querySelector<HTMLButtonElement>('[data-draw-clear]')!;
   const page = root.closest('section')!;
   const how = page.querySelector<HTMLElement>('[data-sigil-how]');
   const origin = page.querySelector<HTMLElement>('[data-sigil-origin]');
   let method = (root.dataset.method as SigilMethod) || 'wheel';
+  let arrangement: Arrangement = (root.dataset.arr as Arrangement) || 'line';
   // the intention lives only in this variable, so each way can redraw it; it is never stored
   let text = '';
-  let sealed = false;
+  let pen = false;
+  let placed: Placed[] = [];
+  let picked = -1;
 
-  const el = (tag: string, attrs: Record<string, string | number>) => {
+  const make = (tag: string, attrs: Record<string, string | number>, parent: Element = mark) => {
     const e = document.createElementNS(SVGNS, tag);
     Object.entries(attrs).forEach(([k, v]) => e.setAttribute(k, String(v)));
-    mark.appendChild(e);
+    parent.appendChild(e);
     return e as SVGGeometryElement;
   };
-  const clear = () => {
-    gsap.killTweensOf([seal, ...Array.from(mark.children)]);
-    mark.innerHTML = '';
-    gsap.set(seal, { scale: 0, svgOrigin: '0 0' });
-    sealed = false;
-    saveBtn.hidden = true;
-    root.querySelectorAll('.is-used').forEach((x) => x.classList.remove('is-used'));
+  const el = (tag: string, attrs: Record<string, string | number>) => make(tag, attrs);
+  const setPen = (on: boolean) => {
+    pen = on;
+    root.classList.toggle('pen-on', on || method === 'draw');
+    penBtn.setAttribute('aria-pressed', String(on));
   };
-  const stamp = (delay: number) => {
-    gsap.to(seal, { scale: 1, duration: 0.7, ease: 'back.out(2.2)', svgOrigin: '0 0', delay, onStart: () => { ring('card'); buzz(PATTERNS.cardFlip); world.flash(0.7); } });
-    sealed = true;
-    saveBtn.hidden = false;
+  const showTools = () => {
+    const has = mark.querySelector('.sg-line') !== null;
+    saveBtn.hidden = !has;
+    penBtn.hidden = !has || method === 'draw';
     saveBtn.textContent = 'Save it as a picture';
+    root.classList.toggle('has-sigil', has);
   };
-  /** draw every stroke in turn, like a pen, then press the seal */
+  const clear = () => {
+    gsap.killTweensOf(Array.from(mark.querySelectorAll('*')));
+    mark.innerHTML = '';
+    placed = [];
+    pick(-1);
+    setPen(false);
+    root.querySelectorAll('.is-used').forEach((x) => x.classList.remove('is-used'));
+    showTools();
+  };
+  const finished = () => { ring('card'); buzz(PATTERNS.cardFlip); world.flash(0.6); showTools(); };
+  /** draw every stroke in turn, like a pen */
   const ink = (parts: SVGGeometryElement[], total = 1.6) => {
     const lens = parts.map((p) => { try { return p.getTotalLength(); } catch { return 0; } });
     const sum = lens.reduce((a, b) => a + b, 0) || 1;
-    const tl = gsap.timeline();
+    const tl = gsap.timeline({ onComplete: finished });
     let t = 0;
     parts.forEach((p, i) => {
       const d = Math.max(0.08, (lens[i] / sum) * total);
-      if (lens[i] > 0) tl.fromTo(p, { strokeDasharray: lens[i], strokeDashoffset: lens[i] }, { strokeDashoffset: 0, duration: d, ease: 'power1.inOut' }, t);
-      else tl.fromTo(p, { opacity: 0 }, { opacity: 1, duration: 0.2 }, t);
+      if (lens[i] > 0) tl.fromTo(p, { strokeDasharray: lens[i], strokeDashoffset: lens[i] }, { strokeDashoffset: 0, duration: d, ease: 'power1.inOut', clearProps: 'strokeDasharray,strokeDashoffset' }, t);
       t += d * 0.85;
     });
-    stamp(t + 0.25);
   };
   /** a small ring where the line starts and a short bar across where it ends */
   const ends = (pts: number[][]) => {
@@ -189,12 +255,43 @@ function initSigil(root: HTMLElement, world: World) {
     const [px, py] = pts.length > 1 ? pts[pts.length - 2] : [ex - 1, ey];
     const dx = ex - px, dy = ey - py, len = Math.hypot(dx, dy) || 1, nx = (-dy / len) * 7, ny = (dx / len) * 7;
     return [
-      el('circle', { cx: sx.toFixed(1), cy: sy.toFixed(1), r: 5, class: 'sg-start' }),
-      el('line', { x1: (ex + nx).toFixed(1), y1: (ey + ny).toFixed(1), x2: (ex - nx).toFixed(1), y2: (ey - ny).toFixed(1), class: 'sg-end' }),
+      el('circle', { cx: sx.toFixed(1), cy: sy.toFixed(1), r: 5, class: 'sg-line sg-start' }),
+      el('line', { x1: (ex + nx).toFixed(1), y1: (ey + ny).toFixed(1), x2: (ex - nx).toFixed(1), y2: (ey - ny).toFixed(1), class: 'sg-line sg-end' }),
     ];
   };
   const path = (pts: number[][]) => `M${pts.map((q) => q.map((v) => v.toFixed(1)).join(' ')).join(' L')}`;
   const done = (what: string) => { hint.textContent = `${what} Nothing you typed was saved.`; };
+
+  /* ---- the monogram: letters you can move, turn and flip */
+  const letterTransform = (p: Placed) => `translate(${p.x.toFixed(1)} ${p.y.toFixed(1)}) rotate(${p.rot}) scale(${(p.mir * p.sx).toFixed(2)} ${p.sy.toFixed(2)})`;
+  const placeLetter = (i: number) => {
+    const g = mark.querySelector<SVGGElement>(`[data-li="${i}"]`);
+    if (!g) return;
+    const p = placed[i];
+    g.querySelectorAll('path').forEach((x) => x.setAttribute('transform', letterTransform(p)));
+  };
+  function pick(i: number) {
+    picked = i;
+    mark.querySelectorAll('[data-li]').forEach((g) => g.classList.toggle('is-picked', Number((g as SVGElement).dataset.li) === i));
+    turnBtn.disabled = flipBtn.disabled = i < 0;
+  }
+  const drawMonogram = (animate: boolean) => {
+    const kept = keptLetters(text);
+    const { letters, guide } = arrange(kept, arrangement);
+    placed = letters;
+    const parts: SVGGeometryElement[] = [];
+    if (guide) parts.push(el('path', { d: guide, class: 'sg-line sg-guide' }));
+    placed.forEach((p, i) => {
+      const g = make('g', { 'data-li': i, class: 'sg-letter-g' });
+      const d = glyphPath(GLYPHS[p.L], 1, 1), k = (p.sx + p.sy) / 2;
+      // a wide invisible stroke under each letter makes it easy to pick up, even on a phone
+      make('path', { d, transform: letterTransform(p), 'stroke-width': (18 / k).toFixed(3), class: 'sg-hit', 'pointer-events': 'stroke' }, g);
+      parts.push(make('path', { d, transform: letterTransform(p), 'stroke-width': (2.6 / k).toFixed(4), class: 'sg-line sg-scaled' }, g));
+    });
+    if (animate) ink(parts, 2); else finished();
+    const where = arrangement === 'ring' ? 'set around a ring' : arrangement === 'stack' ? 'stacked on one centre' : 'hung on one central line';
+    done(`${kept.join(' · ')}: ${where}. Drag any letter to move it; pick one to turn or flip it.${kept.length > 9 ? ' Fewer words give a cleaner figure.' : ''}`);
+  };
 
   const methods: Record<Exclude<SigilMethod, 'draw'>, () => void> = {
     wheel: () => {
@@ -204,26 +301,9 @@ function initSigil(root: HTMLElement, world: World) {
       const line = el('path', { d: path(pts), class: 'sg-line' });
       const [a, b] = ends(pts);
       ink([a, line, b]);
-      done(`${kept.join(' · ')}: traced on the wheel and sealed.`);
+      done(`${kept.join(' · ')}: traced on the wheel.`);
     },
-    monogram: () => {
-      const kept = keptLetters(text);
-      // letters folded together on one axis: sizes, heights, mirrors and quarter turns vary so
-      // shared strokes fall on each other and the words stop reading as words
-      const SIZE = [1, 0.66, 0.82, 0.58], LIFT = [0, -0.36, 0.3, 0.42], TURN = [0, 0, 90, 0, 0, -90];
-      const parts = kept.map((L, i) => {
-        const sz = SIZE[i % SIZE.length], mir = i % 2 === 1 ? -1 : 1;
-        return el('path', {
-          d: glyphPath(GLYPHS[L], 1, 1),
-          transform: `translate(0 ${(LIFT[i % LIFT.length] * 64).toFixed(1)}) rotate(${TURN[i % TURN.length]}) scale(${(mir * sz * 60).toFixed(1)} ${(sz * 64).toFixed(1)})`,
-          // the stroke is scaled with the letter, so it is set thinner to look the same
-          'stroke-width': (2.6 / (sz * 62)).toFixed(4),
-          class: 'sg-line sg-scaled',
-        });
-      });
-      ink(parts, 2);
-      done(`${kept.join(' · ')}: folded into one figure, some letters turned or reversed, and sealed.${kept.length > 8 ? ' Fewer words give a cleaner figure.' : ''}`);
-    },
+    monogram: () => drawMonogram(true),
     square: () => {
       const kept = keptLetters(text);
       const nums = kept.map(letterNumber);
@@ -235,17 +315,17 @@ function initSigil(root: HTMLElement, world: World) {
       const line = el('path', { d, class: 'sg-line' });
       const [a, b] = ends(pts.filter((q, i) => i === 0 || nums[i] !== nums[i - 1]));
       ink([a, line, b]);
-      done(`${kept.map((L, i) => `${L} ${nums[i]}`).join(' · ')}: joined on the square and sealed.`);
+      done(`${kept.map((L, i) => `${L} ${nums[i]}`).join(' · ')}: joined on the square.`);
     },
     bindrune: () => {
       const words = text.toUpperCase().split(/[^A-Z]+/).filter(Boolean);
       const letters = words.length >= 2 ? words.map((w) => w[0]) : [...new Set((words[0] ?? '').split(''))].slice(0, 5);
-      const picked: { L: string; rune: string }[] = [];
-      letters.forEach((L) => { const r = LETTER_RUNE[L]; if (r && !picked.some((p) => p.rune === r) && picked.length < 6) picked.push({ L, rune: r }); });
+      const chosen: { L: string; rune: string }[] = [];
+      letters.forEach((L) => { const r = LETTER_RUNE[L]; if (r && !chosen.some((p) => p.rune === r) && chosen.length < 6) chosen.push({ L, rune: r }); });
       const parts = [el('path', { d: 'M0 -96 L0 96', class: 'sg-line sg-stave' })];
-      picked.forEach(({ rune }) => RUNES[rune].strokes.forEach((s) => parts.push(el('path', { d: path(s.map(([x, y]) => [x * 76, y * 96])), class: 'sg-line' }))));
+      chosen.forEach(({ rune }) => RUNES[rune].strokes.forEach((s) => parts.push(el('path', { d: path(s.map(([x, y]) => [x * 76, y * 96])), class: 'sg-line' }))));
       ink(parts, 1.8);
-      done(`${picked.map((p) => `${p.L} ${RUNES[p.rune].name}`).join(' · ')}: bound on one stave and sealed.`);
+      done(`${chosen.map((p) => `${p.L} ${RUNES[p.rune].name}`).join(' · ')}: bound on one stave.`);
     },
   };
 
@@ -255,45 +335,76 @@ function initSigil(root: HTMLElement, world: World) {
     methods[method]();
   };
 
-  /* draw your own: a pen on the plate */
-  let drawing: SVGPathElement | null = null, lastPt: DOMPoint | null = null, drew = false;
-  // the pen stays inside the ring
-  const toSvg = (e: PointerEvent) => {
+  /* ---- the pen: draw your own, or add strokes by hand to any sigil; and dragging letters */
+  const toSvg = (e: PointerEvent, keepIn = true) => {
     const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
     const q = pt.matrixTransform(svg.getScreenCTM()!.inverse());
     const r = Math.hypot(q.x, q.y), max = 108;
-    if (r > max) { q.x *= max / r; q.y *= max / r; }
+    if (keepIn && r > max) { q.x *= max / r; q.y *= max / r; }
     return q;
   };
+  let stroke: SVGPathElement | null = null, lastPt: DOMPoint | null = null;
+  let drag: { i: number; px: number; py: number; x: number; y: number } | null = null;
   const down = (e: PointerEvent) => {
-    if (method !== 'draw' || sealed) return;
+    const penning = method === 'draw' || pen;
+    const g = (e.target as Element | null)?.closest<SVGGElement>('[data-li]');
+    if (!penning && method === 'monogram' && g) {
+      e.preventDefault();
+      const i = Number(g.dataset.li);
+      pick(i);
+      const p = toSvg(e, false);
+      drag = { i, px: p.x, py: p.y, x: placed[i].x, y: placed[i].y };
+      svg.setPointerCapture(e.pointerId);
+      buzz([5]);
+      return;
+    }
+    if (!penning) { if (method === 'monogram') pick(-1); return; }
     e.preventDefault(); // no text selection while drawing
     const p = toSvg(e);
-    drawing = el('path', { d: `M${p.x.toFixed(1)} ${p.y.toFixed(1)}`, class: 'sg-line' }) as SVGPathElement;
+    stroke = el('path', { d: `M${p.x.toFixed(1)} ${p.y.toFixed(1)}`, class: 'sg-line sg-hand' }) as SVGPathElement;
     lastPt = p;
     svg.setPointerCapture(e.pointerId);
   };
   const move = (e: PointerEvent) => {
-    if (!drawing || !lastPt) return;
+    if (drag) {
+      const p = toSvg(e, false);
+      const pl = placed[drag.i];
+      pl.x = drag.x + (p.x - drag.px);
+      pl.y = drag.y + (p.y - drag.py);
+      const r = Math.hypot(pl.x, pl.y);
+      if (r > 96) { pl.x *= 96 / r; pl.y *= 96 / r; }
+      placeLetter(drag.i);
+      return;
+    }
+    if (!stroke || !lastPt) return;
     const p = toSvg(e);
     if (Math.hypot(p.x - lastPt.x, p.y - lastPt.y) < 2) return;
-    drawing.setAttribute('d', `${drawing.getAttribute('d')} L${p.x.toFixed(1)} ${p.y.toFixed(1)}`);
+    stroke.setAttribute('d', `${stroke.getAttribute('d')} L${p.x.toFixed(1)} ${p.y.toFixed(1)}`);
     lastPt = p;
-    if (!drew) { drew = true; hint.textContent = 'When it feels finished, seal it.'; }
   };
-  const up = () => { drawing = null; lastPt = null; };
+  const up = () => {
+    if (stroke) { stroke = null; lastPt = null; showTools(); if (method === 'draw') hint.textContent = 'Keep drawing, or save it when it feels finished. Nothing you drew is saved unless you save the picture.'; }
+    drag = null;
+  };
   svg.addEventListener('pointerdown', down);
   svg.addEventListener('pointermove', move);
   svg.addEventListener('pointerup', up);
   svg.addEventListener('pointercancel', up);
-  const drawClear = root.querySelector<HTMLButtonElement>('[data-draw-clear]')!;
-  const drawSeal = root.querySelector<HTMLButtonElement>('[data-draw-seal]')!;
-  const onClear = () => { clear(); drew = false; hint.textContent = 'Draw with your finger or mouse inside the ring.'; };
-  const onSeal = () => { if (!mark.children.length) { hint.textContent = 'Draw something first.'; return; } if (!sealed) { stamp(0); hint.textContent = 'Your sigil, sealed. Nothing you drew was saved.'; } };
-  drawClear.addEventListener('click', onClear);
-  drawSeal.addEventListener('click', onSeal);
+  const onPen = () => {
+    setPen(!pen);
+    pick(-1);
+    hint.textContent = pen ? 'The pen is on: draw over the sigil inside the ring. Tap the pen again to stop.' : hint.textContent;
+    buzz(PATTERNS.choice);
+  };
+  const onTurn = () => { if (picked < 0) return; placed[picked].rot = (placed[picked].rot + 45) % 360; placeLetter(picked); buzz([5]); };
+  const onFlip = () => { if (picked < 0) return; placed[picked].mir *= -1; placeLetter(picked); buzz([5]); };
+  const onClear = () => { clear(); if (method === 'draw') hint.textContent = 'Draw with your finger or mouse inside the ring.'; };
+  penBtn.addEventListener('click', onPen);
+  turnBtn.addEventListener('click', onTurn);
+  flipBtn.addEventListener('click', onFlip);
+  clearBtn.addEventListener('click', onClear);
 
-  /* choosing a way */
+  /* ---- choosing a way, and an arrangement for the monogram */
   const choose = (m: SigilMethod) => {
     method = m;
     root.dataset.method = m;
@@ -301,20 +412,26 @@ function initSigil(root: HTMLElement, world: World) {
     const info = SIGIL_METHODS.find((x) => x.key === m)!;
     if (how) how.textContent = info.how;
     if (origin) origin.textContent = info.origin;
-    drew = false;
-    if (m === 'draw') { clear(); hint.textContent = 'Draw with your finger or mouse inside the ring.'; return; }
+    if (m === 'draw') { clear(); setPen(false); hint.textContent = 'Draw with your finger or mouse inside the ring.'; return; }
     if (text) render();
     else { clear(); hint.textContent = 'Your sigil will be drawn here.'; }
   };
-  const onMethod = (e: Event) => {
-    const b = (e.target as Element | null)?.closest<HTMLButtonElement>('[data-sigil-method]');
-    if (!b) return;
-    choose(b.dataset.sigilMethod as SigilMethod);
-    buzz(PATTERNS.choice);
+  const onClick = (e: Event) => {
+    const t = e.target as Element | null;
+    const b = t?.closest<HTMLButtonElement>('[data-sigil-method]');
+    if (b) { choose(b.dataset.sigilMethod as SigilMethod); buzz(PATTERNS.choice); return; }
+    const a = t?.closest<HTMLButtonElement>('[data-mono-arr]');
+    if (a) {
+      arrangement = a.dataset.monoArr as Arrangement;
+      root.dataset.arr = arrangement;
+      root.querySelectorAll<HTMLButtonElement>('[data-mono-arr]').forEach((x) => x.setAttribute('aria-pressed', String(x === a)));
+      if (text && method === 'monogram') { clear(); drawMonogram(true); }
+      buzz(PATTERNS.choice);
+    }
   };
-  page.addEventListener('click', onMethod);
+  page.addEventListener('click', onClick);
 
-  const make = (e: Event) => {
+  const submit = (e: Event) => {
     e.preventDefault();
     const t = input.value.trim();
     if (!/[a-z]/i.test(t)) { input.focus(); return; }
@@ -322,20 +439,18 @@ function initSigil(root: HTMLElement, world: World) {
     input.value = '';
     render();
   };
-  form.addEventListener('submit', make);
+  form.addEventListener('submit', submit);
 
-  // a picture of the sigil to keep: parchment, a gold ring, the vermilion line and the seal (no letters or numbers, so the intention stays private)
+  // a picture of the sigil to keep: parchment, a gold ring and the vermilion lines (no letters or numbers on the board, so the intention stays private)
   const save = () => {
-    if (!mark.children.length) return;
+    if (!mark.querySelector('.sg-line')) return;
     const clone = mark.cloneNode(true) as SVGGElement;
-    clone.querySelectorAll('*').forEach((n) => { n.removeAttribute('style'); n.removeAttribute('class'); });
+    clone.querySelectorAll('.sg-hit').forEach((n) => n.remove());
+    clone.querySelectorAll('*').forEach((n) => { n.removeAttribute('style'); n.removeAttribute('class'); n.removeAttribute('pointer-events'); });
     const svgText = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-130 -130 260 260" width="1080" height="1080">`
       + `<rect x="-130" y="-130" width="260" height="260" fill="#e8dcc0"/>`
       + `<circle r="120" fill="none" stroke="#9a7428" stroke-width="1.8"/><circle r="113" fill="none" stroke="#9a7428" stroke-width="0.6"/>`
-      + `<g fill="none" stroke="#b1261a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">${clone.innerHTML}</g>`
-      + `<g transform="translate(94 94)"><circle r="27" fill="#b8281a"/><circle r="20" fill="none" stroke="#e0b85c" stroke-width="1.3"/>`
-      + [-90, 30, 150].map((d) => { const a = (d * Math.PI) / 180; return `<path d="M0 0 L${(Math.cos(a) * 13.5).toFixed(1)} ${(Math.sin(a) * 13.5).toFixed(1)}" stroke="#f0cf7a" stroke-width="2.2" stroke-linecap="round"/>`; }).join('')
-      + `<circle r="3.2" fill="#f0cf7a"/></g></svg>`;
+      + `<g fill="none" stroke="#b1261a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">${clone.innerHTML}</g></svg>`;
     const img = new Image();
     const url = URL.createObjectURL(new Blob([svgText], { type: 'image/svg+xml' }));
     img.onload = () => {
@@ -357,17 +472,20 @@ function initSigil(root: HTMLElement, world: World) {
     img.src = url;
   };
   saveBtn.addEventListener('click', save);
+  showTools();
 
   return () => {
-    form.removeEventListener('submit', make);
+    form.removeEventListener('submit', submit);
     saveBtn.removeEventListener('click', save);
-    page.removeEventListener('click', onMethod);
+    page.removeEventListener('click', onClick);
     svg.removeEventListener('pointerdown', down);
     svg.removeEventListener('pointermove', move);
     svg.removeEventListener('pointerup', up);
     svg.removeEventListener('pointercancel', up);
-    drawClear.removeEventListener('click', onClear);
-    drawSeal.removeEventListener('click', onSeal);
+    penBtn.removeEventListener('click', onPen);
+    turnBtn.removeEventListener('click', onTurn);
+    flipBtn.removeEventListener('click', onFlip);
+    clearBtn.removeEventListener('click', onClear);
   };
 }
 

@@ -113,7 +113,7 @@ const roads = [-90, 30, 150].map((d) => pos(d, 30).map((v) => v.toFixed(1)).join
         <header class="mg-head">
           <p class="kicker" data-fade>Begin with an intention</p>
           <h2 class="display-l" data-split data-dust>Make a sigil</h2>
-          <p class="lede" data-fade>Write what you wish for in a few words, then choose a way to turn it into a sigil. The same words give a different shape each way, and each is sealed in wax.</p>
+          <p class="lede" data-fade>Write what you wish for in a few words, then choose a way to turn it into a sigil. The same words give a different shape each way, and you can finish any of them by hand.</p>
           <div class="sg-methods" role="group" aria-label="Ways of making a sigil" data-fade>
             {SIGIL_METHODS.map((m, i) => <button type="button" data-sigil-method={m.key} aria-pressed={i === 0 ? 'true' : 'false'}>{m.name}</button>)}
           </div>
@@ -123,7 +123,7 @@ const roads = [-90, 30, 150].map((d) => pos(d, 30).map((v) => v.toFixed(1)).join
           </div>
           <p class="hk-note" data-fade>Sarvakali may make sigils differently. Nothing you type or draw here is saved or sent.</p>
         </header>
-        <div class="sigil-maker" data-sigil data-method={SIGIL_METHODS[0].key} data-fade>
+        <div class="sigil-maker" data-sigil data-method={SIGIL_METHODS[0].key} data-arr="line" data-fade>
           <svg viewBox="-130 -130 260 260" class="sigil-svg" data-sigil-svg aria-label="Your sigil" role="img">
             <circle r="122" class="sg-gild" /><circle r="114" class="sg-ring" />
             {Array.from({ length: 52 }, (_, k) => { const [x1, y1] = pos(k * (360 / 52), 114); const [x2, y2] = pos(k * (360 / 52), k % 2 ? 118 : 121); return <line x1={x1.toFixed(1)} y1={y1.toFixed(1)} x2={x2.toFixed(1)} y2={y2.toFixed(1)} class="sg-tick" />; })}
@@ -138,25 +138,31 @@ const roads = [-90, 30, 150].map((d) => pos(d, 30).map((v) => v.toFixed(1)).join
             </g>
             <g class="sg-board" data-board="draw"><circle r="88" class="sg-ring thin" /></g>
             <g class="sg-mark" data-sigil-mark></g>
-            <g transform="translate(94 94)">
-              <g class="sg-seal" data-sigil-seal transform="scale(0)">
-                <circle r="27" class="sg-wax" /><circle r="20" class="sg-wax-ring" />
-                {roads.map((r) => <path class="sg-wax-mark" d={`M0 0 L${r.split(' ').map((v) => (Number(v) * 0.45).toFixed(1)).join(' ')}`} />)}
-                <circle r="3.2" class="sg-wax-dot" />
-              </g>
-            </g>
           </svg>
           <form class="sigil-form" data-sigil-form>
             <label class="sr-only" for="sigil-word">Your intention</label>
             <input id="sigil-word" maxlength="40" autocomplete="off" placeholder="Your intention, in a few words" />
             <button type="submit" class="btn btn-ghost btn-sm">Make my sigil</button>
           </form>
-          <div class="sg-draw-controls" data-draw-controls>
-            <button type="button" class="btn btn-ghost btn-sm" data-draw-clear>Clear</button>
-            <button type="button" class="btn btn-ghost btn-sm" data-draw-seal>Seal it</button>
+          <div class="sg-mono-tools" role="group" aria-label="Arrange the monogram">
+            <div class="sg-arr">
+              <span>Arrange</span>
+              <button type="button" data-mono-arr="line" aria-pressed="true">On a line</button>
+              <button type="button" data-mono-arr="ring" aria-pressed="false">Around a ring</button>
+              <button type="button" data-mono-arr="stack" aria-pressed="false">Stacked</button>
+            </div>
+            <div class="sg-arr">
+              <span>Picked letter</span>
+              <button type="button" data-mono-turn disabled>Turn</button>
+              <button type="button" data-mono-flip disabled>Flip</button>
+            </div>
+          </div>
+          <div class="sg-tools">
+            <button type="button" class="btn btn-ghost btn-sm" data-sigil-pen aria-pressed="false" hidden>Add strokes by hand</button>
+            <button type="button" class="btn btn-ghost btn-sm sg-clear" data-draw-clear>Clear</button>
+            <button type="button" class="btn btn-ghost btn-sm" data-sigil-save hidden>Save it as a picture</button>
           </div>
           <p class="dv-sig-hint" data-sigil-hint aria-live="polite">Your sigil will be drawn here.</p>
-          <button type="button" class="btn btn-ghost btn-sm" data-sigil-save hidden>Save it as a picture</button>
         </div>
       </div>
     </section>
