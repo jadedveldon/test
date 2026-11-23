@@ -17,7 +17,7 @@ export const FESTIVALS: Festival[] = [
   { id: 'kalipuja-2026', name: 'Kali Puja', kind: 'kalipuja', start: '2026-11-08', end: '2026-11-08', note: 'Kartik Amavasya, the great night of Kali.' },
   { id: 'diwali-2026', name: 'Diwali', kind: 'diwali', start: '2026-11-08', end: '2026-11-08', note: 'The festival of lamps.' },
   { id: 'navratri-chaitra-2027', name: 'Chaitra Navratri', kind: 'navratri', start: '2027-04-07', end: '2027-04-15', note: 'Nine nights of the Devi in spring.' },
-  { id: 'phalaharini-2027', name: 'Phalaharini Kali Puja', kind: 'kalipuja', start: '2027-06-04', end: '2027-06-04', note: 'Jyeshtha Amavasya, when Kali is offered fruit.' },
+  { id: 'phalaharini-2027', name: 'Phalaharini Kali Puja', kind: 'kalipuja', start: '2027-06-04', end: '2027-06-04', note: 'Jyeshtha Amavasya: Kali as Phalaharini, who takes away the fruits of karma. Date from one source only; to confirm.' },
   { id: 'eclipse-2027', name: 'Solar eclipse', kind: 'eclipse', start: '2027-08-02', end: '2027-08-02', note: 'A partial eclipse, seen from parts of India.' },
   { id: 'navratri-sharad-2027', name: 'Sharad Navratri', kind: 'navratri', start: '2027-09-30', end: '2027-10-08', note: 'Nine nights of the Devi in autumn.' },
   { id: 'kalipuja-2027', name: 'Kali Puja', kind: 'kalipuja', start: '2027-10-28', end: '2027-10-28', note: 'Kartik Amavasya. Some calendars give 29 October.' },
@@ -121,7 +121,7 @@ export function moonCalendar(count = 12) {
     title: e.type === 'amavasya' ? 'Amavasya (new moon)' : 'Purnima (full moon)',
     date: e.at,
     description: e.type === 'amavasya'
-      ? 'The new moon: the night most sacred to Kali. From Sarvakali.'
+      ? 'The new moon, a night especially kept for Kali. From Sarvakali.'
       : 'The full moon. From Sarvakali.',
   })));
 }

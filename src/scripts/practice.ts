@@ -134,7 +134,7 @@ function initDays() {
     const rows: { title: string; date: Date; note: string; topic: string; end?: Date }[] = [];
     const nA = moons.find((m) => m.type === 'amavasya');
     const nP = moons.find((m) => m.type === 'purnima');
-    if (nA) rows.push({ title: 'Amavasya', date: nA.at, note: 'The new moon, the night most sacred to Kali.', topic: 'A ritual on Amavasya' });
+    if (nA) rows.push({ title: 'Amavasya', date: nA.at, note: 'The new moon, a night especially kept for Kali.', topic: 'A ritual on Amavasya' });
     if (nP) rows.push({ title: 'Purnima', date: nP.at, note: 'The full moon.', topic: 'Something for Purnima' });
     upcomingFestivals(new Date(), 5).forEach((f) => {
       const [y, m, d] = f.start.split('-').map(Number);

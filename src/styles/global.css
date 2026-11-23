@@ -934,9 +934,14 @@ li.is-found > .chip-keep, li.is-found > .vidya-keep, li.is-found .deity-name { b
 .greek-work { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
 .greek-work .chip-keep { font-size: 0.78rem; padding: 6px 10px; }
 .greek-grid[data-show]:not([data-show="all"]) .greek-card { display: none; }
-.greek-grid[data-show="fire"] .greek-card[data-el="fire"], .greek-grid[data-show="air"] .greek-card[data-el="air"],
-.greek-grid[data-show="water"] .greek-card[data-el="water"], .greek-grid[data-show="earth"] .greek-card[data-el="earth"],
-.greek-grid[data-show="aether"] .greek-card[data-el="aether"] { display: grid; }
+.greek-grid[data-show="olympians"] .greek-card[data-el="olympians"], .greek-grid[data-show="chthonic"] .greek-card[data-el="chthonic"],
+.greek-grid[data-show="first"] .greek-card[data-el="first"], .greek-grid[data-show="others"] .greek-card[data-el="others"] { display: grid; }
+.roots { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; color: rgb(var(--ink-soft)); }
+.roots ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 14px; }
+.roots li { display: grid; justify-items: center; gap: 2px; }
+.roots svg { width: 26px; height: 26px; fill: none; stroke: rgb(var(--glow) / 0.8); stroke-width: 1.8; stroke-linejoin: round; }
+.roots small { font: 400 italic 0.85rem/1 var(--f-dev); }
+.roots figcaption { font-size: 0.82rem; }
 
 /* IV · many lands */
 .lands { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
@@ -1141,3 +1146,12 @@ html[data-mag="c"] .mg .btn, html[data-mag="c"] [data-chapter="magic"] .btn { bo
   .dv-switch button span { display: none; }
   body:has(.dv-switch) .keep { bottom: calc(112px + env(safe-area-inset-bottom, 0px)); }
 }
+
+/* the wheel's two modes */
+.wheel-modes { display: inline-flex; gap: 4px; padding: 4px; border-radius: 999px; box-shadow: inset 0 0 0 1px rgb(var(--glow) / 0.35); margin-bottom: 8px; }
+.wheel-modes button { font: 500 0.8rem/1 var(--f-body); color: rgb(var(--ink)); background: none; border: 0; border-radius: 999px; padding: 7px 12px; cursor: pointer; }
+.wheel-modes button[aria-pressed="true"] { background: rgb(var(--ink)); color: rgb(var(--bg-a)); }
+.wheel[data-mode="sabbats"] [data-set="ritus"], .wheel[data-mode="ritus"] [data-set="sabbats"] { display: none; }
+.wh-ritu .wh-spoke { stroke: rgb(var(--glow) / 0.55); }
+.wh-ritu.is-on .wh-label { fill: rgb(var(--glow)); font-weight: 600; }
+.dv-sig-hint.small { font-size: 0.76rem; margin-top: -4px; }

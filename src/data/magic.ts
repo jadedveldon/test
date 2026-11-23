@@ -1,19 +1,23 @@
 /**
  * Pillar 2, Witchcraft & Magic: three art directions to compare live, all
- * built on one structure. The seven categories follow the seven classical
- * planets of traditional magic, each with its day of the week.
+ * built on the same seven chapters (the catalogue's seven categories).
  * Short descriptive lines are DRAFT copy for Sarvakali to refine.
  */
 export type MagDir = 'a' | 'b' | 'c';
 
-export const PLANETS = [
-  { key: 'venus', category: 'Love, Attraction & Glamour', planet: 'Venus', glyph: '♀', day: 'Friday', dow: 5, title: 'Love, attraction and glamour', line: 'Calling love in, mending what can be mended, letting go of what cannot, and learning to love yourself.' },
-  { key: 'jupiter', category: 'Abundance, Career & Success', planet: 'Jupiter', glyph: '♃', day: 'Thursday', dow: 4, title: 'Abundance, career and success', line: 'Money, work, clients and luck: opening the road and keeping it open.' },
-  { key: 'mars', category: 'Protection, Cleansing & Uncrossing', planet: 'Mars', glyph: '♂', day: 'Tuesday', dow: 2, title: 'Protection, cleansing and uncrossing', line: 'Shielding you and your home, clearing what clings, and lifting what was laid on you.' },
-  { key: 'saturn', category: 'Baneful & Dark Craft', planet: 'Saturn', glyph: '♄', day: 'Saturday', dow: 6, title: 'Baneful and dark craft', line: 'Binding, justice and the older, darker arts, held with discernment.' },
-  { key: 'mercury', category: 'Spellcraft & Magical Objects', planet: 'Mercury', glyph: '☿', day: 'Wednesday', dow: 3, title: 'Spellcraft and magical objects', line: 'Candles, jars, sigils, talismans, oils and the old folk ways: spells made by hand, for you.' },
-  { key: 'sun', category: 'Rituals, Ceremonies & Witchcraft Paths', planet: 'Sun', glyph: '☉', day: 'Sunday', dow: 0, title: 'Rituals, ceremonies and paths', line: 'Ceremony, fire and the four directions, rites of passage, and the many paths of the craft.' },
-  { key: 'moon', category: 'Nature, Moon & Cosmic Magic', planet: 'Moon', glyph: '☽', day: 'Monday', dow: 1, title: 'Nature, moon and cosmic magic', line: 'The moon and the planets, the turning year, herbs, stones and the wild places.' },
+/**
+ * The seven chapters follow the catalogue's own seven categories.
+ * (An earlier draft paired them with the seven classical planets. That pairing
+ * was not traditional and has been removed; see the fact-check notes.)
+ */
+export const CHAPTERS = [
+  { key: 'love', category: 'Love, Attraction & Glamour', title: 'Love, attraction and glamour', line: 'Calling love in, mending what can be mended, letting go of what cannot, and learning to love yourself.' },
+  { key: 'abundance', category: 'Abundance, Career & Success', title: 'Abundance, career and success', line: 'Money, work, clients and luck: opening the road and keeping it open.' },
+  { key: 'protection', category: 'Protection, Cleansing & Uncrossing', title: 'Protection, cleansing and uncrossing', line: 'Shielding you and your home, clearing what clings, and lifting what was laid on you.' },
+  { key: 'baneful', category: 'Baneful & Dark Craft', title: 'Baneful and dark craft', line: 'Binding, justice and the older, darker arts, held with discernment.' },
+  { key: 'spellcraft', category: 'Spellcraft & Magical Objects', title: 'Spellcraft and magical objects', line: 'Candles, jars, sigils, talismans, oils and the old folk ways: spells made by hand, for you.' },
+  { key: 'rituals', category: 'Rituals, Ceremonies & Witchcraft Paths', title: 'Rituals, ceremonies and paths', line: 'Ceremony, fire and the four directions, rites of passage, and the many paths of the craft.' },
+  { key: 'nature', category: 'Nature, Moon & Cosmic Magic', title: 'Nature, moon and cosmic magic', line: 'The moon and the planets, the turning year, herbs, stones and the wild places.' },
 ];
 
 /** a small line icon for every subcategory (24 × 24, drawn as strokes) */
@@ -97,16 +101,34 @@ export const SUB_ICON: Record<string, string> = {
   'Elements & Wild Places': 'tree',
 };
 
-/** the wheel of the year (northern hemisphere dates; DRAFT lines) */
+/**
+ * The Wheel of the Year as kept in modern pagan witchcraft (northern hemisphere).
+ * The solstices and equinoxes move by a day or so from year to year, so their
+ * dates are given as "around". The lines are the common modern meanings.
+ */
 export const SABBATS = [
-  { name: 'Samhain', month: 10, day: 31, line: 'The veil is thin: ancestors, endings, the year turning dark' },
-  { name: 'Yule', month: 12, day: 21, line: 'The longest night, and the light’s return' },
-  { name: 'Imbolc', month: 2, day: 1, line: 'First stirrings under the ground; Brigid’s fire' },
-  { name: 'Ostara', month: 3, day: 20, line: 'Day and night in balance; seeds and renewal' },
-  { name: 'Beltane', month: 5, day: 1, line: 'Fire, desire and the green world in bloom' },
-  { name: 'Litha', month: 6, day: 21, line: 'The sun at the height of its strength' },
-  { name: 'Lughnasadh', month: 8, day: 1, line: 'The first harvest, and gratitude' },
-  { name: 'Mabon', month: 9, day: 22, line: 'Balance again, and the second harvest' },
+  { name: 'Samhain', month: 10, day: 31, approx: false, line: 'The dark half of the year begins; a time to honour the dead' },
+  { name: 'Yule', month: 12, day: 21, approx: true, line: 'The winter solstice: the longest night, and the light’s return' },
+  { name: 'Imbolc', month: 2, day: 1, approx: false, line: 'The first stirrings of spring; associated with Brigid' },
+  { name: 'Ostara', month: 3, day: 20, approx: true, line: 'The spring equinox: day and night in balance' },
+  { name: 'Beltane', month: 5, day: 1, approx: false, line: 'The start of summer: fire, fertility and bloom' },
+  { name: 'Litha', month: 6, day: 21, approx: true, line: 'The summer solstice: the longest day' },
+  { name: 'Lughnasadh', month: 8, day: 1, approx: false, line: 'The first harvest, named for the god Lugh' },
+  { name: 'Mabon', month: 9, day: 22, approx: true, line: 'The autumn equinox: balance again, and the second harvest' },
+];
+
+/**
+ * The six Indian seasons (ritus). Each is traditionally two lunar months; by
+ * the sun's position (as Drik Panchang reckons them) the dates below apply,
+ * a few weeks earlier than the lunar months. Calendars differ.
+ */
+export const RITUS = [
+  { name: 'Vasanta', deva: 'वसन्त', english: 'spring', months: 'Chaitra and Vaishakha', from: [2, 18], line: 'Spring' },
+  { name: 'Grishma', deva: 'ग्रीष्म', english: 'summer', months: 'Jyeshtha and Ashadha', from: [4, 20], line: 'Summer heat' },
+  { name: 'Varsha', deva: 'वर्षा', english: 'monsoon', months: 'Shravana and Bhadrapada', from: [6, 21], line: 'The rains' },
+  { name: 'Sharad', deva: 'शरद्', english: 'autumn', months: 'Ashvin and Kartika', from: [8, 23], line: 'Autumn after the rains' },
+  { name: 'Hemanta', deva: 'हेमन्त', english: 'pre-winter', months: 'Margashirsha and Pausha', from: [10, 23], line: 'The cool season' },
+  { name: 'Shishira', deva: 'शिशिर', english: 'winter', months: 'Magha and Phalguna', from: [12, 21], line: 'Winter' },
 ];
 
 export type MagDirection = {
@@ -119,7 +141,7 @@ export type MagDirection = {
 export const MAG_DIRECTIONS: MagDirection[] = [
   {
     key: 'a', name: 'The grimoire',
-    essence: 'A witch’s book of shadows, opened at night: parchment pages, iron-gall ink, red rubrics and wax seals. Only Saturn’s chapter turns to black pages.',
+    essence: 'A witch’s book of shadows, opened at night: parchment pages, iron-gall ink, red rubrics and wax seals. Only the chapter on baneful craft turns to black pages.',
     feeling: ['handmade', 'old', 'tactile', 'scholarly'],
     palette: [
       { name: 'Parchment', hex: '#e8dcc0' }, { name: 'Vellum', hex: '#cdb98f' }, { name: 'Iron-gall ink', hex: '#2a1d14' },
@@ -127,8 +149,8 @@ export const MAG_DIRECTIONS: MagDirection[] = [
     ],
     type: { display: 'IM Fell English', note: 'an old printing type, with red drop-capitals', fontHref: 'https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&display=swap' },
     worlds: 'Ink-light on parchment: sigils, a rose, a spiral of luck, the pentacle, the eye on black pages, the ritual fire, the moon’s phases.',
-    layout: 'Each planet is a chapter of the book with a red initial; subcategories are recipes in the margin.',
-    signature: { name: 'Make a sigil', how: 'Write your intention. The vowels and repeated letters fall away, the rest are joined on the letter wheel into your sigil, and a wax seal presses it.' },
+    layout: 'Each category is a chapter of the book with a red initial; subcategories are recipes in the margin.',
+    signature: { name: 'Make a sigil', how: 'Write your intention. The vowels and repeated letters fall away (one common modern method), the rest are joined on a letter wheel into a sigil, and a wax seal presses it.' },
     sound: 'A quiet room: a breath through a reed, a soft knock of wood.',
     imagery: 'Engraving-style line drawings of herbs, tools and seals; a real wax seal photographed for the stamp.',
     voice: 'Like a teacher’s notes in the margin.',
@@ -144,25 +166,25 @@ export const MAG_DIRECTIONS: MagDirection[] = [
     type: { display: 'Fraunces', note: 'a soft, organic serif, light and italic', fontHref: 'https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&display=swap' },
     worlds: 'Silver light in a garden: the moon’s phases, a rose, the world tree, the pentacle, veils of night, candles, a ring of beads.',
     layout: 'Subcategories grow as rounded garden beds; the wheel of the year turns at the top.',
-    signature: { name: 'Turn the wheel of the year', how: 'The eight sabbats sit on a wheel, today marked on it. Turn it to visit each festival and what it is for.' },
+    signature: { name: 'Turn the wheel of the year', how: 'Two wheels to turn: the eight sabbats of modern pagan witchcraft, or the six Indian seasons (ritus). Today is marked on both.' },
     sound: 'Water and night insects, soft drops.',
     imagery: 'Pressed flowers and herbs photographed on dark paper; moonlit garden photography.',
     voice: 'Warm and gentle, like advice over the garden wall.',
   },
   {
     key: 'c', name: 'Alchemical sky',
-    essence: 'The alchemist’s heaven: black and gold, planetary seals, an astrolabe turning. A close cousin of Devotion’s Cosmic mother.',
+    essence: 'The alchemist’s heaven: black and gold, engraved plates, an astrolabe turning. A close cousin of Devotion’s Cosmic mother.',
     feeling: ['precise', 'celestial', 'golden', 'ceremonial'],
     palette: [
       { name: 'Black', hex: '#050505' }, { name: 'Emerald night', hex: '#0d3b2e' }, { name: 'Gold', hex: '#d9b25a' },
       { name: 'Copper', hex: '#b8693a' }, { name: 'Quicksilver', hex: '#c9d1dc' }, { name: 'Vermilion', hex: '#c8321e' },
     ],
-    type: { display: 'Cinzel', note: 'inscriptional capitals, widely spaced, with gold planetary glyphs', fontHref: 'https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&display=swap' },
-    worlds: 'Gold geometry: the astrolabe, a rose, a ring of light, the pentacle, the eye, sigils, the solar ring of flames, the moon’s phases.',
-    layout: 'Each planet is a seal in an astrolabe; subcategories are engraved plates in gold.',
-    signature: { name: 'Cast a circle', how: 'Trace a circle around the centre. As you pass East, South, West and North, each quarter’s candle lights, and the circle closes in gold.' },
+    type: { display: 'Cinzel', note: 'inscriptional capitals, widely spaced, with fine gold rules', fontHref: 'https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&display=swap' },
+    worlds: 'Gold geometry: the astrolabe, a rose, a ring of light, the pentacle, the eye, sigils, a ring of flames, the moon’s phases.',
+    layout: 'Each category is a chapter in gold; subcategories are engraved plates.',
+    signature: { name: 'Cast a circle', how: 'Trace a circle around the centre, sunwise. As you pass East, South, West and North, each quarter’s candle lights (the quarter-elements follow common Wiccan practice; traditions differ), and the circle closes in gold.' },
     sound: 'Crystal chimes and a shimmering chord.',
-    imagery: 'Fine gold line work: planetary seals, alchemical symbols, instruments.',
+    imagery: 'Fine gold line work: seals, alchemical symbols, instruments.',
     voice: 'Measured and exact, like an old treatise.',
   },
 ];

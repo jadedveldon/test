@@ -6,7 +6,7 @@ import type { WorldHandle as World } from './world/handle';
 /**
  * Pillar 1, Devotion & the Unseen · direction C, Cosmic mother.
  *   Turn the yantra: drag it into alignment and the bindu lights.
- *   The Greek gods: show the gods of one element at a time.
+ *   The Greek gods: show one family at a time.
  * (Directions A, Midnight temple, and B, Smoke and ash, were compared and set
  * aside; they remain in the project history.)
  */
@@ -78,7 +78,7 @@ function initYantra(root: HTMLElement, world: World) {
   return () => { cancelAnimationFrame(raf); svg.removeEventListener('pointerdown', down); svg.removeEventListener('pointermove', move); svg.removeEventListener('keydown', key); };
 }
 
-/* ------------------------------------------------ the five elements */
+/* ------------------------------------------- the families of the Greek gods */
 
 function initElements(root: HTMLElement, world: World) {
   const grid = document.querySelector<HTMLElement>('[data-greek-grid]');

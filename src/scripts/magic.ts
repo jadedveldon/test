@@ -1,5 +1,5 @@
 import gsap from 'gsap';
-import { MAG_DIRECTIONS, PLANETS, SABBATS, type MagDir } from '../data/magic';
+import { MAG_DIRECTIONS, RITUS, SABBATS, type MagDir } from '../data/magic';
 import { buzz, PATTERNS } from './haptics';
 import { ring } from './audio';
 import { moonIcon, readSky } from './sky';
@@ -9,9 +9,8 @@ import type { WorldHandle as World } from './world/handle';
  * Pillar 2, Witchcraft & Magic: the three directions being compared, and each
  * one's signature moment.
  *   A · The grimoire:   make a sigil from your intention, sealed in wax
- *   B · Moon garden:    turn the wheel of the year
+ *   B · Moon garden:    turn the wheel of the year, or the six Indian seasons
  *   C · Alchemical sky: cast a circle, lighting the four quarters
- * Plus, in every direction: today's planet is marked.
  */
 
 const fonts = new Set<string>();
@@ -82,47 +81,102 @@ function initSigil(root: HTMLElement, world: World) {
 /* ------------------------------------------ B · the wheel of the year */
 
 const dayOfYear = (m: number, d: number) => Math.round((Date.UTC(2026, m - 1, d) - Date.UTC(2026, 0, 1)) / 864e5);
+const degOf = (m: number, d: number) => (dayOfYear(m, d) / 365) * 360;
+const fmtDate = (m: number, d: number) => new Date(2026, m - 1, d).toLocaleDateString('en-IN', { day: 'numeric', month: 'long' });
+
+type WheelItem = { name: string; deg: number; title: string; line: string };
+
+/** two wheels on one dial: the modern pagan sabbats, or the six Indian seasons */
+function wheelItems(mode: string): { items: WheelItem[]; segments: boolean; note: string } {
+  if (mode === 'ritus') {
+    const items = RITUS.map((r, i) => {
+      const start = degOf(r.from[0], r.from[1]);
+      const nx = RITUS[(i + 1) % RITUS.length].from;
+      const end = degOf(nx[0], nx[1]) + (i === RITUS.length - 1 ? 360 : 0);
+      return {
+        name: r.name, deg: start,
+        title: `${r.name} (${r.deva}) · ${r.english}`,
+        line: `Lunar months ${r.months}; by the sun, about ${fmtDate(r.from[0], r.from[1])} to ${fmtDate(nx[0], nx[1])}.`,
+        end,
+      } as WheelItem & { end: number };
+    });
+    return { items, segments: true, note: 'Drag to turn. The marker at the top is today. Dates by the sun, as Drik Panchang reckons the ritus; by the lunar months each season comes a few weeks later. Calendars differ.' };
+  }
+  return {
+    items: SABBATS.map((s) => ({ name: s.name, deg: degOf(s.month, s.day), title: `${s.name} · ${s.approx ? 'around ' : ''}${fmtDate(s.month, s.day)}`, line: `${s.line}.` })),
+    segments: false,
+    note: 'Drag to turn. The marker at the top is today. The Wheel of the Year as kept in modern pagan witchcraft, northern hemisphere.',
+  };
+}
 
 function initWheel(root: HTMLElement, world: World) {
   const svg = root.querySelector<SVGSVGElement>('svg')!;
   const g = root.querySelector<SVGGElement>('[data-wheel-rot]')!;
   const now = root.querySelector<HTMLElement>('[data-wheel-now]')!;
+  const note = root.querySelector<HTMLElement>('[data-wheel-note]')!;
   const today = new Date();
-  const todayDeg = (dayOfYear(today.getMonth() + 1, today.getDate()) / 365) * 360;
-  const sabDeg = SABBATS.map((s) => (dayOfYear(s.month, s.day) / 365) * 360);
-  root.querySelectorAll<SVGGElement>('[data-sabbat]').forEach((el, i) => el.setAttribute('transform', `rotate(${sabDeg[i].toFixed(1)})`));
+  const todayDeg = degOf(today.getMonth() + 1, today.getDate());
   root.querySelector('[data-wheel-today]')!.setAttribute('transform', `rotate(${todayDeg.toFixed(1)})`);
   root.querySelector('[data-wheel-moon]')!.innerHTML = moonIcon(readSky('now').phase).replace('<svg', '<svg x="-16" y="-16" width="32" height="32"');
+  let mode = root.dataset.mode || 'sabbats';
+  let data = wheelItems(mode);
+  let labels: SVGTextElement[] = [];
+  let labelDeg: number[] = [];
+  const layout = () => {
+    data = wheelItems(mode);
+    root.dataset.mode = mode;
+    note.textContent = data.note;
+    root.querySelectorAll<HTMLButtonElement>('[data-wheel-mode]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.wheelMode === mode)));
+    const set = root.querySelector<SVGGElement>(`[data-set="${mode}"]`)!;
+    const groups = Array.from(set.querySelectorAll<SVGGElement>('[data-item]'));
+    labels = groups.map((el) => el.querySelector('text')!);
+    labelDeg = data.items.map((it) => (data.segments ? (it.deg + ((it as WheelItem & { end: number }).end - it.deg) / 2) : it.deg));
+    groups.forEach((el, i) => {
+      el.setAttribute('transform', `rotate(${data.items[i].deg.toFixed(1)})`);
+      // a season's name sits in the middle of its arc
+      if (data.segments) labels[i].setAttribute('transform', `rotate(${(labelDeg[i] - data.items[i].deg).toFixed(1)})`);
+    });
+    shown = -9;
+  };
   const st = { rot: -todayDeg, vel: 0 };
-  let dragging = false, last = 0, lastT = 0, raf = 0, prev = performance.now(), shown = -1;
-  const labels = Array.from(root.querySelectorAll<SVGTextElement>('.wh-label'));
-  const fmt = (s: (typeof SABBATS)[number]) => new Date(2026, s.month - 1, s.day).toLocaleDateString('en-IN', { day: 'numeric', month: 'long' });
+  let dragging = false, last = 0, lastT = 0, raf = 0, prev = performance.now(), shown = -9;
   const frame = (t: number) => {
     raf = requestAnimationFrame(frame);
     const dt = Math.min(0.05, (t - prev) / 1000);
     prev = t;
     if (!dragging && Math.abs(st.vel) > 0.5) { st.rot += st.vel * dt; st.vel *= Math.exp(-dt * 2.4); }
     g.setAttribute('transform', `rotate(${st.rot.toFixed(2)})`);
-    labels.forEach((l, i) => l.setAttribute('transform', `rotate(${(-(st.rot + sabDeg[i])).toFixed(2)} 0 -108)`));
-    // which festival sits under the marker at the top?
+    labels.forEach((l, i) => {
+      const base = data.segments ? `rotate(${(labelDeg[i] - data.items[i].deg).toFixed(1)}) ` : '';
+      l.setAttribute('transform', `${base}rotate(${(-(st.rot + labelDeg[i])).toFixed(2)} 0 -108)`);
+    });
     const at = ((-st.rot % 360) + 360) % 360;
-    let best = 0, bd = 999;
-    sabDeg.forEach((d, i) => { const diff = Math.abs(((d - at + 540) % 360) - 180); if (diff < bd) { bd = diff; best = i; } });
-    const isToday = Math.abs(((todayDeg - at + 540) % 360) - 180) < 2;
-    const key = isToday ? -2 : best;
+    // the item under the marker: for seasons, the one whose arc contains it; for sabbats, the nearest
+    let idx = 0;
+    if (data.segments) {
+      data.items.forEach((it, i) => { const end = (it as WheelItem & { end: number }).end; const a = at < it.deg ? at + 360 : at; if (a >= it.deg && a < end) idx = i; });
+    } else {
+      let bd = 999;
+      data.items.forEach((it, i) => { const diff = Math.abs(((it.deg - at + 540) % 360) - 180); if (diff < bd) { bd = diff; idx = i; } });
+    }
+    const atToday = Math.abs(((todayDeg - at + 540) % 360) - 180) < 2;
+    const key = (atToday ? 100 : 0) + idx;
     if (key !== shown) {
       shown = key;
-      // at today's mark, name the next festival to come
-      const ahead = sabDeg.map((d, i) => ({ i, gap: (d - todayDeg + 360) % 360 })).sort((x, y) => x.gap - y.gap)[0];
-      const s = SABBATS[isToday ? ahead.i : best];
-      const daysTo = Math.round((ahead.gap / 360) * 365);
       now.innerHTML = '';
       const b = document.createElement('b');
-      b.textContent = isToday ? `Today. Next: ${s.name}, ${daysTo === 0 ? 'today' : `in ${daysTo} days`}` : `${s.name} · ${fmt(s)}`;
       const sp = document.createElement('span');
-      sp.textContent = ` ${s.line}.`;
+      if (atToday && !data.segments) {
+        const ahead = data.items.map((it, i) => ({ i, gap: (it.deg - todayDeg + 360) % 360 })).sort((x, y) => x.gap - y.gap)[0];
+        const days = Math.round((ahead.gap / 360) * 365);
+        b.textContent = `Today. Next: ${data.items[ahead.i].name}, ${days === 0 ? 'today' : `in about ${days} days`}`;
+        sp.textContent = ` ${data.items[ahead.i].line}`;
+      } else {
+        b.textContent = atToday ? `Today: ${data.items[idx].title}` : data.items[idx].title;
+        sp.textContent = ` ${data.items[idx].line}`;
+      }
       now.append(b, sp);
-      root.querySelectorAll('[data-sabbat]').forEach((el, i) => el.classList.toggle('is-on', i === best));
+      root.querySelectorAll(`[data-set="${mode}"] [data-item]`).forEach((el, i) => el.classList.toggle('is-on', i === idx));
     }
     svg.setAttribute('aria-valuenow', String(Math.round(at)));
   };
@@ -142,13 +196,24 @@ function initWheel(root: HTMLElement, world: World) {
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { st.rot -= 15; e.preventDefault(); }
     if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { st.rot += 15; e.preventDefault(); }
   };
+  const onMode = (e: Event) => {
+    const b = (e.target as Element | null)?.closest<HTMLButtonElement>('[data-wheel-mode]');
+    if (!b) return;
+    mode = b.dataset.wheelMode!;
+    layout();
+    st.rot = -todayDeg;
+    st.vel = 0;
+    buzz(PATTERNS.choice);
+  };
+  root.addEventListener('click', onMode);
   svg.addEventListener('pointerdown', down);
   svg.addEventListener('pointermove', move);
   svg.addEventListener('pointerup', up);
   svg.addEventListener('pointercancel', up);
   svg.addEventListener('keydown', key);
+  layout();
   raf = requestAnimationFrame(frame);
-  return () => { cancelAnimationFrame(raf); svg.removeEventListener('pointerdown', down); svg.removeEventListener('pointermove', move); svg.removeEventListener('keydown', key); };
+  return () => { cancelAnimationFrame(raf); root.removeEventListener('click', onMode); svg.removeEventListener('pointerdown', down); svg.removeEventListener('pointermove', move); svg.removeEventListener('keydown', key); };
 }
 
 /* ------------------------------------------------ C · cast a circle */
@@ -224,14 +289,6 @@ function initCast(root: HTMLElement, world: World) {
 
 /* ------------------------------------------------------------- page */
 
-function markToday() {
-  const dow = new Date().getDay();
-  const pl = PLANETS.find((x) => x.dow === dow);
-  document.querySelectorAll<HTMLElement>('.mg-planets [data-dow]').forEach((li) => li.classList.toggle('is-today', Number(li.dataset.dow) === dow));
-  const t = document.querySelector('[data-mag-today]');
-  if (t && pl) t.textContent = `Today is ${pl.day}, the day of ${pl.planet === 'Sun' || pl.planet === 'Moon' ? `the ${pl.planet}` : pl.planet} ${pl.glyph}: a good day for ${pl.title.toLowerCase()}.`;
-}
-
 let cleanups: (() => void)[] = [];
 export function stopMagic() {
   cleanups.forEach((c) => c());
@@ -242,7 +299,6 @@ export function startMagic(world: World, dir: MagDir, calm: boolean) {
   stopMagic();
   const page = document.querySelector('[data-magic]');
   if (!page) return;
-  markToday();
   if (calm) return;
   if (dir === 'a') { const el = page.querySelector<HTMLElement>('[data-sigil]'); if (el) cleanups.push(initSigil(el, world)); }
   if (dir === 'b') { const el = page.querySelector<HTMLElement>('[data-wheel]'); if (el) cleanups.push(initWheel(el, world)); }

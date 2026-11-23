@@ -19,10 +19,11 @@ The tithis in each half are counted from one to fourteen: Pratipada, Dwitiya, Tr
 
 ## The nights that matter
 
-- **Purnima**, the full moon, ends the bright fortnight. It is a night for gratitude, completion and fullness.
-- **Amavasya**, the new moon, ends the dark fortnight. The sky is dark and the veil is thin. It is the night most sacred to Kali, and the great Kali Puja falls on the Amavasya of Kartik.
-- **Ashtami** (the eighth) and **Chaturdashi** (the fourteenth) of the dark fortnight are also strong nights for the Devi.
-- **Ekadashi** (the eleventh) in each fortnight is widely kept for fasting and prayer.
+- **Purnima**, the full moon, ends the bright fortnight. Many observances fall on it, such as Guru Purnima and Sharad Purnima.
+- **Amavasya**, the new moon, ends the dark fortnight. It is a day for remembering the ancestors, and a night especially kept for Kali: the great Kali Puja falls on the Amavasya of Kartik.
+- **Ashtami**, the eighth: in the dark fortnight it is Kalashtami, kept each month for Kala Bhairava; in the bright fortnight of Navratri it is Durga Ashtami.
+- **Chaturdashi**, the fourteenth of the dark fortnight, is Masik Shivaratri, the monthly night of Shiva.
+- **Ekadashi**, the eleventh, in each fortnight is widely kept for fasting and prayer.
 
 ## The sky on this site
 

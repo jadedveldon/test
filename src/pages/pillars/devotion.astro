@@ -11,7 +11,7 @@ import Base from '../../layouts/Base.astro';
 import Yantra from '../../components/Yantra.astro';
 import PillarSubs from '../../components/PillarSubs.astro';
 import { pillars, categoryCount } from '../../data/site';
-import { ELEMENTS, GREEK, HINDU, HINDU_ALSO, LANDS, MAHAVIDYAS, TANTRA } from '../../data/devotion';
+import { ELEMENTS, FAMILIES, GREEK, HINDU, HINDU_ALSO, LANDS, MAHAVIDYAS, TANTRA } from '../../data/devotion';
 
 const index = pillars.findIndex((p) => p.slug === 'devotion');
 const p = pillars[index];
@@ -132,20 +132,19 @@ const MOVES = [
         <header class="dv-head">
           <p class="kicker" data-fade>III · {deity.name} · {greekSub.items.length} services</p>
           <h2 class="display-l" data-split data-dust>The Greek gods</h2>
-          <p class="lede" data-fade>Hecate at the crossroads, Aphrodite from the foam, Persephone between two worlds. Gathered here by the elements they belong to.</p>
+          <p class="lede" data-fade>Hecate at the crossroads, Aphrodite from the foam, Persephone between two worlds: the Olympians, the gods of the underworld, the first powers and the Titans.</p>
         </header>
-        <div class="elements" role="group" aria-label="Show the gods of one element" data-fade data-elements>
+        <figure class="roots" data-fade>
+          <ul aria-hidden="true">{ELEMENTS.map((e) => <li><svg viewBox="-20 -20 40 40"><path d={e.symbol} /></svg><small lang="grc">{e.greek}</small></li>)}</ul>
+          <figcaption>The four roots of Empedocles: fire, air, water and earth.</figcaption>
+        </figure>
+        <div class="elements" role="group" aria-label="Show one family of gods" data-fade data-elements>
           <button type="button" data-el="all" aria-pressed="true"><span class="el-all">All</span></button>
-          {ELEMENTS.map((e) => (
-            <button type="button" data-el={e.key} aria-pressed="false">
-              <svg viewBox="-20 -20 40 40" aria-hidden="true"><path d={e.symbol} /></svg>
-              <span>{e.name}</span><small lang="grc">{e.greek}</small>
-            </button>
-          ))}
+          {FAMILIES.map((f) => <button type="button" data-el={f.key} aria-pressed="false"><span>{f.name}</span></button>)}
         </div>
         <ul class="greek-grid" data-greek-grid data-fade>
           {greekCards.map((g) => (
-            <li class="greek-card" data-el={g.el}>
+            <li class="greek-card" data-el={g.fam}>
               <span class="greek-script" lang="grc">{g.greek}</span>
               <span class="deity-name">{g.name}</span>
               <span class="deity-line">{g.line}</span>

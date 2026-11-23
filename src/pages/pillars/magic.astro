@@ -1,13 +1,13 @@
 ---
 /**
- * Pillar 2, Witchcraft & Magic: seven movements under the seven classical
- * planets, in three directions to compare (A The grimoire, B Moon garden,
+ * Pillar 2, Witchcraft & Magic: seven chapters (the catalogue's seven
+ * categories), in three directions to compare (A The grimoire, B Moon garden,
  * C Alchemical sky).
  */
 import Base from '../../layouts/Base.astro';
 import SubCards from '../../components/SubCards.astro';
 import { pillars, categoryCount } from '../../data/site';
-import { MAG_DIRECTIONS, PLANETS, SABBATS, SUB_ICON } from '../../data/magic';
+import { CHAPTERS, MAG_DIRECTIONS, RITUS, SABBATS, SUB_ICON } from '../../data/magic';
 
 const index = pillars.findIndex((p) => p.slug === 'magic');
 const p = pillars[index];
@@ -15,7 +15,7 @@ const prev = pillars[(index + pillars.length - 1) % pillars.length];
 const next = pillars[(index + 1) % pillars.length];
 const anchor = (s: string) => s.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
-const moves = PLANETS.map((pl) => ({ ...pl, cat: p.categories.find((c) => c.name === pl.category)! }));
+const moves = CHAPTERS.map((ch) => ({ ...ch, cat: p.categories.find((c) => c.name === ch.category)! }));
 const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 const QUARTERS = [
   { name: 'East', el: 'Air', a: 0 }, { name: 'South', el: 'Fire', a: 90 }, { name: 'West', el: 'Water', a: 180 }, { name: 'North', el: 'Earth', a: 270 },
@@ -30,19 +30,18 @@ const pos = (deg: number, r: number) => { const a = (deg * Math.PI) / 180; retur
           <a class="back-link" href="/#paths">← All pillars</a>
           <p class="kicker" data-hero>Pillar {index + 1} of {pillars.length} · {p.count} services</p>
           <h1 class="display-l mg-title" data-hero data-split transition:name="pt-magic" data-pt>{p.name}</h1>
-          <p class="lede" data-hero>{p.line} Seven chapters, one for each of the seven planets of traditional magic.</p>
+          <p class="lede" data-hero>{p.line}</p>
           <ol class="mg-planets" data-hero aria-label="The seven chapters">
             {moves.map((m, i) => (
-              <li data-dow={m.dow}>
+              <li>
                 <a href={`#${anchor(m.category)}`}>
-                  <span class="mg-glyph" aria-hidden="true">{m.glyph}</span>
+                  <span class="mg-glyph" aria-hidden="true">{ROMAN[i]}</span>
                   <span class="mg-pl-title">{m.title}</span>
-                  <span class="mg-pl-day">{m.planet} · {m.day}</span>
+                  <span class="mg-pl-day">{categoryCount(m.cat)} services</span>
                 </a>
               </li>
             ))}
           </ol>
-          <p class="mg-today" data-mag-today data-hero></p>
         </div>
 
         <div class="mg-sig" data-hero>
@@ -64,28 +63,42 @@ const pos = (deg: number, r: number) => { const a = (deg * Math.PI) / 180; retur
               <input id="sigil-word" maxlength="40" autocomplete="off" placeholder="Your intention, in a few words" />
               <button type="submit" class="btn btn-ghost btn-sm">Make my sigil</button>
             </form>
-            <p class="dv-sig-hint" data-sigil-hint>Vowels and repeated letters fall away; the rest are joined on the wheel.</p>
+            <p class="dv-sig-hint" data-sigil-hint>One common modern method: vowels and repeated letters fall away, and the rest are joined on a letter wheel. Sarvakali may make sigils differently.</p>
           </div>
 
           <!-- B · the wheel of the year -->
-          <div class="wheel" data-mag-only="b" data-wheel>
-            <svg viewBox="-150 -150 300 300" class="wheel-svg" tabindex="0" role="slider" aria-label="Turn the wheel of the year" aria-valuemin="0" aria-valuemax="360" aria-valuenow="0">
+          <div class="wheel" data-mag-only="b" data-wheel data-mode="sabbats">
+            <div class="wheel-modes" role="group" aria-label="Which wheel">
+              <button type="button" data-wheel-mode="sabbats" aria-pressed="true">Wheel of the year</button>
+              <button type="button" data-wheel-mode="ritus" aria-pressed="false">Indian seasons (ritus)</button>
+            </div>
+            <svg viewBox="-150 -150 300 300" class="wheel-svg" tabindex="0" role="slider" aria-label="Turn the wheel" aria-valuemin="0" aria-valuemax="360" aria-valuenow="0">
               <g data-wheel-rot>
                 <circle r="128" class="wh-ring" /><circle r="98" class="wh-ring thin" /><circle r="60" class="wh-ring thin" />
-                {SABBATS.map((s, i) => (
-                  <g class="wh-sabbat" data-sabbat={i}>
-                    <line class="wh-spoke" x1="0" y1="-60" x2="0" y2="-128" />
-                    <circle class="wh-dot" cy="-128" r="5" />
-                    <text class="wh-label" y="-108" text-anchor="middle">{s.name}</text>
-                  </g>
-                ))}
+                <g class="wh-set" data-set="sabbats">
+                  {SABBATS.map((s, i) => (
+                    <g class="wh-sabbat" data-item={i}>
+                      <line class="wh-spoke" x1="0" y1="-60" x2="0" y2="-128" />
+                      <circle class="wh-dot" cy="-128" r="5" />
+                      <text class="wh-label" y="-108" text-anchor="middle">{s.name}</text>
+                    </g>
+                  ))}
+                </g>
+                <g class="wh-set" data-set="ritus">
+                  {RITUS.map((r, i) => (
+                    <g class="wh-sabbat wh-ritu" data-item={i}>
+                      <line class="wh-spoke" x1="0" y1="-60" x2="0" y2="-128" />
+                      <text class="wh-label" y="-108" text-anchor="middle" data-mid>{r.name}</text>
+                    </g>
+                  ))}
+                </g>
                 <circle class="wh-today" data-wheel-today r="4" cy="-128" />
               </g>
               <path class="wh-pointer" d="M0 -146 L-7 -134 L7 -134 Z" />
               <g class="wh-moon" data-wheel-moon></g>
             </svg>
             <p class="wheel-now" data-wheel-now aria-live="polite"></p>
-            <p class="dv-sig-hint">Drag to turn the wheel. The marker at the top is today. (The wheel follows the northern year.)</p>
+            <p class="dv-sig-hint" data-wheel-note>Drag to turn the wheel. The marker at the top is today. The modern pagan wheel, northern hemisphere.</p>
           </div>
 
           <!-- C · cast a circle -->
@@ -103,6 +116,7 @@ const pos = (deg: number, r: number) => { const a = (deg * Math.PI) / 180; retur
               ); })}
             </svg>
             <p class="dv-sig-hint" data-cast-hint>Trace a circle around the star, going sunwise (clockwise)</p>
+            <p class="dv-sig-hint small">Quarters as in many Wiccan circles: East air, South fire, West water, North earth. Traditions differ.</p>
             <button type="button" class="btn btn-ghost btn-sm" data-cast-auto>Cast it for me</button>
           </div>
         </div>
@@ -110,13 +124,13 @@ const pos = (deg: number, r: number) => { const a = (deg * Math.PI) / 180; retur
     </section>
 
     {moves.map((m, i) => (
-      <section class={`chapter mg-move mg-${m.key}`} id={anchor(m.category)} data-chapter={`magA_${m.key}`} data-mag-chapter={m.key} data-dow={m.dow}>
+      <section class={`chapter mg-move mg-${m.key}`} id={anchor(m.category)} data-chapter={`magA_${m.key}`} data-mag-chapter={m.key}>
         <div class="chapter-inner mg-inner">
           <header class="mg-head">
-            <p class="kicker mg-kicker" data-fade><span class="mg-glyph" aria-hidden="true">{m.glyph}</span> {ROMAN[i]} · {m.planet} · {m.day} · {categoryCount(m.cat)} services</p>
+            <p class="kicker mg-kicker" data-fade>{ROMAN[i]} · {categoryCount(m.cat)} services</p>
             <h2 class="display-l" data-split data-dust>{m.title}</h2>
             <p class="lede" data-fade>{m.line}</p>
-            {m.key === 'saturn' && (
+            {m.key === 'baneful' && (
               <p class="mg-care" data-fade>Baneful work is considered case by case and may be declined. <a href="/care">Read Boundaries and care</a>.</p>
             )}
             <div class="cta-row" data-fade><a class="btn btn-ghost btn-sm" href="/connect" data-topic={m.category}>Ask about this</a></div>
@@ -141,7 +155,7 @@ const pos = (deg: number, r: number) => { const a = (deg * Math.PI) / 180; retur
     <section class="dv-brief" aria-labelledby="mg-brief-title">
       <p class="kicker">Design exploration · this pillar</p>
       <h2 id="mg-brief-title" class="display-m">Three directions for Witchcraft &amp; Magic</h2>
-      <p class="hint">All three share the seven-planet structure. Switch between them with the buttons at the bottom of the screen: the page, the homepage chapter, the worlds, the type and the sound all change.</p>
+      <p class="hint">All three share the same seven chapters. Switch between them with the buttons at the bottom of the screen: the page, the homepage chapter, the worlds, the type and the sound all change.</p>
       <div class="dv-briefs">
         {MAG_DIRECTIONS.map((d) => (
           <article class="dv-card" data-mag-card={d.key}>

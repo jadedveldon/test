@@ -55,7 +55,7 @@ export function readSky(mode: SkyMode, now = new Date()): SkyReading {
   const lit = Math.round((0.5 - 0.5 * Math.cos(phase * Math.PI * 2)) * 100);
 
   let note: string;
-  if (special === 'amavasya') note = 'Amavasya, the new moon: the night most sacred to Kali. The site turns deeper tonight.';
+  if (special === 'amavasya') note = 'Amavasya, the new moon: a night especially kept for Kali. The site turns deeper tonight.';
   else if (special === 'purnima') note = 'Purnima, the full moon. The site is washed in silver tonight.';
   else note = `${paksha === 'Shukla' ? 'Waxing' : 'Waning'} moon, ${lit}% lit. The moon in the sky behind this page is tonight's moon.`;
   if (mode !== 'now' && mode !== 'off') note += ' (Preview: chosen in the prototype panel.)';

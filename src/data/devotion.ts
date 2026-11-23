@@ -52,41 +52,55 @@ export const HINDU = [
 export const HINDU_ALSO = ['Devi Protection Working', 'Devi Invocation & Prayer', 'Goddess-Centred Spiritual Guidance'];
 export const TANTRA = ['Mantra-Based Devotional Working', 'Yantra-Based Devotional Working', 'Tantric Symbolic Ritual Work', 'Personalised Devi Sadhana Guidance'];
 
-/** the Greek gods, gathered by the five elements (a draft grouping, for Sarvakali to confirm) */
+/**
+ * The Greek gods, gathered by family as the old sources describe them
+ * (Hesiod's Theogony and the usual list of the twelve Olympians).
+ */
+export const FAMILIES = [
+  { key: 'olympians', name: 'The Olympians' },
+  { key: 'chthonic', name: 'The underworld' },
+  { key: 'first', name: 'Primordials and Titans' },
+  { key: 'others', name: 'Others' },
+];
+
+/**
+ * Behind the section: the four "roots" of Empedocles (fire, air, water,
+ * earth), the classical Greek elements. Shown as iconography only.
+ */
 export type Element = { key: string; name: string; greek: string; symbol: string };
 export const ELEMENTS: Element[] = [
   { key: 'fire', name: 'Fire', greek: 'Πῦρ', symbol: 'M0 -18 L16 12 L-16 12 Z' },
   { key: 'air', name: 'Air', greek: 'Ἀήρ', symbol: 'M0 -18 L16 12 L-16 12 Z M-10 1 L10 1' },
   { key: 'water', name: 'Water', greek: 'Ὕδωρ', symbol: 'M0 18 L16 -12 L-16 -12 Z' },
   { key: 'earth', name: 'Earth', greek: 'Γῆ', symbol: 'M0 18 L16 -12 L-16 -12 Z M-10 -1 L10 -1' },
-  { key: 'aether', name: 'Aether', greek: 'Αἰθήρ', symbol: 'M-15 0 A15 15 0 1 0 15 0 A15 15 0 1 0 -15 0 M-5 0 A5 5 0 1 0 5 0 A5 5 0 1 0 -5 0' },
 ];
+
 export const GREEK = [
-  { name: 'Hephaestus', greek: 'Ἥφαιστος', el: 'fire', line: 'The forge and every craft' },
-  { name: 'Hestia', greek: 'Ἑστία', el: 'fire', line: 'The hearth and the home' },
-  { name: 'Apollo', greek: 'Ἀπόλλων', el: 'fire', line: 'Light, music, prophecy' },
-  { name: 'Ares', greek: 'Ἄρης', el: 'fire', line: 'Courage and the fight' },
-  { name: 'Zeus', greek: 'Ζεύς', el: 'air', line: 'Sky, thunder and order' },
-  { name: 'Hermes', greek: 'Ἑρμῆς', el: 'air', line: 'Messages, roads and luck' },
-  { name: 'Athena', greek: 'Ἀθηνᾶ', el: 'air', line: 'Wisdom and strategy' },
-  { name: 'Eros', greek: 'Ἔρως', el: 'air', line: "Desire's arrow" },
-  { name: 'Nike', greek: 'Νίκη', el: 'air', line: 'Victory' },
-  { name: 'Poseidon', greek: 'Ποσειδῶν', el: 'water', line: 'The sea and its depths' },
-  { name: 'Aphrodite', greek: 'Ἀφροδίτη', el: 'water', line: 'Love and beauty, born of sea foam' },
-  { name: 'Dionysus', greek: 'Διόνυσος', el: 'water', line: 'Ecstasy and release' },
-  { name: 'Gaia', greek: 'Γαῖα', el: 'earth', line: 'The Earth herself' },
-  { name: 'Demeter', greek: 'Δημήτηρ', el: 'earth', line: 'Harvest, and a mother’s grief' },
-  { name: 'Persephone', greek: 'Περσεφόνη', el: 'earth', line: 'Spring and the underworld' },
-  { name: 'Hades', greek: 'ᾍδης', el: 'earth', line: 'The underworld and the ancestors' },
-  { name: 'Rhea', greek: 'Ῥέα', el: 'earth', line: 'Mother of the gods' },
-  { name: 'Kronos', greek: 'Κρόνος', el: 'earth', line: 'Time and the harvest' },
-  { name: 'Nyx', greek: 'Νύξ', el: 'aether', line: 'Primordial night' },
-  { name: 'Selene', greek: 'Σελήνη', el: 'aether', line: 'The moon' },
-  { name: 'Hecate', greek: 'Ἑκάτη', el: 'aether', line: 'Crossroads, keys and torches' },
-  { name: 'Artemis', greek: 'Ἄρτεμις', el: 'aether', line: 'The wild and the free' },
-  { name: 'Hera', greek: 'Ἥρα', el: 'aether', line: 'Queen of the heavens' },
-  { name: 'Nemesis', greek: 'Νέμεσις', el: 'aether', line: 'Balance restored' },
-  { name: 'Psyche', greek: 'Ψυχή', el: 'aether', line: 'The soul' },
+  { name: 'Zeus', greek: 'Ζεύς', fam: 'olympians', line: 'Sky, thunder and order' },
+  { name: 'Hera', greek: 'Ἥρα', fam: 'olympians', line: 'Queen of the gods; marriage' },
+  { name: 'Poseidon', greek: 'Ποσειδῶν', fam: 'olympians', line: 'The sea and earthquakes' },
+  { name: 'Demeter', greek: 'Δημήτηρ', fam: 'olympians', line: 'The harvest, and a mother’s grief' },
+  { name: 'Athena', greek: 'Ἀθηνᾶ', fam: 'olympians', line: 'Wisdom, strategy and craft' },
+  { name: 'Apollo', greek: 'Ἀπόλλων', fam: 'olympians', line: 'Music, prophecy and healing' },
+  { name: 'Artemis', greek: 'Ἄρτεμις', fam: 'olympians', line: 'The hunt and the wild' },
+  { name: 'Ares', greek: 'Ἄρης', fam: 'olympians', line: 'War and courage' },
+  { name: 'Aphrodite', greek: 'Ἀφροδίτη', fam: 'olympians', line: 'Love and beauty, born of sea foam' },
+  { name: 'Hephaestus', greek: 'Ἥφαιστος', fam: 'olympians', line: 'The forge and every craft' },
+  { name: 'Hermes', greek: 'Ἑρμῆς', fam: 'olympians', line: 'Messenger; roads, travellers and luck' },
+  { name: 'Hestia', greek: 'Ἑστία', fam: 'olympians', line: 'The hearth and the home' },
+  { name: 'Dionysus', greek: 'Διόνυσος', fam: 'olympians', line: 'Wine, ecstasy and release' },
+  { name: 'Hades', greek: 'ᾍδης', fam: 'chthonic', line: 'King of the underworld and the dead' },
+  { name: 'Persephone', greek: 'Περσεφόνη', fam: 'chthonic', line: 'Spring, and queen of the underworld' },
+  { name: 'Hecate', greek: 'Ἑκάτη', fam: 'chthonic', line: 'Crossroads, torches and magic' },
+  { name: 'Gaia', greek: 'Γαῖα', fam: 'first', line: 'The Earth herself' },
+  { name: 'Nyx', greek: 'Νύξ', fam: 'first', line: 'Primordial night' },
+  { name: 'Eros', greek: 'Ἔρως', fam: 'first', line: 'Desire; in Hesiod, one of the first powers' },
+  { name: 'Kronos', greek: 'Κρόνος', fam: 'first', line: 'Titan of the harvest; later confused with Chronos, time' },
+  { name: 'Rhea', greek: 'Ῥέα', fam: 'first', line: 'Titan; mother of the Olympians' },
+  { name: 'Selene', greek: 'Σελήνη', fam: 'first', line: 'The moon, daughter of Titans' },
+  { name: 'Nemesis', greek: 'Νέμεσις', fam: 'others', line: 'Retribution for arrogance' },
+  { name: 'Nike', greek: 'Νίκη', fam: 'others', line: 'Victory' },
+  { name: 'Psyche', greek: 'Ψυχή', fam: 'others', line: 'The soul; beloved of Eros' },
 ];
 
 /** goddesses and gods of many lands */
