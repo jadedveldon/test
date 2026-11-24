@@ -996,7 +996,8 @@ export class World {
     const halfW = Math.tan(Math.PI / 6) * 10 * aspect;
     this.fit = Math.min(1, (halfW * 0.92) / 5.6);
     this.shiftScale = aspect > 1.15 ? 1 : 0;
-    this.narrowDim = aspect < 1 ? 0.62 : 1;
+    // on phones the forms sit behind the text, so they stay quiet there
+    this.narrowDim = aspect < 1 ? 0.42 : 1;
     if (!this.renderer || !this.bgMat || !this.copyMat || !this.bgRT) return;
     this.renderer.setSize(w, h, false);
     const buf = new Vector2();
@@ -1007,10 +1008,11 @@ export class World {
     this.bgMat.uniforms.uRes.value.set(bw, bh);
     this.copyMat.uniforms.uRes.value.copy(buf);
     // the moon sits near the top right in any shape of screen
-    const mx = (aspect >= 1 ? 0.5 * aspect : 0.5) - 0.22;
-    const my = (aspect >= 1 ? 0.5 : 0.5 / aspect) - 0.2;
+    // (on phones it is smaller and a little lower, clear of the header)
+    const mx = (aspect >= 1 ? 0.5 * aspect : 0.5) - (aspect >= 1 ? 0.22 : 0.14);
+    const my = (aspect >= 1 ? 0.5 : 0.5 / aspect) - (aspect >= 1 ? 0.2 : 0.34);
     this.copyMat.uniforms.uMoonPos.value.set(mx, my);
-    this.copyMat.uniforms.uMoonR.value = aspect >= 1 ? 0.052 : 0.07;
+    this.copyMat.uniforms.uMoonR.value = aspect >= 1 ? 0.052 : 0.05;
     this.camera.aspect = aspect;
     this.camera.updateProjectionMatrix();
     if (this.rt) this.rt.setSize(buf.x, buf.y);

@@ -48,7 +48,7 @@ export const PRESETS: Record<string, Preset> = {
   },
   connect: {
     a: '#0c0706', b: '#3a1a12', c: '#c9773a', glow: '#ffcf8a',
-    ink: '#f8eee3', inkSoft: '#cdb6a4', scale: 1.3, warp: 2.0, speed: 0.06, light: 0, motes: 0.4, form: 'vortex', shift: 3.6,
+    ink: '#f8eee3', inkSoft: '#cdb6a4', scale: 1.3, warp: 2.0, speed: 0.06, light: 0, motes: 0.4, form: 'vortex', shift: 3.6, fade: 0.38,
   },
   devotion: {
     a: '#07050f', b: '#2b0f2e', c: '#b8892f', glow: '#f2c66b',
@@ -273,10 +273,10 @@ export const PRESETS: Record<string, Preset> = {
     a: '#04161a', b: '#0d3a3f', c: '#e7a9b8', glow: '#e2c27a',
     ink: '#eef5f1', inkSoft: '#a9c4bd', scale: 1.2, warp: 1.8, speed: 0.03, light: 0, motes: 0.4, form: 'water', shift: 0, fade: 0.3,
   },
-  // IV · journaling: threads of silk
+  // IV · journaling: an open book beside the prompt
   heal_journal: {
     a: '#04161a', b: '#0d3a3f', c: '#d9c8a6', glow: '#e2c27a',
-    ink: '#eef5f1', inkSoft: '#a9c4bd', scale: 1.2, warp: 1.8, speed: 0.03, light: 0, motes: 0.4, form: 'silk', shift: 0, fade: 0.35,
+    ink: '#eef5f1', inkSoft: '#a9c4bd', scale: 1.2, warp: 1.8, speed: 0.03, light: 0, motes: 0.4, form: 'book', shift: 4.2, fade: 0.45,
   },
   // the close: the lotus again, smaller
   heal_close: {
@@ -574,10 +574,10 @@ export const PRESETS: Record<string, Preset> = {
     ink: '#f3ead8', inkSoft: '#c4b296', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'book', shift: 0, fade: 0.55, zoom: 0.8,
   },
   // B · The path of study (midnight, chalk, star gold)
-  // the opening: faint stars behind the map
+  // the opening: soft dust; the map of stars is drawn on the page
   lrnB_hero: {
     a: '#0b1424', b: '#2b3a52', c: '#6ea0d6', glow: '#f0d48a',
-    ink: '#eef3f9', inkSoft: '#a9b6c8', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'stars', shift: 0, fade: 0.25,
+    ink: '#eef3f9', inkSoft: '#a9b6c8', scale: 1.4, warp: 2.2, speed: 0.04, light: 0, motes: 0.5, form: 'dust', shift: 0, fade: 0.2,
   },
   // the homepage chapter
   lrnB_home: {

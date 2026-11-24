@@ -1545,3 +1545,19 @@ html[data-dir="c"] .pd-learning .sub-icon { stroke: #a8321e; }
 .yd-part[data-yd="5"] path { stroke: #d99a2b; stroke-width: 2.2; }
 .yd-bindu { fill: #a8321e !important; stroke: none !important; }
 .yd-step { font: 400 1.05rem/1.5 var(--f-pd); max-width: 26rem; min-height: 3em; }
+
+/* ======================================== audit fixes */
+/* the practice cards never grow wider than the screen */
+.practice-two { grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 900px) { .practice-two { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.practice-card { min-width: 0; grid-template-columns: minmax(0, 1fr); }
+.moon-email, .moon-email label, .moon-email-row { min-width: 0; max-width: 100%; }
+.moon-email-row { flex-wrap: wrap; }
+.moon-email-row input { flex: 1 1 12rem; }
+.moon-email label { overflow-wrap: anywhere; }
+/* thumbs: the small controls get a comfortable height on touch screens */
+@media (pointer: coarse) {
+  .wordmark, .back-link { display: inline-flex; align-items: center; min-height: 40px; }
+  .vidya-keep, .sg-methods button, .br-modes button, .dv-switch button, .wheel-modes button, .sg-arr button, .cf-opts span, .fd-opts span, .chip-keep, .btn-sm, [data-el], .pp-item { min-height: 36px; display: inline-flex; align-items: center; }
+  .dv-switch button { min-width: 40px; justify-content: center; }
+}

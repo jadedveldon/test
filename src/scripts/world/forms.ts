@@ -143,56 +143,37 @@ function flames(n: number) {
 }
 
 /** abstract sigil-like glyphs drawn in strokes of light */
+/**
+ * A seal of sigils: eight clean glyphs set evenly round a ring, a larger one at
+ * the centre. Each glyph is drawn the way sigils are made by hand: a stem, a
+ * ring where the line begins, a bar where it ends, a few arcs and crossings.
+ */
 function sigils(n: number) {
-  const r = rng(42); const o = new Float32Array(n * 3);
-  type Seg = [number, number, number, number]; // x1 y1 x2 y2 in glyph space
-  const glyphs: { cx: number; cy: number; cz: number; s: number; segs: Seg[] }[] = [];
-  const spots = [[-4.6, 1.9], [-1.6, 2.5], [1.8, 2.2], [4.7, 1.6], [-3.3, -0.6], [0.2, 0.1], [3.4, -0.5], [-1.8, -2.5], [2.0, -2.6]];
-  for (const [x, y] of spots) {
-    const segs: Seg[] = [];
-    const strokes = 4 + Math.floor(r() * 3);
-    for (let s = 0; s < strokes; s++) {
-      const type = r();
-      if (type < 0.3) { // circle or arc
-        const ox = (r() - 0.5) * 0.6, oy = (r() - 0.5) * 0.6, rad = 0.22 + r() * 0.5;
-        const a0 = r() * Math.PI * 2, sweep = r() < 0.4 ? Math.PI * 2 : 1.4 + r() * 3;
-        const k = 28;
-        for (let j = 0; j < k; j++) {
-          const p = a0 + (sweep * j) / k, q = a0 + (sweep * (j + 1)) / k;
-          segs.push([ox + Math.cos(p) * rad, oy + Math.sin(p) * rad, ox + Math.cos(q) * rad, oy + Math.sin(q) * rad]);
-        }
-      } else if (type < 0.85) { // straight stroke
-        const a = r() * Math.PI * 2, b = a + Math.PI * (0.6 + r() * 0.8);
-        const l1 = 0.3 + r() * 0.7, l2 = 0.3 + r() * 0.7;
-        segs.push([Math.cos(a) * l1, Math.sin(a) * l1, Math.cos(b) * l2, Math.sin(b) * l2]);
-      } else { // small node
-        const ox = (r() - 0.5) * 1.4, oy = (r() - 0.5) * 1.4, rad = 0.07;
-        for (let j = 0; j < 10; j++) {
-          const p = (Math.PI * 2 * j) / 10, q = (Math.PI * 2 * (j + 1)) / 10;
-          segs.push([ox + Math.cos(p) * rad, oy + Math.sin(p) * rad, ox + Math.cos(q) * rad, oy + Math.sin(q) * rad]);
-        }
-      }
-    }
-    glyphs.push({ cx: x + (r() - 0.5) * 0.6, cy: y + (r() - 0.5) * 0.4, cz: CZ + 1.5 - r() * 3.5, s: 0.75 + r() * 0.5, segs });
+  const r = rng(42);
+  const arc = (cx: number, cy: number, rad: number, a0: number, a1: number, k = 18) => polySegs(Array.from({ length: k + 1 }, (_, j) => { const a = a0 + ((a1 - a0) * j) / k; return [cx + Math.cos(a) * rad, cy + Math.sin(a) * rad]; }), false);
+  const ring = (cx: number, cy: number, rad: number) => circleSegs(rad, 18, cx, cy);
+  const P = Math.PI;
+  // nine glyphs in a unit box (about -0.5..0.5), each a different sigil
+  const GLYPHS: Seg[][] = [
+    [[0, -0.5, 0, 0.42], [-0.3, 0, 0.3, 0], ...ring(0, 0.5, 0.08), [-0.12, -0.5, 0.12, -0.5]],
+    [...polySegs([[0, 0.5], [0.38, -0.1], [-0.38, -0.1]]), [0, -0.1, 0, -0.5], [-0.14, -0.5, 0.14, -0.5]],
+    [...arc(0.05, 0, 0.42, P * 0.55, P * 1.45), [0, -0.5, 0, 0.5], ...ring(0, 0.5, 0.06)],
+    [[-0.38, -0.42, 0.38, 0.42], [0.38, -0.42, -0.38, 0.42], ...ring(-0.42, 0.46, 0.07), [0.3, -0.48, 0.46, -0.36]],
+    [[0, -0.5, 0, 0.3], ...arc(-0.2, 0.3, 0.2, 0, P), ...arc(0.2, 0.3, 0.2, 0, P), ...ring(0, -0.5, 0.06)],
+    [...polySegs([[0, 0.5], [0.3, 0], [0, -0.5], [-0.3, 0]]), [-0.5, 0, 0.5, 0]],
+    [...ring(0, 0.1, 0.18), [0, 0.28, 0, 0.5], [0.16, -0.02, 0.4, -0.3], [-0.16, -0.02, -0.4, -0.3]],
+    [...polySegs([[-0.3, 0.45], [0.25, 0.15], [-0.25, -0.15], [0.3, -0.45]], false), ...ring(-0.36, 0.5, 0.07), [0.22, -0.52, 0.38, -0.38]],
+    // the centre: a circle, three roads meeting, a crescent above
+    [...ring(0, 0, 0.44), [0, 0, 0, -0.44], [0, 0, 0.38, 0.22], [0, 0, -0.38, 0.22], ...arc(0, 0.62, 0.2, P * 1.1, P * 1.9), ...arc(0, 0.56, 0.16, P * 1.15, P * 1.85)],
+  ];
+  const place = (g: Seg[], cx: number, cy: number, sc: number): Seg[] => g.map(([x1, y1, x2, y2]) => [cx + x1 * sc, cy + y1 * sc, cx + x2 * sc, cy + y2 * sc]);
+  const segs: Seg[] = [...circleSegs(3.25, 120), ...circleSegs(3.1, 120), ...circleSegs(1.55, 80)];
+  for (let k = 0; k < 8; k++) {
+    const a = P / 2 - (k * P) / 4;
+    segs.push(...place(GLYPHS[k], Math.cos(a) * 2.32, Math.sin(a) * 2.32, 0.95));
   }
-  const all: { g: number; seg: Seg; len: number }[] = [];
-  glyphs.forEach((g, gi) => g.segs.forEach((seg) => all.push({ g: gi, seg, len: Math.hypot(seg[2] - seg[0], seg[3] - seg[1]) * g.s })));
-  const total = all.reduce((a, b) => a + b.len, 0);
-  const cum: number[] = []; let acc = 0;
-  for (const a of all) { acc += a.len; cum.push(acc); }
-  for (let i = 0; i < n; i++) {
-    const halo = r() < 0.12;
-    const pick = r() * total;
-    let lo = 0, hi = cum.length - 1;
-    while (lo < hi) { const mid = (lo + hi) >> 1; if (cum[mid] < pick) lo = mid + 1; else hi = mid; }
-    const { g, seg } = all[lo]; const gl = glyphs[g];
-    const t = r();
-    const jitter = halo ? 0.12 : 0.016;
-    const x = seg[0] + (seg[2] - seg[0]) * t + gauss(r) * jitter;
-    const y = seg[1] + (seg[3] - seg[1]) * t + gauss(r) * jitter;
-    put(o, i, gl.cx + x * gl.s, gl.cy + y * gl.s, gl.cz + gauss(r) * 0.05);
-  }
-  return o;
+  segs.push(...place(GLYPHS[8], 0, 0, 2.0));
+  return alongSegments(n, segs, r, 0.012, 0.3);
 }
 
 /** a calm sea of light receding to the horizon, with a moon path */
@@ -325,29 +306,28 @@ function mala(n: number) {
 }
 
 /** festival night: clay lamps floating on dark water, far into the distance */
+/**
+ * Five diyas floating in a gentle arc: each a clay bowl, a flame, and its
+ * reflection on the water. Few and clear, so each lamp can be read.
+ */
 function lamps(n: number) {
-  const r = rng(47); const o = new Float32Array(n * 3);
-  const L = 150;
-  const pos: number[][] = [];
-  for (let l = 0; l < L; l++) {
-    const z = CZ + 3.5 - Math.pow(r(), 0.8) * 11;
-    const spread = 4 + (CZ + 3.5 - z) * 0.9;
-    pos.push([(r() * 2 - 1) * spread, -1.9 + gauss(r) * 0.05, z]);
+  const r = rng(47);
+  const segs: Seg[] = [];
+  const N = 5;
+  for (let k = 0; k < N; k++) {
+    const t = k / (N - 1), x = -3.3 + t * 6.6, y = -1.3 + Math.cos((t - 0.5) * Math.PI) * 0.6, sc = 1.35 + Math.cos((t - 0.5) * Math.PI) * 0.5;
+    // the bowl: a shallow curve with a spout
+    const bowl: number[][] = [];
+    for (let j = 0; j <= 16; j++) { const u = j / 16, bx = -0.42 + u * 0.84; bowl.push([x + bx * sc, y - Math.sin(u * Math.PI) * 0.2 * sc]); }
+    segs.push(...polySegs(bowl, false), [x - 0.42 * sc, y, x + 0.5 * sc, y + 0.04 * sc]);
+    // the flame: a teardrop, round below and pointed above
+    const H = 0.5 * sc, fw = 0.15 * sc, fy = y + 0.06 * sc;
+    const q = (p0: number[], c: number[], p1: number[]) => Array.from({ length: 13 }, (_, j) => { const u = j / 12; return [(1 - u) * (1 - u) * p0[0] + 2 * (1 - u) * u * c[0] + u * u * p1[0], (1 - u) * (1 - u) * p0[1] + 2 * (1 - u) * u * c[1] + u * u * p1[1]]; });
+    const top = [x, fy + H], bot = [x, fy];
+    segs.push(...polySegs([...q(top, [x + fw * 2.2, fy + H * 0.12], bot), ...q(bot, [x - fw * 2.2, fy + H * 0.12], top).slice(1)], false));
   }
-  for (let i = 0; i < n; i++) {
-    const [lx, ly, lz] = pos[i % L];
-    const k = r();
-    if (k < 0.6) { // the flame
-      const u = Math.pow(r(), 1.4), w = 0.05 * Math.pow(Math.sin(Math.PI * (u * 0.9 + 0.06)), 0.85) * (1 - u * 0.5);
-      put(o, i, lx + (r() * 2 - 1) * w, ly + 0.08 + u * 0.26, lz + (r() * 2 - 1) * w * 0.6);
-    } else if (k < 0.86) { // the clay bowl
-      const a = r() * Math.PI;
-      put(o, i, lx + Math.cos(a) * 0.15, ly - Math.sin(a) * 0.05, lz + (r() - 0.5) * 0.1);
-    } else { // its reflection on the water
-      put(o, i, lx + gauss(r) * 0.05, ly - 0.08 - Math.pow(r(), 1.6) * 0.5, lz);
-    }
-  }
-  return o;
+  segs.push([-4.4, -2.05, 4.4, -2.05]);
+  return alongSegments(n, segs, r, 0.01, 0.3);
 }
 
 /** the sacred fire: a havan kund whose flames rise and thin (flames use seed >= 0.16) */
