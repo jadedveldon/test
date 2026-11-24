@@ -6,6 +6,7 @@
  * explicit; people choose what to share.
  */
 import Base from '../../layouts/Base.astro';
+import CareText from '../../components/CareText.astro';
 import SubCards from '../../components/SubCards.astro';
 import DirBriefs from '../../components/DirBriefs.astro';
 import { pillars, categoryCount } from '../../data/site';
@@ -109,9 +110,9 @@ const SCAN_Y: Record<string, number> = { head: -118, shoulders: -84, chest: -52,
             <p class="kicker" data-fade><span class="pd-num">{ROMAN[i]}</span> · {categoryCount(m.cat)} services</p>
             <h2 class="display-l" data-split data-dust>{m.title}</h2>
             <p class="lede" data-fade>{m.line}</p>
-            {m.care && <p class="pd-care" data-fade>{m.care}</p>}
+            {m.care && <p class="pd-care" data-fade><CareText text={m.care} /></p>}
             {m.note && <p class="pd-note" data-fade>{m.note}</p>}
-            {m.key === 'queer' && <p class="pd-care" data-fade>{SUPPORT} <a href={SUPPORT_HREF} target="_blank" rel="noopener">The directory</a> · <a href="/care">Boundaries and care</a></p>}
+            {m.key === 'queer' && <p class="pd-care" data-fade><CareText text={SUPPORT} /> <a href={SUPPORT_HREF} target="_blank" rel="noopener">The directory</a> · <a href="/care">Boundaries and care</a></p>}
             <div class="cta-row" data-fade><a class="btn btn-ghost btn-sm" href="/connect" data-topic={m.title}>Ask about this</a></div>
           </header>
           <SubCards category={m.cat} pillar={p.name} icons={SUB_ICON} />

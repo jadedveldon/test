@@ -1,0 +1,6 @@
+---
+/** a care line, with the Tele-MANAS number as a link that dials it from a phone */
+const { text } = Astro.props as { text: string };
+const parts = text.split('14416');
+---
+{parts.map((p, i) => (i ? <Fragment><a href="tel:14416">14416</a>{p}</Fragment> : p))}

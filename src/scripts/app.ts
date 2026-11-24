@@ -1011,6 +1011,11 @@ function boot() {
     copy.onclick = async () => { try { await navigator.clipboard.writeText(text.value); copy.textContent = 'Copied'; } catch { text.select(); } };
     (dlg.querySelector('[data-report-close]') as HTMLButtonElement).onclick = () => dlg.close();
   });
+  // the header turns frosted once the page has moved
+  let scrolledRaf = 0;
+  const markScrolled = () => { scrolledRaf = 0; html.classList.toggle('is-scrolled', scrollY > 24); };
+  addEventListener('scroll', () => { if (!scrolledRaf) scrolledRaf = requestAnimationFrame(markScrolled); }, { passive: true });
+  document.addEventListener('astro:page-load', markScrolled);
   initTransitions(world, () => tier === 'calm');
   initCard(world);
 

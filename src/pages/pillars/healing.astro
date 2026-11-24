@@ -9,6 +9,7 @@
  *   IV  Journaling: a prompt for today
  */
 import Base from '../../layouts/Base.astro';
+import CareText from '../../components/CareText.astro';
 import SubCards from '../../components/SubCards.astro';
 import { pillars, categoryCount } from '../../data/site';
 import { BREATH_CARE, BREATHS, CARE, CHAKRAS, CHAPTERS, GROUNDING, PROMPTS, SUB_ICON } from '../../data/healing';
@@ -120,7 +121,7 @@ const pieces = polys.map((poly, i) => {
             <p class="kicker" data-fade><span class="hl-num">{ROMAN[i]}</span> · {categoryCount(m.cat)} services</p>
             <h2 class="display-l" data-split data-dust>{m.title}</h2>
             <p class="lede" data-fade>{m.line}</p>
-            {m.care && <p class="hl-care" data-fade>{CARE} <a href="/care">Read Boundaries and care</a>.</p>}
+            {m.care && <p class="hl-care" data-fade><CareText text={CARE} /> <a href="/care">Read Boundaries and care</a>.</p>}
             <div class="cta-row" data-fade><a class="btn btn-ghost btn-sm" href="/connect" data-topic={m.category}>Ask about this</a></div>
           </header>
 

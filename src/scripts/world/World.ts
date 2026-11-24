@@ -592,6 +592,8 @@ export class World {
   private fit = 1;
   private shiftScale = 1;
   private narrowDim = 1;
+  /** on portrait screens, forms that sit beside the words on a wide screen sit below them instead */
+  private narrowDrop = 0;
 
   constructor(private canvas: HTMLCanvasElement) {
     let ok = false;
@@ -998,6 +1000,7 @@ export class World {
     this.shiftScale = aspect > 1.15 ? 1 : 0;
     // on phones the forms sit behind the text, so they stay quiet there
     this.narrowDim = aspect < 1 ? 0.3 : 1; // quiet enough that line forms never compete with the words on top
+    this.narrowDrop = aspect < 1 ? 2.4 : 0; // world units: about a fifth of the screen height lower
     if (!this.renderer || !this.bgMat || !this.copyMat || !this.bgRT) return;
     this.renderer.setSize(w, h, false);
     const buf = new Vector2();
@@ -1160,7 +1163,8 @@ export class World {
       fu.uT.value = this.tE;
       fu.uFit.value = this.fit;
       fu.uZoom.value = c.zoom;
-      fu.uShift.value.set(c.shift * this.shiftScale * this.fit, 0);
+      // a form set beside the words (shift) moves aside on wide screens and down on portrait ones; centred forms stay
+      fu.uShift.value.set(c.shift * this.shiftScale * this.fit, -this.narrowDrop * Math.min(1, Math.abs(c.shift) / 4.4));
       fu.uW1.value = [w[idx('flames')], w[idx('water')], w[idx('silk')], w[idx('stars')]];
       fu.uW2.value = [w[idx('letters')], w[idx('eye')], w[idx('horizon')], w[idx('sigils')]];
       fu.uW3.value = [w[idx('vortex')], w[idx('halo')], w[idx('name')], w[idx('dust')]];
