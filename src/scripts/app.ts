@@ -579,7 +579,7 @@ function soundTick() {
   // the Devotion directions each have their own sound layer
   // Magic's night pages share Devotion's cosmic layer; its day pages are the quiet room of the book
   const layer = (k: string) => (k.startsWith('devC_') ? 'cosmic' : k.startsWith('magG_') ? (magPage(k.slice(5)) === 'day' ? 'learning' : 'cosmic')
-    : k.startsWith('heal_') ? 'healing' : k.startsWith('id_') ? 'identity' : k.startsWith('div_') ? 'divination' : k.startsWith('lrn_') ? 'learning' : k);
+    : k.startsWith('heal_') ? 'healing' : k.startsWith('id_') ? 'identity' : k.startsWith('div_') ? 'divination' : k.startsWith('lrn_') ? 'learning' : k === 'practice' ? 'divination' : k === 'care' ? 'healing' : k);
   const w: Record<string, number> = {};
   w[layer(a)] = (w[layer(a)] ?? 0) + (1 - t);
   w[layer(b)] = (w[layer(b)] ?? 0) + t;

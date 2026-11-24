@@ -3,6 +3,35 @@
 Every change to the site, newest first: what changed, why, and how it was checked.
 The rules for checking are in `CLAUDE.md`; the checks themselves are in `tools/qa/`.
 
+## 2026-11-24 · Design pass, first look: the pages around the pillars
+
+- **Reviewed:** About, Boundaries and care, Connect, Find your path, Daily practice, Writings (list and article),
+  the invoice maker and the depth demo, on a wide screen and a phone. The cover's walk-through shows each with
+  what works and a proposal; nothing there is redesigned yet, pending the owner's choice.
+- **Fixed: on phones the living form ran through form fields and long text** on Connect, Find your path,
+  Writings, the articles, the invoice maker, About and Care. A world can now say how strongly its form shows on
+  portrait screens (`narrow` in `presets.ts`); on those pages it is 0, and the pillars keep their forms. Check:
+  `regressions.cjs` 17 (measures the form's strength on each page; failed before the fix).
+- **Fixed: Daily practice opened in Divination's world** (its mirror and Cormorant Unicase) since Divination was
+  settled, because its opening shared the chapter name `divination` with the homepage. It now has its own world,
+  `practice`: the night sky it used to have, with the constellations drawn smaller and beside the words (none on
+  a phone). Check: `regressions.cjs` 17.
+- **Changed:** Boundaries and care has its own world, `care`: Healing's still water, quieter behind the words.
+- **Fixed: list bullets on light pages took the world's glow, near white** (1.26:1 against the parchment); they now
+  take the soft ink (6.15:1). **Fixed: on the invoice maker "(optional)" fell onto a line of its own** under each
+  label. Check: `regressions.cjs` 18 (both failed before the fix).
+- **Fixed: at 200% text on a phone, Devotion scrolled sideways.** The Mahavidya and deity cards (long names such as
+  Bhuvaneshvari and Chhinnamasta) and the names set round the turning yantra ran past the screen. Card columns are
+  now sized in text units (two to a row at normal size, one when the text is made large), long names can wrap, and
+  the opening clips its drawings at the screen's edge. The full suite's layout check had been printing this line
+  among the known Greek-card alarms; it was in the previous build too, so last round's "layout clean" was wrong
+  for this one case. Check: `regressions.cjs` 19 (failed before the fix). The Greek-card "clipped" lines that remain
+  were checked again: once the Greek font has loaded nothing in the card is clipped (a known false alarm).
+- **Verified:** screenshots of every reviewed page, desktop and phone, before and after, looked at. The full suite:
+  no failures; the accessibility scan first stopped because axe-core was missing from the module path (the suite's
+  FAIL guard caught it), and run on its own it found no violations on any page or overlay (59 checks). Memory flat
+  (heap about 6 MB over 32 page changes, as last round); slow phone layout shift 0.000 to 0.002.
+
 ## 2026-11-24 · The content editor
 
 - **Added: the content editor** (Keystatic, at `/keystatic`). Every word and list on the homepage and the six

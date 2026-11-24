@@ -140,5 +140,47 @@ const ARGS = { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', 
     }
     ok('pillar pages: the shared words from Site settings are on every page', !missing.length, missing.join(', '));
     await ctx.close(); }
+  // 17 on phones the living form ran through form fields and long text on the pages around the pillars, and Daily
+  //    practice opened in Divination's world (its mirror and lettering) after Divination was settled
+  { const { ctx, p } = await fresh({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+    const loud = [];
+    for (const pg of ['connect', 'path', 'writings', 'writings/who-is-kali', 'invoice', 'about', 'care']) {
+      await p.goto(`${B}/${pg}?tier=full&cursor=off`); await p.waitForTimeout(4500);
+      const o = await p.evaluate(() => window.sarvakali.world.formOpacity);
+      if (o > 0.02) loud.push(`${pg} ${o.toFixed(2)}`);
+    }
+    ok('phone: no living form behind form fields and long text', !loud.length, loud.join(', '));
+    await p.goto(`${B}/pillars/healing?tier=full&cursor=off`); await p.waitForTimeout(4500);
+    ok('phone: the pillars keep their living forms', await p.evaluate(() => window.sarvakali.world.formOpacity) > 0.05);
+    await p.goto(`${B}/practice?tier=full&cursor=off`); await p.waitForTimeout(4500);
+    const pr = await p.evaluate(() => ({ key: window.sarvakali.world.chapterKey, font: getComputedStyle(document.querySelector('h1')).fontFamily }));
+    ok('daily practice: opens in its own world and lettering, not Divination\'s', !/^div_/.test(pr.key) && !/Unicase/.test(pr.font), `${pr.key} · ${pr.font.split(',')[0]}`);
+    await ctx.close(); }
+  // 18 on light pages the list bullets took the world's glow (near white) and almost vanished; on the invoice maker
+  //    "(optional)" fell onto a line of its own under each label
+  { const { ctx, p } = await fresh();
+    await p.goto(`${B}/writings/who-is-kali?tier=still&cursor=off`); await p.waitForTimeout(3000);
+    const c = await p.evaluate(() => {
+      const lum = (s) => { const v = s.match(/[\d.]+/g).slice(0, 3).map((x) => { x = Number(x) / 255; return x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4; }); return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]; };
+      const m = getComputedStyle(document.querySelector('.prose li'), '::marker').color;
+      const bg = `rgb(${getComputedStyle(document.documentElement).getPropertyValue('--bg-a').trim().split(/\s+/).join(',')})`;
+      const [a, b] = [lum(m), lum(bg)].sort((x, y) => y - x);
+      return { light: document.documentElement.dataset.light, ratio: (a + 0.05) / (b + 0.05), m, bg };
+    });
+    ok('light pages: list bullets stand out from the page (3:1 or more)', c.light === '1' && c.ratio >= 3, `${c.ratio.toFixed(2)}:1 · ${c.m} on ${c.bg}`);
+    await p.goto(`${B}/invoice?tier=still&cursor=off`); await p.waitForTimeout(2000);
+    const lines = await p.evaluate(() => [...document.querySelectorAll('.inv-form label')].filter((l) => l.querySelector('.optional')).map((l) => {
+      const o = l.querySelector('.optional').getBoundingClientRect(); const r = document.createRange(); r.selectNodeContents(l.firstChild); const t = r.getBoundingClientRect();
+      return Math.abs(o.top - t.top) < 4;
+    }));
+    ok('invoice: "(optional)" sits beside its label', lines.length > 0 && lines.every(Boolean), `${lines.filter(Boolean).length} of ${lines.length}`);
+    await ctx.close(); }
+  // 19 at 200% text on a phone the Mahavidya and deity cards on Devotion (Bhuvaneshvari, Chhinnamasta...) ran past
+  //    the screen and the page scrolled sideways; found by layout.cjs, which had reported it as a known alarm
+  { const { ctx, p } = await fresh({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+    await p.goto(`${B}/pillars/devotion?tier=still`); await p.addStyleTag({ content: 'html { font-size: 200% !important; }' }); await p.waitForTimeout(1500);
+    const r = await p.evaluate(() => { const de = document.documentElement; return { sw: de.scrollWidth, cw: de.clientWidth }; });
+    ok('devotion: no sideways scrolling at 200% text on a phone', r.sw <= r.cw + 1, `${r.sw} wide in ${r.cw}`);
+    await ctx.close(); }
   await b.close();
 })();

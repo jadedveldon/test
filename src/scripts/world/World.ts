@@ -851,6 +851,11 @@ export class World {
     return this.available && !this.lost && this.settings.live;
   }
 
+  /** how strongly the living form shows right now (0 when hidden), for checks */
+  get formOpacity() {
+    return this.isLive && this.formsOn && this.formMat ? (this.formMat.uniforms.uOpacity.value as number) : 0;
+  }
+
   /** points currently drawn by the living forms */
   get pointCount() {
     if (!this.isLive || !this.formsOn || !this.set) return 0;
@@ -1201,7 +1206,7 @@ export class World {
         fu.uNameC.value.set(n.cx, n.cy);
       }
       const dawnDim = 1 - c.dawn * (1 - (0.25 + 0.75 * this.dawnProgress));
-      fu.uOpacity.value = Math.min(1.3, 0.85 * Math.sqrt(density)) * this.narrowDim * dawnDim * (c.light > 0.5 ? 1.25 : 1) * (1 + this.audioLevel * 0.5) * c.fade;
+      fu.uOpacity.value = Math.min(1.3, 0.85 * Math.sqrt(density)) * this.narrowDim * (this.narrowDim < 1 ? c.narrow : 1) * dawnDim * (c.light > 0.5 ? 1.25 : 1) * (1 + this.audioLevel * 0.5) * c.fade;
       this.formGeo.setDrawRange(0, drawn);
     }
 

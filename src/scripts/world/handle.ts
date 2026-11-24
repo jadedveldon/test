@@ -98,6 +98,7 @@ export class WorldHandle {
   get isLive() { return this.impl?.isLive ?? false; }
   get speed() { return this.impl?.speed ?? 0; }
   get pointCount() { return this.impl?.pointCount ?? 0; }
+  get formOpacity() { return this.impl?.formOpacity ?? 0; }
   get ultraReady() { return this.impl?.ultraReady ?? false; }
   get ultraBuildingNow() { return this.impl?.ultraBuildingNow ?? false; }
   get chapterKey() { return this.impl?.chapterKey ?? this.st.seq[Math.round(this.st.pos)] ?? ''; }

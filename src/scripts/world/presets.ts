@@ -31,6 +31,9 @@ export type Preset = {
   dawn?: number;
   /** how strongly the living form shows (1 = fully); quieter behind long reading */
   fade?: number;
+  /** how strongly it shows on portrait screens, where it sits under the words (1 = as usual, 0 = hidden):
+   *  0 on pages of form fields and long text, where a form would run through them */
+  narrow?: number;
   /** 0 hides tonight's moon in this chapter (where something else stands in its place) */
   moon?: number;
   /** the form's size in this chapter (1 = as drawn), so it can sit inside or beside the layout */
@@ -48,7 +51,7 @@ export const PRESETS: Record<string, Preset> = {
   },
   connect: {
     a: '#0c0706', b: '#3a1a12', c: '#c9773a', glow: '#ffcf8a',
-    ink: '#f8eee3', inkSoft: '#cdb6a4', scale: 1.3, warp: 2.0, speed: 0.06, light: 0, motes: 0.4, form: 'vortex', shift: 3.6, fade: 0.38,
+    ink: '#f8eee3', inkSoft: '#cdb6a4', scale: 1.3, warp: 2.0, speed: 0.06, light: 0, motes: 0.4, form: 'vortex', shift: 3.6, fade: 0.38, narrow: 0,
   },
   devotion: {
     a: '#07050f', b: '#2b0f2e', c: '#b8892f', glow: '#f2c66b',
@@ -93,13 +96,22 @@ export const PRESETS: Record<string, Preset> = {
   /* quieter worlds behind long text */
   reading: {
     a: '#e8dcc6', b: '#cdb48a', c: '#8a5a33', glow: '#fff6e2',
-    ink: '#24170f', inkSoft: '#5e4a3a', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.15, form: 'letters', shift: 6.4, fade: 0.4,
+    ink: '#24170f', inkSoft: '#5e4a3a', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.15, form: 'letters', shift: 6.4, fade: 0.4, narrow: 0,
   },
   devotionQuiet: {
     a: '#07050f', b: '#2b0f2e', c: '#b8892f', glow: '#f2c66b',
-    ink: '#f5ead9', inkSoft: '#c2ad98', scale: 1.6, warp: 2.8, speed: 0.05, light: 0, motes: 0.5, form: 'flames', shift: 4.6, fade: 0.45,
+    ink: '#f5ead9', inkSoft: '#c2ad98', scale: 1.6, warp: 2.8, speed: 0.05, light: 0, motes: 0.5, form: 'flames', shift: 4.6, fade: 0.45, narrow: 0,
   },
-  /* daily practice */
+  /* Boundaries and care: Healing's still water, quiet behind the words */
+  care: {
+    a: '#03111a', b: '#0b3d48', c: '#7fd1c0', glow: '#d9fff4',
+    ink: '#effaf8', inkSoft: '#a7c7c3', scale: 1.1, warp: 1.6, speed: 0.04, light: 0.15, motes: 0.45, form: 'water', shift: 0, fade: 0.5, narrow: 0,
+  },
+  /* daily practice: the opening (the night sky Divination's homepage chapter once had, before Divination was settled) */
+  practice: {
+    a: '#02040f', b: '#0e1d4d', c: '#8fa6ff', glow: '#e9edff',
+    ink: '#eef1ff', inkSoft: '#a9b2d6', scale: 2.2, warp: 2.6, speed: 0.05, light: 0, motes: 1.0, form: 'stars', shift: 5.2, zoom: 0.5, fade: 0.8, narrow: 0,
+  },
   mala: {
     a: '#06040a', b: '#1d1030', c: '#a8742f', glow: '#f6d38a',
     ink: '#f6ede2', inkSoft: '#c8b4a2', scale: 1.4, warp: 2.0, speed: 0.05, light: 0, motes: 0.4, form: 'mala', shift: 2.7, fade: 0.6,
@@ -426,7 +438,7 @@ export const PRESETS: Record<string, Preset> = {
 export type Numeric = {
   a: number[]; b: number[]; c: number[]; glow: number[]; ink: number[]; inkSoft: number[];
   scale: number; warp: number; speed: number; light: number; motes: number;
-  shift: number; dawn: number; fade: number; moon: number; zoom: number;
+  shift: number; dawn: number; fade: number; narrow: number; moon: number; zoom: number;
   /** one weight per form, blended: drives each form's own motion */
   w: number[];
   form: FormKey;
@@ -442,14 +454,14 @@ export function toNumeric(p: Preset): Numeric {
     a: hexToRgb(p.a), b: hexToRgb(p.b), c: hexToRgb(p.c), glow: hexToRgb(p.glow),
     ink: hexToRgb(p.ink), inkSoft: hexToRgb(p.inkSoft),
     scale: p.scale, warp: p.warp, speed: p.speed, light: p.light, motes: p.motes,
-    shift: p.shift ?? 0, dawn: p.dawn ?? 0, fade: p.fade ?? 1, moon: p.moon ?? 1, zoom: p.zoom ?? 1,
+    shift: p.shift ?? 0, dawn: p.dawn ?? 0, fade: p.fade ?? 1, narrow: p.narrow ?? 1, moon: p.moon ?? 1, zoom: p.zoom ?? 1,
     w: FORM_KEYS.map((k) => (k === p.form ? 1 : 0)),
     form: p.form,
   };
 }
 
 const COLOR_KEYS = ['a', 'b', 'c', 'glow', 'ink', 'inkSoft'] as const;
-const NUM_KEYS = ['scale', 'warp', 'speed', 'light', 'motes', 'shift', 'dawn', 'fade', 'moon', 'zoom'] as const;
+const NUM_KEYS = ['scale', 'warp', 'speed', 'light', 'motes', 'shift', 'dawn', 'fade', 'narrow', 'moon', 'zoom'] as const;
 
 /** out = lerp(x, y, t), written into out */
 export function mixInto(out: Numeric, x: Numeric, y: Numeric, t: number) {
