@@ -4,14 +4,15 @@ const { chromium } = require('playwright');
 const fs = require('fs');
 const AXE = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
 const B = (process.env.QA_BASE || 'http://127.0.0.1:4321');
-const PAGES = ['/', '/about', '/care', '/connect', '/path', '/practice', '/writings', '/writings/who-is-kali', '/writings/the-thirty-moons', '/writings/what-happens-in-a-reading', '/invoice', '/depth',
+const PAGES = process.env.A11Y_PAGES ? process.env.A11Y_PAGES.split(',') : ['/', '/about', '/care', '/connect', '/path', '/practice', '/writings', '/writings/who-is-kali', '/writings/the-thirty-moons', '/writings/what-happens-in-a-reading', '/invoice', '/depth',
   '/pillars/devotion', '/pillars/magic', '/pillars/healing', '/pillars/identity', '/pillars/divination', '/pillars/learning'];
 const TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'];
 const OVERLAYS = [
   ['menu', async (p) => { await p.click('[data-menu-open]'); }],
   ['search', async (p) => { await p.click('[data-search-open]'); await p.waitForTimeout(400); await p.keyboard.type('love'); }],
   ['card', async (p) => { await p.evaluate(() => document.querySelector('[data-card-open]')?.click()); }],
-  ['keep', async (p) => { await p.evaluate(() => Array.from(document.querySelectorAll('.chip-keep')).find((c) => c.getClientRects().length)?.click()); await p.waitForTimeout(300); await p.click('[data-keep-open]'); }],
+  // a service is already kept (seeded below), so the list can be opened on any page, the homepage included
+  ['keep', async (p) => { await p.click('[data-keep-open]'); }],
   ['sky', async (p) => { await p.click('[data-sky-btn]'); }],
   ['hud', async (p) => { await p.click('[data-hud-toggle]'); }],
 ];
@@ -62,6 +63,7 @@ const summary = {};
     for (const path of ['/', '/pillars/learning']) {
       for (const [name, open] of OVERLAYS) {
         const p = await ctx.newPage();
+        if (name === 'keep') await p.addInitScript(() => { try { localStorage.setItem('sk-keep', JSON.stringify([{ t: 'Tarot Reading', p: 'Divination & Insight' }])); } catch (e) {} });
         await p.goto(`${B}${path}${path.includes('?') ? '&' : '?'}tier=calm&cursor=off`, { waitUntil: 'domcontentloaded' });
         await p.waitForTimeout(1500);
         try { await open(p); } catch (e) { console.log(`${view} overlay ${name}: could not open (${e.message.split('\n')[0].slice(0, 80)})`); await p.close(); continue; }

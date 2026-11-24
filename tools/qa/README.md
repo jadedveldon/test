@@ -15,6 +15,8 @@ publishing or pushing a round of work run `run-all.sh` and `preview-check.cjs`; 
 npm run build
 npx astro preview            # serves the built site on http://127.0.0.1:4321
 npm i --no-save playwright axe-core && npx playwright install chromium   # once
+# if Playwright or axe-core live elsewhere, add their folders to NODE_PATH (keep what is already there:
+# NODE_PATH="$NODE_PATH:/path/to/node_modules"), or a script will stop with "Cannot find module"
 sh tools/qa/run-quick.sh     # after every change, about 20 minutes
 sh tools/qa/run-all.sh       # before publishing, about an hour
 npm run preview:artifact && python3 -m http.server 8099 --bind 127.0.0.1 -d preview-artifact &

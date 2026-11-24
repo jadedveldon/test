@@ -31,9 +31,18 @@ The rules for checking are in `CLAUDE.md`; the checks themselves are in `tools/q
 - **Changed: under the hood.** The A/B/C direction system (switch, briefs, per-direction worlds and fonts) is
   retired; each settled pillar loads only its own code, like Pillars 1 to 3. The closing worlds of all three
   pillars are quieter so the closing words lead.
-- **Verified:** `rules.cjs`, `pillars.cjs` (54 checks, desktop and phone), the quick suite, the full suite and
-  the preview check (results in the round's report on the preview cover); screenshots of every section on a
-  phone and a desktop, looked at.
+- **Fixed (checks, not the site):** the high-contrast check counted the invisible radio buttons and checkboxes
+  of the comfort note and the class finder as controls without an edge (16 and 12); their visible chips carry
+  the edge, so it now counts them through their chip, and it prints FAIL instead of only a count. The
+  accessibility scan could not open "your list" on the homepage (nothing there to keep); it now starts with one
+  service kept, so that overlay is really scanned. Both suites now print FAIL when a check stops with an error:
+  the first full run silently did nothing after a path mix-up, and was caught only by reading its output.
+- **Verified:** the quick suite (97 checks) and the full suite (154 checks): no failures, no errors. Highlights:
+  `pillars.cjs` 54 checks on desktop and phone; accessibility with no violations on any page or overlay; every
+  control keeps an edge in high contrast; layout clean at seven sizes, 200% text and wide spacing; memory flat
+  over 32 page changes; on a slow phone, layout shift 0.000 to 0.002 and the settled pillars' largest paint about
+  1.5 s. The preview bundle checked with `preview-check.cjs`. Screenshots of every section, phone and desktop,
+  looked at.
 
 ## 2026-11-24 · Deep audit, code review and peer testing
 

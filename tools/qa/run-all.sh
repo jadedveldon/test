@@ -3,15 +3,17 @@
 # Run before publishing the preview or pushing a round of work (CLAUDE.md, the quality gate).
 cd "$(dirname "$0")/../.." || exit 1
 Q=tools/qa
-echo "== content rules";  node $Q/rules.cjs
-echo "== pages";          node $Q/audit.cjs
-echo "== interactions";   node $Q/interactions.cjs; W=390 H=844 node $Q/interactions.cjs
-echo "== pillars 4-6";    node $Q/pillars.cjs
-echo "== regressions";    node $Q/regressions.cjs
-echo "== keyboard";       node $Q/keyboard.cjs
-echo "== motion";         node $Q/motion.cjs
-echo "== robustness";     node $Q/robust.cjs
-echo "== accessibility";  node $Q/a11y.cjs
-echo "== layout";         node $Q/layout.cjs
-echo "== memory";         node $Q/mem.cjs
-echo "== slow phone";     node $Q/vitals.cjs
+# a check that stops with an error must never look like a pass
+run() { node "$@" || echo "FAIL $1 stopped with an error (exit $?)"; }
+echo "== content rules";  run $Q/rules.cjs
+echo "== pages";          run $Q/audit.cjs
+echo "== interactions";   run $Q/interactions.cjs; W=390 H=844 run $Q/interactions.cjs
+echo "== pillars 4-6";    run $Q/pillars.cjs
+echo "== regressions";    run $Q/regressions.cjs
+echo "== keyboard";       run $Q/keyboard.cjs
+echo "== motion";         run $Q/motion.cjs
+echo "== robustness";     run $Q/robust.cjs
+echo "== accessibility";  run $Q/a11y.cjs
+echo "== layout";         run $Q/layout.cjs
+echo "== memory";         run $Q/mem.cjs
+echo "== slow phone";     run $Q/vitals.cjs

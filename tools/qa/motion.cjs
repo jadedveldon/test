@@ -25,8 +25,17 @@ const ok = (n, v, extra = '') => console.log(`${v ? 'ok  ' : 'FAIL'} ${n}${extra
     for (const u of ['/', '/pillars/healing', '/pillars/identity', '/pillars/divination', '/pillars/learning', '/connect']) {
       await p.goto(`${B}${u}${u.includes('?') ? '&' : '?'}tier=calm`); await p.waitForTimeout(1500);
       await p.screenshot({ path: `${OUT}/forced-${u.replace(/[/?=]/g, '_')}.jpg`, type: 'jpeg', quality: 55 });
-      const r = await p.evaluate(() => Array.from(document.querySelectorAll('button, a.btn, .chip-keep, input, textarea')).filter((e) => e.getClientRects().length && !e.closest('[hidden]')).map((e) => { const cs = getComputedStyle(e); return cs.borderStyle !== 'none' && parseFloat(cs.borderWidth) > 0 || cs.outlineStyle !== 'none' || e.tagName === 'A' && cs.textDecorationLine.includes('underline') || e.tagName === 'BUTTON' && cs.backgroundColor !== 'rgba(0, 0, 0, 0)'; }));
-      console.log(`forced colours ${u}: ${r.filter(Boolean).length}/${r.length} controls have a visible edge`);
+      // every control keeps a visible edge; a visually hidden radio or checkbox counts through the chip it labels
+      const r = await p.evaluate(() => {
+        const edge = (e) => { const cs = getComputedStyle(e); return cs.borderStyle !== 'none' && parseFloat(cs.borderWidth) > 0 || cs.outlineStyle !== 'none' || e.tagName === 'A' && cs.textDecorationLine.includes('underline') || e.tagName === 'BUTTON' && cs.backgroundColor !== 'rgba(0, 0, 0, 0)'; };
+        const all = Array.from(document.querySelectorAll('button, a.btn, .chip-keep, input, textarea')).filter((e) => e.getClientRects().length && !e.closest('[hidden]'));
+        const missing = all.filter((e) => {
+          if (e.matches('input[type="radio"], input[type="checkbox"]') && Number(getComputedStyle(e).opacity) === 0) return !(e.nextElementSibling && edge(e.nextElementSibling));
+          return !edge(e);
+        });
+        return { n: all.length, missing: missing.map((e) => `${e.tagName.toLowerCase()}.${String(e.className).split(' ')[0]} "${(e.textContent || e.name || '').trim().slice(0, 20)}"`) };
+      });
+      ok(`forced colours ${u}: every control keeps a visible edge (${r.n - r.missing.length}/${r.n})`, !r.missing.length, r.missing.slice(0, 4).join(' | '));
     }
     await ctx.close(); }
   await b.close();

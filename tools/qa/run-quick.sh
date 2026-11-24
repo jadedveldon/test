@@ -3,8 +3,10 @@
 # Every line must read "ok" and every ERRORS line "none" (CLAUDE.md, the quality gate).
 cd "$(dirname "$0")/../.." || exit 1
 Q=tools/qa
-echo "== content rules";  node $Q/rules.cjs
-echo "== pages";          node $Q/audit.cjs
-echo "== regressions";    node $Q/regressions.cjs
-echo "== pillars 4-6";    node $Q/pillars.cjs
-echo "== interactions";   node $Q/interactions.cjs
+# a check that stops with an error must never look like a pass
+run() { node "$@" || echo "FAIL $1 stopped with an error (exit $?)"; }
+echo "== content rules";  run $Q/rules.cjs
+echo "== pages";          run $Q/audit.cjs
+echo "== regressions";    run $Q/regressions.cjs
+echo "== pillars 4-6";    run $Q/pillars.cjs
+echo "== interactions";   run $Q/interactions.cjs
