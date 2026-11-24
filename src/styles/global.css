@@ -1031,30 +1031,6 @@ li.is-found > .chip-keep, li.is-found > .vidya-keep, li.is-found .deity-name { b
 }
 
 /* ======================================== design-exploration helpers (shared) */
-.dv-brief { max-width: 1180px; margin: 6vh auto 0; padding: 0 var(--gutter-r) 4vh var(--gutter-l); display: grid; gap: 14px; position: relative; z-index: 2; }
-.dv-briefs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 10px; }
-.dv-card { display: grid; gap: 14px; align-content: start; padding: 22px; border-radius: 20px; background: rgb(var(--bg-a) / 0.6); box-shadow: inset 0 0 0 1px rgb(var(--ink) / 0.14); }
-.dv-card header { display: flex; align-items: center; gap: 12px; }
-.dv-card-key { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: rgb(var(--ink)); color: rgb(var(--bg-a)); font-weight: 600; }
-.dv-card h3 { font: 400 1.7rem/1.1 var(--f-mag, var(--f-display)); }
-.dv-card-essence { color: rgb(var(--ink-soft)); font-size: 0.92rem; }
-.dv-swatches { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-.dv-swatches li { display: grid; gap: 2px; font-size: 0.74rem; }
-.dv-swatches span { height: 34px; border-radius: 8px; background: var(--c); box-shadow: inset 0 0 0 1px rgb(127 127 127 / 0.25); }
-.dv-swatches small { color: rgb(var(--ink-soft)); font-size: 0.68rem; }
-.dv-card dl { margin: 0; display: grid; gap: 8px; font-size: 0.85rem; }
-.dv-card dt { font: 600 0.66rem/1 var(--f-body); letter-spacing: 0.16em; text-transform: uppercase; color: rgb(var(--glow)); margin-bottom: 3px; }
-html[data-light="1"] .dv-card dt { color: rgb(var(--ink-soft)); }
-.dv-card dd { margin: 0; color: rgb(var(--ink) / 0.88); }
-.dv-switch {
-  position: fixed; z-index: 61; left: 50%; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); translate: -50% 0;
-  display: flex; align-items: center; gap: 4px; padding: 5px; border-radius: 999px; font: 500 0.74rem/1 var(--f-body);
-  color: #f2ece6; background: rgb(14 11 11 / 0.86); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.14);
-}
-.dv-switch > span { padding: 0 8px 0 10px; color: #b9aea6; }
-.dv-switch button { font: inherit; color: inherit; background: none; border: 0; border-radius: 999px; padding: 8px 12px; cursor: pointer; white-space: nowrap; }
-.dv-switch button[aria-pressed="true"] { background: #f2ece6; color: #141010; }
-.dv-switch button b { font-weight: 600; }
 
 /* ======================================== pillar 2 · Witchcraft & Magic
    The gilded grimoire: parchment day pages and gold-on-black night pages.
@@ -1263,17 +1239,8 @@ html[data-light="1"] .sub-icon { stroke: #b1261a; }
 @media (max-width: 1100px) {
   .sub-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-@media (max-width: 960px) {
-  .dv-briefs { grid-template-columns: minmax(0, 1fr); }
-}
 @media (max-width: 600px) {
   .sub-cards { grid-template-columns: minmax(0, 1fr); }
-  .dv-switch > span { display: none; }
-  .dv-switch button { padding: 8px 13px; }
-  .dv-switch button span { display: none; }
-  body:has(.dv-switch) .keep { bottom: calc(112px + env(safe-area-inset-bottom, 0px)); }
-  /* the direction switch sits at the right, clear of the Prototype pill at the left */
-  .dv-switch { left: auto; right: max(14px, env(safe-area-inset-right, 0px)); translate: none; }
 }
 @media (max-width: 860px) {
   .mg-hero-grid, .mg-sigil-grid, .mg-with-wheel { grid-template-columns: minmax(0, 1fr); }
@@ -1384,15 +1351,11 @@ html[data-light="1"] .sub-icon { stroke: #b1261a; }
   .bl-info { justify-items: center; text-align: center; }
 }
 
-/* ======================================== pillars 4–6: directions compared live */
-html:not([data-dir="a"]) [data-dir-only="a"], html:not([data-dir="b"]) [data-dir-only="b"], html:not([data-dir="c"]) [data-dir-only="c"] { display: none !important; }
-html[data-dir="a"] [data-dir-card="a"], html[data-dir="b"] [data-dir-card="b"], html[data-dir="c"] [data-dir-card="c"] { box-shadow: inset 0 0 0 2px rgb(var(--glow)); }
-html[data-light="1"][data-dir] [data-dir-card] { box-shadow: inset 0 0 0 1px rgb(var(--ink) / 0.14); }
-html[data-light="1"][data-dir="a"] [data-dir-card="a"], html[data-light="1"][data-dir="b"] [data-dir-card="b"], html[data-light="1"][data-dir="c"] [data-dir-card="c"] { box-shadow: inset 0 0 0 2px rgb(var(--ink)); }
+/* ======================================== pillars 4–6 (shared layout) */
 .pd-hero { min-height: 100svh; }
 .pd-hero-grid { max-width: 1180px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 36px; align-items: center; }
 .pd-hero-copy { display: grid; gap: 18px; justify-items: start; }
-.pd .display-l, .pd .display-m, .pd .dv-card h3 { font-family: var(--f-pd, var(--f-display)); }
+.pd .display-l, .pd .display-m { font-family: var(--f-pd, var(--f-display)); }
 .pd-title { font-size: clamp(2.8rem, 6.6vw, 5.8rem); }
 .pd-index { list-style: none; margin: 4px 0 0; padding: 14px 0 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 18px; width: 100%; max-width: 38rem; border-top: 1px solid rgb(var(--glow) / 0.35); }
 html[data-light="1"] .pd-index { border-top-color: rgb(var(--ink) / 0.2); }
@@ -1417,37 +1380,19 @@ html[data-light="1"] .pd-num { color: rgb(var(--ink-soft)); }
   .pd-index { grid-template-columns: minmax(0, 1fr); }
 }
 
-/* ---------------- pillar 4 · Identity, Intimacy & the Body */
-html[data-dir="a"] .pd-identity, [data-chapter="identity"][data-dir="a"] { --f-pd: "Fraunces", Georgia, serif; }
-html[data-dir="b"] .pd-identity, [data-chapter="identity"][data-dir="b"] { --f-pd: "DM Serif Display", Georgia, serif; }
-html[data-dir="c"] .pd-identity, [data-chapter="identity"][data-dir="c"] { --f-pd: "Playfair Display", Georgia, serif; }
-[data-chapter="identity"][data-dir] .display-l { font-family: var(--f-pd); }
-html[data-dir="a"] .pd-identity .display-l, html[data-dir="c"] .pd-identity .display-l { font-style: italic; font-weight: 300; }
-html[data-dir="a"] .pd-identity .sub-card { border-radius: 16px; box-shadow: inset 0 0 0 1px rgb(230 192 106 / 0.35); background: linear-gradient(100deg, rgb(44 31 87 / 0.55), rgb(23 22 63 / 0.4) 55%, rgb(228 139 60 / 0.16)); }
-html[data-dir="a"] .pd-identity .sub-icon { stroke: #e6c06a; }
-html[data-dir="b"] .pd-identity .sub-card { border-radius: 22px; background: rgb(255 255 255 / 0.62); box-shadow: inset 0 3px 0 rgb(var(--glow) / 0.9), 0 18px 40px -30px rgb(80 60 90 / 0.5); }
-html[data-dir="b"] .pd-identity .sub-card:nth-child(5n+1) { box-shadow: inset 0 3px 0 #f2b8c6, 0 18px 40px -30px rgb(80 60 90 / 0.5); }
-html[data-dir="b"] .pd-identity .sub-card:nth-child(5n+2) { box-shadow: inset 0 3px 0 #f6c89f, 0 18px 40px -30px rgb(80 60 90 / 0.5); }
-html[data-dir="b"] .pd-identity .sub-card:nth-child(5n+3) { box-shadow: inset 0 3px 0 #bfe3cf, 0 18px 40px -30px rgb(80 60 90 / 0.5); }
-html[data-dir="b"] .pd-identity .sub-card:nth-child(5n+4) { box-shadow: inset 0 3px 0 #b9d3f2, 0 18px 40px -30px rgb(80 60 90 / 0.5); }
-html[data-dir="b"] .pd-identity .sub-card:nth-child(5n+5) { box-shadow: inset 0 3px 0 #cdb8ea, 0 18px 40px -30px rgb(80 60 90 / 0.5); }
-html[data-dir="b"] .pd-identity .sub-icon { stroke: #8c6aa8; }
-html[data-dir="c"] .pd-identity .sub-card { border-radius: 40px 12px 40px 12px; background: rgb(20 8 15 / 0.55); box-shadow: inset 0 0 0 1px rgb(215 122 146 / 0.3), 0 24px 50px -34px rgb(215 122 146 / 0.5); }
-html[data-dir="c"] .pd-identity .sub-icon { stroke: #d77a92; }
-html[data-dir="c"] .pd-identity .lede { font-style: italic; }
+/* ---------------- pillar 4 · Identity, Intimacy & the Body: Soft prism
+   A bright, gentle page where light breaks into every colour: cream with blush, peach, butter, mint, sky, lilac. */
+.pd-identity, [data-chapter="identity"] { --f-pd: "DM Serif Display", Georgia, serif; }
+[data-chapter="identity"] .display-l { font-family: var(--f-pd); }
+.pd-identity .sub-card { border-radius: 22px; background: rgb(255 255 255 / 0.62); box-shadow: inset 0 3px 0 rgb(var(--glow) / 0.9), 0 18px 40px -30px rgb(80 60 90 / 0.5); }
+.pd-identity .sub-card:nth-child(5n+1) { box-shadow: inset 0 3px 0 #f2b8c6, 0 18px 40px -30px rgb(80 60 90 / 0.5); }
+.pd-identity .sub-card:nth-child(5n+2) { box-shadow: inset 0 3px 0 #f6c89f, 0 18px 40px -30px rgb(80 60 90 / 0.5); }
+.pd-identity .sub-card:nth-child(5n+3) { box-shadow: inset 0 3px 0 #bfe3cf, 0 18px 40px -30px rgb(80 60 90 / 0.5); }
+.pd-identity .sub-card:nth-child(5n+4) { box-shadow: inset 0 3px 0 #b9d3f2, 0 18px 40px -30px rgb(80 60 90 / 0.5); }
+.pd-identity .sub-card:nth-child(5n+5) { box-shadow: inset 0 3px 0 #cdb8ea, 0 18px 40px -30px rgb(80 60 90 / 0.5); }
+.pd-identity .sub-icon { stroke: #8c6aa8; }
 
-/* A · every point on the line */
-.id-line { display: grid; justify-items: center; gap: 12px; text-align: center; width: min(100%, 380px); }
-.id-line-svg { width: min(100%, 320px); height: auto; overflow: visible; }
-.idl-blend { fill: none; }
-.idl-rim { fill: none; stroke: #e6c06a; stroke-width: 1.6; filter: drop-shadow(0 0 10px rgb(230 192 106 / 0.5)); }
-.idl-seam { stroke: #f3d68c; stroke-width: 3; stroke-linecap: round; filter: drop-shadow(0 0 6px rgb(243 214 140 / 0.9)); }
-.idl-track { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 10px; width: 100%; }
-.idl-end { font-size: 1.2rem; color: #e6c06a; }
-.idl-range { width: 100%; min-height: 32px; accent-color: #e6c06a; cursor: pointer; }
-.idl-word { font: 300 italic 1.3rem/1.3 var(--f-pd); min-height: 1.4em; }
-
-/* B · your comfort, first */
+/* your comfort, first */
 .comfort { display: grid; gap: 12px; width: min(100%, 520px); padding: 22px; border-radius: 24px; background: rgb(255 255 255 / 0.7); box-shadow: 0 30px 60px -40px rgb(80 60 90 / 0.55), inset 0 0 0 1px rgb(47 36 51 / 0.08); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
 .comfort fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 6px; }
 .comfort legend { font: 500 0.78rem/1.2 var(--f-body); color: rgb(var(--ink-soft)); margin-bottom: 4px; }
@@ -1462,88 +1407,71 @@ html[data-dir="c"] .pd-identity .lede { font-style: italic; }
 .cf-field input { min-width: 0; width: 100%; font: 400 0.95rem/1.2 var(--f-body); color: rgb(var(--ink)); background: #fff; border: 1px solid rgb(47 36 51 / 0.18); border-radius: 10px; padding: 9px 11px; }
 .cf-note { display: grid; gap: 8px; }
 .cf-note pre { white-space: pre-wrap; font: 400 0.9rem/1.5 var(--f-body); margin: 0; padding: 14px; border-radius: 14px; background: #fff; box-shadow: inset 0 0 0 1px rgb(47 36 51 / 0.12); }
-
-/* C · return to the body */
-.scan { display: grid; justify-items: center; gap: 10px; text-align: center; }
-.scan-svg { width: min(100%, 260px); height: auto; overflow: visible; }
-.sc-figure { fill: rgb(242 230 234 / 0.06); stroke: rgb(215 122 146 / 0.65); stroke-width: 1.3; }
-.sc-glow { fill: rgb(242 198 160 / 0.35); filter: blur(6px); }
-.sc-steps { display: none; }
-.scan .br-word { font: 400 italic 1.2rem/1.35 var(--f-pd); max-width: 26rem; min-height: 3em; }
-
 @media (max-width: 600px) { .cf-row { grid-template-columns: minmax(0, 1fr); } }
 
-/* ---------------- pillar 5 · Divination & Insight */
-html[data-dir="a"] .pd-divination, [data-chapter="divination"][data-dir="a"] { --f-pd: "Cormorant Unicase", Georgia, serif; }
-html[data-dir="b"] .pd-divination, [data-chapter="divination"][data-dir="b"] { --f-pd: "Tenor Sans", Helvetica, sans-serif; }
-html[data-dir="c"] .pd-divination, [data-chapter="divination"][data-dir="c"] { --f-pd: "Gilda Display", Georgia, serif; }
-[data-chapter="divination"][data-dir] .display-l { font-family: var(--f-pd); }
-html[data-dir="b"] .pd-divination .display-l { text-transform: uppercase; letter-spacing: 0.08em; font-size: clamp(2rem, 5vw, 4.2rem); }
-html[data-dir="a"] .pd-divination .sub-card { border-radius: 10px; background: rgb(23 10 14 / 0.6); box-shadow: inset 0 0 0 1px rgb(216 176 98 / 0.5), inset 0 0 0 5px rgb(23 10 14 / 0.6), inset 0 0 0 6px rgb(216 176 98 / 0.22); }
-html[data-dir="a"] .pd-divination .sub-icon { stroke: #d8b062; }
-html[data-dir="b"] .pd-divination .sub-card { border-radius: 999px 999px 26px 26px / 60px 60px 26px 26px; background: rgb(12 14 17 / 0.7); box-shadow: inset 0 0 0 1px rgb(201 206 214 / 0.25); }
-html[data-dir="b"] .pd-divination .sub-icon { stroke: #c9ced6; }
-html[data-dir="c"] .pd-divination .sub-card { border-radius: 22px; background: rgb(11 13 42 / 0.55); box-shadow: inset 0 0 0 1px rgb(185 167 232 / 0.3), 0 20px 50px -30px rgb(185 167 232 / 0.6); }
-html[data-dir="c"] .pd-divination .sub-icon { stroke: #e9cf8a; }
+/* ---------------- pillar 5 · Divination & Insight: candlelight and the black mirror
+   One book, two kinds of page. Table pages: wine-dark cloth, gold leaf, card frames (from A). Mirror pages:
+   obsidian and silver, arched like a mirror (from B). Cormorant Unicase speaks for the table, Tenor Sans for the
+   quiet voice of the mirror. The page's accent (--glow) turns gold or silver with the page. */
+.pd-divination, [data-chapter="divination"] { --f-pd: "Cormorant Unicase", Georgia, serif; --f-quiet: "Tenor Sans", "Helvetica Neue", Helvetica, sans-serif; }
+[data-chapter="divination"] .display-l { font-family: var(--f-pd); }
+.pd-divination .kicker, .pd-divination .pd-ix-n, .pd-divination .pd-note, .pd-divination .dv-sig-hint { font-family: var(--f-quiet); }
+.pd-divination .kicker { letter-spacing: 0.2em; }
+.dv5-table .sub-card { border-radius: 10px; background: rgb(23 10 14 / 0.6); box-shadow: inset 0 0 0 1px rgb(216 176 98 / 0.5), inset 0 0 0 5px rgb(23 10 14 / 0.6), inset 0 0 0 6px rgb(216 176 98 / 0.22); }
+.dv5-table .sub-icon { stroke: #d8b062; }
+.dv5-mirror .sub-card { border-radius: 999px 999px 26px 26px / 60px 60px 26px 26px; background: rgb(12 14 17 / 0.7); box-shadow: inset 0 0 0 1px rgb(201 206 214 / 0.25); }
+.dv5-mirror .sub-card h3 { font: 400 0.98rem/1.3 var(--f-quiet); text-transform: uppercase; letter-spacing: 0.08em; }
+.dv5-mirror .sub-icon { stroke: #c9ced6; }
+.dv5-mirror .display-l { letter-spacing: 0.03em; }
+/* the index says which page each chapter is: gold for the table, silver for the mirror */
+.dv5-ix-table .pd-num { color: #d8b062; }
+.dv5-ix-mirror .pd-num { color: #c9ced6; }
 
-/* A · draw three cards */
-.spread { display: grid; justify-items: center; gap: 12px; text-align: center; width: 100%; }
-.sp-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 150px)); gap: 14px; justify-content: center; perspective: 900px; }
-.sp-card { display: grid; gap: 8px; justify-items: center; }
-.sp-inner { position: relative; width: 100%; aspect-ratio: 0.6; transform-style: preserve-3d; transition: transform 0.9s cubic-bezier(.2,.7,.2,1); }
-.sp-card.is-open .sp-inner { transform: rotateY(180deg); }
-.sp-back, .sp-face { position: absolute; inset: 0; border-radius: 10px; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
-.sp-back { background: radial-gradient(circle at 50% 50%, #5a1a2a, #2a0c14); box-shadow: inset 0 0 0 1px #d8b062, inset 0 0 0 5px #2a0c14, inset 0 0 0 6px rgb(216 176 98 / 0.5); display: grid; place-items: center; }
-.sp-back svg { width: 70%; fill: none; stroke: #d8b062; stroke-width: 1.2; }
-.sp-face { transform: rotateY(180deg); background: linear-gradient(#f3e8d2, #e6d6b6); color: #2a1810; display: grid; align-content: center; justify-items: center; gap: 8px; padding: 12px; box-shadow: inset 0 0 0 1px #b08a3e, inset 0 0 0 5px #f0e4cb, inset 0 0 0 6px rgb(176 138 62 / 0.6); }
-.sp-num { font: 500 1rem/1 var(--f-pd); color: #7c2230; }
-.sp-name { font: 500 1.1rem/1.15 var(--f-pd); }
-.sp-words { font-size: 0.74rem; line-height: 1.35; color: #5a4632; }
-.sp-pos { font-size: 0.74rem; letter-spacing: 0.08em; color: rgb(var(--ink-soft)); }
-
-/* B · still the water */
+/* prompts to ponder: the black mirror in a gilt frame */
 .mirror { display: grid; justify-items: center; gap: 12px; text-align: center; }
-.mr-surface { position: relative; width: min(70vw, 260px); aspect-ratio: 0.77; border-radius: 50%; background: radial-gradient(ellipse at 50% 40%, #1a1e24, #050607 70%); box-shadow: 0 0 0 2px #c9ced6, 0 0 0 9px #0d0f12, 0 0 0 10px rgb(201 206 214 / 0.4), 0 30px 80px -30px rgb(109 143 180 / 0.6); cursor: pointer; overflow: hidden; display: grid; place-items: center; touch-action: none; -webkit-user-select: none; user-select: none; outline: none; }
-.mr-surface:focus-visible { box-shadow: 0 0 0 2px #fff, 0 0 0 9px #0d0f12, 0 0 0 10px rgb(201 206 214 / 0.6); }
+.mr-title { color: #e8c77e; }
+.mr-frame { padding: 11px; border-radius: 50%; background: conic-gradient(from 210deg, #7c5a24, #f3d39a 18%, #b08a3e 34%, #e8c77e 52%, #7c5a24 68%, #d8b062 84%, #7c5a24); box-shadow: 0 0 0 1px rgb(243 211 154 / 0.45), 0 34px 80px -30px rgb(216 176 98 / 0.5), 0 0 70px -20px rgb(243 211 154 / 0.3); }
+.mr-surface { position: relative; width: min(66vw, 250px); aspect-ratio: 0.77; border-radius: 50%; background: radial-gradient(ellipse at 50% 40%, #1a1e24, #050607 70%); box-shadow: inset 0 0 0 1px rgb(201 206 214 / 0.45), inset 0 0 40px rgb(0 0 0 / 0.85), 0 0 0 3px #0d0f12; cursor: pointer; overflow: hidden; display: grid; place-items: center; touch-action: none; -webkit-user-select: none; user-select: none; outline: none; }
+.mr-surface:focus-visible { box-shadow: inset 0 0 0 1px rgb(201 206 214 / 0.6), 0 0 0 3px #0d0f12, 0 0 0 6px #fff; }
 .mr-mist { position: absolute; inset: -10%; background: radial-gradient(circle at 30% 35%, rgb(230 233 238 / 0.35), transparent 45%), radial-gradient(circle at 70% 65%, rgb(159 181 201 / 0.3), transparent 50%); filter: blur(14px); animation: mr-drift 9s ease-in-out infinite alternate; }
 @keyframes mr-drift { to { transform: translate(6%, -4%) rotate(8deg); } }
+@media (prefers-reduced-motion: reduce) { .mr-mist { animation: none; } }
 .mr-rings { position: absolute; inset: 0; width: 100%; height: 100%; }
 .mr-ring { fill: none; stroke: rgb(201 206 214 / 0.35); stroke-width: 0.8; }
-.mr-symbol { position: relative; font: 400 1.5rem/1.2 var(--f-pd); letter-spacing: 0.06em; color: #e6e9ee; text-shadow: 0 0 18px rgb(159 181 201 / 0.9); opacity: 0; }
-.mirror .br-word { font: 400 1.05rem/1.4 var(--f-pd); max-width: 24rem; min-height: 2.8em; }
+.mr-symbol { position: relative; font: 500 1.6rem/1.2 var(--f-pd); letter-spacing: 0.06em; color: #e6e9ee; text-shadow: 0 0 18px rgb(159 181 201 / 0.9); opacity: 0; }
+.mirror .br-word { font: 400 1.05rem/1.45 var(--f-quiet); max-width: 24rem; min-height: 2.9em; }
 
-/* C · ask the pendulum */
-.pend { display: grid; justify-items: center; gap: 10px; text-align: center; }
-.pend-svg { width: min(100%, 330px); height: auto; overflow: visible; }
-.pd-board { fill: rgb(11 13 42 / 0.5); stroke: rgb(233 207 138 / 0.55); stroke-width: 1.2; }
-.pd-board.thin { fill: none; stroke-dasharray: 2 5; stroke-width: 0.8; }
-.pd-axis { stroke: rgb(185 167 232 / 0.3); stroke-width: 0.8; }
-.pd-label { font: 400 12px/1 var(--f-pd); fill: #e9cf8a; text-anchor: middle; letter-spacing: 0.08em; }
-.pd-label.side { dominant-baseline: middle; }
-.pd-trail { fill: none; stroke: rgb(185 167 232 / 0.45); stroke-width: 1.2; stroke-linecap: round; }
-.pd-chain { stroke: rgb(241 238 252 / 0.5); stroke-width: 1; stroke-dasharray: 2 3; }
-.pd-bob { fill: #f1eefc; stroke: #e9cf8a; stroke-width: 1; filter: drop-shadow(0 0 8px rgb(185 167 232 / 0.9)); }
-.pd-pivot { fill: #e9cf8a; }
-.pend .br-word { font: 400 1.15rem/1.4 var(--f-pd); max-width: 24rem; min-height: 2.8em; }
-@media (max-width: 600px) { .sp-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; } .sp-words { display: none; } }
-
-/* ---------------- pillar 6 · Learning */
-html[data-dir="a"] .pd-learning, [data-chapter="learning"][data-dir="a"] { --f-pd: "Libre Baskerville", Georgia, serif; }
-html[data-dir="b"] .pd-learning, [data-chapter="learning"][data-dir="b"] { --f-pd: "Josefin Slab", Georgia, serif; }
-html[data-dir="c"] .pd-learning, [data-chapter="learning"][data-dir="c"] { --f-pd: "Gotu", Georgia, serif; }
-[data-chapter="learning"][data-dir] .display-l { font-family: var(--f-pd); }
-html[data-dir="a"] .pd-learning .display-l { font-size: clamp(2.4rem, 5.6vw, 4.8rem); }
-html[data-dir="c"] .pd-learning .display-l { font-size: clamp(2.4rem, 5.6vw, 4.8rem); }
+/* ---------------- pillar 6 · Learning: the library, the leaf and the stars
+   Three rooms on one page, each in its own type and colours: the library by lamplight (Libre Baskerville;
+   walnut, lamp green, brass), the palm-leaf manuscripts (Gotu, made for Latin and Devanagari together; ochre,
+   ink, turmeric, kumkum) and the night road of study (Josefin Slab; midnight, chalk, star gold). The labels are
+   Josefin Slab throughout, which ties the rooms together. */
+.pd-learning, [data-chapter="learning"] { --f-pd: "Libre Baskerville", Georgia, serif; --f-label: "Josefin Slab", Georgia, serif; }
+[data-chapter="learning"] .display-l { font-family: var(--f-pd); }
+.pd-learning .display-l { font-size: clamp(min(2.4rem, 11vw), 5.6vw, 4.8rem); }
+.pd-learning .pd-title { font-size: clamp(min(2.8rem, 12vw), 6.6vw, 5.8rem); }
+.pd-learning .kicker { font-family: var(--f-label); font-weight: 600; letter-spacing: 0.18em; }
+.ln-library { --f-pd: "Libre Baskerville", Georgia, serif; }
+.ln-leaf { --f-pd: "Gotu", Georgia, serif; }
+.ln-sky { --f-pd: "Josefin Slab", Georgia, serif; }
+.ln-library .sub-card { border-radius: 4px 12px 12px 4px; background: linear-gradient(90deg, rgb(201 163 90 / 0.35) 0 5px, rgb(29 20 13 / 0.6) 5px); box-shadow: inset 0 0 0 1px rgb(201 163 90 / 0.3); }
+.ln-library .sub-icon { stroke: #c9a35a; }
+.ln-leaf .sub-card { border-radius: 40px; background: linear-gradient(180deg, rgb(255 246 222 / 0.7), rgb(234 214 166 / 0.7)); box-shadow: inset 0 0 0 1px rgb(29 20 16 / 0.25), inset 0 -10px 0 -8px rgb(168 50 30 / 0.5); }
+.ln-leaf .sub-icon { stroke: #a8321e; }
+.ln-leaf .pd-head { position: relative; }
+/* a palm leaf is bound by a cord through two holes */
+.ln-leaf .pd-head::before { content: ""; display: block; width: min(100%, 22rem); height: 10px; margin-bottom: 4px; background: radial-gradient(circle, #a8321e 0 3px, transparent 3.5px) 18% 50% / 14px 10px no-repeat, radial-gradient(circle, #a8321e 0 3px, transparent 3.5px) 82% 50% / 14px 10px no-repeat, linear-gradient(#1d1410, #1d1410) 0 50% / 100% 1px no-repeat; opacity: 0.55; }
+.ln-sky .sub-card { border-radius: 16px; background: rgb(11 20 36 / 0.6); box-shadow: inset 0 0 0 1px rgb(110 160 214 / 0.3); }
+.ln-sky .sub-icon { stroke: #f0d48a; }
+.ln-sky .display-l { letter-spacing: 0.01em; }
+/* the index says which room each chapter is in */
+.ln-ix-library .pd-num { color: #c9a35a; }
+.ln-ix-leaf .pd-num { color: #d99a2b; }
+.ln-ix-sky .pd-num { color: #9fc1e8; }
 .ln-formats { display: grid; gap: 6px; }
 .ln-formats ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
-html[data-dir="a"] .pd-learning .sub-card { border-radius: 4px 12px 12px 4px; background: linear-gradient(90deg, rgb(201 163 90 / 0.35) 0 5px, rgb(29 20 13 / 0.6) 5px); box-shadow: inset 0 0 0 1px rgb(201 163 90 / 0.3); }
-html[data-dir="a"] .pd-learning .sub-icon { stroke: #c9a35a; }
-html[data-dir="b"] .pd-learning .sub-card { border-radius: 16px; background: rgb(11 20 36 / 0.6); box-shadow: inset 0 0 0 1px rgb(110 160 214 / 0.3); }
-html[data-dir="b"] .pd-learning .sub-icon { stroke: #f0d48a; }
-html[data-dir="c"] .pd-learning .sub-card { border-radius: 40px; background: linear-gradient(180deg, rgb(255 246 222 / 0.7), rgb(234 214 166 / 0.7)); box-shadow: inset 0 0 0 1px rgb(29 20 16 / 0.25), inset 0 -10px 0 -8px rgb(168 50 30 / 0.5); }
-html[data-dir="c"] .pd-learning .sub-icon { stroke: #a8321e; }
 
-/* A · find your class */
+/* find your class */
 .finder { display: grid; gap: 12px; width: min(100%, 520px); padding: 22px; border-radius: 6px; background: rgb(29 20 13 / 0.72); box-shadow: inset 0 0 0 1px rgb(201 163 90 / 0.45), 0 30px 60px -36px rgb(0 0 0 / 0.8); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 .finder fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 6px; }
 .finder legend { font: 400 1.05rem/1.3 var(--f-pd); margin-bottom: 4px; }
@@ -1555,8 +1483,10 @@ html[data-dir="c"] .pd-learning .sub-icon { stroke: #a8321e; }
 .fd-opts input:focus-visible + span { outline: 2px solid #c9a35a; outline-offset: 2px; }
 .fd-result { display: grid; gap: 8px; justify-items: start; padding-top: 10px; border-top: 1px solid rgb(201 163 90 / 0.3); }
 .fd-result ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.fd-more { color: rgb(var(--ink-soft)); margin: 0; }
+.fd-more a { color: rgb(var(--ink)); }
 
-/* B · your path */
+/* your path */
 .pathmap { display: grid; justify-items: center; gap: 10px; width: 100%; }
 .pm-svg { width: min(100%, 440px); height: auto; overflow: visible; }
 .pm-road { fill: none; stroke: rgb(240 212 138 / 0.55); stroke-width: 1.4; stroke-dasharray: 3 5; }
@@ -1570,19 +1500,8 @@ html[data-dir="c"] .pd-learning .sub-icon { stroke: #a8321e; }
 .pm-station.is-on .pm-star { fill: #f0d48a; r: 8px; }
 .pm-cap { font: 400 10px/1 var(--f-pd); fill: rgb(232 238 246 / 0.6); letter-spacing: 0.1em; text-transform: uppercase; }
 .pm-card { display: grid; gap: 6px; justify-items: center; text-align: center; min-height: 9.5em; }
-.pm-card h2 { font: 400 1.4rem/1.2 var(--f-pd); margin: 0; }
+.pm-card h3 { font: 400 1.4rem/1.2 var(--f-pd); margin: 0; }
 .pm-card p { color: rgb(var(--ink-soft)); }
-
-/* C · draw a yantra */
-.ydraw { display: grid; justify-items: center; gap: 10px; text-align: center; }
-.yd-svg { width: min(100%, 330px); height: auto; overflow: visible; }
-.yd-part path, .yd-part circle { fill: none; stroke: #1d1410; stroke-width: 1.6; stroke-linejoin: round; }
-.yd-part { opacity: 0; transition: opacity 0.4s ease; }
-.yd-part.is-on { opacity: 1; }
-.yd-part[data-yd="4"] path { stroke: #a8321e; }
-.yd-part[data-yd="5"] path { stroke: #d99a2b; stroke-width: 2.2; }
-.yd-bindu { fill: #a8321e !important; stroke: none !important; }
-.yd-step { font: 400 1.05rem/1.5 var(--f-pd); max-width: 26rem; min-height: 3em; }
 
 /* ======================================== audit fixes */
 /* the practice cards never grow wider than the screen */
@@ -1596,17 +1515,16 @@ html[data-dir="c"] .pd-learning .sub-icon { stroke: #a8321e; }
 /* thumbs: the small controls get a comfortable height on touch screens */
 @media (pointer: coarse) {
   .wordmark, .back-link { display: inline-flex; align-items: center; min-height: 40px; }
-  .vidya-keep, .sg-methods button, .br-modes button, .dv-switch button, .wheel-modes button, .sg-arr button, .cf-opts span, .fd-opts span, .chip-keep, .btn-sm, [data-el], .pp-item { min-height: 36px; display: inline-flex; align-items: center; }
-  .dv-switch button { min-width: 40px; justify-content: center; }
+  .vidya-keep, .sg-methods button, .br-modes button, .wheel-modes button, .sg-arr button, .cf-opts span, .fd-opts span, .chip-keep, .btn-sm, [data-el], .pp-item { min-height: 36px; display: inline-flex; align-items: center; }
 }
 
 /* Windows high contrast (forced colours): shadows and backgrounds are removed there, so buttons and chips
    get a real border to keep their shape */
 @media (forced-colors: active) {
-  .btn, .chip-keep, .icon-btn, .sky-pill, .sound-btn, .hud-toggle, .keep-pill, .dv-switch button, .path-opt,
+  .btn, .chip-keep, .icon-btn, .sky-pill, .sound-btn, .hud-toggle, .keep-pill, .path-opt,
   .br-modes button, .sg-methods button, .sg-arr button, .wheel-modes button, .fd-opts span, .cf-opts span, .vidya-keep, .pp-item {
     border: 1px solid ButtonText;
   }
-  .dv-switch button[aria-pressed="true"], .chip-keep[aria-pressed="true"], .br-modes button[aria-pressed="true"] { border-width: 3px; }
+  .chip-keep[aria-pressed="true"], .br-modes button[aria-pressed="true"] { border-width: 3px; }
   .fd-opts input:checked + span, .cf-opts input:checked + span { border: 3px solid Highlight; }
 }

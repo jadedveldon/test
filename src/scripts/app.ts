@@ -46,9 +46,7 @@ import { initKeep, keepTopic, renderKeep } from './keep';
 import { closeMenu, initMenu } from './menu';
 import { initPwa } from './pwa';
 import { runDeviceTest } from './devicetest';
-import { loadHealingFont, loadMagicFonts } from './fonts';
-import { DIR_PILLARS, dirKey, pagePillar, setDir, type Dir, type DirPillar } from './dirs';
-import { startDirPage, stopDirPage } from './dirpages';
+import { loadHealingFont, loadMagicFonts, loadSettledFonts } from './fonts';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -292,11 +290,8 @@ const devKey = (part: string) => `devC_${part}`;
 const magKey = (part: string) => `magG_${part}`;
 /** pillar 3 (still water, with gold): each chapter has its own world */
 const healKey = (part: string) => `heal_${part}`;
-/** pillars 4, 5 and 6 are being designed in three directions each (see dirs.ts) */
-const dirChapterKey = (c: HTMLElement) => {
-  const p = c.closest<HTMLElement>('[data-dir-pillar]')?.dataset.dirPillar as DirPillar | undefined;
-  return p ? dirKey(p, c.dataset.dirChapter!) : c.dataset.chapter!;
-};
+/** pillars 4, 5 and 6: each chapter's data-chapter is its world (id_*, div_*, lrn_*); these are their homepage chapters */
+const HOME_KEY: Record<string, string> = { identity: 'id_home', divination: 'div_home', learning: 'lrn_home' };
 
 function chapterKeys() {
   return chapters.map((c) => {
@@ -305,8 +300,7 @@ function chapterKeys() {
     if (c.dataset.magChapter) return magKey(c.dataset.magChapter);
     if (c.dataset.healChapter) return healKey(c.dataset.healChapter);
     if (c.dataset.chapter === 'healing') return healKey('home');
-    if (c.dataset.dirChapter) return dirChapterKey(c);
-    if (DIR_PILLARS.includes(c.dataset.chapter as DirPillar)) return dirKey(c.dataset.chapter as DirPillar, 'home');
+    if (HOME_KEY[c.dataset.chapter!]) return HOME_KEY[c.dataset.chapter!];
     if (c.dataset.chapter === 'magic') return magKey('home');
     if (c.dataset.chapter === 'devotion') return devKey('home');
     return c.dataset.chapter!;
@@ -585,7 +579,7 @@ function soundTick() {
   // the Devotion directions each have their own sound layer
   // Magic's night pages share Devotion's cosmic layer; its day pages are the quiet room of the book
   const layer = (k: string) => (k.startsWith('devC_') ? 'cosmic' : k.startsWith('magG_') ? (magPage(k.slice(5)) === 'day' ? 'learning' : 'cosmic')
-    : k.startsWith('heal_') ? 'healing' : /^id[ABC]_/.test(k) ? 'identity' : /^div[ABC]_/.test(k) ? 'divination' : /^lrn[ABC]_/.test(k) ? 'learning' : k);
+    : k.startsWith('heal_') ? 'healing' : k.startsWith('id_') ? 'identity' : k.startsWith('div_') ? 'divination' : k.startsWith('lrn_') ? 'learning' : k);
   const w: Record<string, number> = {};
   w[layer(a)] = (w[layer(a)] ?? 0) + (1 - t);
   w[layer(b)] = (w[layer(b)] ?? 0) + t;
@@ -663,14 +657,17 @@ function initPage() {
   pageModule('[data-devotion]', () => import('./devotion'), (m) => { m.startDevotion(world, calm); return m.stopDevotion; });
   pageModule('[data-magic]', () => import('./magic'), (m) => { m.startMagic(world, calm); return m.stopMagic; });
   pageModule('[data-healing]', () => import('./healing'), (m) => { m.startHealing(world); return m.stopHealing; });
+  pageModule('[data-identity]', () => import('./identity'), (m) => { m.startIdentity(); return m.stopIdentity; });
+  pageModule('[data-divination]', () => import('./divination'), (m) => { m.startDivination(world); return m.stopDivination; });
+  pageModule('[data-learning]', () => import('./learning'), (m) => { m.startLearning(world); return m.stopLearning; });
   // the demo has its own WebGL, so it follows the level, not whether the 3D world has arrived yet
   pageModule('[data-depth]', () => import('./depth'), (m) => m.initDepth(LIVE.includes(tier)));
-  loadMagicFonts(); // for the homepage chapters
+  loadMagicFonts(); // for the homepage chapters too
   loadHealingFont();
+  loadSettledFonts();
   renderKeep();
   applyFestival();
   renderMoonLine();
-  startDirPage(world);
   initDiya(world);
   initPath(world, () => { ScrollTrigger.refresh(); lenis?.resize(); });
   applySky();
@@ -703,7 +700,6 @@ function cleanupPage() {
   html.classList.remove('locked', 'menu-open', 'search-open');
   closeSearch();
   world.setDustBurn(0);
-  stopDirPage();
 }
 
 /* ------------------------------------------------- experiment switches */
@@ -870,8 +866,8 @@ function hudTick(dt: number) {
   const dv = /^devC_(\w+)$/.exec(ck);
   const mg = /^magG_(\w+)$/.exec(ck);
   const hl = /^heal_(\w+)$/.exec(ck);
-  const dp = /^(id|div|lrn)([ABC])_(\w+)$/.exec(ck);
-  if (c) c.textContent = LABELS[ck] ?? (dv ? `Devotion · ${dv[1]}` : mg ? `Magic · ${mg[1]} (${magPage(mg[1])} page)` : hl ? `Healing · ${hl[1]}` : dp ? `${({ id: 'Identity', div: 'Divination', lrn: 'Learning' } as Record<string, string>)[dp[1]]} ${dp[2]} · ${dp[3]}` : ck);
+  const dp = /^(id|div|lrn)_(\w+)$/.exec(ck);
+  if (c) c.textContent = LABELS[ck] ?? (dv ? `Devotion · ${dv[1]}` : mg ? `Magic · ${mg[1]} (${magPage(mg[1])} page)` : hl ? `Healing · ${hl[1]}` : dp ? `${({ id: 'Identity', div: 'Divination', lrn: 'Learning' } as Record<string, string>)[dp[1]]} · ${dp[2]}` : ck);
   const p = hud.querySelector('[data-hud-points]');
   if (p) {
     const n = world.pointCount;
@@ -967,15 +963,6 @@ function boot() {
   onSoundChange((on) => { renderSound(); if (on) ring('choice'); });
   initKeep();
   initMenu(world);
-  document.addEventListener('click', (e) => {
-    const b = (e.target as Element | null)?.closest<HTMLElement>('[data-dir-set]');
-    const p = pagePillar();
-    if (!b || !p) return;
-    setDir(p, b.dataset.dirSet as Dir);
-    startDirPage(world);
-    if (chapters.length) world.setSequence(chapterKeys());
-    buzz(PATTERNS.choice);
-  });
 
   initPwa();
   initSearch({

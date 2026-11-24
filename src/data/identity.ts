@@ -1,8 +1,7 @@
-import type { DirChapter, Direction } from './directions';
-import { DIR_FONTS } from './dirfonts';
+import type { DirChapter } from './directions';
 
 /**
- * Pillar 4, Identity, Intimacy & the Body: three directions to compare live.
+ * Pillar 4, Identity, Intimacy & the Body, in the Soft prism design (direction B, chosen).
  * Written to be affirming and trauma-aware: nothing is assumed about who anyone
  * is or whom they love, people choose what to share and can stop at any time,
  * and nothing here is explicit. Lines are DRAFT copy for Sarvakali. Facts and
@@ -60,74 +59,9 @@ export const SUB_ICON: Record<string, string> = {
 
 /* ---- signatures ---- */
 
-/** A · Ardhanarishvara, as a line from one half to the other (verified: Wikipedia, Ardhanarishvara) */
-export const ARDHANARI = 'Ardhanarishvara, half Shiva and half Parvati in one body, is found in Shiva temples across India.';
-
-/** B · a comfort note to bring to a first conversation; nothing is stored or sent */
+/** your comfort, first: a note to bring to a first conversation; nothing is stored or sent */
 export const COMFORT = {
   pace: ['Slowly, one small step at a time', 'Steadily, with room to pause', 'Ready to go deep'],
   explore: ['Who I am and how I name myself', 'Coming out, family and belonging', 'Relationships and intimacy', 'Trust, safety and consent', 'Feeling at home in my body', 'Womb and cycle work', 'Desire, anger and freedom (Lilith)', 'Spirituality and devotion'],
   ways: ['Talking it through', 'Ritual or spellwork', 'Journaling', 'Meditation and the body', 'I am not sure yet'],
 };
-
-/** C · return to the body: a gentle scan, top to bottom; every step can be skipped */
-export const BODY_SCAN = [
-  { at: 'head', say: 'Notice your face and jaw. If they want to soften, let them.' },
-  { at: 'shoulders', say: 'Notice your shoulders. They can drop a little, or stay as they are.' },
-  { at: 'chest', say: 'Notice your breath moving in your chest. No need to change it.' },
-  { at: 'belly', say: 'Notice your belly. Let it be as it is.' },
-  { at: 'hips', say: 'Notice where you are sitting or standing. Feel what holds you up.' },
-  { at: 'legs', say: 'Notice your legs, from the hips to the knees.' },
-  { at: 'feet', say: 'Notice your feet and the ground beneath them. You are here.' },
-];
-
-export const DIRECTIONS: Direction[] = [
-  {
-    key: 'a', name: 'Two halves, one whole',
-    essence: 'After Ardhanarishvara: dusk indigo and saffron meeting in a seam of gold. Every point between them, and beyond them, is whole.',
-    feeling: ['dignified', 'warm', 'whole', 'Indian'],
-    palette: [
-      { name: 'Dusk indigo', hex: '#17163f' }, { name: 'Night violet', hex: '#2c1f57' }, { name: 'Saffron', hex: '#e48b3c' },
-      { name: 'Vermilion', hex: '#c9472f' }, { name: 'Gold seam', hex: '#e6c06a' }, { name: 'Moon', hex: '#efe9f7' },
-    ],
-    type: { display: 'Fraunces', note: 'a soft, warm serif', family: '"Fraunces", Georgia, serif', fontHref: DIR_FONTS.identity.a },
-    worlds: 'A circle of two halves (a crescent and a sun), a rose, a figure of light, the moon’s faces, a fire.',
-    layout: 'Each chapter opens across a split field, indigo to saffron; cards edged in gold.',
-    signature: { name: 'Every point on the line', how: 'Drag along the line between the moon and the sun; the circle takes on every blend between them. A line on Ardhanarishvara.' },
-    sound: 'A soft drone and a bell.',
-    imagery: 'Temple stone and textile in two colours; hands, joined.',
-    voice: 'Warm and dignified: you are already whole.',
-  },
-  {
-    key: 'b', name: 'Soft prism',
-    essence: 'A bright, gentle page where light breaks into every colour: cream with blush, peach, butter, mint, sky and lilac. Inclusive without shouting.',
-    feeling: ['light', 'kind', 'open', 'safe'],
-    palette: [
-      { name: 'Cream', hex: '#fbf6f0' }, { name: 'Blush', hex: '#f2b8c6' }, { name: 'Peach', hex: '#f6c89f' },
-      { name: 'Mint', hex: '#bfe3cf' }, { name: 'Sky', hex: '#b9d3f2' }, { name: 'Lilac', hex: '#cdb8ea' },
-    ],
-    type: { display: 'DM Serif Display', note: 'friendly, round letters', family: '"DM Serif Display", Georgia, serif', fontHref: DIR_FONTS.identity.b },
-    worlds: 'Ink-light on cream: a prism and its fan of colours, a rose, a figure, the moon’s faces.',
-    layout: 'Soft rounded cards with a thin band of colour; plenty of white space.',
-    signature: { name: 'Your comfort, first', how: 'Choose your pace, what you would like to explore and how you like to work; add a name and pronouns if you wish. It becomes a private note to bring to your first conversation. Nothing is saved or sent.' },
-    sound: 'A gentle chime.',
-    imagery: 'Soft daylight portraits, chosen with and by the community; never stock clichés.',
-    voice: 'Friendly and plain: you set the pace.',
-  },
-  {
-    key: 'c', name: 'Night rose',
-    essence: 'Lilith’s garden at night: deep plum, rose and moonlight. Sensual but never explicit; strong and tender at once.',
-    feeling: ['intimate', 'strong', 'tender', 'free'],
-    palette: [
-      { name: 'Night plum', hex: '#14080f' }, { name: 'Plum', hex: '#3a1430' }, { name: 'Rose', hex: '#d77a92' },
-      { name: 'Rose gold', hex: '#c99a7a' }, { name: 'Moonlight', hex: '#f2e6ea' }, { name: 'Ember', hex: '#b8452e' },
-    ],
-    type: { display: 'Playfair Display', note: 'high-contrast italics', family: '"Playfair Display", Georgia, serif', fontHref: DIR_FONTS.identity.c },
-    worlds: 'A rose opening, a figure of light, the moon’s faces, a fire, a halo.',
-    layout: 'Dark, close and quiet; text set narrow; petals of light between chapters.',
-    signature: { name: 'Return to the body', how: 'A slow, gentle scan from head to feet: a soft light moves down an abstract figure with one quiet line at each place. Pause or stop whenever you like.' },
-    sound: 'A low hum and slow breath.',
-    imagery: 'Night flowers, silk, candlelight on skin (never explicit).',
-    voice: 'Low and tender: your body is yours.',
-  },
-];

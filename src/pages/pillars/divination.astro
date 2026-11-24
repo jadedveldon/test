@@ -1,15 +1,15 @@
 ---
 /**
- * Pillar 5, Divination & Insight: five chapters gathered from the catalogue's
- * subcategories, in three directions to compare (A The reading table · B Black
- * mirror · C Moon and pendulum). Readings are offered for reflection.
+ * Pillar 5, Divination & Insight: candlelight and the black mirror. Directions A (the reading table) and B (black
+ * mirror) as one book with two kinds of page: table pages (wine, gold leaf, card frames) and mirror pages
+ * (obsidian, silver, arched mirrors). The opening is where they meet: a black mirror in a gilt frame, which gives
+ * prompts to ponder. Readings are offered for reflection.
  */
 import Base from '../../layouts/Base.astro';
 import SubCards from '../../components/SubCards.astro';
-import DirBriefs from '../../components/DirBriefs.astro';
 import { pillars, categoryCount } from '../../data/site';
 import { categoryAliases, gather } from '../../data/chapters';
-import { CARE, CHAPTERS, DIRECTIONS, SUB_ICON, TAROT_NOTE } from '../../data/divination';
+import { CARE, CHAPTERS, SUB_ICON } from '../../data/divination';
 
 const index = pillars.findIndex((p) => p.slug === 'divination');
 const p = pillars[index];
@@ -18,11 +18,10 @@ const next = pillars[(index + 1) % pillars.length];
 const ROMAN = ['I', 'II', 'III', 'IV', 'V'];
 const moves = CHAPTERS.map((ch) => ({ ...ch, cat: gather(p, ch), id: ch.key }));
 const aliases = categoryAliases(p, CHAPTERS);
-const POS = ['What has been', 'What is', 'What is coming'];
 ---
-<Base title={`${p.name} · Sarvakali`} sequence="divA_hero" description={p.line}>
-  <div class="pd pd-divination" data-dir-pillar="divination">
-    <section class="chapter pd-hero" data-chapter="div_hero" data-dir-chapter="hero">
+<Base title={`${p.name} · Sarvakali`} sequence="div_hero" description={p.line}>
+  <div class="pd pd-divination" data-divination>
+    <section class="chapter pd-hero dv5-gilt" data-chapter="div_hero">
       <div class="chapter-inner pd-hero-grid">
         <div class="pd-hero-copy">
           <a class="back-link" href="/#paths">← All pillars</a>
@@ -31,71 +30,34 @@ const POS = ['What has been', 'What is', 'What is coming'];
           <p class="lede" data-hero>{p.line}</p>
           <p class="pd-note" data-hero>{CARE}</p>
           <ol class="pd-index" data-hero aria-label="The chapters">
-            {moves.map((m, i) => <li><a href={`#${m.id}`}><span class="pd-num" aria-hidden="true">{ROMAN[i]}</span><span class="pd-ix-title">{m.title}</span><span class="pd-ix-n">{categoryCount(m.cat)} services</span></a></li>)}
+            {moves.map((m, i) => <li class={`dv5-ix-${m.room}`}><a href={`#${m.id}`}><span class="pd-num" aria-hidden="true">{ROMAN[i]}</span><span class="pd-ix-title">{m.title}</span><span class="pd-ix-n">{categoryCount(m.cat)} services</span></a></li>)}
           </ol>
         </div>
 
         <div class="pd-sig" data-hero>
-          <!-- A · draw three cards -->
-          <div class="spread" data-dir-only="a" data-spread>
-            <ol class="sp-cards">
-              {POS.map((pos, i) => (
-                <li class="sp-card" data-card={i}>
-                  <div class="sp-inner">
-                    <div class="sp-back" aria-hidden="true"><svg viewBox="-40 -60 80 120"><rect x="-36" y="-56" width="72" height="112" rx="5" /><circle r="16" /><path d="M0 -30 L8 0 L0 30 L-8 0Z" /><circle r="3" /></svg></div>
-                    <div class="sp-face">
-                      <span class="sp-num" data-card-num>·</span>
-                      <span class="sp-name" data-card-name>·</span>
-                      <span class="sp-words" data-card-words></span>
-                    </div>
-                  </div>
-                  <span class="sp-pos">{pos}</span>
-                </li>
-              ))}
-            </ol>
-            <div class="cta-row center"><button type="button" class="btn btn-ghost btn-sm" data-draw-three>Draw three cards</button></div>
-            <p class="dv-sig-hint small">{TAROT_NOTE}</p>
-          </div>
-
-          <!-- B · still the water -->
-          <div class="mirror" data-dir-only="b" data-mirror>
-            <div class="mr-surface" data-mirror-surface role="button" tabindex="0" aria-label="Press and hold to still the mirror">
-              <div class="mr-mist" data-mirror-mist></div>
-              <svg viewBox="-100 -130 200 260" class="mr-rings" aria-hidden="true">{[30, 52, 74, 96].map((r) => <ellipse rx={r * 0.7} ry={r} class="mr-ring" />)}</svg>
-              <p class="mr-symbol" data-mirror-symbol aria-live="polite"></p>
+          <!-- prompts to ponder: the black mirror in a gilt frame -->
+          <div class="mirror" data-mirror>
+            <p class="kicker mr-title">Prompts to ponder</p>
+            <div class="mr-frame">
+              <div class="mr-surface" data-mirror-surface role="button" tabindex="0" aria-label="Press and hold to still the mirror for a prompt to ponder">
+                <div class="mr-mist" data-mirror-mist></div>
+                <svg viewBox="-100 -130 200 260" class="mr-rings" aria-hidden="true">{[30, 52, 74, 96].map((r) => <ellipse rx={r * 0.7} ry={r} class="mr-ring" />)}</svg>
+                <p class="mr-symbol" data-mirror-symbol aria-live="polite"></p>
+              </div>
             </div>
             <p class="br-word" data-mirror-word aria-live="polite">Press and hold the mirror, and be still</p>
-            <p class="dv-sig-hint small">There is no right answer. Scrying is about what comes to you; the question is yours to sit with.</p>
-          </div>
-
-          <!-- C · ask the pendulum -->
-          <div class="pend" data-dir-only="c" data-pendulum>
-            <svg viewBox="-150 -150 300 300" class="pend-svg" aria-hidden="true">
-              <circle r="124" class="pd-board" />
-              <circle r="62" class="pd-board thin" />
-              <line x1="0" y1="-124" x2="0" y2="124" class="pd-axis" />
-              <line x1="-124" y1="0" x2="124" y2="0" class="pd-axis" />
-              <text y="-132" class="pd-label">Yes</text><text y="142" class="pd-label">Yes</text>
-              <text x="-138" y="4" class="pd-label side">No</text><text x="138" y="4" class="pd-label side">No</text>
-              <path d="" class="pd-trail" data-pendulum-trail />
-              <line x1="0" y1="0" x2="0" y2="0" class="pd-chain" data-pendulum-chain />
-              <g data-pendulum-bob><path d="M0 -12 L9 0 L0 16 L-9 0Z" class="pd-bob" /></g>
-              <circle r="4" class="pd-pivot" />
-            </svg>
-            <p class="br-word" data-pendulum-word aria-live="polite">Hold a yes-or-no question in mind</p>
-            <div class="cta-row center"><button type="button" class="btn btn-ghost btn-sm" data-pendulum-ask>Let it swing</button></div>
-            <p class="dv-sig-hint small">Seen from above: to and fro is yes, side to side is no, a circle means not yet. A gentle game for reflection, never a prediction.</p>
+            <p class="dv-sig-hint small">A symbol rises with a prompt to sit with: something to ponder, never a prediction. There is no right answer.</p>
           </div>
         </div>
       </div>
     </section>
 
     {moves.map((m, i) => (
-      <section class={`chapter pd-move dv5-${m.key}`} id={m.id} data-chapter={`div_${m.key}`} data-dir-chapter={m.key}>
+      <section class={`chapter pd-move dv5-${m.key} dv5-${m.room}`} id={m.id} data-chapter={`div_${m.key}`}>
         {(aliases[m.key] || []).map((a) => <span id={a} class="anchor-alias" aria-hidden="true"></span>)}
         <div class="chapter-inner pd-inner">
           <header class="pd-head">
-            <p class="kicker" data-fade><span class="pd-num">{ROMAN[i]}</span> · {categoryCount(m.cat)} services</p>
+            <p class="kicker" data-fade><span class="pd-num">{ROMAN[i]}</span> · {categoryCount(m.cat)} services · {m.room === 'table' ? 'at the table' : 'in the mirror'}</p>
             <h2 class="display-l" data-split data-dust>{m.title}</h2>
             <p class="lede" data-fade>{m.line}</p>
             {m.note && <p class="pd-note" data-fade>{m.note}</p>}
@@ -106,7 +68,7 @@ const POS = ['What has been', 'What is', 'What is coming'];
       </section>
     ))}
 
-    <section class="chapter pd-close" data-chapter="div_close" data-dir-chapter="close">
+    <section class="chapter pd-close dv5-table" data-chapter="div_close">
       <div class="chapter-inner narrow center">
         <p class="kicker" data-fade>When you are ready</p>
         <h2 class="display-l" data-split>Bring a question, or just yourself</h2>
@@ -117,8 +79,6 @@ const POS = ['What has been', 'What is', 'What is coming'];
         </div>
       </div>
     </section>
-
-    <DirBriefs title="Three directions for Divination & Insight" directions={DIRECTIONS} />
 
     <nav class="pp-nav" aria-label="Other pillars">
       <a href={`/pillars/${prev.slug}`}><span>Previous pillar</span><b transition:name={`pt-${prev.slug}`} data-pt>{prev.name}</b></a>

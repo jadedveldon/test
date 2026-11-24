@@ -1,36 +1,31 @@
 ---
 /**
- * Pillar 6, Learning: classes and mentoring in five chapters, in three
- * directions to compare (A The library · B The path of study · C Palm leaf).
+ * Pillar 6, Learning: the library, the leaf and the stars. The page walks through three rooms: the library by
+ * lamplight (direction A), the palm-leaf manuscripts (direction C) and the night road of study (direction B).
+ * Find your class sits in the library; Your path opens the sky. The yantra drawing is in the project history.
  */
 import Base from '../../layouts/Base.astro';
 import SubCards from '../../components/SubCards.astro';
-import DirBriefs from '../../components/DirBriefs.astro';
 import { pillars, categoryCount } from '../../data/site';
 import { categoryAliases, gather } from '../../data/chapters';
-import { CHAPTERS, DIRECTIONS, FINDER, FORMATS, SIDE_FROM, STATION_XY, STATIONS, SUB_ICON, YANTRA_STEPS } from '../../data/learning';
+import { CHAPTERS, FINDER, FORMATS, SIDE_FROM, STATION_XY, STATIONS, SUB_ICON } from '../../data/learning';
 
 const index = pillars.findIndex((p) => p.slug === 'learning');
 const p = pillars[index];
 const prev = pillars[(index + pillars.length - 1) % pillars.length];
 const next = pillars[(index + 1) % pillars.length];
 const ROMAN = ['I', 'II', 'III', 'IV', 'V'];
-const moves = CHAPTERS.map((ch) => ({ ...ch, cat: gather(p, ch), id: ch.key }));
+const ROOM: Record<string, string> = { library: 'in the library', leaf: 'on the palm leaf', sky: 'under the stars' };
+const moves = CHAPTERS.map((ch, i) => ({ ...ch, cat: gather(p, ch), id: ch.key, n: ROMAN[i] }));
 const aliases = categoryAliases(p, CHAPTERS);
 const road = STATION_XY.slice(0, 9).map(([x, y]) => `${x} ${y}`).join(' L');
-/* C · the yantra's parts, drawn in order */
-const tri = (r: number, up: boolean) => [90, 210, 330].map((d) => { const a = ((up ? d + 180 : d) * Math.PI) / 180; return `${(Math.cos(a) * r).toFixed(1)} ${(Math.sin(a) * r).toFixed(1)}`; });
-const petals = Array.from({ length: 8 }, (_, k) => {
-  const a = (k * Math.PI) / 4, w = Math.PI / 8, pts: string[] = [];
-  for (let j = 0; j <= 12; j++) { const t = -w + (2 * w * j) / 12, R = 74 + 26 * Math.cos((t / w) * (Math.PI / 2)); pts.push(`${(Math.cos(a + t) * R).toFixed(1)} ${(Math.sin(a + t) * R).toFixed(1)}`); }
-  return `M${pts.join(' L')}`;
-}).join(' ');
-const S = 112, G = 18, D = 12;
-const square = `M${-S} ${-S} L${-G} ${-S} L${-G} ${-S - D} L${G} ${-S - D} L${G} ${-S} L${S} ${-S} L${S} ${-G} L${S + D} ${-G} L${S + D} ${G} L${S} ${G} L${S} ${S} L${G} ${S} L${G} ${S + D} L${-G} ${S + D} L${-G} ${S} L${-S} ${S} L${-S} ${G} L${-S - D} ${G} L${-S - D} ${-G} L${-S} ${-G} Z`;
+/* the road under the stars comes just before mentoring */
+const beforeSky = moves.filter((m) => m.room !== 'sky');
+const sky = moves.filter((m) => m.room === 'sky');
 ---
-<Base title={`${p.name} · Sarvakali`} sequence="lrnA_hero" description={p.line}>
-  <div class="pd pd-learning" data-dir-pillar="learning">
-    <section class="chapter pd-hero" data-chapter="lrn_hero" data-dir-chapter="hero">
+<Base title={`${p.name} · Sarvakali`} sequence="lrn_hero" description={p.line}>
+  <div class="pd pd-learning" data-learning data-blend="edge">
+    <section class="chapter pd-hero ln-library" data-chapter="lrn_hero">
       <div class="chapter-inner pd-hero-grid">
         <div class="pd-hero-copy">
           <a class="back-link" href="/#paths">← All pillars</a>
@@ -42,13 +37,13 @@ const square = `M${-S} ${-S} L${-G} ${-S} L${-G} ${-S - D} L${G} ${-S - D} L${G}
             <ul>{FORMATS.map((f) => <li><button type="button" class="chip-keep" data-keep={f} data-keep-p={p.name} aria-pressed="false">{f}</button></li>)}</ul>
           </div>
           <ol class="pd-index" data-hero aria-label="The chapters">
-            {moves.map((m, i) => <li><a href={`#${m.id}`}><span class="pd-num" aria-hidden="true">{ROMAN[i]}</span><span class="pd-ix-title">{m.title}</span><span class="pd-ix-n">{categoryCount(m.cat)} {categoryCount(m.cat) === 1 ? 'class' : 'classes and services'}</span></a></li>)}
+            {moves.map((m) => <li class={`ln-ix-${m.room}`}><a href={`#${m.id}`}><span class="pd-num" aria-hidden="true">{m.n}</span><span class="pd-ix-title">{m.title}</span><span class="pd-ix-n">{categoryCount(m.cat)} {categoryCount(m.cat) === 1 ? 'class' : 'classes and services'}</span></a></li>)}
           </ol>
         </div>
 
         <div class="pd-sig" data-hero>
-          <!-- A · find your class -->
-          <form class="finder" data-dir-only="a" data-finder>
+          <!-- find your class, at the library table -->
+          <form class="finder" data-finder>
             <p class="kicker">Find your class</p>
             {FINDER.map((f, qi) => (
               <fieldset data-finder-q={qi}>
@@ -61,53 +56,18 @@ const square = `M${-S} ${-S} L${-G} ${-S} L${-G} ${-S - D} L${G} ${-S - D} L${G}
               <ul data-finder-list></ul>
               <a class="btn btn-ghost btn-sm" href="/connect" data-topic={p.name}>Ask about these</a>
             </div>
+            <p class="small fd-more">Or <a href="#your-path">see the whole road of study</a>, under the stars.</p>
           </form>
-
-          <!-- B · your path -->
-          <div class="pathmap" data-dir-only="b" data-studypath>
-            <svg viewBox="-160 -130 320 260" class="pm-svg">
-              <path d={`M${road}`} class="pm-road" />
-              {SIDE_FROM.map((from, k) => <path d={`M${STATION_XY[from][0]} ${STATION_XY[from][1]} L${STATION_XY[9 + k][0]} ${STATION_XY[9 + k][1]}`} class="pm-road side" />)}
-              {STATIONS.map((s, i) => (
-                <g class={`pm-station${i === 8 ? ' is-end' : ''}${i > 8 ? ' is-side' : ''}`} data-station={i} transform={`translate(${STATION_XY[i][0]} ${STATION_XY[i][1]})`} tabindex="0" role="button" aria-label={s.name}>
-                  <circle r="14" class="pm-hit" /><circle r={i === 8 ? 7 : 4.5} class="pm-star" />
-                </g>
-              ))}
-              <text x="-130" y="118" class="pm-cap">Begin</text><text x="128" y="-104" class="pm-cap" text-anchor="end">Mentoring</text>
-            </svg>
-            <div class="pm-card" aria-live="polite">
-              <p class="kicker" data-station-ch>{STATIONS[0].ch}</p>
-              <h2 data-station-name>{STATIONS[0].name}</h2>
-              <p data-station-line>{STATIONS[0].line}</p>
-              <button type="button" class="chip-keep" data-station-keep data-keep={STATIONS[0].name} data-keep-p={p.name} aria-pressed="false">Keep this class</button>
-            </div>
-            <p class="dv-sig-hint small">A suggested road, not a rule: tap any star, and begin wherever you like.</p>
-          </div>
-
-          <!-- C · draw a yantra -->
-          <div class="ydraw" data-dir-only="c" data-yantra-draw>
-            <svg viewBox="-150 -150 300 300" class="yd-svg" aria-hidden="true">
-              <g class="yd-part" data-yd="5"><path d={square} /></g>
-              <g class="yd-part" data-yd="4"><path d={petals} /></g>
-              <g class="yd-part" data-yd="3"><circle r="72" /></g>
-              <g class="yd-part" data-yd="2"><path d={`M${tri(56, true).join(' L')} Z`} /></g>
-              <g class="yd-part" data-yd="1"><path d={`M${tri(56, false).join(' L')} Z`} /></g>
-              <g class="yd-part is-on" data-yd="0"><circle r="4.5" class="yd-bindu" /></g>
-            </svg>
-            <p class="yd-step" data-yantra-step aria-live="polite">{YANTRA_STEPS[0]}</p>
-            <div class="cta-row center"><button type="button" class="btn btn-ghost btn-sm" data-yantra-next>Next step</button></div>
-            <p class="dv-sig-hint small">A simple teaching figure, not the yantra of a particular deity.</p>
-          </div>
         </div>
       </div>
     </section>
 
-    {moves.map((m, i) => (
-      <section class={`chapter pd-move ln-${m.key}`} id={m.id} data-chapter={`lrn_${m.key}`} data-dir-chapter={m.key}>
+    {beforeSky.map((m) => (
+      <section class={`chapter pd-move ln-${m.key} ln-${m.room}`} id={m.id} data-chapter={`lrn_${m.key}`}>
         {(aliases[m.key] || []).map((a) => <span id={a} class="anchor-alias" aria-hidden="true"></span>)}
         <div class="chapter-inner pd-inner">
           <header class="pd-head">
-            <p class="kicker" data-fade><span class="pd-num">{ROMAN[i]}</span> · {categoryCount(m.cat)} {categoryCount(m.cat) === 1 ? 'class' : 'classes and services'}</p>
+            <p class="kicker" data-fade><span class="pd-num">{m.n}</span> · {categoryCount(m.cat)} {categoryCount(m.cat) === 1 ? 'class' : 'classes and services'} · {ROOM[m.room!]}</p>
             <h2 class="display-l" data-split data-dust>{m.title}</h2>
             <p class="lede" data-fade>{m.line}</p>
             {m.note && <p class="pd-note" data-fade>{m.note}</p>}
@@ -118,7 +78,53 @@ const square = `M${-S} ${-S} L${-G} ${-S} L${-G} ${-S - D} L${G} ${-S - D} L${G}
       </section>
     ))}
 
-    <section class="chapter pd-close" data-chapter="lrn_close" data-dir-chapter="close">
+    <!-- your path: out under the stars, the whole road of study -->
+    <section class="chapter pd-move ln-path ln-sky" id="your-path" data-chapter="lrn_path">
+      <div class="chapter-inner pd-inner pd-split">
+        <header class="pd-head">
+          <p class="kicker" data-fade>{ROOM.sky}</p>
+          <h2 class="display-l" data-split>Your path of study</h2>
+          <p class="lede" data-fade>A suggested road through the classes, from the first steps to mentoring, with three side paths. Tap any star to see the class and keep it.</p>
+          <p class="pd-note" data-fade>A road, not a rule: begin wherever you like.</p>
+        </header>
+        <div class="pathmap" data-studypath data-fade>
+          <svg viewBox="-160 -130 320 260" class="pm-svg">
+            <path d={`M${road}`} class="pm-road" />
+            {SIDE_FROM.map((from, k) => <path d={`M${STATION_XY[from][0]} ${STATION_XY[from][1]} L${STATION_XY[9 + k][0]} ${STATION_XY[9 + k][1]}`} class="pm-road side" />)}
+            {STATIONS.map((s, i) => (
+              <g class={`pm-station${i === 8 ? ' is-end' : ''}${i > 8 ? ' is-side' : ''}`} data-station={i} transform={`translate(${STATION_XY[i][0]} ${STATION_XY[i][1]})`} tabindex="0" role="button" aria-label={s.name}>
+                <circle r="14" class="pm-hit" /><circle r={i === 8 ? 7 : 4.5} class="pm-star" />
+              </g>
+            ))}
+            <text x="-130" y="118" class="pm-cap">Begin</text><text x="128" y="-104" class="pm-cap" text-anchor="end">Mentoring</text>
+          </svg>
+          <div class="pm-card" aria-live="polite">
+            <p class="kicker" data-station-ch>{STATIONS[0].ch}</p>
+            <h3 data-station-name>{STATIONS[0].name}</h3>
+            <p data-station-line>{STATIONS[0].line}</p>
+            <button type="button" class="chip-keep" data-station-keep data-keep={STATIONS[0].name} data-keep-p={p.name} aria-pressed="false">Keep this class</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {sky.map((m) => (
+      <section class={`chapter pd-move ln-${m.key} ln-${m.room}`} id={m.id} data-chapter={`lrn_${m.key}`}>
+        {(aliases[m.key] || []).map((a) => <span id={a} class="anchor-alias" aria-hidden="true"></span>)}
+        <div class="chapter-inner pd-inner">
+          <header class="pd-head">
+            <p class="kicker" data-fade><span class="pd-num">{m.n}</span> · {categoryCount(m.cat)} {categoryCount(m.cat) === 1 ? 'class' : 'classes and services'} · {ROOM[m.room!]}</p>
+            <h2 class="display-l" data-split data-dust>{m.title}</h2>
+            <p class="lede" data-fade>{m.line}</p>
+            {m.note && <p class="pd-note" data-fade>{m.note}</p>}
+            <div class="cta-row" data-fade><a class="btn btn-ghost btn-sm" href="/connect" data-topic={m.title}>Ask about this</a></div>
+          </header>
+          <SubCards category={m.cat} pillar={p.name} icons={SUB_ICON} show={6} />
+        </div>
+      </section>
+    ))}
+
+    <section class="chapter pd-close ln-sky" data-chapter="lrn_close">
       <div class="chapter-inner narrow center">
         <p class="kicker" data-fade>When you are ready</p>
         <h2 class="display-l" data-split>Every practice begins as a beginner’s</h2>
@@ -129,8 +135,6 @@ const square = `M${-S} ${-S} L${-G} ${-S} L${-G} ${-S - D} L${G} ${-S - D} L${G}
         </div>
       </div>
     </section>
-
-    <DirBriefs title="Three directions for Learning" directions={DIRECTIONS} />
 
     <nav class="pp-nav" aria-label="Other pillars">
       <a href={`/pillars/${prev.slug}`}><span>Previous pillar</span><b transition:name={`pt-${prev.slug}`} data-pt>{prev.name}</b></a>

@@ -1,22 +1,21 @@
 import gsap from 'gsap';
-import { FINDER, STATIONS, YANTRA_STEPS } from '../data/learning';
+import { FINDER, STATIONS } from '../data/learning';
 import { buzz, PATTERNS } from './haptics';
 import { ring, tick } from './audio';
 import type { WorldHandle as World } from './world/handle';
 
 /**
- * Pillar 6, Learning: signature moments of the three directions.
- *   A · Find your class: three questions, and the classes that fit
- *   B · Your path: a suggested road through the classes
- *   C · Draw a yantra, step by step
+ * Pillar 6, Learning (the library, the leaf and the stars): the two signature moments.
+ *   Find your class (in the library): three questions, and the classes that fit
+ *   Your path (under the stars): a suggested road through the classes
  */
 
-/* -------------------------------------------- A · find your class */
+/* ------------------------------------------------- find your class */
 
 function initFinder(form: HTMLFormElement, world: World) {
   const result = form.querySelector<HTMLElement>('[data-finder-result]')!;
   const list = form.querySelector<HTMLElement>('[data-finder-list]')!;
-  const pillar = document.querySelector('[data-dir-pillar] [data-keep-p]')?.getAttribute('data-keep-p') || 'Learning';
+  const pillar = document.querySelector('[data-learning] [data-keep-p]')?.getAttribute('data-keep-p') || 'Learning';
   const onChange = () => {
     const picks = FINDER.map((_, qi) => (form.querySelector<HTMLInputElement>(`input[name="fd-${qi}"]:checked`)?.value ?? null));
     if (picks.some((v) => v === null)) return;
@@ -40,7 +39,7 @@ function initFinder(form: HTMLFormElement, world: World) {
   return () => form.removeEventListener('change', onChange);
 }
 
-/* ------------------------------------------------- B · your path */
+/* ------------------------------------------------------- your path */
 
 function initPath(root: HTMLElement, world: World) {
   const stations = Array.from(root.querySelectorAll<SVGGElement>('[data-station]'));
@@ -64,57 +63,21 @@ function initPath(root: HTMLElement, world: World) {
   return () => { root.removeEventListener('click', onClick); root.removeEventListener('keydown', onKey); };
 }
 
-/* ------------------------------------------- C · draw a yantra */
+/* ---------------------------------------------------------- page */
 
-function initYantraDraw(root: HTMLElement, world: World) {
-  const parts = Array.from(root.querySelectorAll<SVGGElement>('[data-yd]')).sort((a, b) => Number(a.dataset.yd) - Number(b.dataset.yd));
-  const step = root.querySelector<HTMLElement>('[data-yantra-step]')!;
-  const btn = root.querySelector<HTMLButtonElement>('[data-yantra-next]')!;
-  let k = 0;
-  const draw = (g: SVGGElement) => {
-    g.classList.add('is-on');
-    g.querySelectorAll<SVGGeometryElement>('path, circle').forEach((el) => {
-      let L = 300;
-      try { L = el.getTotalLength(); } catch { /* fine */ }
-      gsap.fromTo(el, { strokeDasharray: L, strokeDashoffset: L }, { strokeDashoffset: 0, duration: 1.4, ease: 'power2.inOut', clearProps: 'strokeDasharray,strokeDashoffset' });
-    });
-  };
-  const next = () => {
-    if (k >= parts.length - 1) {
-      // begin again from the bindu
-      parts.forEach((g, i) => { if (i > 0) g.classList.remove('is-on'); });
-      k = 0;
-      step.textContent = YANTRA_STEPS[0];
-      btn.textContent = 'Next step';
-      return;
-    }
-    k++;
-    draw(parts[k]);
-    step.textContent = YANTRA_STEPS[k];
-    gsap.fromTo(step, { opacity: 0 }, { opacity: 1, duration: 0.5 });
-    tick(); buzz([6]); world.flash(0.15);
-    if (k === parts.length - 1) { btn.textContent = 'Begin again'; ring('card'); world.impulse(1); }
-  };
-  btn.addEventListener('click', next);
-  return () => {
-    // back to the bindu, so the drawing and its words agree when this direction returns
-    parts.forEach((g, i) => {
-      gsap.killTweensOf(g.querySelectorAll('path, circle'));
-      g.querySelectorAll<SVGElement>('path, circle').forEach((el) => { el.style.strokeDasharray = ''; el.style.strokeDashoffset = ''; });
-      if (i > 0) g.classList.remove('is-on');
-    });
-    step.textContent = YANTRA_STEPS[0];
-    btn.textContent = 'Next step';
-    btn.removeEventListener('click', next);
-  };
+let cleanups: (() => void)[] = [];
+
+export function stopLearning() {
+  cleanups.forEach((c) => c());
+  cleanups = [];
 }
 
-export function startLearning(world: World, dir: 'a' | 'b' | 'c') {
-  const out: (() => void)[] = [];
-  const page = document.querySelector('[data-dir-pillar="learning"]');
-  if (!page) return out;
-  if (dir === 'a') { const el = page.querySelector<HTMLFormElement>('[data-finder]'); if (el) out.push(initFinder(el, world)); }
-  if (dir === 'b') { const el = page.querySelector<HTMLElement>('[data-studypath]'); if (el) out.push(initPath(el, world)); }
-  if (dir === 'c') { const el = page.querySelector<HTMLElement>('[data-yantra-draw]'); if (el) out.push(initYantraDraw(el, world)); }
-  return out;
+export function startLearning(world: World) {
+  stopLearning();
+  const page = document.querySelector('[data-learning]');
+  if (!page) return;
+  const finder = page.querySelector<HTMLFormElement>('[data-finder]');
+  if (finder) cleanups.push(initFinder(finder, world));
+  const path = page.querySelector<HTMLElement>('[data-studypath]');
+  if (path) cleanups.push(initPath(path, world));
 }
