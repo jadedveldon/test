@@ -185,13 +185,23 @@ export class Incense {
     return a >= 1 ? [Math.round(min * a), min] : [min, Math.round(min / a)];
   }
 
+  private free(f?: FBO) {
+    if (!f) return;
+    this.gl.deleteFramebuffer(f.fbo);
+    this.gl.deleteTexture(f.tex);
+  }
+
   resize() {
     if (!this.ok) return;
     const dpr = Math.min(devicePixelRatio || 1, 1.5);
     this.canvas.width = Math.round(innerWidth * dpr * 0.75);
     this.canvas.height = Math.round(innerHeight * dpr * 0.75);
-    [this.simW, this.simH] = this.dims(this.quality > 0.8 ? 128 : 96);
-    [this.dyeW, this.dyeH] = this.dims(this.quality > 0.8 ? 448 : 320);
+    const [sw, sh] = this.dims(this.quality > 0.8 ? 128 : 96);
+    const [dw, dh] = this.dims(this.quality > 0.8 ? 448 : 320);
+    // the targets only change when their size does; the old ones are freed, so resizing never leaks
+    if (this.vel && sw === this.simW && sh === this.simH && dw === this.dyeW && dh === this.dyeH) return;
+    for (const f of [this.vel?.read, this.vel?.write, this.pres?.read, this.pres?.write, this.dye?.read, this.dye?.write, this.div, this.curlF]) this.free(f);
+    [this.simW, this.simH, this.dyeW, this.dyeH] = [sw, sh, dw, dh];
     this.vel = this.double(this.simW, this.simH);
     this.pres = this.double(this.simW, this.simH);
     this.dye = this.double(this.dyeW, this.dyeH);

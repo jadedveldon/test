@@ -997,7 +997,7 @@ export class World {
     this.fit = Math.min(1, (halfW * 0.92) / 5.6);
     this.shiftScale = aspect > 1.15 ? 1 : 0;
     // on phones the forms sit behind the text, so they stay quiet there
-    this.narrowDim = aspect < 1 ? 0.42 : 1;
+    this.narrowDim = aspect < 1 ? 0.3 : 1; // quiet enough that line forms never compete with the words on top
     if (!this.renderer || !this.bgMat || !this.copyMat || !this.bgRT) return;
     this.renderer.setSize(w, h, false);
     const buf = new Vector2();

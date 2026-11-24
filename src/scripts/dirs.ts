@@ -12,7 +12,9 @@ export const DIR_PILLARS: DirPillar[] = ['identity', 'divination', 'learning'];
 export const DIR_PREFIX: Record<DirPillar, string> = { identity: 'id', divination: 'div', learning: 'lrn' };
 
 const key = (p: DirPillar) => `sk-dir-${p}`;
-const valid = (v: string | null): v is Dir => v === 'a' || v === 'b' || v === 'c';
+const valid = (v: string | null | undefined): v is Dir => v === 'a' || v === 'b' || v === 'c';
+/** the choice for this visit, also kept here in case the browser blocks storage (private modes, some in-app browsers) */
+const chosen = new Map<DirPillar, Dir>();
 
 export function pagePillar(): DirPillar | null {
   const el = document.querySelector<HTMLElement>('[data-dir-pillar]');
@@ -26,14 +28,16 @@ export function getDir(p: DirPillar): Dir {
       const q = new URLSearchParams(location.search).get('dir');
       if (valid(q)) return q;
     }
+    if (valid(chosen.get(p))) return chosen.get(p)!;
     const s = sessionStorage.getItem(key(p));
     if (valid(s)) return s;
   } catch { /* storage may be blocked */ }
-  return 'a';
+  return chosen.get(p) ?? 'a';
 }
 
 export function setDir(p: DirPillar, d: Dir) {
-  try { sessionStorage.setItem(key(p), d); } catch { /* fine */ }
+  chosen.set(p, d);
+  try { sessionStorage.setItem(key(p), d); } catch { /* blocked: the choice still holds for this visit */ }
   // a direction picked on the page replaces one given in the address
   try {
     const u = new URL(location.href);

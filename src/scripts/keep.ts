@@ -10,9 +10,14 @@ export type Kept = { t: string; p: string };
 const KEY = 'sk-keep';
 const listeners = new Set<() => void>();
 
+/** used when the browser blocks storage: the list then lasts for this visit */
+let memory: Kept[] | null = null;
+
 export function keepList(): Kept[] {
+  let raw: string | null;
+  try { raw = localStorage.getItem(KEY); } catch { return memory ? [...memory] : []; }
   try {
-    const v = JSON.parse(localStorage.getItem(KEY) || '[]');
+    const v = JSON.parse(raw || '[]');
     return Array.isArray(v) ? v.filter((x) => x && typeof x.t === 'string') : [];
   } catch {
     return [];
@@ -20,7 +25,7 @@ export function keepList(): Kept[] {
 }
 
 function save(list: Kept[]) {
-  try { localStorage.setItem(KEY, JSON.stringify(list)); } catch { /* storage can be blocked */ }
+  try { localStorage.setItem(KEY, JSON.stringify(list)); } catch { memory = [...list]; }
   listeners.forEach((f) => f());
 }
 

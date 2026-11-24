@@ -8,7 +8,7 @@ import Base from '../../layouts/Base.astro';
 import SubCards from '../../components/SubCards.astro';
 import DirBriefs from '../../components/DirBriefs.astro';
 import { pillars, categoryCount } from '../../data/site';
-import { gather } from '../../data/chapters';
+import { categoryAliases, gather } from '../../data/chapters';
 import { CARE, CHAPTERS, DIRECTIONS, SUB_ICON, TAROT_NOTE } from '../../data/divination';
 
 const index = pillars.findIndex((p) => p.slug === 'divination');
@@ -17,6 +17,7 @@ const prev = pillars[(index + pillars.length - 1) % pillars.length];
 const next = pillars[(index + 1) % pillars.length];
 const ROMAN = ['I', 'II', 'III', 'IV', 'V'];
 const moves = CHAPTERS.map((ch) => ({ ...ch, cat: gather(p, ch), id: ch.key }));
+const aliases = categoryAliases(p, CHAPTERS);
 const POS = ['What has been', 'What is', 'What is coming'];
 ---
 <Base title={`${p.name} · Sarvakali`} sequence="divA_hero" description={p.line}>
@@ -91,6 +92,7 @@ const POS = ['What has been', 'What is', 'What is coming'];
 
     {moves.map((m, i) => (
       <section class={`chapter pd-move dv5-${m.key}`} id={m.id} data-chapter={`div_${m.key}`} data-dir-chapter={m.key}>
+        {(aliases[m.key] || []).map((a) => <span id={a} class="anchor-alias" aria-hidden="true"></span>)}
         <div class="chapter-inner pd-inner">
           <header class="pd-head">
             <p class="kicker" data-fade><span class="pd-num">{ROMAN[i]}</span> · {categoryCount(m.cat)} services</p>

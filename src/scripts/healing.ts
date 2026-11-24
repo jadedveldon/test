@@ -1,4 +1,5 @@
 import gsap from 'gsap';
+import { loadHealingFont } from './fonts';
 import { BREATHS, CHAKRAS, GROUNDING, PROMPTS } from '../data/healing';
 import { buzz, PATTERNS } from './haptics';
 import { ring, tick } from './audio';
@@ -14,16 +15,6 @@ import type { WorldHandle as World } from './world/handle';
  * works in Calm too.
  */
 
-const FONT = 'https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;1,300&display=swap';
-let fontAdded = false;
-export function loadHealingFont() {
-  if (fontAdded || !document.querySelector('[data-healing], [data-chapter="healing"]')) return;
-  fontAdded = true;
-  const l = document.createElement('link');
-  l.rel = 'stylesheet';
-  l.href = FONT;
-  document.head.appendChild(l);
-}
 
 const SVGNS = 'http://www.w3.org/2000/svg';
 const MIN_R = 40, MAX_R = 104;
@@ -192,7 +183,9 @@ function initMend(root: HTMLElement, world: World) {
     if (s.home) return;
     s.home = true;
     pieces[i].classList.add('is-home');
-    pieces[i].parentNode?.insertBefore(pieces[i], pieces[0]); // home pieces sit beneath the loose ones
+    // home pieces sit beneath the loose ones (dragging reorders the drawing, so find the first loose piece now)
+    const firstLoose = pieces.filter((g, k) => k !== i && !state[k].home).sort((a, b) => (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1))[0];
+    if (firstLoose) firstLoose.parentNode?.insertBefore(pieces[i], firstLoose);
     gsap.to(s, { x: 0, y: 0, r: 0, duration: quick ? 0.6 : 0.45, ease: 'power3.out', onUpdate: () => place(i) });
     tick();
     buzz([8]);

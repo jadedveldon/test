@@ -1,4 +1,5 @@
 import type { DirChapter, Direction } from './directions';
+import { DIR_FONTS } from './dirfonts';
 
 /**
  * Pillar 4, Identity, Intimacy & the Body: three directions to compare live.
@@ -28,6 +29,7 @@ export const CHAPTERS: DirChapter[] = [
   {
     key: 'body', title: 'Coming home to the body',
     line: 'Rituals and gentle work to return to your body, accept it, and know it as yours.',
+    care: 'Some of this work touches on harm done to the body. It goes at your pace, and it is spiritual work, not a replacement for trauma therapy. If you are carrying something heavy, Tele-MANAS is free on 14416, day and night.',
     subs: ['Body Reconnection & Self-Acceptance'],
   },
   {
@@ -88,7 +90,7 @@ export const DIRECTIONS: Direction[] = [
       { name: 'Dusk indigo', hex: '#17163f' }, { name: 'Night violet', hex: '#2c1f57' }, { name: 'Saffron', hex: '#e48b3c' },
       { name: 'Vermilion', hex: '#c9472f' }, { name: 'Gold seam', hex: '#e6c06a' }, { name: 'Moon', hex: '#efe9f7' },
     ],
-    type: { display: 'Fraunces', note: 'a soft, warm serif', family: '"Fraunces", Georgia, serif', fontHref: 'https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&display=swap' },
+    type: { display: 'Fraunces', note: 'a soft, warm serif', family: '"Fraunces", Georgia, serif', fontHref: DIR_FONTS.identity.a },
     worlds: 'A circle of two halves (a crescent and a sun), a rose, a figure of light, the moon’s faces, a fire.',
     layout: 'Each chapter opens across a split field, indigo to saffron; cards edged in gold.',
     signature: { name: 'Every point on the line', how: 'Drag along the line between the moon and the sun; the circle takes on every blend between them. A line on Ardhanarishvara.' },
@@ -104,7 +106,7 @@ export const DIRECTIONS: Direction[] = [
       { name: 'Cream', hex: '#fbf6f0' }, { name: 'Blush', hex: '#f2b8c6' }, { name: 'Peach', hex: '#f6c89f' },
       { name: 'Mint', hex: '#bfe3cf' }, { name: 'Sky', hex: '#b9d3f2' }, { name: 'Lilac', hex: '#cdb8ea' },
     ],
-    type: { display: 'DM Serif Display', note: 'friendly, round letters', family: '"DM Serif Display", Georgia, serif', fontHref: 'https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap' },
+    type: { display: 'DM Serif Display', note: 'friendly, round letters', family: '"DM Serif Display", Georgia, serif', fontHref: DIR_FONTS.identity.b },
     worlds: 'Ink-light on cream: a prism and its fan of colours, a rose, a figure, the moon’s faces.',
     layout: 'Soft rounded cards with a thin band of colour; plenty of white space.',
     signature: { name: 'Your comfort, first', how: 'Choose your pace, what you would like to explore and how you like to work; add a name and pronouns if you wish. It becomes a private note to bring to your first conversation. Nothing is saved or sent.' },
@@ -120,7 +122,7 @@ export const DIRECTIONS: Direction[] = [
       { name: 'Night plum', hex: '#14080f' }, { name: 'Plum', hex: '#3a1430' }, { name: 'Rose', hex: '#d77a92' },
       { name: 'Rose gold', hex: '#c99a7a' }, { name: 'Moonlight', hex: '#f2e6ea' }, { name: 'Ember', hex: '#b8452e' },
     ],
-    type: { display: 'Playfair Display', note: 'high-contrast italics', family: '"Playfair Display", Georgia, serif', fontHref: 'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&display=swap' },
+    type: { display: 'Playfair Display', note: 'high-contrast italics', family: '"Playfair Display", Georgia, serif', fontHref: DIR_FONTS.identity.c },
     worlds: 'A rose opening, a figure of light, the moon’s faces, a fire, a halo.',
     layout: 'Dark, close and quiet; text set narrow; petals of light between chapters.',
     signature: { name: 'Return to the body', how: 'A slow, gentle scan from head to feet: a soft light moves down an abstract figure with one quiet line at each place. Pause or stop whenever you like.' },

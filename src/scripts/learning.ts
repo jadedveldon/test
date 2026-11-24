@@ -96,7 +96,17 @@ function initYantraDraw(root: HTMLElement, world: World) {
     if (k === parts.length - 1) { btn.textContent = 'Begin again'; ring('card'); world.impulse(1); }
   };
   btn.addEventListener('click', next);
-  return () => btn.removeEventListener('click', next);
+  return () => {
+    // back to the bindu, so the drawing and its words agree when this direction returns
+    parts.forEach((g, i) => {
+      gsap.killTweensOf(g.querySelectorAll('path, circle'));
+      g.querySelectorAll<SVGElement>('path, circle').forEach((el) => { el.style.strokeDasharray = ''; el.style.strokeDashoffset = ''; });
+      if (i > 0) g.classList.remove('is-on');
+    });
+    step.textContent = YANTRA_STEPS[0];
+    btn.textContent = 'Next step';
+    btn.removeEventListener('click', next);
+  };
 }
 
 export function startLearning(world: World, dir: 'a' | 'b' | 'c') {

@@ -76,6 +76,21 @@ function initMala(world: World) {
 
 /* ----------------------------------------------------- offer to the fire */
 
+/** the burn in progress, so leaving the page can stop it before it touches the next page's light */
+let fireTl: gsap.core.Timeline | null = null;
+let fireWorld: World | null = null;
+let stopInstall: (() => void) | null = null;
+
+export function stopPractice() {
+  stopInstall?.();
+  stopInstall = null;
+  if (!fireTl) return;
+  fireTl.kill();
+  fireTl = null;
+  if (fireWorld) { fireWorld.setDust(null, 0); fireWorld.setDustBurn(0); }
+  fireWorld = null;
+}
+
 function initFire(world: World) {
   const root = document.querySelector<HTMLElement>('[data-fire]');
   if (!root) return;
@@ -104,8 +119,11 @@ function initFire(world: World) {
         world.setDust(s.pts, s.n);
         world.setDustProgress(0);
       }
-      gsap.timeline({
+      fireWorld = s ? world : null;
+      fireTl = gsap.timeline({
         onComplete: () => {
+          fireTl = null;
+          fireWorld = null;
           if (s) { world.setDust(null, 0); world.setDustBurn(0); }
           words.hidden = true;
           after.hidden = false;
@@ -114,13 +132,13 @@ function initFire(world: World) {
       })
         // without the 3D world, the words simply rise and fade like smoke
         .to(words, { opacity: 0, y: s ? 0 : -60, filter: s ? 'none' : 'blur(8px)', duration: s ? 0.5 : 2.2, ease: 'power2.in' }, s ? 0.15 : 0)
-        .to(p, { v: 1, duration: 4.2, ease: 'power1.in', onUpdate: () => { if (s) world.setDustProgress(p.v); } }, 0);
+        .to(p, { v: 1, duration: s ? 4.2 : 2.2, ease: 'power1.in', onUpdate: () => { if (s) world.setDustProgress(p.v); } }, 0);
     });
   });
   again.addEventListener('click', () => {
     after.hidden = true;
     form.hidden = false;
-    words.style.transform = '';
+    gsap.set(words, { clearProps: 'opacity,transform,filter' }); // the next words start clear and in place
     input.focus();
   });
 }
@@ -191,7 +209,8 @@ function initInstall() {
     if (note) note.textContent = msg;
     render();
   }));
-  onInstallChange(render);
+  stopInstall?.();
+  stopInstall = onInstallChange(render);
   render();
 }
 

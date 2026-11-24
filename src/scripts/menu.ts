@@ -1,6 +1,7 @@
 import gsap from 'gsap';
 import { buzz, PATTERNS } from './haptics';
 import type { WorldHandle as World } from './world/handle';
+import { setPageInert } from './inert';
 
 /** the full-screen menu: every page, in large type, over the living world */
 let world: World | null = null;
@@ -11,6 +12,7 @@ export function openMenu() {
   if (!m || !m.hidden) return;
   lastFocus = document.activeElement as HTMLElement | null;
   m.hidden = false;
+  setPageInert(true);
   document.documentElement.classList.add('menu-open');
   document.querySelectorAll('[data-menu-open]').forEach((b) => b.setAttribute('aria-expanded', 'true'));
   buzz(PATTERNS.choice);
@@ -23,6 +25,7 @@ export function openMenu() {
 
 export function closeMenu(instant = false) {
   const m = document.getElementById('menu');
+  setPageInert(false);
   document.documentElement.classList.remove('menu-open');
   document.querySelectorAll('[data-menu-open]').forEach((b) => b.setAttribute('aria-expanded', 'false'));
   if (!m || m.hidden) return;

@@ -1,4 +1,5 @@
 import gsap from 'gsap';
+import { setPageInert } from './inert';
 import { isKept } from './keep';
 
 /**
@@ -109,6 +110,7 @@ export function openSearch() {
   if (!root || !root.hidden) return;
   lastFocus = document.activeElement as HTMLElement | null;
   root.hidden = false;
+  setPageInert(true);
   document.documentElement.classList.add('search-open');
   const input = root.querySelector<HTMLInputElement>('input')!;
   gsap.fromTo(root.querySelector('.search-panel'), { opacity: 0, y: -18 }, { opacity: 1, y: 0, duration: 0.45, ease: 'expo.out' });
@@ -120,6 +122,7 @@ export function closeSearch() {
   const root = document.getElementById('search');
   if (!root || root.hidden) return;
   root.hidden = true;
+  setPageInert(false);
   document.documentElement.classList.remove('search-open');
   restorePreview();
   lastFocus?.focus?.();
@@ -130,6 +133,11 @@ export function initSearch(h: Hooks) {
   hooks = h;
   if (ready) return;
   ready = true;
+  // fetch the index the moment someone reaches for search (pointing at or focusing the button), so it is ready on open
+  const intent = (e: Event) => { if ((e.target as Element | null)?.closest?.('[data-search-open]')) load(); };
+  document.addEventListener('pointerover', intent, { passive: true });
+  document.addEventListener('focusin', intent);
+  document.addEventListener('touchstart', intent, { passive: true });
   document.addEventListener('click', (e) => {
     const t = e.target as Element | null;
     if (t?.closest('[data-search-open]')) { e.preventDefault(); openSearch(); return; }
@@ -161,7 +169,9 @@ export function initSearch(h: Hooks) {
 export function revealFound(scrollTo: (el: HTMLElement) => void) {
   const q = new URLSearchParams(location.search).get('find');
   if (!q) return;
-  const target = Array.from(document.querySelectorAll<HTMLElement>('#main [data-keep]')).find((b) => b.dataset.keep === q);
+  const all = Array.from(document.querySelectorAll<HTMLElement>('#main [data-keep]')).filter((b) => b.dataset.keep === q);
+  // prefer the service in its chapter list over a copy in a signature moment (which may belong to a hidden direction)
+  const target = all.find((b) => !b.closest('[data-dir-only], .pd-sig, .hl-sig, .ln-formats') && !b.matches('[data-station-keep], [data-bl-work]')) || all[0];
   if (!target) return;
   const det = target.closest('details');
   if (det) det.open = true;

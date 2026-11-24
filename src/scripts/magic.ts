@@ -1,4 +1,5 @@
 import gsap from 'gsap';
+import { loadMagicFonts } from './fonts';
 import { RITUS, SABBATS, SATURN, SIGIL_METHODS, type SigilMethod } from '../data/magic';
 import { buzz, PATTERNS } from './haptics';
 import { ring } from './audio';
@@ -15,17 +16,6 @@ import type { WorldHandle as World } from './world/handle';
  * this one mixes A and C. They remain in the project history.)
  */
 
-const FONTS = 'https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=IM+Fell+English:ital@0;1&display=swap';
-let fontsAdded = false;
-/** IM Fell English (the book) and Cinzel (the gilded capitals); font files load only where used */
-export function loadMagicFonts() {
-  if (fontsAdded) return;
-  fontsAdded = true;
-  const l = document.createElement('link');
-  l.rel = 'stylesheet';
-  l.href = FONTS;
-  document.head.appendChild(l);
-}
 
 const angleOf = (svg: SVGSVGElement, e: PointerEvent) => {
   const b = svg.getBoundingClientRect();

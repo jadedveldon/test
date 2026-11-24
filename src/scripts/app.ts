@@ -35,23 +35,18 @@ import {
 import { moonIcon, readSky } from './sky';
 import { onSoundChange, ring, setMix, setSound, soundIsOn, soundLevel } from './audio';
 import { PATTERNS, buzz, setHaptics } from './haptics';
-import { Incense } from './fluid';
+import type { Incense } from './fluid';
 import { initCard } from './card';
 import { initDiya } from './diya';
 import { initPath } from './path';
 import { sampleHeading } from './dust';
-import { initDepth } from './depth';
 import { FEST_LOOK, activeFestival, daysUntil, inDays, nextMoon, niceDate, type FestMode } from './festivals';
 import { initSearch, revealFound, closeSearch } from './search';
 import { initKeep, keepTopic, renderKeep } from './keep';
 import { closeMenu, initMenu } from './menu';
-import { initPractice } from './practice';
 import { initPwa } from './pwa';
 import { runDeviceTest } from './devicetest';
-import { startDevotion, stopDevotion } from './devotion';
-import { loadMagicFonts, startMagic, stopMagic } from './magic';
-import { PAGES } from '../data/magic';
-import { loadHealingFont, startHealing, stopHealing } from './healing';
+import { loadHealingFont, loadMagicFonts } from './fonts';
 import { DIR_PILLARS, dirKey, pagePillar, setDir, type Dir, type DirPillar } from './dirs';
 import { startDirPage, stopDirPage } from './dirpages';
 
@@ -69,6 +64,7 @@ let world: WorldHandle;
 let worldLoading: Promise<boolean> | null = null;
 let festival: ReturnType<typeof activeFestival> = null;
 let incense: Incense | null = null;
+let incenseLoading = false;
 let tier: Tier = 'full';
 let autoProbe = false;
 let lenis: Lenis | null = null;
@@ -82,7 +78,24 @@ let heroCalls: gsap.core.Tween[] = [];
 let dawnSettled = false;
 let mainEl: HTMLElement | null = null;
 let skewing = false;
-let depthDispose: (() => void) | null = null;
+/** a Magic chapter is a day (parchment) or night (gold on black) page; the page says which */
+const magPage = (key: string) => (document.querySelector(`[data-chapter="magG_${key}"]`)?.classList.contains('mg-day') ? 'day' : 'night');
+
+/**
+ * Each pillar's own code (and the practice page, the depth demo) is a separate download, fetched only on the page
+ * that uses it. A module that arrives after the visitor has already moved on is ignored.
+ */
+let pageToken = 0;
+let pageStops: (() => void)[] = [];
+function pageModule<M>(when: string, load: () => Promise<M>, start: (m: M) => (() => void) | null | void) {
+  if (!document.querySelector(when)) return;
+  const t = pageToken;
+  load().then((m) => {
+    if (t !== pageToken) return;
+    const stop = start(m);
+    if (stop) pageStops.push(stop);
+  }).catch(() => { /* this page's extras could not be downloaded; its words and links still work */ });
+}
 const meter = new FpsMeter();
 const probe = { phase: 0, t: 0 };
 const finePointer = () => matchMedia('(pointer: fine)').matches;
@@ -126,7 +139,14 @@ function ensureWorld(): Promise<boolean> {
     hudRender();
     probe.phase = 0; probe.t = 0; // measure from now, not while it was loading
     return true;
-  }).catch(() => false);
+  }).catch(() => {
+    // the 3D world could not be downloaded (offline, or an old page after an update): carry on without it,
+    // and allow another try later
+    worldLoading = null;
+    autoProbe = false;
+    if (LIVE.includes(tier)) setTier('still');
+    return false;
+  });
   return worldLoading;
 }
 
@@ -532,13 +552,18 @@ function skyTick(dt: number) {
 function applyCursor() {
   if (!world) return;
   const liveOk = world.isLive && ['ultra', 'full', 'lighter'].includes(tier);
-  if (exp.cursor === 'incense' && liveOk && finePointer() && !incense) {
-    try {
-      const c = document.getElementById('incense') as HTMLCanvasElement | null;
-      if (c) incense = new Incense(c);
-    } catch {
-      incense = null;
-    }
+  if (exp.cursor === 'incense' && liveOk && finePointer() && !incense && !incenseLoading) {
+    // the smoke simulation is its own download, fetched only when someone chooses the incense cursor
+    incenseLoading = true;
+    import('./fluid').then(({ Incense }) => {
+      try {
+        const c = document.getElementById('incense') as HTMLCanvasElement | null;
+        if (c) incense = new Incense(c);
+      } catch {
+        incense = null;
+      }
+      applyCursor();
+    }).catch(() => { incenseLoading = false; });
   }
   const wantsIncense = exp.cursor === 'incense' && !!incense?.ok && liveOk && finePointer();
   setCursor(exp.cursor !== 'off' && tier !== 'calm', wantsIncense ? 'incense' : 'flame');
@@ -559,7 +584,7 @@ function soundTick() {
   const [a, b, t] = world.blend;
   // the Devotion directions each have their own sound layer
   // Magic's night pages share Devotion's cosmic layer; its day pages are the quiet room of the book
-  const layer = (k: string) => (k.startsWith('devC_') ? 'cosmic' : k.startsWith('magG_') ? (PAGES[k.slice(5)] === 'day' ? 'learning' : 'cosmic')
+  const layer = (k: string) => (k.startsWith('devC_') ? 'cosmic' : k.startsWith('magG_') ? (magPage(k.slice(5)) === 'day' ? 'learning' : 'cosmic')
     : k.startsWith('heal_') ? 'healing' : /^id[ABC]_/.test(k) ? 'identity' : /^div[ABC]_/.test(k) ? 'divination' : /^lrn[ABC]_/.test(k) ? 'learning' : k);
   const w: Record<string, number> = {};
   w[layer(a)] = (w[layer(a)] ?? 0) + (1 - t);
@@ -632,24 +657,31 @@ function initPage() {
   });
 
   initConnect();
-  initPractice(world);
-  if (document.querySelector('[data-invoice]')) import('./invoice').then((m) => m.initInvoice());
+  const calm = tier === 'calm';
+  pageModule('[data-practice]', () => import('./practice'), (m) => { m.initPractice(world); return m.stopPractice; });
+  pageModule('[data-invoice]', () => import('./invoice'), (m) => { m.initInvoice(); });
+  pageModule('[data-devotion]', () => import('./devotion'), (m) => { m.startDevotion(world, calm); return m.stopDevotion; });
+  pageModule('[data-magic]', () => import('./magic'), (m) => { m.startMagic(world, calm); return m.stopMagic; });
+  pageModule('[data-healing]', () => import('./healing'), (m) => { m.startHealing(world); return m.stopHealing; });
+  // the demo has its own WebGL, so it follows the level, not whether the 3D world has arrived yet
+  pageModule('[data-depth]', () => import('./depth'), (m) => m.initDepth(LIVE.includes(tier)));
+  loadMagicFonts(); // for the homepage chapters
+  loadHealingFont();
   renderKeep();
   applyFestival();
   renderMoonLine();
-  startDevotion(world, tier === 'calm');
-  startMagic(world, tier === 'calm');
-  startHealing(world);
   startDirPage(world);
   initDiya(world);
   initPath(world, () => { ScrollTrigger.refresh(); lenis?.resize(); });
-  depthDispose = initDepth(world.isLive && tier !== 'calm');
   applySky();
   renderSound();
   hudRender();
 }
 
 function cleanupPage() {
+  pageToken++;
+  pageStops.forEach((s) => s());
+  pageStops = [];
   tweens.forEach((t) => { t.scrollTrigger?.kill(); t.kill(); });
   tweens = [];
   ScrollTrigger.getAll().forEach((st) => st.kill());
@@ -664,8 +696,6 @@ function cleanupPage() {
   chapters = [];
   stopHeroEye();
   resetMagnets();
-  depthDispose?.();
-  depthDispose = null;
   if (dustOwner) { world.setDust(null, 0); dustOwner = null; }
   if (mainEl) mainEl.style.transform = '';
   mainEl = null;
@@ -673,9 +703,6 @@ function cleanupPage() {
   html.classList.remove('locked', 'menu-open', 'search-open');
   closeSearch();
   world.setDustBurn(0);
-  stopDevotion();
-  stopMagic();
-  stopHealing();
   stopDirPage();
 }
 
@@ -725,6 +752,7 @@ function initConnect() {
   const topicInput = form.querySelector<HTMLInputElement>('#topic');
   const fromUrl = new URLSearchParams(location.search).get('topic');
   const topic = fromUrl || read('sk-topic') || keepTopic();
+  store('sk-topic', null); // used once; a later visit through Book or the menu starts from the kept list
   if (topic && topicInput) topicInput.value = topic;
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -782,10 +810,11 @@ function hudInit() {
   const hud = document.getElementById('hud');
   if (!hud) return;
   const pref = read('sk-hud');
-  if (pref === 'closed' || (!pref && innerWidth < 600)) {
+  if (pref !== 'open') {
     hud.dataset.open = 'false';
     hud.querySelector('[data-hud-toggle]')?.setAttribute('aria-expanded', 'false');
   }
+  delete html.dataset.hudClosed; // from here the panel's own state rules
   hud.querySelector('[data-hud-toggle]')?.addEventListener('click', () => {
     const open = hud.dataset.open !== 'false';
     hud.dataset.open = open ? 'false' : 'true';
@@ -796,7 +825,12 @@ function hudInit() {
     b.addEventListener('click', () => {
       const t = b.dataset.tierBtn as Tier | 'auto';
       chooseManual(t);
-      if (t === 'auto' || t === 'calm' || tier === 'calm') { location.reload(); return; }
+      if (t === 'auto' || t === 'calm' || tier === 'calm') {
+        const u = new URL(location.href);
+        if (u.searchParams.has('tier')) { u.searchParams.delete('tier'); history.replaceState(history.state, '', u); }
+        location.reload();
+        return;
+      }
       autoProbe = false;
       setTier(t);
     });
@@ -837,7 +871,7 @@ function hudTick(dt: number) {
   const mg = /^magG_(\w+)$/.exec(ck);
   const hl = /^heal_(\w+)$/.exec(ck);
   const dp = /^(id|div|lrn)([ABC])_(\w+)$/.exec(ck);
-  if (c) c.textContent = LABELS[ck] ?? (dv ? `Devotion · ${dv[1]}` : mg ? `Magic · ${mg[1]} (${PAGES[mg[1]] ?? ''} page)` : hl ? `Healing · ${hl[1]}` : dp ? `${({ id: 'Identity', div: 'Divination', lrn: 'Learning' } as Record<string, string>)[dp[1]]} ${dp[2]} · ${dp[3]}` : ck);
+  if (c) c.textContent = LABELS[ck] ?? (dv ? `Devotion · ${dv[1]}` : mg ? `Magic · ${mg[1]} (${magPage(mg[1])} page)` : hl ? `Healing · ${hl[1]}` : dp ? `${({ id: 'Identity', div: 'Divination', lrn: 'Learning' } as Record<string, string>)[dp[1]]} ${dp[2]} · ${dp[3]}` : ck);
   const p = hud.querySelector('[data-hud-points]');
   if (p) {
     const n = world.pointCount;
@@ -933,8 +967,6 @@ function boot() {
   onSoundChange((on) => { renderSound(); if (on) ring('choice'); });
   initKeep();
   initMenu(world);
-  loadMagicFonts();
-  loadHealingFont();
   document.addEventListener('click', (e) => {
     const b = (e.target as Element | null)?.closest<HTMLElement>('[data-dir-set]');
     const p = pagePillar();
@@ -957,6 +989,7 @@ function boot() {
     const step = dlg.querySelector('[data-report-step]')!;
     const text = dlg.querySelector<HTMLTextAreaElement>('[data-report-text]')!;
     const copy = dlg.querySelector<HTMLButtonElement>('[data-report-copy]')!;
+    if (testing) { if (!dlg.open) dlg.showModal(); return; } // one test at a time: reopening shows the one running
     text.value = '';
     copy.disabled = true;
     dlg.showModal();
@@ -969,11 +1002,12 @@ function boot() {
       ensureWorld,
       points: () => world.pointCount,
     }, (m) => (step.textContent = m)).then((report) => {
-      testing = false;
       text.value = report;
       copy.disabled = false;
       step.textContent = 'Done. Copy the report and send it to whoever asked you to test.';
-    });
+    }).catch(() => {
+      step.textContent = 'The test stopped early. Please try again.';
+    }).finally(() => { testing = false; });
     copy.onclick = async () => { try { await navigator.clipboard.writeText(text.value); copy.textContent = 'Copied'; } catch { text.select(); } };
     (dlg.querySelector('[data-report-close]') as HTMLButtonElement).onclick = () => dlg.close();
   });

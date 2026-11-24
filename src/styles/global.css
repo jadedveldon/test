@@ -239,7 +239,8 @@ html[data-light="1"] .pp-sub, html[data-light="1"] .chips li, html[data-light="1
 }
 .hud-toggle::after { content: "▾"; font-size: 0.8rem; transition: rotate 0.25s ease; }
 .hud[data-open="false"] .hud-toggle::after { rotate: -90deg; }
-.hud[data-open="false"] .hud-body { display: none; }
+.hud[data-open="false"] .hud-body, html[data-hud-closed] .hud .hud-body { display: none; }
+html[data-hud-closed] .hud { width: auto; }
 .hud[data-open="false"] { width: auto; }
 .hud[data-open="false"] .hud-toggle { gap: 10px; }
 .hud-body { padding: 0 14px 14px; display: grid; gap: 10px; }
@@ -338,7 +339,7 @@ html[data-light="1"] #ink-blot { fill: #1b120c; }
 /* the hero variants: eye at dawn, and the title written in light */
 html[data-hero-variant="dawneye"] .hero-eye { display: block; opacity: 0; }
 html[data-hero-variant="dawneye"] .chapter-hero.is-on .hero-eye { animation: eye-rise 3.4s 1.1s cubic-bezier(.2,.7,.2,1) both; }
-html[data-tier="calm"][data-hero-variant="dawneye"] .hero-eye { animation: none; opacity: 1; }
+html[data-tier="calm"][data-hero-variant="dawneye"] .hero-eye, html[data-tier="calm"][data-hero-variant="dawneye"] .chapter-hero.is-on .hero-eye { animation: none; opacity: 1; }
 @keyframes eye-rise {
   from { opacity: 0; transform: translateY(70px) scale(0.78); filter: blur(8px) drop-shadow(0 0 0 transparent); }
   55% { opacity: 1; }
@@ -549,6 +550,10 @@ html[data-page-style="morph"]::view-transition-group(sk-world) { animation: none
 .skip-link { position: fixed; left: 12px; top: -60px; z-index: 100; padding: 10px 16px; border-radius: 10px; background: rgb(var(--ink)); color: rgb(var(--bg-a)); text-decoration: none; font-weight: 600; transition: top 0.2s ease; }
 .skip-link:focus { top: 12px; }
 textarea:focus-visible, select:focus-visible { outline: 2px solid rgb(var(--glow)); outline-offset: 3px; }
+/* the drawings you can operate (chakras, kintsugi pieces, the stars of the path) show a clear ring from the keyboard */
+svg [tabindex]:focus-visible, svg [role="button"]:focus-visible { outline: 2px solid rgb(var(--glow)); outline-offset: 4px; }
+/* date and time fields: the browser focuses a part inside them, so the ring follows plain focus */
+input:is([type="date"], [type="datetime-local"], [type="time"]):is(:focus, :focus-within) { outline: 2px solid rgb(var(--glow)); outline-offset: 3px; border-radius: 6px; }
 
 /* the title gives way to the points of light once the 3D world has arrived */
 .hero-title, .hero-title * { transition: color 1.4s ease; }
@@ -818,7 +823,8 @@ html[data-festival] .chapter-hero .kicker { letter-spacing: 0.2em; }
 @media (max-width: 600px) {
   .how, .kind-words { grid-template-columns: minmax(0, 1fr); }
   .kind-card:nth-child(2n) { margin-top: 0; }
-  .menu-label, .book-long { display: none; }
+  .book-long { display: none; }
+  .menu-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } /* still read out */
   .icon-btn { padding: 0 9px; }
   .diya-inline { grid-template-columns: minmax(0, 1fr); }
   .inv-paper { padding: 22px 18px; aspect-ratio: auto; }
@@ -842,7 +848,7 @@ body:has(.dv) .yantra { opacity: 0.6; }
 .dv-hero-copy { display: grid; gap: 20px; justify-items: start; }
 .dv-title { font-size: clamp(3rem, 7.6vw, 6.6rem); }
 .dv-moves { list-style: none; margin: 6px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, max-content)); gap: 6px 22px; }
-.dv-moves a { display: inline-flex; gap: 10px; align-items: baseline; text-decoration: none; color: rgb(var(--ink-soft)); font: 400 1.12rem/1.3 var(--f-dev); font-style: italic; }
+.dv-moves a { display: inline-flex; gap: 10px; align-items: baseline; min-height: 28px; padding-block: 2px; text-decoration: none; color: rgb(var(--ink-soft)); font: 400 1.12rem/1.3 var(--f-dev); font-style: italic; }
 .dv-moves a:hover { color: rgb(var(--ink)); }
 .dv-moves span { font: 500 0.66rem/1 var(--f-body); font-style: normal; letter-spacing: 0.14em; color: rgb(var(--glow)); min-width: 1.8em; }
 .dv-sig { display: grid; justify-items: center; }
@@ -1196,7 +1202,7 @@ html[data-light="1"] .sub-icon { stroke: #b1261a; }
 .sg-methods button[aria-pressed="true"] { background: rgb(var(--ink)); color: rgb(var(--bg-a)); box-shadow: none; }
 .sg-method-note { display: grid; gap: 8px; max-width: 36rem; padding: 14px 16px; border-left: 2px solid rgb(var(--verm-deep) / 0.8); background: rgb(255 250 238 / 0.35); }
 .sg-how { font-size: 0.95rem; line-height: 1.5; }
-.sg-origin { font: italic 400 1rem/1.45 var(--f-mag); color: rgb(var(--ink-soft)); }
+.sg-origin { font: italic 400 1rem/1.45 var(--f-mag); color: rgb(var(--ink)); opacity: 0.86; }
 .sigil-form { display: flex; gap: 8px; width: min(100%, 380px); }
 .sigil-form input { flex: 1; min-width: 0; font: 400 1.05rem/1.2 var(--f-mag); color: rgb(var(--ink)); background: rgb(255 250 238 / 0.55); border: 1px solid rgb(var(--gold-deep) / 0.7); border-radius: 3px; padding: 9px 12px; }
 .sigil-form input:focus-visible { outline: 2px solid rgb(var(--verm-deep) / 0.6); outline-offset: 2px; }
@@ -1236,6 +1242,8 @@ html[data-light="1"] .sub-icon { stroke: #b1261a; }
   .dv-switch button { padding: 8px 13px; }
   .dv-switch button span { display: none; }
   body:has(.dv-switch) .keep { bottom: calc(112px + env(safe-area-inset-bottom, 0px)); }
+  /* the direction switch sits at the right, clear of the Prototype pill at the left */
+  .dv-switch { left: auto; right: max(14px, env(safe-area-inset-right, 0px)); translate: none; }
 }
 @media (max-width: 860px) {
   .mg-hero-grid, .mg-sigil-grid, .mg-with-wheel { grid-template-columns: minmax(0, 1fr); }
@@ -1406,7 +1414,7 @@ html[data-dir="c"] .pd-identity .lede { font-style: italic; }
 .idl-seam { stroke: #f3d68c; stroke-width: 3; stroke-linecap: round; filter: drop-shadow(0 0 6px rgb(243 214 140 / 0.9)); }
 .idl-track { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 10px; width: 100%; }
 .idl-end { font-size: 1.2rem; color: #e6c06a; }
-.idl-range { width: 100%; accent-color: #e6c06a; }
+.idl-range { width: 100%; min-height: 32px; accent-color: #e6c06a; cursor: pointer; }
 .idl-word { font: 300 italic 1.3rem/1.3 var(--f-pd); min-height: 1.4em; }
 
 /* B · your comfort, first */
@@ -1532,7 +1540,7 @@ html[data-dir="c"] .pd-learning .sub-icon { stroke: #a8321e; }
 .pm-station.is-on .pm-star { fill: #f0d48a; r: 8px; }
 .pm-cap { font: 400 10px/1 var(--f-pd); fill: rgb(232 238 246 / 0.6); letter-spacing: 0.1em; text-transform: uppercase; }
 .pm-card { display: grid; gap: 6px; justify-items: center; text-align: center; min-height: 9.5em; }
-.pm-card h3 { font: 400 1.4rem/1.2 var(--f-pd); }
+.pm-card h2 { font: 400 1.4rem/1.2 var(--f-pd); margin: 0; }
 .pm-card p { color: rgb(var(--ink-soft)); }
 
 /* C · draw a yantra */
@@ -1560,4 +1568,15 @@ html[data-dir="c"] .pd-learning .sub-icon { stroke: #a8321e; }
   .wordmark, .back-link { display: inline-flex; align-items: center; min-height: 40px; }
   .vidya-keep, .sg-methods button, .br-modes button, .dv-switch button, .wheel-modes button, .sg-arr button, .cf-opts span, .fd-opts span, .chip-keep, .btn-sm, [data-el], .pp-item { min-height: 36px; display: inline-flex; align-items: center; }
   .dv-switch button { min-width: 40px; justify-content: center; }
+}
+
+/* Windows high contrast (forced colours): shadows and backgrounds are removed there, so buttons and chips
+   get a real border to keep their shape */
+@media (forced-colors: active) {
+  .btn, .chip-keep, .icon-btn, .sky-pill, .sound-btn, .hud-toggle, .keep-pill, .dv-switch button, .path-opt,
+  .br-modes button, .sg-methods button, .sg-arr button, .wheel-modes button, .fd-opts span, .cf-opts span, .vidya-keep, .pp-item {
+    border: 1px solid ButtonText;
+  }
+  .dv-switch button[aria-pressed="true"], .chip-keep[aria-pressed="true"], .br-modes button[aria-pressed="true"] { border-width: 3px; }
+  .fd-opts input:checked + span, .cf-opts input:checked + span { border: 3px solid Highlight; }
 }

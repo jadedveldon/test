@@ -24,6 +24,7 @@ let ctx: Ctx | null = null;
 let master: GainNode;
 let dry: GainNode;
 let wet: GainNode;
+let reverbIn: ConvolverNode;
 let analyser: AnalyserNode;
 let droneBus: GainNode;
 const layerGain = {} as Record<Layer, GainNode>;
@@ -96,6 +97,7 @@ function build() {
   analyser.connect(c.destination);
 
   const reverb = c.createConvolver();
+  reverbIn = reverb;
   reverb.buffer = impulse(c, 4.2);
   dry = c.createGain();
   dry.gain.value = 0.75;
@@ -412,7 +414,7 @@ export function crackle() {
   const f = c.createBiquadFilter();
   f.type = 'bandpass'; f.frequency.setValueAtTime(400, at); f.frequency.exponentialRampToValueAtTime(2200, at + 1.6); f.Q.value = 0.7;
   const g = c.createGain(); g.gain.value = 0.35;
-  s.connect(f); f.connect(g); g.connect(dry); g.connect(wet);
+  s.connect(f); f.connect(g); g.connect(dry); g.connect(reverbIn);
   s.start(at);
 }
 

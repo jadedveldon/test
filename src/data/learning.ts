@@ -1,4 +1,5 @@
 import type { DirChapter, Direction } from './directions';
+import { DIR_FONTS } from './dirfonts';
 
 /**
  * Pillar 6, Learning: classes and mentoring, in three directions to compare
@@ -96,7 +97,7 @@ export const DIRECTIONS: Direction[] = [
       { name: 'Walnut', hex: '#1d140d' }, { name: 'Shelf', hex: '#3a2a1c' }, { name: 'Lamp green', hex: '#3f6b4e' },
       { name: 'Brass', hex: '#c9a35a' }, { name: 'Paper', hex: '#f1e7d3' }, { name: 'Ink', hex: '#1c140e' },
     ],
-    type: { display: 'Libre Baskerville', note: 'a bookish serif', family: '"Libre Baskerville", Georgia, serif', fontHref: 'https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital@0;1&display=swap' },
+    type: { display: 'Libre Baskerville', note: 'a bookish serif', family: '"Libre Baskerville", Georgia, serif', fontHref: DIR_FONTS.learning.a },
     worlds: 'An open book, lamps, sigils, the yantra, a temple, a path of study.',
     layout: 'Chapters like shelves; each subcategory a bound volume with a brass label.',
     signature: { name: 'Find your class', how: 'Three questions (what draws you, how you like to learn, where you are starting) and the classes that fit appear, ready to keep.' },
@@ -112,7 +113,7 @@ export const DIRECTIONS: Direction[] = [
       { name: 'Midnight', hex: '#0b1424' }, { name: 'Slate', hex: '#2b3a52' }, { name: 'Chalk', hex: '#e8eef6' },
       { name: 'Star gold', hex: '#f0d48a' }, { name: 'Sky blue', hex: '#6ea0d6' }, { name: 'Dawn', hex: '#e7a27c' },
     ],
-    type: { display: 'Josefin Slab', note: 'a geometric slab with a light hand', family: '"Josefin Slab", Georgia, serif', fontHref: 'https://fonts.googleapis.com/css2?family=Josefin+Slab:ital,wght@0,400;1,300&display=swap' },
+    type: { display: 'Josefin Slab', note: 'a geometric slab with a light hand', family: '"Josefin Slab", Georgia, serif', fontHref: DIR_FONTS.learning.b },
     worlds: 'A path of stars, sigils, the yantra, a temple.',
     layout: 'Chapters as stops on a route; subcategories as station cards.',
     signature: { name: 'Your path', how: 'A suggested road through the classes, from the fundamentals to mentoring, with three side paths. Tap any star to see the class and keep it. Begin anywhere.' },
@@ -128,7 +129,7 @@ export const DIRECTIONS: Direction[] = [
       { name: 'Palm leaf', hex: '#ead6a6' }, { name: 'Leaf edge', hex: '#c9a86a' }, { name: 'Ink black', hex: '#1d1410' },
       { name: 'Turmeric', hex: '#d99a2b' }, { name: 'Kumkum', hex: '#a8321e' }, { name: 'Sandal', hex: '#c9a06b' },
     ],
-    type: { display: 'Gotu', note: 'made for Latin and Devanagari together', family: '"Gotu", Georgia, serif', fontHref: 'https://fonts.googleapis.com/css2?family=Gotu&display=swap' },
+    type: { display: 'Gotu', note: 'made for Latin and Devanagari together', family: '"Gotu", Georgia, serif', fontHref: DIR_FONTS.learning.c },
     worlds: 'Ink-light on palm leaf: the yantra, lamps, sigils, a lotus, an open book.',
     layout: 'Long horizontal leaves for chapters, bound by a cord; subcategories as leaves.',
     signature: { name: 'Draw a yantra, step by step', how: 'From the bindu outward: triangles, a circle, eight petals and a square with four gates, one step at a time, each with a line on what it is.' },

@@ -21,7 +21,8 @@ const {
 } = Astro.props;
 
 // link previews: each page has its own picture, made from the real page by tools/make-og.mjs
-const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/$/, '');
+// (pages are built as files, so the homepage arrives as /index)
+const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/?index$/, '').replace(/\/$/, '');
 const ogName = path === '' ? 'home' : path.replace(/^\//, '').replace(/\//g, '-');
 const ogImage = new URL(`/og/${ogName}.jpg`, site.url).href;
 const pageUrl = new URL(path || '/', site.url).href;
@@ -47,7 +48,8 @@ const pageUrl = new URL(path || '/', site.url).href;
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/icons/icon-192.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
-    <link id="search-src" rel="prefetch" href="/search-index.json" as="fetch" crossorigin="anonymous" />
+    <!-- where the search index lives; it is fetched only when someone reaches for search, never during page load -->
+    <link id="search-src" rel="alternate" type="application/json" href="/search-index.json" title="All services" />
     {analytics.provider === 'cloudflare' && analytics.id && <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon={JSON.stringify({ token: analytics.id })}></script>}
     {analytics.provider === 'umami' && analytics.id && analytics.src && <script defer src={analytics.src} data-website-id={analytics.id}></script>}
     {analytics.provider === 'plausible' && analytics.id && <script defer src="https://plausible.io/js/script.js" data-domain={analytics.id}></script>}
@@ -69,6 +71,8 @@ const pageUrl = new URL(path || '/', site.url).href;
           var page = q.get('page') || sessionStorage.getItem('sk-x-page');
           h.dataset.pageStyle = page || 'eye';
           if (q.has('og')) h.dataset.og = '1';
+          // the prototype panel starts closed unless it was opened in this visit, set before paint so nothing jumps
+          if (sessionStorage.getItem('sk-hud') !== 'open') h.dataset.hudClosed = '1';
         } catch (e) {
           h.dataset.heroVariant = 'dawneye';
         }
@@ -233,8 +237,8 @@ const pageUrl = new URL(path || '/', site.url).href;
       <span class="cursor-dot"></span>
     </div>
 
-    <aside id="hud" class="hud" transition:persist="hud" data-open="true" aria-label="Prototype panel">
-      <button type="button" class="hud-toggle" data-hud-toggle aria-expanded="true">Prototype</button>
+    <aside id="hud" class="hud" transition:persist="hud" data-open="false" aria-label="Prototype panel">
+      <button type="button" class="hud-toggle" data-hud-toggle aria-expanded="false">Prototype</button>
       <div class="hud-body">
         <dl class="hud-stats">
           <div><dt>Quality</dt><dd data-hud-tier>…</dd></div>

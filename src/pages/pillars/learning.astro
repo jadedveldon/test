@@ -7,7 +7,7 @@ import Base from '../../layouts/Base.astro';
 import SubCards from '../../components/SubCards.astro';
 import DirBriefs from '../../components/DirBriefs.astro';
 import { pillars, categoryCount } from '../../data/site';
-import { gather } from '../../data/chapters';
+import { categoryAliases, gather } from '../../data/chapters';
 import { CHAPTERS, DIRECTIONS, FINDER, FORMATS, SIDE_FROM, STATION_XY, STATIONS, SUB_ICON, YANTRA_STEPS } from '../../data/learning';
 
 const index = pillars.findIndex((p) => p.slug === 'learning');
@@ -16,6 +16,7 @@ const prev = pillars[(index + pillars.length - 1) % pillars.length];
 const next = pillars[(index + 1) % pillars.length];
 const ROMAN = ['I', 'II', 'III', 'IV', 'V'];
 const moves = CHAPTERS.map((ch) => ({ ...ch, cat: gather(p, ch), id: ch.key }));
+const aliases = categoryAliases(p, CHAPTERS);
 const road = STATION_XY.slice(0, 9).map(([x, y]) => `${x} ${y}`).join(' L');
 /* C · the yantra's parts, drawn in order */
 const tri = (r: number, up: boolean) => [90, 210, 330].map((d) => { const a = ((up ? d + 180 : d) * Math.PI) / 180; return `${(Math.cos(a) * r).toFixed(1)} ${(Math.sin(a) * r).toFixed(1)}`; });
@@ -76,7 +77,7 @@ const square = `M${-S} ${-S} L${-G} ${-S} L${-G} ${-S - D} L${G} ${-S - D} L${G}
             </svg>
             <div class="pm-card" aria-live="polite">
               <p class="kicker" data-station-ch>{STATIONS[0].ch}</p>
-              <h3 data-station-name>{STATIONS[0].name}</h3>
+              <h2 data-station-name>{STATIONS[0].name}</h2>
               <p data-station-line>{STATIONS[0].line}</p>
               <button type="button" class="chip-keep" data-station-keep data-keep={STATIONS[0].name} data-keep-p={p.name} aria-pressed="false">Keep this class</button>
             </div>
@@ -103,6 +104,7 @@ const square = `M${-S} ${-S} L${-G} ${-S} L${-G} ${-S - D} L${G} ${-S - D} L${G}
 
     {moves.map((m, i) => (
       <section class={`chapter pd-move ln-${m.key}`} id={m.id} data-chapter={`lrn_${m.key}`} data-dir-chapter={m.key}>
+        {(aliases[m.key] || []).map((a) => <span id={a} class="anchor-alias" aria-hidden="true"></span>)}
         <div class="chapter-inner pd-inner">
           <header class="pd-head">
             <p class="kicker" data-fade><span class="pd-num">{ROMAN[i]}</span> · {categoryCount(m.cat)} {categoryCount(m.cat) === 1 ? 'class' : 'classes and services'}</p>

@@ -18,7 +18,7 @@ const THEMES: Record<string, { accent: string; soft: string; name: string }> = {
 
 const MINE = ['bizName', 'upi', 'payee', 'myEmail', 'myPhone', 'myAddress'];
 const rupees = (n: number) => `₹${n.toLocaleString('en-IN', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 })}`;
-const today = () => new Date().toISOString().slice(0, 10);
+const today = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; }; // local date, not UTC
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
 
 /** a UPI payment link: opens any UPI app with the amount and note filled in */

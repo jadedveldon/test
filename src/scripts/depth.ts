@@ -57,7 +57,7 @@ export function initDepth(live: boolean): (() => void) | null {
       root.querySelectorAll('[data-work]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
       root.querySelectorAll<HTMLElement>('[data-work-pane]').forEach((p) => (p.hidden = p.dataset.workPane !== b.dataset.work));
       current = root.querySelector<HTMLElement>(`[data-work-pane="${b.dataset.work}"]`)!;
-      load();
+      if (gl) load();
     });
   });
   const viewBtn = root.querySelector<HTMLButtonElement>('[data-depth-view]')!;

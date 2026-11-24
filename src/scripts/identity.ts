@@ -85,6 +85,7 @@ function initScan(root: HTMLElement, world: World) {
   const skip = root.querySelector<HTMLButtonElement>('[data-scan-skip]')!;
   const ys = Array.from(root.querySelectorAll<HTMLElement>('.sc-steps li')).map((li) => Number(li.dataset.y));
   let i = -1, timer = 0;
+  const idleWord = word.textContent || '', idleBtn = btn.textContent || 'Begin';
   const go = (k: number) => {
     clearTimeout(timer);
     if (k >= BODY_SCAN.length) { end('Take a breath. Welcome back to the whole of you.'); return; }
@@ -116,7 +117,18 @@ function initScan(root: HTMLElement, world: World) {
   btn.addEventListener('click', toggle);
   skip.addEventListener('click', onSkip);
   gsap.set(glow, { opacity: 0 });
-  return () => { clearTimeout(timer); btn.removeEventListener('click', toggle); skip.removeEventListener('click', onSkip); };
+  return () => {
+    clearTimeout(timer);
+    // a scan cut short by a change of direction starts fresh next time
+    gsap.killTweensOf([glow, word]);
+    gsap.set(glow, { opacity: 0 });
+    gsap.set(word, { opacity: 1 });
+    word.textContent = idleWord;
+    btn.textContent = idleBtn;
+    skip.hidden = true;
+    btn.removeEventListener('click', toggle);
+    skip.removeEventListener('click', onSkip);
+  };
 }
 
 export function startIdentity(world: World, dir: 'a' | 'b' | 'c') {

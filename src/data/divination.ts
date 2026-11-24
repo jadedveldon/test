@@ -1,4 +1,5 @@
 import type { DirChapter, Direction } from './directions';
+import { DIR_FONTS } from './dirfonts';
 
 /**
  * Pillar 5, Divination & Insight: three directions to compare live. Readings
@@ -87,7 +88,7 @@ export const DIRECTIONS: Direction[] = [
       { name: 'Wine dark', hex: '#170a0e' }, { name: 'Velvet', hex: '#3d1420' }, { name: 'Gold leaf', hex: '#d8b062' },
       { name: 'Candle', hex: '#f3d39a' }, { name: 'Card cream', hex: '#efe3cc' }, { name: 'Oxblood', hex: '#7c2230' },
     ],
-    type: { display: 'Cormorant Unicase', note: 'small capitals with old-style curves', family: '"Cormorant Unicase", Georgia, serif', fontHref: 'https://fonts.googleapis.com/css2?family=Cormorant+Unicase:wght@400;500&display=swap' },
+    type: { display: 'Cormorant Unicase', note: 'small capitals with old-style curves', family: '"Cormorant Unicase", Georgia, serif', fontHref: DIR_FONTS.divination.a },
     worlds: 'Three cards fanned, a mirror, the moon’s faces, the inner eye, the stars.',
     layout: 'Each chapter is laid like a spread; subcategories are cards with gilded edges.',
     signature: { name: 'Draw three cards', how: 'Three cards from the Major Arcana turn over: past, present and what is coming, each with common meanings. For reflection; a full reading goes much deeper.' },
@@ -103,7 +104,7 @@ export const DIRECTIONS: Direction[] = [
       { name: 'Obsidian', hex: '#060708' }, { name: 'Smoke', hex: '#1b1f24' }, { name: 'Silver', hex: '#c9ced6' },
       { name: 'Cold blue', hex: '#6d8fb4' }, { name: 'Mist', hex: '#e6e9ee' }, { name: 'Moonstone', hex: '#9fb5c9' },
     ],
-    type: { display: 'Tenor Sans', note: 'clean, open letters', family: '"Tenor Sans", Helvetica, sans-serif', fontHref: 'https://fonts.googleapis.com/css2?family=Tenor+Sans&display=swap' },
+    type: { display: 'Tenor Sans', note: 'clean, open letters', family: '"Tenor Sans", Helvetica, sans-serif', fontHref: DIR_FONTS.divination.b },
     worlds: 'A scrying mirror with rings on its surface, three cards, the moon’s faces, the inner eye, the stars.',
     layout: 'Wide black space; thin silver rules; subcategories as polished stones.',
     signature: { name: 'Still the water', how: 'Press and hold the dark mirror. The ripples settle, the mist clears, and a symbol rises with a question to sit with. There is no right answer; scrying is about what comes to you.' },
@@ -119,7 +120,7 @@ export const DIRECTIONS: Direction[] = [
       { name: 'Night indigo', hex: '#0b0d2a' }, { name: 'Deep violet', hex: '#241a52' }, { name: 'Lavender', hex: '#b9a7e8' },
       { name: 'Starlight', hex: '#f1eefc' }, { name: 'Moon gold', hex: '#e9cf8a' }, { name: 'Dusk rose', hex: '#d79bb6' },
     ],
-    type: { display: 'Gilda Display', note: 'a graceful, high-waisted serif', family: '"Gilda Display", Georgia, serif', fontHref: 'https://fonts.googleapis.com/css2?family=Gilda+Display&display=swap' },
+    type: { display: 'Gilda Display', note: 'a graceful, high-waisted serif', family: '"Gilda Display", Georgia, serif', fontHref: DIR_FONTS.divination.c },
     worlds: 'A pendulum swinging, three cards, the moon’s faces, the inner eye, the stars.',
     layout: 'Floating, airy chapters; subcategories as moonlit tiles.',
     signature: { name: 'Ask the pendulum', how: 'Hold a yes-or-no question in mind and let the pendulum go. It swings, slows and settles: to and fro, side to side, or in a circle. A gentle game for reflection, never a prediction.' },

@@ -10,7 +10,8 @@ const listeners = new Set<() => void>();
 export const installed = () => matchMedia('(display-mode: standalone)').matches || (navigator as Navigator & { standalone?: boolean }).standalone === true;
 export const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 export const canPrompt = () => !!deferred;
-export function onInstallChange(fn: () => void) { listeners.add(fn); }
+/** returns a function that stops listening, so a page that goes away does not stay in memory */
+export function onInstallChange(fn: () => void) { listeners.add(fn); return () => { listeners.delete(fn); }; }
 
 export async function promptInstall(): Promise<string> {
   if (installed()) return 'Already on your home screen.';

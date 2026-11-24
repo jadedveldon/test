@@ -24,24 +24,31 @@ function initSpread(root: HTMLElement, world: World) {
   const cards = Array.from(root.querySelectorAll<HTMLElement>('[data-card]'));
   const btn = root.querySelector<HTMLButtonElement>('[data-draw-three]')!;
   let busy = false;
+  const timers: number[] = [];
+  const later = (fn: () => void, ms: number) => { timers.push(window.setTimeout(fn, ms)); };
   const draw = () => {
     if (busy) return;
     busy = true;
     const open = cards.some((c) => c.classList.contains('is-open'));
     cards.forEach((c) => c.classList.remove('is-open'));
-    setTimeout(() => {
+    later(() => {
       pick(MAJOR, 3).forEach(([num, name, words], i) => {
         const c = cards[i];
         c.querySelector('[data-card-num]')!.textContent = num;
         c.querySelector('[data-card-name]')!.textContent = name;
         c.querySelector('[data-card-words]')!.textContent = words;
-        setTimeout(() => { c.classList.add('is-open'); tick(); buzz([6]); world.flash(0.2); if (i === 2) { ring('card'); busy = false; } }, 380 + i * 520);
+        later(() => { c.classList.add('is-open'); tick(); buzz([6]); world.flash(0.2); if (i === 2) { ring('card'); busy = false; } }, 380 + i * 520);
       });
       btn.textContent = 'Draw again';
     }, open ? 450 : 0);
   };
   btn.addEventListener('click', draw);
-  return () => btn.removeEventListener('click', draw);
+  return () => {
+    timers.forEach(clearTimeout);
+    // a draw cut short leaves no card half-turned
+    if (busy) { cards.forEach((c) => c.classList.remove('is-open')); btn.textContent = 'Draw three cards'; }
+    btn.removeEventListener('click', draw);
+  };
 }
 
 /* --------------------------------------------- B · still the water */
@@ -54,7 +61,8 @@ function initMirror(root: HTMLElement, world: World) {
   const rings = Array.from(root.querySelectorAll<SVGEllipseElement>('.mr-ring'));
   const symbol = root.querySelector<HTMLElement>('[data-mirror-symbol]')!;
   const word = root.querySelector<HTMLElement>('[data-mirror-word]')!;
-  let tl: gsap.core.Timeline | null = null, done = false;
+  let tl: gsap.core.Timeline | null = null, done = false, settleTimer = 0;
+  const idleWord = word.textContent || '';
   const start = () => {
     if (tl) return;
     if (done) { done = false; gsap.to(symbol, { opacity: 0, duration: 0.4 }); }
@@ -83,7 +91,7 @@ function initMirror(root: HTMLElement, world: World) {
     gsap.fromTo(symbol, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 1.4, ease: 'power2.out' });
     word.textContent = q;
     ring('card'); buzz(PATTERNS.cardFlip); world.flash(0.4);
-    setTimeout(() => { gsap.to(mist, { opacity: 0.55, duration: 3 }); gsap.to(rings, { scale: 1, opacity: 1, duration: 3, transformOrigin: '50% 50%' }); }, 2500);
+    settleTimer = window.setTimeout(() => { gsap.to(mist, { opacity: 0.55, duration: 3 }); gsap.to(rings, { scale: 1, opacity: 1, duration: 3, transformOrigin: '50% 50%' }); }, 2500);
   };
   const key = (e: KeyboardEvent) => { if ((e.key === 'Enter' || e.key === ' ') && !e.repeat) { e.preventDefault(); start(); } };
   const keyUp = (e: KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') stop(); };
@@ -95,6 +103,15 @@ function initMirror(root: HTMLElement, world: World) {
   surface.addEventListener('keyup', keyUp);
   return () => {
     tl?.kill();
+    clearTimeout(settleTimer);
+    // leave the mirror as it was found, so it works when this direction comes back
+    gsap.killTweensOf([mist, symbol, ...rings]);
+    gsap.set(mist, { opacity: 1 });
+    gsap.set(rings, { scale: 1, opacity: 1, transformOrigin: '50% 50%' });
+    gsap.set(symbol, { opacity: 0 });
+    symbol.textContent = '';
+    word.textContent = idleWord;
+    surface.classList.remove('is-held');
     surface.removeEventListener('pointerdown', start); surface.removeEventListener('pointerup', stop); surface.removeEventListener('pointerleave', stop);
     surface.removeEventListener('pointercancel', stop); surface.removeEventListener('keydown', key); surface.removeEventListener('keyup', keyUp);
   };
@@ -110,6 +127,7 @@ function initPendulum(root: HTMLElement, world: World) {
   const btn = root.querySelector<HTMLButtonElement>('[data-pendulum-ask]')!;
   let raf = 0, t0 = 0;
   const pts: number[][] = [];
+  const idleWord = word.textContent || '', idleBtn = btn.textContent || '';
   const place = (x: number, y: number) => {
     bob.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)})`);
     chain.setAttribute('x2', x.toFixed(1)); chain.setAttribute('y2', y.toFixed(1));
@@ -146,7 +164,15 @@ function initPendulum(root: HTMLElement, world: World) {
   };
   btn.addEventListener('click', swing);
   place(0, 0);
-  return () => { cancelAnimationFrame(raf); btn.removeEventListener('click', swing); };
+  return () => {
+    cancelAnimationFrame(raf);
+    btn.disabled = false;
+    btn.textContent = idleBtn;
+    word.textContent = idleWord;
+    pts.length = 0;
+    place(0, 0);
+    btn.removeEventListener('click', swing);
+  };
 }
 
 export function startDivination(world: World, dir: 'a' | 'b' | 'c') {
