@@ -5,30 +5,33 @@
  * light breaks into every colour. Affirming, trauma-aware copy; nothing explicit; people choose what to share.
  */
 import Base from '../../layouts/Base.astro';
+import { words } from '../../config';
 import CareText from '../../components/CareText.astro';
+import Rich from '../../components/Rich.astro';
 import SubCards from '../../components/SubCards.astro';
 import { pillars, categoryCount } from '../../data/site';
 import { categoryAliases, gather } from '../../data/chapters';
-import { CHAPTERS, COMFORT, SUB_ICON, SUPPORT, SUPPORT_HREF, WELCOME } from '../../data/identity';
+import { CHAPTER_KEYS, CHAPTERS, COMFORT, COPY, SUPPORT, SUPPORT_HREF, WELCOME } from '../../data/identity';
 
 const index = pillars.findIndex((p) => p.slug === 'identity');
 const p = pillars[index];
 const prev = pillars[(index + pillars.length - 1) % pillars.length];
 const next = pillars[(index + 1) % pillars.length];
 const ROMAN = ['I', 'II', 'III', 'IV', 'V'];
-const moves = CHAPTERS.map((ch) => ({ ...ch, cat: gather(p, ch), id: ch.key }));
-const aliases = categoryAliases(p, CHAPTERS);
+const moves = CHAPTERS.map((ch) => ({ ...ch, cat: gather(p, ch.key, ch.title, CHAPTER_KEYS), id: ch.key }));
+const aliases = categoryAliases(p, CHAPTER_KEYS, Object.fromEntries(moves.map((m) => [m.key, m.id])));
+const c = COPY.comfort;
 ---
 <Base title={`${p.name} · Sarvakali`} sequence="id_hero" description={p.line}>
   <div class="pd pd-identity" data-identity>
     <section class="chapter pd-hero" data-chapter="id_hero">
       <div class="chapter-inner pd-hero-grid">
         <div class="pd-hero-copy">
-          <a class="back-link" href="/#paths">← All pillars</a>
+          <a class="back-link" href="/#paths">{words.allPillars}</a>
           <p class="kicker" data-hero>Pillar {index + 1} of {pillars.length} · {p.count} services</p>
           <h1 class="display-l pd-title" data-hero data-split transition:name="pt-identity" data-pt>{p.name}</h1>
           <p class="lede" data-hero>{p.line}</p>
-          <p class="pd-note" data-hero>{WELCOME}</p>
+          <p class="pd-note" data-hero><Rich text={WELCOME} /></p>
           <ol class="pd-index" data-hero aria-label="The chapters">
             {moves.map((m, i) => <li><a href={`#${m.id}`}><span class="pd-num" aria-hidden="true">{ROMAN[i]}</span><span class="pd-ix-title">{m.title}</span><span class="pd-ix-n">{categoryCount(m.cat)} services</span></a></li>)}
           </ol>
@@ -37,30 +40,30 @@ const aliases = categoryAliases(p, CHAPTERS);
         <div class="pd-sig" data-hero>
           <!-- your comfort, first: a private note for a first conversation -->
           <form class="comfort" data-comfort>
-            <p class="kicker">Your comfort, first</p>
+            <p class="kicker">{c.kicker}</p>
             <fieldset>
-              <legend>Your pace</legend>
+              <legend>{c.paceLegend}</legend>
               <div class="cf-opts">{COMFORT.pace.map((t, i) => <label><input type="radio" name="cf-pace" value={t} checked={i === 1} /><span>{t}</span></label>)}</div>
             </fieldset>
             <fieldset>
-              <legend>What you would like to explore</legend>
+              <legend>{c.exploreLegend}</legend>
               <div class="cf-opts">{COMFORT.explore.map((t) => <label><input type="checkbox" name="cf-explore" value={t} /><span>{t}</span></label>)}</div>
             </fieldset>
             <fieldset>
-              <legend>How you like to work</legend>
+              <legend>{c.waysLegend}</legend>
               <div class="cf-opts">{COMFORT.ways.map((t) => <label><input type="checkbox" name="cf-way" value={t} /><span>{t}</span></label>)}</div>
             </fieldset>
             <div class="cf-row">
-              <label class="cf-field"><span>Name you’d like to be called (optional)</span><input name="cf-name" autocomplete="off" maxlength="40" /></label>
-              <label class="cf-field"><span>Pronouns (optional)</span><input name="cf-pronouns" autocomplete="off" maxlength="30" placeholder="e.g. she/her, they/them" /></label>
+              <label class="cf-field"><span>{c.nameLabel}</span><input name="cf-name" autocomplete="off" maxlength="40" /></label>
+              <label class="cf-field"><span>{c.pronounsLabel}</span><input name="cf-pronouns" autocomplete="off" maxlength="30" placeholder={c.pronounsExample} /></label>
             </div>
-            <label class="cf-field"><span>Anything you would rather not touch (optional)</span><input name="cf-avoid" autocomplete="off" maxlength="120" /></label>
-            <div class="cta-row"><button type="submit" class="btn btn-ghost btn-sm">Make my note</button></div>
+            <label class="cf-field"><span>{c.avoidLabel}</span><input name="cf-avoid" autocomplete="off" maxlength="120" /></label>
+            <div class="cta-row"><button type="submit" class="btn btn-ghost btn-sm">{c.make}</button></div>
             <div class="cf-note" data-comfort-note hidden>
               <pre data-comfort-text></pre>
-              <div class="cta-row"><button type="button" class="btn btn-ghost btn-sm" data-comfort-copy>Copy the note</button><a class="btn btn-ghost btn-sm" href="/connect" data-topic={p.name}>Request a conversation</a></div>
+              <div class="cta-row"><button type="button" class="btn btn-ghost btn-sm" data-comfort-copy>{c.copy}</button><a class="btn btn-ghost btn-sm" href="/connect" data-topic={p.name}>Request a conversation</a></div>
             </div>
-            <p class="dv-sig-hint small">Nothing here is saved or sent. Copy the note if you would like to share it.</p>
+            <p class="dv-sig-hint small">{c.hint}</p>
           </form>
 
         </div>
@@ -76,30 +79,30 @@ const aliases = categoryAliases(p, CHAPTERS);
             <h2 class="display-l" data-split data-dust>{m.title}</h2>
             <p class="lede" data-fade>{m.line}</p>
             {m.care && <p class="pd-care" data-fade><CareText text={m.care} /></p>}
-            {m.note && <p class="pd-note" data-fade>{m.note}</p>}
-            {m.key === 'queer' && <p class="pd-care" data-fade><CareText text={SUPPORT} /> <a href={SUPPORT_HREF} target="_blank" rel="noopener">The directory</a> · <a href="/care">Boundaries and care</a></p>}
-            <div class="cta-row" data-fade><a class="btn btn-ghost btn-sm" href="/connect" data-topic={m.title}>Ask about this</a></div>
+            {m.note && <p class="pd-note" data-fade><Rich text={m.note} /></p>}
+            {m.key === 'queer' && <p class="pd-care" data-fade><CareText text={SUPPORT} /> <a href={SUPPORT_HREF} target="_blank" rel="noopener">{COPY.supportLink}</a> · <a href="/care">{words.care}</a></p>}
+            <div class="cta-row" data-fade><a class="btn btn-ghost btn-sm" href="/connect" data-topic={m.title}>{words.ask}</a></div>
           </header>
-          <SubCards category={m.cat} pillar={p.name} icons={SUB_ICON} />
+          <SubCards category={m.cat} pillar={p.name} />
         </div>
       </section>
     ))}
 
     <section class="chapter pd-close" data-chapter="id_close">
       <div class="chapter-inner narrow center">
-        <p class="kicker" data-fade>When you are ready</p>
-        <h2 class="display-l" data-split>You are welcome here, as you are</h2>
-        <p class="lede" data-fade>Tell Sarvakali as much or as little as you like. You set the pace.</p>
+        <p class="kicker" data-fade>{COPY.close.kicker}</p>
+        <h2 class="display-l" data-split>{COPY.close.title}</h2>
+        <p class="lede" data-fade>{COPY.close.lede}</p>
         <div class="cta-row center" data-fade>
-          <a class="btn btn-solid" href="/connect" data-topic={p.name}>Request a conversation</a>
-          <a class="btn btn-ghost" href="/care">Boundaries and care</a>
+          <a class="btn btn-solid" href="/connect" data-topic={p.name}>{COPY.close.button}</a>
+          <a class="btn btn-ghost" href="/care">{words.care}</a>
         </div>
       </div>
     </section>
 
     <nav class="pp-nav" aria-label="Other pillars">
-      <a href={`/pillars/${prev.slug}`}><span>Previous pillar</span><b transition:name={`pt-${prev.slug}`} data-pt>{prev.name}</b></a>
-      <a href={`/pillars/${next.slug}`}><span>Next pillar</span><b transition:name={`pt-${next.slug}`} data-pt>{next.name}</b></a>
+      <a href={`/pillars/${prev.slug}`}><span>{words.previous}</span><b transition:name={`pt-${prev.slug}`} data-pt>{prev.name}</b></a>
+      <a href={`/pillars/${next.slug}`}><span>{words.next}</span><b transition:name={`pt-${next.slug}`} data-pt>{next.name}</b></a>
     </nav>
   </div>
 </Base>

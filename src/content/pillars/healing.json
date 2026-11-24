@@ -1,0 +1,195 @@
+{
+  "chapters": {
+    "energy": {
+      "title": "Energy, aura and chakras",
+      "line": "Reiki, aura and chakra work, readings of your energy, and cutting the cords that drain you.",
+      "care": false
+    },
+    "mind": {
+      "title": "Mind and the subconscious",
+      "line": "Hypnotherapy and past-life regression, CBT-based and NLP sessions, EFT tapping, and the beliefs you hold about yourself.",
+      "care": true
+    },
+    "shadow": {
+      "title": "Shadow work and inner healing",
+      "line": "Meeting the parts of you kept out of sight, letting grief and anger move, and finding boundaries, rest and calm.",
+      "care": true
+    },
+    "journal": {
+      "title": "Journaling and reflection",
+      "line": "Guided prompts and programmes for the inner child, the shadow, grief, dreams and devotion, written by your own hand.",
+      "care": false
+    }
+  },
+  "care": "This is reflective and spiritual work. It is not medical or psychological treatment and does not replace it. If you are struggling, please also reach out to a doctor or counsellor; in India, Tele-MANAS is free on 14416, day and night.",
+  "breath": {
+    "idle": "Choose a pattern, then begin",
+    "begin": "Begin",
+    "care": "Breathe gently and never strain. If you feel dizzy or uneasy, return to your normal breath. Skip the holds if you are pregnant or have a heart, blood-pressure or breathing condition, and ask your doctor if unsure.",
+    "patterns": {
+      "soft": {
+        "name": "Long out-breath",
+        "short": "In 4 · out 6",
+        "about": "The simplest: a breath out that is a little longer than the breath in.",
+        "say": [
+          "Breathe in",
+          "And out, slowly"
+        ]
+      },
+      "box": {
+        "name": "Box breathing",
+        "short": "In 4 · hold 4 · out 4 · hold 4",
+        "about": "Four equal sides: in, hold, out, hold.",
+        "say": [
+          "Breathe in",
+          "Hold",
+          "Breathe out",
+          "Hold"
+        ]
+      },
+      "relax": {
+        "name": "4-7-8, the relaxing breath",
+        "short": "In 4 · hold 7 · out 8",
+        "about": "Taught by Dr Andrew Weil: in through the nose for four, hold for seven, out through the mouth for eight. Four rounds is plenty to begin with.",
+        "say": [
+          "In through the nose",
+          "Hold",
+          "Out through the mouth"
+        ]
+      },
+      "sigh": {
+        "name": "Cyclic sighing",
+        "short": "In · a little more · long out",
+        "about": "A full breath in, a short second sip of air on top, then a long, slow breath out. In a 2023 Stanford study it lifted mood the most of the practices compared, at five minutes a day.",
+        "say": [
+          "Breathe in",
+          "A little more",
+          "Long breath out"
+        ]
+      },
+      "coherent": {
+        "name": "Coherent breathing",
+        "short": "In 5 · out 5",
+        "about": "Even and unhurried: about six breaths a minute.",
+        "say": [
+          "Breathe in",
+          "Breathe out"
+        ]
+      },
+      "bhramari": {
+        "name": "Bhramari, the humming bee",
+        "short": "In 4 · hum out 8",
+        "about": "A pranayama: breathe in, then breathe out slowly with a soft, steady hum, the lips closed. Some cover the ears gently with the thumbs.",
+        "say": [
+          "Breathe in",
+          "Hum softly as you breathe out"
+        ]
+      },
+      "nadi": {
+        "name": "Nadi shodhana, alternate nostril",
+        "short": "Left in · right out · right in · left out",
+        "about": "A pranayama: rest the thumb on the right nostril and the ring finger on the left, and let the breath change sides. Without holds, which is how most begin.",
+        "say": [
+          "In through the left",
+          "Out through the right",
+          "In through the right",
+          "Out through the left"
+        ]
+      }
+    },
+    "grounding": {
+      "name": "Grounding 5-4-3-2-1",
+      "senses": [
+        "things you can see",
+        "things you can touch",
+        "things you can hear",
+        "things you can smell",
+        "thing you can taste"
+      ]
+    }
+  },
+  "body": {
+    "kicker": "The body of light",
+    "hint": "Tap a centre on the figure. These are the seven chakras of the modern system, shaped by John Woodroffe’s The Serpent Power (1919); older Indian traditions count and place them differently, and the rainbow colours were added in the twentieth century.",
+    "chakras": {
+      "sahasrara": {
+        "name": "Sahasrara",
+        "deva": "सहस्रार",
+        "english": "Crown",
+        "place": "at or just above the crown of the head",
+        "working": "Crown Chakra Working"
+      },
+      "ajna": {
+        "name": "Ajna",
+        "deva": "आज्ञा",
+        "english": "Brow",
+        "place": "between the brows",
+        "working": "Third Eye Chakra Working"
+      },
+      "vishuddha": {
+        "name": "Vishuddha",
+        "deva": "विशुद्ध",
+        "english": "Throat",
+        "place": "at the throat",
+        "working": "Throat Chakra Working"
+      },
+      "anahata": {
+        "name": "Anahata",
+        "deva": "अनाहत",
+        "english": "Heart",
+        "place": "at the centre of the chest",
+        "working": "Heart Chakra Working"
+      },
+      "manipura": {
+        "name": "Manipura",
+        "deva": "मणिपूर",
+        "english": "Solar plexus",
+        "place": "at the navel, below the ribs",
+        "working": "Solar Plexus Chakra Working"
+      },
+      "svadhishthana": {
+        "name": "Svadhishthana",
+        "deva": "स्वाधिष्ठान",
+        "english": "Sacral",
+        "place": "below the navel",
+        "working": "Sacral Chakra Working"
+      },
+      "muladhara": {
+        "name": "Muladhara",
+        "deva": "मूलाधार",
+        "english": "Root",
+        "place": "at the base of the spine",
+        "working": "Root Chakra Working"
+      }
+    }
+  },
+  "mend": {
+    "kicker": "Golden repair",
+    "start": "Drag each piece home, or tap it",
+    "all": "Set them all back",
+    "note": "Kintsugi is the Japanese art of mending broken pottery with lacquer dusted or mixed with powdered gold. The break is not hidden; it becomes part of the bowl’s history."
+  },
+  "prompt": {
+    "kicker": "A prompt for today",
+    "next": "Another prompt",
+    "hint": "Draft prompts; Sarvakali will write their own. Nothing here is saved.",
+    "prompts": [
+      "What did I carry today that was never mine to carry?",
+      "Where in my body do I feel this, and what does it want me to know?",
+      "What would I say to myself at seven years old, if I could sit beside them today?",
+      "Which part of me did I hide this week, and what was it protecting?",
+      "What am I ready to set down?",
+      "What does rest honestly look like for me?",
+      "Who am I when no one is watching?",
+      "What did I dream, and how did I feel when I woke?",
+      "Where did I say yes when I meant no?",
+      "What small thing am I grateful for that I almost overlooked?"
+    ]
+  },
+  "close": {
+    "kicker": "When you are ready",
+    "title": "Healing begins with being heard",
+    "lede": "Tell Sarvakali what you are carrying. Together you will find a gentle place to start.",
+    "button": "Request a conversation"
+  }
+}

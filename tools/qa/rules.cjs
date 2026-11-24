@@ -1,4 +1,5 @@
-// The site's content rules, checked on the built site (dist/) and the source (src/). Takes seconds.
+// The site's content rules, checked on the built site (dist/), the source (src/) and the content files the editor
+// writes (src/content/). Takes seconds.
 // Run after `npm run build`. Prints ok or FAIL for each rule.
 const fs = require('fs');
 const path = require('path');
@@ -77,9 +78,37 @@ rule('no AI model names or identifiers in the source or the site', [...Object.en
 }));
 
 // 9. drafts are marked: data files with copy for Sarvakali say so
-rule('copy for Sarvakali is marked as a draft in the data files', ['healing', 'identity', 'divination', 'learning'].flatMap((n) => {
+rule('copy for Sarvakali is marked as a draft in the data files', ['devotion', 'magic', 'healing', 'identity', 'divination', 'learning'].flatMap((n) => {
   const f = path.join(SRC, 'data', `${n}.ts`); if (!fs.existsSync(f)) return [];
   return /DRAFT/.test(src[f]) ? [] : [`src/data/${n}.ts`];
+}));
+
+// 10. the editor can rename or remove a service; anything that names one by hand must still find it
+const CONTENT = path.join(SRC, 'content');
+const json = (p) => JSON.parse(fs.readFileSync(path.join(CONTENT, p), 'utf8'));
+const SLUGS = ['devotion', 'magic', 'healing', 'identity', 'divination', 'learning'];
+const cat = Object.fromEntries(SLUGS.map((s) => [s, json(`catalogue/${s}.json`)]));
+const services = (s) => new Set(cat[s].categories.flatMap((c) => c.subs.flatMap((x) => x.items.map((i) => i.trim()))));
+const named = {
+  devotion: (d) => [...d.mahavidyas.map((x) => x.service), d.allTen.service, ...d.hindu.map((x) => x.service), ...d.deviAlso.services, ...d.tantra.services, ...d.lands.flatMap((l) => l.names)],
+  healing: (d) => Object.values(d.body.chakras).map((c) => c.working),
+  learning: (d) => [...d.formats.services, ...d.finder.questions.flatMap((q) => q.answers.flatMap((a) => a.services)), ...d.path.stations.map((x) => x.service)],
+};
+rule('every service a signature moment names is in its pillar\'s catalogue', Object.entries(named).flatMap(([s, list]) => {
+  const have = services(s);
+  return [...new Set(list(json(`pillars/${s}.json`)).map((n) => n.trim()).filter(Boolean))].filter((n) => !have.has(n)).map((n) => `${s}: "${n}"`);
+}));
+
+// 11. what the editor writes reaches the page: every service in the catalogue can be kept on its pillar page,
+//     and every category's address (used by search and Find your path) exists there
+const attr = (t) => t.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+const anchor = (t) => t.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+rule('every catalogue service and category is on its pillar page', SLUGS.flatMap((s) => {
+  const f = path.join(DIST, 'pillars', `${s}.html`); if (!fs.existsSync(f)) return [`${s}: missing page`];
+  const h = html[f];
+  const lost = [...services(s)].filter((n) => !h.includes(`data-keep="${attr(n)}"`)).map((n) => `${s}: service "${n}"`);
+  const gone = cat[s].categories.map((c) => anchor(c.name)).filter((a) => !h.includes(`id="${a}"`)).map((a) => `${s}: address #${a}`);
+  return [...lost, ...gone];
 }));
 
 const failed = results.filter((x) => !x).length;

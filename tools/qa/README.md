@@ -29,9 +29,10 @@ node tools/qa/preview-check.cjs
 
 | Script | Checks |
 | --- | --- |
-| `rules.cjs` | The content rules on the built site and the source, in seconds: no prices, no catalogue numbers, language, titles, descriptions and preview pictures, safe new-tab links, 14416 always tap-to-call, care notes in place, no placeholder words, no personal email addresses, no AI model identifiers, drafts marked |
+| `rules.cjs` | The content rules on the built site and the source, in seconds: no prices, no catalogue numbers, language, titles, descriptions and preview pictures, safe new-tab links, 14416 always tap-to-call, care notes in place, no placeholder words, no personal email addresses, no AI model identifiers, drafts marked, every service a signature moment names is in the catalogue, every catalogue service and category reaches its pillar page |
+| `content.mjs` | The content files in `src/content/` read the way the content editor reads them: each opens, required lines are filled, fixed-length lists keep their length, every choice is one the editor offers (`node --experimental-strip-types tools/qa/content.mjs`, no build needed) |
 | `audit.cjs` | Every page, desktop and phone: script errors, failed files, sideways scrolling, text left hidden after scrolling, broken links, unlabelled controls, small tap targets, images without descriptions, one main heading |
-| `regressions.cjs` | Every bug found so far, re-created so it cannot quietly return |
+| `regressions.cjs` | Every bug found so far, re-created so it cannot quietly return (including: the offline helper never saves the content editor or its door) |
 | `pillars.cjs` | Pillars 4 to 6: each chapter's world, nothing hidden or sideways, every signature moment by mouse, touch and keyboard, the homepage chapters |
 | `interactions.cjs` | Menu, search, keeping a service, today's card, mala, fire, diya, Find your path, the Connect form, the invoice QR, sound, the panel, a festival day, the page transition (`W=390 H=844` for a phone) |
 | `keyboard.cjs` | Keyboard only: tab order, visible focus, nothing invisible takes focus, the menu, search and card keep and return focus, every signature moment without a mouse |

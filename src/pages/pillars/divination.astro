@@ -6,29 +6,32 @@
  * prompts to ponder. Readings are offered for reflection.
  */
 import Base from '../../layouts/Base.astro';
+import { words } from '../../config';
 import SubCards from '../../components/SubCards.astro';
 import { pillars, categoryCount } from '../../data/site';
 import { categoryAliases, gather } from '../../data/chapters';
-import { CARE, CHAPTERS, SUB_ICON } from '../../data/divination';
+import { CARE, CHAPTER_KEYS, CHAPTERS, COPY } from '../../data/divination';
+import Rich from '../../components/Rich.astro';
 
 const index = pillars.findIndex((p) => p.slug === 'divination');
 const p = pillars[index];
 const prev = pillars[(index + pillars.length - 1) % pillars.length];
 const next = pillars[(index + 1) % pillars.length];
 const ROMAN = ['I', 'II', 'III', 'IV', 'V'];
-const moves = CHAPTERS.map((ch) => ({ ...ch, cat: gather(p, ch), id: ch.key }));
-const aliases = categoryAliases(p, CHAPTERS);
+const moves = CHAPTERS.map((ch) => ({ ...ch, cat: gather(p, ch.key, ch.title, CHAPTER_KEYS), id: ch.key }));
+const aliases = categoryAliases(p, CHAPTER_KEYS, Object.fromEntries(moves.map((m) => [m.key, m.id])));
+const mr = COPY.mirror;
 ---
 <Base title={`${p.name} · Sarvakali`} sequence="div_hero" description={p.line}>
   <div class="pd pd-divination" data-divination>
     <section class="chapter pd-hero dv5-gilt" data-chapter="div_hero">
       <div class="chapter-inner pd-hero-grid">
         <div class="pd-hero-copy">
-          <a class="back-link" href="/#paths">← All pillars</a>
+          <a class="back-link" href="/#paths">{words.allPillars}</a>
           <p class="kicker" data-hero>Pillar {index + 1} of {pillars.length} · {p.count} services</p>
           <h1 class="display-l pd-title" data-hero data-split transition:name="pt-divination" data-pt>{p.name}</h1>
           <p class="lede" data-hero>{p.line}</p>
-          <p class="pd-note" data-hero>{CARE}</p>
+          <p class="pd-note" data-hero><Rich text={CARE} /></p>
           <ol class="pd-index" data-hero aria-label="The chapters">
             {moves.map((m, i) => <li class={`dv5-ix-${m.room}`}><a href={`#${m.id}`}><span class="pd-num" aria-hidden="true">{ROMAN[i]}</span><span class="pd-ix-title">{m.title}</span><span class="pd-ix-n">{categoryCount(m.cat)} services</span></a></li>)}
           </ol>
@@ -37,16 +40,16 @@ const aliases = categoryAliases(p, CHAPTERS);
         <div class="pd-sig" data-hero>
           <!-- prompts to ponder: the black mirror in a gilt frame -->
           <div class="mirror" data-mirror>
-            <p class="kicker mr-title">Prompts to ponder</p>
+            <p class="kicker mr-title">{mr.kicker}</p>
             <div class="mr-frame">
-              <div class="mr-surface" data-mirror-surface role="button" tabindex="0" aria-label="Press and hold to still the mirror for a prompt to ponder">
+              <div class="mr-surface" data-mirror-surface role="button" tabindex="0" aria-label={mr.label}>
                 <div class="mr-mist" data-mirror-mist></div>
                 <svg viewBox="-100 -130 200 260" class="mr-rings" aria-hidden="true">{[30, 52, 74, 96].map((r) => <ellipse rx={r * 0.7} ry={r} class="mr-ring" />)}</svg>
                 <p class="mr-symbol" data-mirror-symbol aria-live="polite"></p>
               </div>
             </div>
-            <p class="br-word" data-mirror-word aria-live="polite">Press and hold the mirror, and be still</p>
-            <p class="dv-sig-hint small">A symbol rises with a prompt to sit with: something to ponder, never a prediction. There is no right answer.</p>
+            <p class="br-word" data-mirror-word aria-live="polite">{mr.idle}</p>
+            <p class="dv-sig-hint small">{mr.hint}</p>
           </div>
         </div>
       </div>
@@ -57,32 +60,32 @@ const aliases = categoryAliases(p, CHAPTERS);
         {(aliases[m.key] || []).map((a) => <span id={a} class="anchor-alias" aria-hidden="true"></span>)}
         <div class="chapter-inner pd-inner">
           <header class="pd-head">
-            <p class="kicker" data-fade><span class="pd-num">{ROMAN[i]}</span> · {categoryCount(m.cat)} services · {m.room === 'table' ? 'at the table' : 'in the mirror'}</p>
+            <p class="kicker" data-fade><span class="pd-num">{ROMAN[i]}</span> · {categoryCount(m.cat)} services · {m.room === 'table' ? COPY.rooms.table : COPY.rooms.mirror}</p>
             <h2 class="display-l" data-split data-dust>{m.title}</h2>
             <p class="lede" data-fade>{m.line}</p>
-            {m.note && <p class="pd-note" data-fade>{m.note}</p>}
-            <div class="cta-row" data-fade><a class="btn btn-ghost btn-sm" href="/connect" data-topic={m.title}>Ask about this</a></div>
+            {m.note && <p class="pd-note" data-fade><Rich text={m.note} /></p>}
+            <div class="cta-row" data-fade><a class="btn btn-ghost btn-sm" href="/connect" data-topic={m.title}>{words.ask}</a></div>
           </header>
-          <SubCards category={m.cat} pillar={p.name} icons={SUB_ICON} />
+          <SubCards category={m.cat} pillar={p.name} />
         </div>
       </section>
     ))}
 
     <section class="chapter pd-close dv5-table" data-chapter="div_close">
       <div class="chapter-inner narrow center">
-        <p class="kicker" data-fade>When you are ready</p>
-        <h2 class="display-l" data-split>Bring a question, or just yourself</h2>
-        <p class="lede" data-fade>Tell Sarvakali what you are wondering about. A reading begins there.</p>
+        <p class="kicker" data-fade>{COPY.close.kicker}</p>
+        <h2 class="display-l" data-split>{COPY.close.title}</h2>
+        <p class="lede" data-fade>{COPY.close.lede}</p>
         <div class="cta-row center" data-fade>
-          <a class="btn btn-solid" href="/connect" data-topic={p.name}>Request a reading</a>
-          <button type="button" class="btn btn-ghost" data-card-open>Draw today’s card</button>
+          <a class="btn btn-solid" href="/connect" data-topic={p.name}>{COPY.close.button}</a>
+          <button type="button" class="btn btn-ghost" data-card-open>{COPY.close.card}</button>
         </div>
       </div>
     </section>
 
     <nav class="pp-nav" aria-label="Other pillars">
-      <a href={`/pillars/${prev.slug}`}><span>Previous pillar</span><b transition:name={`pt-${prev.slug}`} data-pt>{prev.name}</b></a>
-      <a href={`/pillars/${next.slug}`}><span>Next pillar</span><b transition:name={`pt-${next.slug}`} data-pt>{next.name}</b></a>
+      <a href={`/pillars/${prev.slug}`}><span>{words.previous}</span><b transition:name={`pt-${prev.slug}`} data-pt>{prev.name}</b></a>
+      <a href={`/pillars/${next.slug}`}><span>{words.next}</span><b transition:name={`pt-${next.slug}`} data-pt>{next.name}</b></a>
     </nav>
   </div>
 </Base>

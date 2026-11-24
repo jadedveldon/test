@@ -5,19 +5,22 @@
  * Find your class sits in the library; Your path opens the sky. The yantra drawing is in the project history.
  */
 import Base from '../../layouts/Base.astro';
+import { words } from '../../config';
 import SubCards from '../../components/SubCards.astro';
 import { pillars, categoryCount } from '../../data/site';
 import { categoryAliases, gather } from '../../data/chapters';
-import { CHAPTERS, FINDER, FORMATS, SIDE_FROM, STATION_XY, STATIONS, SUB_ICON } from '../../data/learning';
+import { CHAPTER_KEYS, CHAPTERS, COPY, FINDER, FORMATS, SIDE_FROM, STATION_XY, STATIONS } from '../../data/learning';
+import Rich from '../../components/Rich.astro';
 
 const index = pillars.findIndex((p) => p.slug === 'learning');
 const p = pillars[index];
 const prev = pillars[(index + pillars.length - 1) % pillars.length];
 const next = pillars[(index + 1) % pillars.length];
 const ROMAN = ['I', 'II', 'III', 'IV', 'V'];
-const ROOM: Record<string, string> = { library: 'in the library', leaf: 'on the palm leaf', sky: 'under the stars' };
-const moves = CHAPTERS.map((ch, i) => ({ ...ch, cat: gather(p, ch), id: ch.key, n: ROMAN[i] }));
-const aliases = categoryAliases(p, CHAPTERS);
+const ROOM: Record<string, string> = COPY.rooms;
+const moves = CHAPTERS.map((ch, i) => ({ ...ch, cat: gather(p, ch.key, ch.title, CHAPTER_KEYS), id: ch.key, n: ROMAN[i] }));
+const aliases = categoryAliases(p, CHAPTER_KEYS, Object.fromEntries(moves.map((m) => [m.key, m.id])));
+const fd = COPY.finder, pa = COPY.path;
 const road = STATION_XY.slice(0, 9).map(([x, y]) => `${x} ${y}`).join(' L');
 /* the road under the stars comes just before mentoring */
 const beforeSky = moves.filter((m) => m.room !== 'sky');
@@ -28,12 +31,12 @@ const sky = moves.filter((m) => m.room === 'sky');
     <section class="chapter pd-hero ln-library" data-chapter="lrn_hero">
       <div class="chapter-inner pd-hero-grid">
         <div class="pd-hero-copy">
-          <a class="back-link" href="/#paths">← All pillars</a>
+          <a class="back-link" href="/#paths">{words.allPillars}</a>
           <p class="kicker" data-hero>Pillar {index + 1} of {pillars.length} · {p.count} classes and services</p>
           <h1 class="display-l pd-title" data-hero data-split transition:name="pt-learning" data-pt>{p.name}</h1>
           <p class="lede" data-hero>{p.line}</p>
           <div class="ln-formats" data-hero>
-            <p class="kicker">Ways to learn</p>
+            <p class="kicker">{COPY.formats.kicker}</p>
             <ul>{FORMATS.map((f) => <li><button type="button" class="chip-keep" data-keep={f} data-keep-p={p.name} aria-pressed="false">{f}</button></li>)}</ul>
           </div>
           <ol class="pd-index" data-hero aria-label="The chapters">
@@ -44,7 +47,7 @@ const sky = moves.filter((m) => m.room === 'sky');
         <div class="pd-sig" data-hero>
           <!-- find your class, at the library table -->
           <form class="finder" data-finder>
-            <p class="kicker">Find your class</p>
+            <p class="kicker">{fd.kicker}</p>
             {FINDER.map((f, qi) => (
               <fieldset data-finder-q={qi}>
                 <legend><span>{qi + 1}</span> {f.q}</legend>
@@ -52,11 +55,11 @@ const sky = moves.filter((m) => m.room === 'sky');
               </fieldset>
             ))}
             <div class="fd-result" data-finder-result hidden>
-              <p class="kicker">Classes that fit</p>
+              <p class="kicker">{fd.result}</p>
               <ul data-finder-list></ul>
-              <a class="btn btn-ghost btn-sm" href="/connect" data-topic={p.name}>Ask about these</a>
+              <a class="btn btn-ghost btn-sm" href="/connect" data-topic={p.name}>{fd.ask}</a>
             </div>
-            <p class="small fd-more">Or <a href="#your-path">see the whole road of study</a>, under the stars.</p>
+            <p class="small fd-more"><Rich text={fd.more} /></p>
           </form>
         </div>
       </div>
@@ -70,10 +73,10 @@ const sky = moves.filter((m) => m.room === 'sky');
             <p class="kicker" data-fade><span class="pd-num">{m.n}</span> · {categoryCount(m.cat)} {categoryCount(m.cat) === 1 ? 'class' : 'classes and services'} · {ROOM[m.room!]}</p>
             <h2 class="display-l" data-split data-dust>{m.title}</h2>
             <p class="lede" data-fade>{m.line}</p>
-            {m.note && <p class="pd-note" data-fade>{m.note}</p>}
-            <div class="cta-row" data-fade><a class="btn btn-ghost btn-sm" href="/connect" data-topic={m.title}>Ask about this</a></div>
+            {m.note && <p class="pd-note" data-fade><Rich text={m.note} /></p>}
+            <div class="cta-row" data-fade><a class="btn btn-ghost btn-sm" href="/connect" data-topic={m.title}>{words.ask}</a></div>
           </header>
-          <SubCards category={m.cat} pillar={p.name} icons={SUB_ICON} show={6} />
+          <SubCards category={m.cat} pillar={p.name} show={6} />
         </div>
       </section>
     ))}
@@ -83,9 +86,9 @@ const sky = moves.filter((m) => m.room === 'sky');
       <div class="chapter-inner pd-inner pd-split">
         <header class="pd-head">
           <p class="kicker" data-fade>{ROOM.sky}</p>
-          <h2 class="display-l" data-split>Your path of study</h2>
-          <p class="lede" data-fade>A suggested road through the classes, from the first steps to mentoring, with three side paths. Tap any star to see the class and keep it.</p>
-          <p class="pd-note" data-fade>A road, not a rule: begin wherever you like.</p>
+          <h2 class="display-l" data-split>{pa.title}</h2>
+          <p class="lede" data-fade>{pa.lede}</p>
+          <p class="pd-note" data-fade>{pa.note}</p>
         </header>
         <div class="pathmap" data-studypath data-fade>
           <svg viewBox="-160 -130 320 260" class="pm-svg">
@@ -96,13 +99,13 @@ const sky = moves.filter((m) => m.room === 'sky');
                 <circle r="14" class="pm-hit" /><circle r={i === 8 ? 7 : 4.5} class="pm-star" />
               </g>
             ))}
-            <text x="-130" y="118" class="pm-cap">Begin</text><text x="128" y="-104" class="pm-cap" text-anchor="end">Mentoring</text>
+            <text x="-130" y="118" class="pm-cap">{pa.begin}</text><text x="128" y="-104" class="pm-cap" text-anchor="end">{pa.end}</text>
           </svg>
           <div class="pm-card" aria-live="polite">
             <p class="kicker" data-station-ch>{STATIONS[0].ch}</p>
             <h3 data-station-name>{STATIONS[0].name}</h3>
             <p data-station-line>{STATIONS[0].line}</p>
-            <button type="button" class="chip-keep" data-station-keep data-keep={STATIONS[0].name} data-keep-p={p.name} aria-pressed="false">Keep this class</button>
+            <button type="button" class="chip-keep" data-station-keep data-keep={STATIONS[0].name} data-keep-p={p.name} aria-pressed="false">{pa.keep}</button>
           </div>
         </div>
       </div>
@@ -116,29 +119,29 @@ const sky = moves.filter((m) => m.room === 'sky');
             <p class="kicker" data-fade><span class="pd-num">{m.n}</span> · {categoryCount(m.cat)} {categoryCount(m.cat) === 1 ? 'class' : 'classes and services'} · {ROOM[m.room!]}</p>
             <h2 class="display-l" data-split data-dust>{m.title}</h2>
             <p class="lede" data-fade>{m.line}</p>
-            {m.note && <p class="pd-note" data-fade>{m.note}</p>}
-            <div class="cta-row" data-fade><a class="btn btn-ghost btn-sm" href="/connect" data-topic={m.title}>Ask about this</a></div>
+            {m.note && <p class="pd-note" data-fade><Rich text={m.note} /></p>}
+            <div class="cta-row" data-fade><a class="btn btn-ghost btn-sm" href="/connect" data-topic={m.title}>{words.ask}</a></div>
           </header>
-          <SubCards category={m.cat} pillar={p.name} icons={SUB_ICON} show={6} />
+          <SubCards category={m.cat} pillar={p.name} show={6} />
         </div>
       </section>
     ))}
 
     <section class="chapter pd-close ln-sky" data-chapter="lrn_close">
       <div class="chapter-inner narrow center">
-        <p class="kicker" data-fade>When you are ready</p>
-        <h2 class="display-l" data-split>Every practice begins as a beginner’s</h2>
-        <p class="lede" data-fade>Tell Sarvakali what you would like to learn, and how. One to one, in a group, or a programme made for you.</p>
+        <p class="kicker" data-fade>{COPY.close.kicker}</p>
+        <h2 class="display-l" data-split>{COPY.close.title}</h2>
+        <p class="lede" data-fade>{COPY.close.lede}</p>
         <div class="cta-row center" data-fade>
-          <a class="btn btn-solid" href="/connect" data-topic={p.name}>Ask about a class</a>
-          <a class="btn btn-ghost" href="/path">Find your path</a>
+          <a class="btn btn-solid" href="/connect" data-topic={p.name}>{COPY.close.button}</a>
+          <a class="btn btn-ghost" href="/path">{words.path}</a>
         </div>
       </div>
     </section>
 
     <nav class="pp-nav" aria-label="Other pillars">
-      <a href={`/pillars/${prev.slug}`}><span>Previous pillar</span><b transition:name={`pt-${prev.slug}`} data-pt>{prev.name}</b></a>
-      <a href={`/pillars/${next.slug}`}><span>Next pillar</span><b transition:name={`pt-${next.slug}`} data-pt>{next.name}</b></a>
+      <a href={`/pillars/${prev.slug}`}><span>{words.previous}</span><b transition:name={`pt-${prev.slug}`} data-pt>{prev.name}</b></a>
+      <a href={`/pillars/${next.slug}`}><span>{words.next}</span><b transition:name={`pt-${next.slug}`} data-pt>{next.name}</b></a>
     </nav>
   </div>
 </Base>

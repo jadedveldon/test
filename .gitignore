@@ -4,3 +4,6 @@ dist/
 preview-artifact/
 .DS_Store
 qa-output/
+.netlify/
+.env
+.env.*

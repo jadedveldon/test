@@ -18,16 +18,15 @@ Add `?tier=ultra|full|lighter|still|calm` to any URL to force a quality level, a
 Experiments can be set by URL too: `?hero=dawneye|eye|name|dawn`, `?page=eye|smoke|ink|morph|fade`, `?cursor=flame|incense|off`,
 `?sky=now|amavasya|purnima|night|day|off`, `?festival=auto|kalipuja|diwali|navratri|eclipse|none`, `?forms=on|off`, `?bend=on|off`, `?touch=on|off`, `?dust=on|off`, `?haptics=on|off`, `?saver=on|off`.
 
-## Editing content now
+## Editing content
 
-| What | Where |
-|---|---|
-| Writings | `src/content/writings/*.md` (Markdown; ready for the Keystatic editor later) |
-| Kind words | `src/data/kind-words.json` (samples until real ones are given with permission) |
-| Festival dates | `FESTIVALS` in `src/scripts/festivals.ts` (confirm with Sarvakali's panchang) |
-| Today's cards | `CARDS` in `src/scripts/card.ts` |
-| About, Boundaries and care | `src/pages/about.astro`, `src/pages/care.astro` (bracketed gaps are for Sarvakali) |
-| Real web address, visitor counts | `src/config.ts` |
+Every word and list on the settled pages, the whole catalogue, the writings, festival days, today's cards and
+the site settings are edited in the **content editor** (Keystatic): run `npm run dev` and open
+http://localhost:4321/keystatic. The files it writes are in `src/content/`. On the live site the editor sits
+behind a secret door and its own sign-in; `docs/editor.md` explains using it and the one-time setup.
+
+About, Boundaries and care, Connect, Find your path, Daily practice, the invoice maker and the depth demo are
+still edited in their pages (`src/pages/*.astro`) until their design pass is done.
 
 ## How it fits together
 
@@ -38,7 +37,7 @@ Experiments can be set by URL too: `?hero=dawneye|eye|name|dawn`, `?page=eye|smo
 | Orchestration | `src/scripts/app.ts` | Lenis smooth scroll on GSAP's ticker, chapter tracking, SplitText reveals, quality levels, prototype panel, page-change cleanup. |
 | Quality levels | `src/scripts/tiers.ts` | Ultra / Full / Lighter / Still / Calm. Measures frame rate on first visit, steps up to Ultra on strong desktops and down when a device struggles. Calm is used when "reduce motion" is on; Still when the phone asks to save data. |
 | Intro | `src/components/Loader.astro`, `src/scripts/loader.ts` | Stand-in eyes: open, two blinks, third eye opens as light gathers, fly-in, eye-shaped reveal of the hero. Once per visit, skippable. |
-| Pages | `src/pages/` | Homepage chapters, six pillar pages, each designed on its own, with services drawn from `src/data/categories.json` (all 1,123), Connect page stub. |
+| Pages | `src/pages/` | Homepage chapters, six pillar pages, each designed on its own, with services drawn from the catalogue in `src/content/catalogue/` (all 1,123), Connect page stub. |
 | Page changes | `src/layouts/Base.astro`, `src/scripts/transitions.ts`, `src/components/Veil.astro` | Astro's ClientRouter with `transition:persist` keeps the world canvas alive across pages. Custom covers (eye, smoke, ink) wrap the router's loader. |
 | Living forms | `src/scripts/world/forms.ts` | One cloud of points (60,000 on Full, 12,000 on Lighter, 240,000 on Ultra, built in the background) that reshapes per chapter: halo, name, spiral, 108-flame ring, sigils, sea, silk, constellations, the 51-letter garland, the third eye, dawn. Parts around a finger or cursor. |
 | Smoke cost | `src/scripts/world/World.ts` | The smoke is drawn at half resolution into a texture and scaled up; grain and the moon are added at full resolution. |
@@ -57,6 +56,7 @@ Experiments can be set by URL too: `?hero=dawneye|eye|name|dawn`, `?page=eye|smo
 | Install, offline | `public/manifest.webmanifest`, `public/sw.js`, `src/scripts/pwa.ts` | Add to home screen, shortcuts, visited pages work offline. |
 | Device test | `src/scripts/devicetest.ts` | "Test this device" in the panel: smoothness per quality level and a copyable report. |
 | Link previews | `tools/make-previews.cjs`, `public/og/` | A preview picture per page, taken from the real page. |
+| Content editor | `keystatic.config.ts`, `src/content/`, `src/editor/` | Keystatic at `/keystatic`: every settled page's words, the catalogue, writings, festivals, cards, settings. Behind a secret door (`/door/<word>`) and its own sign-in on the host. |
 | AI depth demo | `src/pages/depth.astro`, `src/scripts/depth.ts`, `public/depth/` | Kalighat paintings (Cleveland Museum of Art, CC0) with depth maps made ahead of time by Depth Anything V2 Small (Apache-2.0). |
 
 ## Designing the pillars
@@ -76,7 +76,7 @@ All six pillars are now settled. Each has its own page, its own script (loaded o
 
 ## Facts on the site
 
-Every factual line is checked against sources before it goes on the site; anything interpretive is marked as a draft for Sarvakali. The current fact-check table (claims, status, sources, changes) is on the prototype's cover page. Festival dates live in `src/scripts/festivals.ts` and must be confirmed with Sarvakali's panchang.
+Every factual line is checked against sources before it goes on the site; anything interpretive is marked as a draft for Sarvakali. The current fact-check table (claims, status, sources, changes) is on the prototype's cover page. Festival dates live in `src/content/festivals.json` (Festival days in the editor) and must be confirmed with Sarvakali's panchang.
 
 ## Quality checks
 

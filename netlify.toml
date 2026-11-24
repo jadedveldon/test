@@ -1,0 +1,9 @@
+# Hosting on Netlify, with the content editor (see docs/editor.md).
+# The secrets (the door word, and the sign-in settings) are set in Netlify's site settings, never here.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  EDITOR_HOST = "netlify"
+  NODE_VERSION = "22"

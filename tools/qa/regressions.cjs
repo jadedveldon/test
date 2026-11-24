@@ -120,5 +120,25 @@ const ARGS = { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', 
     await p.evaluate(() => document.querySelector('a.wordmark').click()); await p.waitForTimeout(5000);
     ok('fire: leaving mid-burn, no errors on the next page', p.errs.length === 0, p.errs.join(' | '));
     await ctx.close(); }
+  // 15 the offline helper once saved every page visited, the editor and its door address (with the secret word in it) included
+  { const { ctx, p } = await fresh({ serviceWorkers: 'allow' });
+    await p.goto(`${B}/`); await p.evaluate(() => navigator.serviceWorker && navigator.serviceWorker.ready); await p.reload(); await p.waitForTimeout(1500);
+    for (const r of ['/keystatic', '/keystatic/singleton/home', '/door/a-secret-word']) { await p.goto(`${B}${r}`).catch(() => {}); await p.waitForTimeout(400); }
+    await p.goto(`${B}/`); await p.waitForTimeout(800);
+    const kept = await p.evaluate(async () => { const out = []; for (const n of await caches.keys()) for (const r of await (await caches.open(n)).keys()) out.push(new URL(r.url).pathname); return out; });
+    const editor = kept.filter((u) => /^\/(keystatic|api\/keystatic|door)(\/|$)/.test(u));
+    ok('offline helper: never saves the editor or its door', kept.length > 0 && editor.length === 0, editor.length ? editor.join(', ') : `${kept.length} pages saved`);
+    await ctx.close(); }
+  // 16 moving the words into the content files once dropped the shared words (back link, previous and next pillar) from Devotion
+  { const { ctx, p } = await fresh();
+    const words = require('../../src/content/settings.json').words;
+    const missing = [];
+    for (const pl of ['devotion', 'magic', 'healing', 'identity', 'divination', 'learning']) {
+      const h = await (await p.request.get(`${B}/pillars/${pl}`)).text();
+      const t = h.replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&');
+      for (const k of ['allPillars', 'ask', 'previous', 'next']) if (!t.includes(words[k])) missing.push(`${pl}: ${k}`);
+    }
+    ok('pillar pages: the shared words from Site settings are on every page', !missing.length, missing.join(', '));
+    await ctx.close(); }
   await b.close();
 })();

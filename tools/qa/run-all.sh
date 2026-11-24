@@ -6,6 +6,7 @@ Q=tools/qa
 # a check that stops with an error must never look like a pass
 run() { node "$@" || echo "FAIL $1 stopped with an error (exit $?)"; }
 echo "== content rules";  run $Q/rules.cjs
+echo "== content files";  node --experimental-strip-types --no-warnings $Q/content.mjs || echo "FAIL content.mjs stopped with an error (exit $?)"
 echo "== pages";          run $Q/audit.cjs
 echo "== interactions";   run $Q/interactions.cjs; W=390 H=844 run $Q/interactions.cjs
 echo "== pillars 4-6";    run $Q/pillars.cjs

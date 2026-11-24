@@ -1,0 +1,79 @@
+{
+  "welcome": "Nothing is assumed here about who you are, how you name yourself or whom you love. You choose what to share and when, and you can pause or stop at any time.",
+  "support": "If you would like queer-affirmative mental-health support as well, the Mariwala Health Initiative keeps a directory of affirmative counsellors across India, and Tele-MANAS is free on 14416, day and night.",
+  "supportHref": "https://mhi.org.in/qacp/",
+  "supportLink": "The directory",
+  "chapters": {
+    "queer": {
+      "title": "Queer-affirming work",
+      "line": "Exploring who you are and whom you love, coming out and belonging, queer relationships, and queer spirituality and devotion, at your own pace.",
+      "care": "",
+      "note": ""
+    },
+    "intimacy": {
+      "title": "Intimacy, trust and consent",
+      "line": "Understanding what makes closeness hard, and rebuilding safety, trust, consent and the words to ask for what you need.",
+      "care": "This chapter speaks about intimacy and the body. Take it at your own pace; you never have to share more than feels right.",
+      "note": ""
+    },
+    "body": {
+      "title": "Coming home to the body",
+      "line": "Rituals and gentle work to return to your body, accept it, and know it as yours.",
+      "care": "Some of this work touches on harm done to the body. It goes at your pace, and it is spiritual work, not a replacement for trauma therapy. If you are carrying something heavy, Tele-MANAS is free on 14416, day and night.",
+      "note": ""
+    },
+    "womb": {
+      "title": "Womb and the sacred feminine",
+      "line": "Womb healing, cycle reflection and the sacred feminine, for anyone who feels called to this work.",
+      "care": "",
+      "note": ""
+    },
+    "lilith": {
+      "title": "Lilith and the wild self",
+      "line": "Reclaiming desire, anger and freedom with Lilith, the one who would not be made smaller.",
+      "care": "",
+      "note": "In medieval Jewish folklore Lilith is Adam’s first wife, who would not submit and left Eden. In the 1970s feminists reclaimed her as a figure of freedom."
+    }
+  },
+  "comfort": {
+    "kicker": "Your comfort, first",
+    "paceLegend": "Your pace",
+    "pace": [
+      "Slowly, one small step at a time",
+      "Steadily, with room to pause",
+      "Ready to go deep"
+    ],
+    "exploreLegend": "What you would like to explore",
+    "explore": [
+      "Who I am and how I name myself",
+      "Coming out, family and belonging",
+      "Relationships and intimacy",
+      "Trust, safety and consent",
+      "Feeling at home in my body",
+      "Womb and cycle work",
+      "Desire, anger and freedom (Lilith)",
+      "Spirituality and devotion"
+    ],
+    "waysLegend": "How you like to work",
+    "ways": [
+      "Talking it through",
+      "Ritual or spellwork",
+      "Journaling",
+      "Meditation and the body",
+      "I am not sure yet"
+    ],
+    "nameLabel": "Name you’d like to be called (optional)",
+    "pronounsLabel": "Pronouns (optional)",
+    "pronounsExample": "e.g. she/her, they/them",
+    "avoidLabel": "Anything you would rather not touch (optional)",
+    "make": "Make my note",
+    "copy": "Copy the note",
+    "hint": "Nothing here is saved or sent. Copy the note if you would like to share it."
+  },
+  "close": {
+    "kicker": "When you are ready",
+    "title": "You are welcome here, as you are",
+    "lede": "Tell Sarvakali as much or as little as you like. You set the pace.",
+    "button": "Request a conversation"
+  }
+}

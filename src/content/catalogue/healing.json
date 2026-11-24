@@ -1,0 +1,461 @@
+{
+  "name": "Healing & Inner Work",
+  "line": "Reiki, aura and chakra work, hypnotherapy, CBT, NLP, EFT, shadow work and guided journaling.",
+  "categories": [
+    {
+      "name": "Energy Healing, Aura & Chakra",
+      "subs": [
+        {
+          "name": "Reiki & Karuna Ki",
+          "chapter": "energy",
+          "icon": "hands",
+          "items": [
+            "Reiki",
+            "Distance Reiki",
+            "Karuna Ki Reiki",
+            "Deep Karuna Ki Reiki",
+            "Reiki + Chakra Balancing",
+            "Reiki + Meditation",
+            "Reiki + Energy Cleansing",
+            "Reiki + Aura Balancing",
+            "Reiki + Emotional Relaxation",
+            "Personalised Reiki Session",
+            "Distance Reiki + Intention Setting",
+            "Reiki + Chakra + Aura Package",
+            "Reiki Master Sessions",
+            "Karuna Ki Reiki Sessions",
+            "Advanced Reiki Sessions"
+          ]
+        },
+        {
+          "name": "Energy Healing & Restoration",
+          "chapter": "energy",
+          "icon": "wave",
+          "items": [
+            "Energy Healing",
+            "Deep Energy Healing",
+            "Distance Energy Healing",
+            "Intensive Energy Healing",
+            "Energetic Grounding",
+            "Energetic Rebalancing",
+            "Energy Clearing",
+            "Emotional Energy Release",
+            "Full-Body Energy Balancing",
+            "Personal Energy Restoration Ritual",
+            "Spiritual Energy Cleansing",
+            "Personal Energy Restoration",
+            "Energy Field Balancing",
+            "Deep Energetic Cleansing",
+            "Spiritual Energy Restoration",
+            "Personalised Energy-Work Sessions"
+          ]
+        },
+        {
+          "name": "Aura Work",
+          "chapter": "energy",
+          "icon": "aura",
+          "items": [
+            "Aura Cleansing",
+            "Full Aura + Chakra Session",
+            "Aura Protection",
+            "Aura Strengthening",
+            "Aura Cleansing + Chakra Balancing",
+            "Aura + Chakra + Energy Healing",
+            "Aura Leakage Repair or Restoration Work",
+            "Aura Sealing",
+            "Aura Restoration"
+          ]
+        },
+        {
+          "name": "Chakra Work",
+          "chapter": "energy",
+          "icon": "lotus",
+          "items": [
+            "Chakra Balancing",
+            "Root Chakra Working",
+            "Sacral Chakra Working",
+            "Solar Plexus Chakra Working",
+            "Heart Chakra Working",
+            "Throat Chakra Working",
+            "Third Eye Chakra Working",
+            "Crown Chakra Working",
+            "Full Seven-Chakra Balancing",
+            "Chakra Meditation"
+          ]
+        },
+        {
+          "name": "Energy Readings & Assessments",
+          "chapter": "energy",
+          "icon": "eye",
+          "items": [
+            "Energy Reading",
+            "Aura Reading",
+            "Chakra Assessment",
+            "Chakra Assessment + Balancing",
+            "Aura Leakage Assessment",
+            "Energy Cord Assessment",
+            "Energy Cord Identification",
+            "Energetic Attachment Assessment",
+            "Energetic Boundary Assessment",
+            "Energetic Depletion Assessment",
+            "Energy Leakage Assessment",
+            "Chakra and Aura Assessment"
+          ]
+        },
+        {
+          "name": "Cords, Attachments & Shielding",
+          "chapter": "energy",
+          "icon": "cut",
+          "items": [
+            "Energetic Protection",
+            "Energetic Cord Release",
+            "Cord Cutting",
+            "Deep Cord Cutting",
+            "Cord Cutting + Energy Healing",
+            "Cord Cutting + Candle Work",
+            "Relationship Cord Cutting",
+            "Emotional Cord Release",
+            "Energetic Attachment Release",
+            "Cord Cutting + Emotional Release",
+            "Energetic Shielding"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Mind & Subconscious Work",
+      "subs": [
+        {
+          "name": "Hypnotherapy",
+          "chapter": "mind",
+          "icon": "spiral",
+          "items": [
+            "Hypnotherapy",
+            "Hypnotherapy + Subconscious Exploration Package",
+            "Guided Hypnosis",
+            "Personalised Hypnotherapy",
+            "Confidence-Oriented Hypnosis",
+            "Self-Concept Hypnosis",
+            "Habit-Related Hypnosis",
+            "Relaxation Hypnosis",
+            "Hypnosis + NLP",
+            "Hypnosis + Journaling"
+          ]
+        },
+        {
+          "name": "Past-Life Regression",
+          "chapter": "mind",
+          "icon": "hourglass",
+          "items": [
+            "Past-Life Regression",
+            "Deep Past-Life Regression",
+            "Past-Life Regression + Integration",
+            "Past-Life Regression + Subconscious Work",
+            "Past-Life Regression Integration"
+          ]
+        },
+        {
+          "name": "CBT-Based Work",
+          "chapter": "mind",
+          "icon": "thought",
+          "items": [
+            "CBT-Based Session",
+            "CBT + NLP",
+            "Deeper Cognitive Behavioural Sessions",
+            "Automatic Thought Identification",
+            "Cognitive Restructuring",
+            "Core Belief Exploration",
+            "Limiting Belief Work",
+            "Behavioural Pattern Analysis",
+            "Behavioural Activation",
+            "Emotional Regulation",
+            "Coping Mechanisms",
+            "Thought Records",
+            "Cognitive Distortions Exploration",
+            "Self-Sabotage Patterns",
+            "Relationship Pattern Exploration",
+            "Attachment-Related Thought Patterns",
+            "Boundaries and Assertiveness",
+            "Personalised CBT Worksheets",
+            "CBT + EFT",
+            "CBT + Journaling",
+            "CBT + Somatic Awareness"
+          ]
+        },
+        {
+          "name": "NLP",
+          "chapter": "mind",
+          "icon": "anchor",
+          "items": [
+            "NLP Session",
+            "NLP Anchoring",
+            "Visualisation & Reframing",
+            "Resource Anchoring",
+            "Belief Reframing",
+            "Submodalities",
+            "Swish Pattern",
+            "Timeline-Based Techniques",
+            "Visualisation",
+            "Language-Pattern Exploration",
+            "Confidence Anchoring",
+            "Self-Concept Development",
+            "Goal-Setting Techniques",
+            "NLP-Based Personal Development"
+          ]
+        },
+        {
+          "name": "EFT Tapping",
+          "chapter": "mind",
+          "icon": "tap",
+          "items": [
+            "EFT-Informed Emotional Processing",
+            "Standalone EFT Tapping Sessions",
+            "Personalised EFT Tapping",
+            "Emotional Release Tapping",
+            "Anxiety-Related Tapping",
+            "Confidence Tapping",
+            "Self-Worth Tapping",
+            "Inner-Child EFT",
+            "Anger and Frustration Tapping",
+            "Shame and Guilt Processing",
+            "Intimacy-Related Emotional Processing",
+            "Relationship-Related Tapping",
+            "Trauma-Informed EFT Exercises",
+            "Personalised Tapping Scripts",
+            "EFT + Journaling",
+            "EFT + Affirmations",
+            "EFT + NLP"
+          ]
+        },
+        {
+          "name": "Subconscious, Beliefs & Self-Concept",
+          "chapter": "mind",
+          "icon": "mirror",
+          "items": [
+            "Guided Subconscious Exploration",
+            "Personalised Affirmation Development",
+            "Limiting Belief Exploration",
+            "Self-Concept Work",
+            "Identity Exploration",
+            "Confidence & Self-Esteem Work",
+            "Emotional Awareness Sessions",
+            "Habit Pattern Exploration",
+            "Personal Development Sessions",
+            "Emotional Regulation Skills",
+            "Fear & Limiting Belief Exploration",
+            "Subconscious Exploration"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Shadow Work & Inner Healing",
+      "subs": [
+        {
+          "name": "Shadow & Inner-Child Work",
+          "chapter": "shadow",
+          "icon": "shadowfig",
+          "items": [
+            "Shadow Work",
+            "Inner-Child Work",
+            "Deep Shadow Integration",
+            "Shadow Work + Inner-Child Package",
+            "Inner-Child Spell"
+          ]
+        },
+        {
+          "name": "Emotional Release, Grief & Peace",
+          "chapter": "shadow",
+          "icon": "drop",
+          "items": [
+            "Emotional Release",
+            "Emotional Awareness & Expression",
+            "Shame & Guilt Release Ritual",
+            "Anger Awareness & Expression",
+            "Peace & Harmony Spell",
+            "Forgiveness & Closure Spell",
+            "Grief Support Ritual",
+            "Emotional Release Spell",
+            "Peace & Harmony Spell Jar",
+            "Emotional Release Spell Jar",
+            "Sacred Anger / Never Again Spell",
+            "Grief Spell",
+            "Forgiveness Spell",
+            "Releasing Anger Spell",
+            "Fear Release Spell",
+            "Shame Release Spell",
+            "Freeze Response Release Spell",
+            "Emotional Weather Spell",
+            "Meet Me Where I Am Spell",
+            "No Test Tonight Ritual",
+            "Do Not Abandon Me, Do Not Let Me Abandon Myself Spell",
+            "Divine Anger Spell"
+          ]
+        },
+        {
+          "name": "Release & Closure Rituals",
+          "chapter": "shadow",
+          "icon": "knot",
+          "items": [
+            "People-Pleasing Pattern Exploration",
+            "Release & Separation Spell",
+            "Habit Release Spell",
+            "Knot Magic for Release",
+            "Habit Release Ritual",
+            "People-Pleasing Release Ritual",
+            "Past Identity Release Ritual",
+            "Cutting Repetitive Patterns",
+            "Old Self Burial Spell",
+            "People-Pleasing Release Spell",
+            "The Door I Close Spell",
+            "Parental Pattern Release Spell"
+          ]
+        },
+        {
+          "name": "Self-Discovery & Reflection",
+          "chapter": "shadow",
+          "icon": "compass",
+          "items": [
+            "Self-Reflection Session",
+            "Self-Discovery Working",
+            "Personal Identity Exploration",
+            "Reconnecting With Yourself Working",
+            "Self-Compassion Working"
+          ]
+        },
+        {
+          "name": "Confidence, Empowerment & Boundaries",
+          "chapter": "shadow",
+          "icon": "shield",
+          "items": [
+            "Boundary Development Working",
+            "Personal Empowerment Sessions",
+            "Confidence Candle Working",
+            "Confidence & Courage Spell",
+            "Personal Empowerment Spell",
+            "Boundary & Self-Protection Spell",
+            "Confidence Sigil",
+            "Personal Empowerment Sigil",
+            "Boundary Sigil",
+            "Confidence Spell Jar",
+            "Courage Spell Jar",
+            "Personal Boundary Ritual",
+            "Confidence Spell",
+            "Courage Spell",
+            "I Can Say Yes Spell",
+            "Boundaries Spell",
+            "I Can Say No Spell"
+          ]
+        },
+        {
+          "name": "Healing & Wellbeing Intentions",
+          "chapter": "shadow",
+          "icon": "heartplus",
+          "items": [
+            "Healing-Intention Candle",
+            "Rest & Recovery Intention Spell",
+            "Healing-Intention Sigil",
+            "Healing-Intention Package",
+            "Self-Healing Intention Spell",
+            "Speedy Recovery Intention Spell",
+            "Mental Wellbeing Intention Spell",
+            "Trauma Symbolic Integration Spell"
+          ]
+        },
+        {
+          "name": "Meditation, Breath & Grounding",
+          "chapter": "shadow",
+          "icon": "breath",
+          "items": [
+            "Guided Meditation",
+            "Deep Meditation",
+            "Guided Visualisation",
+            "Grounding & Embodiment Practices",
+            "Guided Breathwork",
+            "Reflective Art-Based Exercises",
+            "Somatic Awareness Exercises",
+            "Guided Relaxation",
+            "Grounding Spell",
+            "Grounding Spell Jar",
+            "Drum & Rhythm Meditation"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Journaling & Guided Reflection",
+      "subs": [
+        {
+          "name": "Guided Sessions, Prompts & Programmes",
+          "chapter": "journal",
+          "icon": "book",
+          "items": [
+            "Journaling-Based Inner Work",
+            "Guided Journaling Sessions",
+            "Personalised Journaling Programmes",
+            "Personalised Journal Prompts",
+            "Structured Multi-Day Journaling Programmes"
+          ]
+        },
+        {
+          "name": "Shadow, Inner-Child & Emotional Journaling",
+          "chapter": "journal",
+          "icon": "quill",
+          "items": [
+            "Inner-Child Journaling",
+            "Shadow-Work Journaling",
+            "Emotional-Processing Journaling",
+            "Trauma-Reflection Journaling",
+            "Subconscious Pattern Journaling",
+            "Grief Journaling",
+            "Anger-Processing Journaling"
+          ]
+        },
+        {
+          "name": "Self-Discovery & Identity Journaling",
+          "chapter": "journal",
+          "icon": "compass",
+          "items": [
+            "Self-Discovery Journaling",
+            "Identity Exploration Journaling",
+            "Self-Worth Journaling",
+            "Gratitude Journaling",
+            "Daily Reflection Practices"
+          ]
+        },
+        {
+          "name": "Relationship & Intimacy Journaling",
+          "chapter": "journal",
+          "icon": "rings",
+          "items": [
+            "Relationship Journaling",
+            "Intimacy and Relationship Journaling"
+          ]
+        },
+        {
+          "name": "Spiritual, Devotional & Dream Journaling",
+          "chapter": "journal",
+          "icon": "crescent",
+          "items": [
+            "Dream Journaling Guidance",
+            "Spiritual Journaling",
+            "Deity-Devotional Journaling",
+            "Manifestation Journaling",
+            "Dream Journaling",
+            "Ancestral Journaling"
+          ]
+        },
+        {
+          "name": "Journaling Combined with Other Tools",
+          "chapter": "journal",
+          "icon": "sparkle",
+          "items": [
+            "Guided Journaling + EFT",
+            "Guided Journaling + CBT",
+            "Guided Journaling + Shadow Work"
+          ]
+        }
+      ]
+    }
+  ]
+}

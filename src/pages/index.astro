@@ -2,7 +2,11 @@
 import Base from '../layouts/Base.astro';
 import Loader from '../components/Loader.astro';
 import { pillars, totalServices } from '../data/site';
-import kind from '../data/kind-words.json';
+import kind from '../content/kind-words.json';
+import home from '../content/home.json';
+
+const h = home, st = home.connect.steps;
+const words = kind.words.filter((w) => w.text.trim());
 ---
 <Base title="Sarvakali">
   <Loader slot="overlay" />
@@ -38,48 +42,46 @@ import kind from '../data/kind-words.json';
           </g>
         </svg>
       </div>
-      <p class="kicker" data-hero data-hero-kicker>Welcome to</p>
-      <h1 class="display-xl hero-title" data-hero data-split>Sarvakali</h1>
-      <p class="lede" data-hero>Devotion, magic, healing and insight, held in one place.</p>
+      <p class="kicker" data-hero data-hero-kicker>{h.hero.kicker}</p>
+      <h1 class="display-xl hero-title" data-hero data-split>{h.hero.title}</h1>
+      <p class="lede" data-hero>{h.hero.lede}</p>
       <div class="cta-row" data-hero>
-        <a class="btn btn-solid" href="/connect">Request a conversation</a>
-        <a class="btn btn-ghost" href="#paths">Explore the six pillars</a>
+        <a class="btn btn-solid" href="/connect">{h.hero.primary}</a>
+        <a class="btn btn-ghost" href="#paths">{h.hero.secondary}</a>
       </div>
     </div>
-    <p class="scroll-cue" data-hero aria-hidden="true">Scroll</p>
+    <p class="scroll-cue" data-hero aria-hidden="true">{h.hero.scroll}</p>
   </section>
 
   <section class="chapter chapter-connect" data-chapter="connect">
     <div class="chapter-inner narrow">
-      <p class="kicker" data-fade>Connect</p>
-      <h2 class="display-l" data-split data-dust>Speak with Sarvakali</h2>
-      <p class="lede" data-fade>
-        Share your name and a few times that suit you. Sarvakali confirms the meeting or suggests another time, and you meet over Google Meet.
-      </p>
+      <p class="kicker" data-fade>{h.connect.kicker}</p>
+      <h2 class="display-l" data-split data-dust>{h.connect.title}</h2>
+      <p class="lede" data-fade>{h.connect.lede}</p>
       <div class="cta-row" data-fade>
-        <a class="btn btn-solid" href="/connect">Request a conversation</a>
-        <a class="btn btn-ghost" href="/path">Not sure where to begin? Find your path</a>
+        <a class="btn btn-solid" href="/connect">{h.connect.primary}</a>
+        <a class="btn btn-ghost" href="/path">{h.connect.secondary}</a>
       </div>
       <ol class="how" aria-label="How it works">
         <li data-fade>
           <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="7" y="12" width="34" height="24" rx="4" /><path d="M8 14l16 12 16-12" /></svg>
-          <b>Request a time</b>
-          <span>Your name, email and a few times that suit you. Nothing about your situation.</span>
+          <b>{st.request.title}</b>
+          <span>{st.request.text}</span>
         </li>
         <li data-fade>
           <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="10" width="32" height="30" rx="4" /><path d="M8 18h32M16 6v8M32 6v8M17 29l5 5 9-10" /></svg>
-          <b>Sarvakali confirms</b>
-          <span>The time is confirmed, or another one is suggested.</span>
+          <b>{st.confirm.title}</b>
+          <span>{st.confirm.text}</span>
         </li>
         <li data-fade>
           <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="13" width="26" height="22" rx="4" /><path d="M32 21l10-6v18l-10-6z" /></svg>
-          <b>Meet on Google Meet</b>
-          <span>The link arrives by email. Join from your phone or computer.</span>
+          <b>{st.meet.title}</b>
+          <span>{st.meet.text}</span>
         </li>
         <li data-fade>
           <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M14 10h22M14 18h22M14 10c10 0 14 4 14 8s-4 8-14 8l16 14" /></svg>
-          <b>Pay by UPI</b>
-          <span>An invoice with a UPI QR code. No card details, ever.</span>
+          <b>{st.pay.title}</b>
+          <span>{st.pay.text}</span>
         </li>
       </ol>
     </div>
@@ -97,9 +99,9 @@ import kind from '../data/kind-words.json';
           {p.categories.map((c) => <li>{c.name}</li>)}
         </ul>
         <div class="cta-row" data-fade>
-          <a class="btn btn-solid" href={`/pillars/${p.slug}`}>Explore this pillar</a>
-          <a class="btn btn-ghost" href="/connect" data-topic={p.name}>Ask about this</a>
-          {p.slug === 'divination' && <button type="button" class="btn btn-ghost" data-card-open>Draw today's card</button>}
+          <a class="btn btn-solid" href={`/pillars/${p.slug}`}>{h.pillars.explore}</a>
+          <a class="btn btn-ghost" href="/connect" data-topic={p.name}>{h.pillars.ask}</a>
+          {p.slug === 'divination' && <button type="button" class="btn btn-ghost" data-card-open>{h.pillars.card}</button>}
         </div>
       </div>
     </section>
@@ -107,17 +109,17 @@ import kind from '../data/kind-words.json';
 
   <section class="chapter chapter-kind" data-chapter="kind">
     <div class="chapter-inner center">
-      <p class="kicker" data-fade>Kind words</p>
-      <h2 class="display-l" data-split data-dust>From people who have sat with Sarvakali</h2>
+      <p class="kicker" data-fade>{h.kind.kicker}</p>
+      <h2 class="display-l" data-split data-dust>{h.kind.title}</h2>
       <ul class="kind-words">
-        {kind.words.map((w) => (
+        {words.map((w) => (
           <li class="kind-card" data-fade data-drift>
             <blockquote>“{w.text}”</blockquote>
             <span>{w.who} · {w.where}</span>
           </li>
         ))}
       </ul>
-      <p class="proto-flag" data-fade>Sample words for the prototype. Real ones are shared only with each person's permission.</p>
+      {h.kind.note && <p class="proto-flag" data-fade>{h.kind.note}</p>}
     </div>
   </section>
 
@@ -150,22 +152,22 @@ import kind from '../data/kind-words.json';
           <path d="M22 78 Q80 74 132 72 L142 66 Q140 80 128 86 Q80 122 32 92 Q22 86 22 78 Z" fill="url(#diya-clay)" />
           <path d="M26 80 Q80 76 134 74" fill="none" stroke="#e08a52" stroke-width="1.4" opacity="0.7" />
         </svg>
-        <button type="button" class="btn btn-ghost" data-diya-light>Light a diya</button>
+        <button type="button" class="btn btn-ghost" data-diya-light>{h.close.diya}</button>
         <p class="diya-count" data-diya-count aria-live="polite"></p>
       </div>
-      <p class="kicker" data-fade>When you are ready</p>
-      <h2 class="display-l" data-split>Every path begins with a conversation</h2>
+      <p class="kicker" data-fade>{h.close.kicker}</p>
+      <h2 class="display-l" data-split>{h.close.title}</h2>
       <div class="cta-row center" data-fade>
-        <a class="btn btn-solid" href="/connect">Request a conversation</a>
-        <a class="btn btn-ghost" href="/path">Find your path</a>
+        <a class="btn btn-solid" href="/connect">{h.close.primary}</a>
+        <a class="btn btn-ghost" href="/path">{h.close.secondary}</a>
       </div>
       <p class="moon-line" data-fade data-moon-line></p>
-      <p class="practice-link" data-fade><a href="/practice">A little practice for today →</a></p>
+      <p class="practice-link" data-fade><a href="/practice">{h.close.practice}</a></p>
     </div>
   </section>
 
   <footer class="site-foot">
-    <p>Sarvakali · working prototype. Copy, colours and the intro artwork are placeholders.</p>
+    {h.footer.line && <p>{h.footer.line}</p>}
     <p><a href="/path">Find your path</a> · <a href="/practice">Daily practice</a> · <a href="/writings">Writings</a> · <a href="/about">About</a> · <a href="/care">Boundaries and care</a> · <a href="/depth">AI depth demo</a></p>
     <p>{totalServices.toLocaleString('en-IN')} services across {pillars.length} pillars.</p>
   </footer>

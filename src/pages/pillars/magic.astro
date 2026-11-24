@@ -8,23 +8,30 @@
  * (the catalogue's seven categories).
  */
 import Base from '../../layouts/Base.astro';
+import { words } from '../../config';
 import SubCards from '../../components/SubCards.astro';
 import { pillars, categoryCount } from '../../data/site';
-import { CHAPTERS, HECATE, RITUS, SABBATS, SATURN, SIGIL_METHODS, SUB_ICON } from '../../data/magic';
+import { CHAPTER_KEYS, CHAPTERS, COPY, HECATE, RITUS, SABBATS, SATURN, SIGIL_METHODS } from '../../data/magic';
+import { categoryAliases, gather } from '../../data/chapters';
+import Rich from '../../components/Rich.astro';
 
 const index = pillars.findIndex((p) => p.slug === 'magic');
 const p = pillars[index];
 const prev = pillars[(index + pillars.length - 1) % pillars.length];
 const next = pillars[(index + 1) % pillars.length];
-const anchor = (s: string) => s.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
-const moves = CHAPTERS.map((ch) => ({ ...ch, cat: p.categories.find((c) => c.name === ch.category)! }));
+const moves = CHAPTERS.map((ch) => ({ ...ch, cat: gather(p, ch.key, ch.title, CHAPTER_KEYS) }));
+const aliases = categoryAliases(p, CHAPTER_KEYS, Object.fromEntries(CHAPTERS.map((c) => [c.key, c.id])));
+const sg = COPY.sigil, hk = COPY.hecate;
 const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 const pos = (deg: number, r: number) => { const a = (deg * Math.PI) / 180; return [Math.cos(a) * r, Math.sin(a) * r]; };
 
 // Hecate's workings live in the Devotion catalogue (Greek deities); they are gathered here too
 const devotion = pillars.find((x) => x.slug === 'devotion')!;
-const hecateWork = devotion.categories.flatMap((c) => c.subs).flatMap((s) => s.items).filter((it) => /(^|[^A-Za-z])Hecate([^A-Za-z]|$)/.test(it));
+const hkName = hk.name.trim() || 'Hecate';
+const escape = (t: string) => t.replace(/[.*+?^$()|[\]\\{}]/g, '\\$&');
+const named = new RegExp(`(^|[^A-Za-z])${escape(hkName)}([^A-Za-z]|$)`);
+const hecateWork = devotion.categories.flatMap((c) => c.subs).flatMap((s) => s.items).filter((it) => named.test(it));
 
 // the three roads, drawn small beside her name
 const roads = [-90, 30, 150].map((d) => pos(d, 30).map((v) => v.toFixed(1)).join(' '));
@@ -36,20 +43,20 @@ const roads = [-90, 30, 150].map((d) => pos(d, 30).map((v) => v.toFixed(1)).join
     <section class="chapter mg-hero mg-night" data-chapter="magG_hero" data-mag-chapter="hero">
       <div class="chapter-inner mg-hero-grid">
         <div class="mg-hero-copy">
-          <a class="back-link" href="/#paths">← All pillars</a>
+          <a class="back-link" href="/#paths">{words.allPillars}</a>
           <p class="kicker" data-hero>Pillar {index + 1} of {pillars.length} · {p.count} services</p>
           <h1 class="display-l mg-title" data-hero data-split transition:name="pt-magic" data-pt>{p.name}</h1>
           <p class="lede" data-hero>{p.line}</p>
           <a class="mg-presides" href="#hecate" data-hero>
             <svg viewBox="-40 -40 80 80" aria-hidden="true"><circle r="36" class="mp-ring" />{roads.map((r) => <path d={`M0 0 L${r}`} />)}<circle r="5" class="mp-light" /></svg>
-            <span><small>Under the keeping of</small> Hecate</span>
+            <span><small>{COPY.presides.small}</small> {COPY.presides.name}</span>
           </a>
           <ol class="mg-index" data-hero aria-label="The chapters of this book">
-            <li class="is-night"><a href="#hecate"><span class="mg-num" aria-hidden="true">✦</span><span class="mg-ix-title">Hecate, presiding goddess</span></a></li>
-            <li class="is-day"><a href="#make-a-sigil"><span class="mg-num" aria-hidden="true">✦</span><span class="mg-ix-title">Make a sigil</span></a></li>
+            <li class="is-night"><a href="#hecate"><span class="mg-num" aria-hidden="true">✦</span><span class="mg-ix-title">{COPY.index.hecate}</span></a></li>
+            <li class="is-day"><a href="#make-a-sigil"><span class="mg-num" aria-hidden="true">✦</span><span class="mg-ix-title">{COPY.index.sigil}</span></a></li>
             {moves.map((m, i) => (
               <li class={`is-${m.page}`}>
-                <a href={`#${anchor(m.category)}`}>
+                <a href={`#${m.id}`}>
                   <span class="mg-num" aria-hidden="true">{ROMAN[i]}</span>
                   <span class="mg-ix-title">{m.title}</span>
                   <span class="mg-ix-n">{categoryCount(m.cat)} services</span>
@@ -65,9 +72,9 @@ const roads = [-90, 30, 150].map((d) => pos(d, 30).map((v) => v.toFixed(1)).join
     <section class="chapter mg-move mg-night mg-hecate" id="hecate" data-chapter="magG_hecate" data-mag-chapter="hecate">
       <div class="chapter-inner mg-inner">
         <header class="mg-head">
-          <p class="kicker" data-fade>Presiding goddess</p>
-          <h2 class="display-l hk-name" data-split data-dust>Hecate</h2>
-          <p class="hk-greek" lang="grc" data-fade>Ἑκάτη</p>
+          <p class="kicker" data-fade>{hk.kicker}</p>
+          <h2 class="display-l hk-name" data-split data-dust>{hk.name}</h2>
+          <p class="hk-greek" lang="grc" data-fade>{hk.greek}</p>
         </header>
 
         <figure class="hk-words" data-fade>
@@ -76,7 +83,7 @@ const roads = [-90, 30, 150].map((d) => pos(d, 30).map((v) => v.toFixed(1)).join
           </blockquote>
           <figcaption>
             <p>{HECATE.wordsLine}</p>
-            <p class="hk-draft">In Sarvakali’s words · a placeholder until Sarvakali writes these lines</p>
+            <p class="hk-draft">{hk.wordsNote}</p>
           </figcaption>
         </figure>
 
@@ -88,21 +95,21 @@ const roads = [-90, 30, 150].map((d) => pos(d, 30).map((v) => v.toFixed(1)).join
           <div class="hk-supper-copy">
             <h3>{HECATE.supper.title}</h3>
             <p>{HECATE.supper.text}</p>
-            <p class="hk-when">Next dark moon: <span data-supper-when>shown when the page has loaded</span></p>
+            <p class="hk-when">{hk.supper.when} <span data-supper-when>shown when the page has loaded</span></p>
             <div class="cta-row">
-              <button type="button" class="btn btn-ghost btn-sm" data-supper-cal>Add the next three to your calendar</button>
-              <a class="btn btn-ghost btn-sm" href="/connect" data-topic="A working on the dark moon">Ask about a dark-moon working</a>
+              <button type="button" class="btn btn-ghost btn-sm" data-supper-cal>{hk.supper.calendar}</button>
+              <a class="btn btn-ghost btn-sm" href="/connect" data-topic="A working on the dark moon">{hk.supper.ask}</a>
             </div>
-            <p class="hk-note">{HECATE.supper.note} <a href={HECATE.supper.href} target="_blank" rel="noopener">About the Deipnon</a></p>
+            <p class="hk-note"><Rich text={HECATE.supper.note} /> {HECATE.supper.href.startsWith('https://') && <a href={HECATE.supper.href} target="_blank" rel="noopener">{hk.supper.linkText}</a>}</p>
           </div>
         </div>
 
         <div class="hk-work" data-fade>
-          <p class="kicker">Workings in her name · {hecateWork.length}</p>
+          <p class="kicker">{hk.workKicker} · {hecateWork.length}</p>
           <ul class="sub-chips">
-            {hecateWork.map((it) => <li><button type="button" class="chip-keep" data-keep={it} data-keep-p={devotion.name} aria-pressed="false">{it === 'Hecate' ? 'Hecate working' : it}</button></li>)}
+            {hecateWork.map((it) => <li><button type="button" class="chip-keep" data-keep={it} data-keep-p={devotion.name} aria-pressed="false">{it === hkName ? `${hkName} working` : it}</button></li>)}
           </ul>
-          <p class="hk-also">Hecate also stands among <a href="/pillars/devotion#the-greek-gods">the Greek gods, in Devotion</a>, and watches over the doorways in <a href="#protection-cleansing-and-uncrossing">Protection</a>.</p>
+          <p class="hk-also"><Rich text={hk.also} /></p>
         </div>
       </div>
     </section>
@@ -111,9 +118,9 @@ const roads = [-90, 30, 150].map((d) => pos(d, 30).map((v) => v.toFixed(1)).join
     <section class="chapter mg-move mg-day mg-sigil-sec" id="make-a-sigil" data-chapter="magG_sigil" data-mag-chapter="sigil">
       <div class="chapter-inner mg-sigil-grid">
         <header class="mg-head">
-          <p class="kicker" data-fade>Begin with an intention</p>
-          <h2 class="display-l" data-split data-dust>Make a sigil</h2>
-          <p class="lede" data-fade>Write what you wish for in a few words, then choose a way to turn it into a sigil. The same words give a different shape each way, and you can finish any of them by hand.</p>
+          <p class="kicker" data-fade>{sg.kicker}</p>
+          <h2 class="display-l" data-split data-dust>{sg.title}</h2>
+          <p class="lede" data-fade>{sg.lede}</p>
           <div class="sg-methods" role="group" aria-label="Ways of making a sigil" data-fade>
             {SIGIL_METHODS.map((m, i) => <button type="button" data-sigil-method={m.key} aria-pressed={i === 0 ? 'true' : 'false'}>{m.name}</button>)}
           </div>
@@ -121,7 +128,7 @@ const roads = [-90, 30, 150].map((d) => pos(d, 30).map((v) => v.toFixed(1)).join
             <p class="sg-how" data-sigil-how>{SIGIL_METHODS[0].how}</p>
             <p class="sg-origin" data-sigil-origin>{SIGIL_METHODS[0].origin}</p>
           </div>
-          <p class="hk-note" data-fade>Sarvakali may make sigils differently. Nothing you type or draw here is saved or sent.</p>
+          <p class="hk-note" data-fade>{sg.note}</p>
         </header>
         <div class="sigil-maker" data-sigil data-method={SIGIL_METHODS[0].key} data-arr="line" data-fade>
           <svg viewBox="-130 -130 260 260" class="sigil-svg" data-sigil-svg aria-label="Your sigil" role="img">
@@ -141,54 +148,55 @@ const roads = [-90, 30, 150].map((d) => pos(d, 30).map((v) => v.toFixed(1)).join
           </svg>
           <form class="sigil-form" data-sigil-form>
             <label class="sr-only" for="sigil-word">Your intention</label>
-            <input id="sigil-word" maxlength="40" autocomplete="off" placeholder="Your intention, in a few words" />
-            <button type="submit" class="btn btn-ghost btn-sm">Make my sigil</button>
+            <input id="sigil-word" maxlength="40" autocomplete="off" placeholder={sg.placeholder} />
+            <button type="submit" class="btn btn-ghost btn-sm">{sg.make}</button>
           </form>
           <div class="sg-mono-tools" role="group" aria-label="Arrange the monogram">
             <div class="sg-arr">
-              <span>Arrange</span>
-              <button type="button" data-mono-arr="line" aria-pressed="true">On a line</button>
-              <button type="button" data-mono-arr="ring" aria-pressed="false">Around a ring</button>
-              <button type="button" data-mono-arr="stack" aria-pressed="false">Stacked</button>
+              <span>{sg.arrange}</span>
+              <button type="button" data-mono-arr="line" aria-pressed="true">{sg.line}</button>
+              <button type="button" data-mono-arr="ring" aria-pressed="false">{sg.ring}</button>
+              <button type="button" data-mono-arr="stack" aria-pressed="false">{sg.stack}</button>
             </div>
             <div class="sg-arr">
-              <span>Picked letter</span>
-              <button type="button" data-mono-turn disabled>Turn</button>
-              <button type="button" data-mono-flip disabled>Flip</button>
+              <span>{sg.picked}</span>
+              <button type="button" data-mono-turn disabled>{sg.turn}</button>
+              <button type="button" data-mono-flip disabled>{sg.flip}</button>
             </div>
           </div>
           <div class="sg-tools">
-            <button type="button" class="btn btn-ghost btn-sm" data-sigil-pen aria-pressed="false" hidden>Add strokes by hand</button>
-            <button type="button" class="btn btn-ghost btn-sm sg-clear" data-draw-clear>Clear</button>
-            <button type="button" class="btn btn-ghost btn-sm" data-sigil-save hidden>Save it as a picture</button>
+            <button type="button" class="btn btn-ghost btn-sm" data-sigil-pen aria-pressed="false" hidden>{sg.pen}</button>
+            <button type="button" class="btn btn-ghost btn-sm sg-clear" data-draw-clear>{sg.clear}</button>
+            <button type="button" class="btn btn-ghost btn-sm" data-sigil-save hidden>{sg.save}</button>
           </div>
-          <p class="dv-sig-hint" data-sigil-hint aria-live="polite">Your sigil will be drawn here.</p>
+          <p class="dv-sig-hint" data-sigil-hint aria-live="polite">{sg.hint}</p>
         </div>
       </div>
     </section>
 
     <!-- the seven chapters, on day and night pages -->
     {moves.map((m, i) => (
-      <section class={`chapter mg-move mg-${m.page} mg-${m.key}`} id={anchor(m.category)} data-chapter={`magG_${m.key}`} data-mag-chapter={m.key}>
+      <section class={`chapter mg-move mg-${m.page} mg-${m.key}`} id={m.id} data-chapter={`magG_${m.key}`} data-mag-chapter={m.key}>
+        {(aliases[m.key] || []).map((a) => <span id={a} class="anchor-alias" aria-hidden="true"></span>)}
         <div class={`chapter-inner mg-inner${m.key === 'rituals' ? ' mg-with-wheel' : ''}`}>
           <header class="mg-head">
             <p class="kicker mg-kicker" data-fade><span class="mg-num">{ROMAN[i]}</span> · {categoryCount(m.cat)} services</p>
             <h2 class="display-l" data-split data-dust>{m.title}</h2>
             <p class="lede" data-fade>{m.line}</p>
             {m.key === 'protection' && (
-              <p class="mg-keeper" data-fade>Hecate, honoured of old at crossroads and doorways, keeps watch over this chapter, and over the home and threshold work in it.</p>
+              <p class="mg-keeper" data-fade><Rich text={COPY.protectionKeeper} /></p>
             )}
             {m.key === 'baneful' && (
-              <p class="mg-care" data-fade>Baneful work is considered case by case and may be declined. <a href="/care">Read Boundaries and care</a>.</p>
+              <p class="mg-care" data-fade><Rich text={COPY.banefulCare} /></p>
             )}
-            <div class="cta-row" data-fade><a class="btn btn-ghost btn-sm" href="/connect" data-topic={m.category}>Ask about this</a></div>
+            <div class="cta-row" data-fade><a class="btn btn-ghost btn-sm" href="/connect" data-topic={m.title}>{words.ask}</a></div>
           </header>
 
           {m.key === 'rituals' && (
             <div class="wheel" data-wheel data-mode="sabbats" data-fade>
               <div class="wheel-modes" role="group" aria-label="Which wheel">
-                <button type="button" data-wheel-mode="sabbats" aria-pressed="true">Wheel of the year</button>
-                <button type="button" data-wheel-mode="ritus" aria-pressed="false">Indian seasons</button>
+                <button type="button" data-wheel-mode="sabbats" aria-pressed="true">{COPY.wheel.sabbatsLabel}</button>
+                <button type="button" data-wheel-mode="ritus" aria-pressed="false">{COPY.wheel.ritusLabel}</button>
               </div>
               <svg viewBox="-150 -150 300 300" class="wheel-svg" tabindex="0" role="slider" aria-label="Turn the wheel" aria-valuemin="0" aria-valuemax="360" aria-valuenow="0">
                 <g data-wheel-rot>
@@ -216,11 +224,11 @@ const roads = [-90, 30, 150].map((d) => pos(d, 30).map((v) => v.toFixed(1)).join
                 <g class="wh-moon" data-wheel-moon></g>
               </svg>
               <p class="wheel-now" data-wheel-now aria-live="polite"></p>
-              <p class="dv-sig-hint" data-wheel-note>Drag to turn the wheel. The marker at the top is today.</p>
+              <p class="dv-sig-hint" data-wheel-note>{COPY.wheel.hint}</p>
             </div>
           )}
 
-          <SubCards category={m.cat} pillar={p.name} icons={SUB_ICON} />
+          <SubCards category={m.cat} pillar={p.name} />
         </div>
       </section>
     ))}
@@ -228,19 +236,19 @@ const roads = [-90, 30, 150].map((d) => pos(d, 30).map((v) => v.toFixed(1)).join
     <!-- night · the close, back at the crossroads -->
     <section class="chapter mg-close mg-night" data-chapter="magG_close" data-mag-chapter="close">
       <div class="chapter-inner narrow center">
-        <p class="kicker" data-fade>When you are ready</p>
-        <h2 class="display-l" data-split>Every spell begins with an intention</h2>
-        <p class="lede" data-fade>Tell Sarvakali what you would like to change. Together you will find the right working.</p>
+        <p class="kicker" data-fade>{COPY.close.kicker}</p>
+        <h2 class="display-l" data-split>{COPY.close.title}</h2>
+        <p class="lede" data-fade>{COPY.close.lede}</p>
         <div class="cta-row center" data-fade>
-          <a class="btn btn-solid" href="/connect" data-topic={p.name}>Request a conversation</a>
-          <a class="btn btn-ghost" href="/path">Find your path</a>
+          <a class="btn btn-solid" href="/connect" data-topic={p.name}>{COPY.close.button}</a>
+          <a class="btn btn-ghost" href="/path">{words.path}</a>
         </div>
       </div>
     </section>
 
     <nav class="pp-nav" aria-label="Other pillars">
-      <a href={`/pillars/${prev.slug}`}><span>Previous pillar</span><b transition:name={`pt-${prev.slug}`} data-pt>{prev.name}</b></a>
-      <a href={`/pillars/${next.slug}`}><span>Next pillar</span><b transition:name={`pt-${next.slug}`} data-pt>{next.name}</b></a>
+      <a href={`/pillars/${prev.slug}`}><span>{words.previous}</span><b transition:name={`pt-${prev.slug}`} data-pt>{prev.name}</b></a>
+      <a href={`/pillars/${next.slug}`}><span>{words.next}</span><b transition:name={`pt-${next.slug}`} data-pt>{next.name}</b></a>
     </nav>
   </div>
 </Base>

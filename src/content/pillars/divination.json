@@ -1,0 +1,145 @@
+{
+  "care": "Readings are for reflection and guidance. They do not replace medical, legal or financial advice, and the choices stay yours.",
+  "rooms": {
+    "table": "at the table",
+    "mirror": "in the mirror"
+  },
+  "chapters": {
+    "readings": {
+      "title": "Readings",
+      "line": "Psychic and intuitive readings, tarot and oracle cards, and readings on love, work, your path, your ancestors and your gods.",
+      "note": "Tarot began as a card game in fifteenth-century Italy; it was first used for divination in eighteenth-century France."
+    },
+    "seeing": {
+      "title": "Other ways of seeing",
+      "line": "Mirror, water and fire scrying, the pendulum, the open book, and quiet guidance on your spiritual path.",
+      "note": "Scrying is gazing into a still or reflective surface (a mirror, water, fire) until images come. Bibliomancy is opening a book at random and reading where your eye falls."
+    },
+    "dreams": {
+      "title": "Dreams",
+      "line": "Understanding your dreams and their symbols, remembering them, protecting your sleep, and asking a dream to come.",
+      "note": ""
+    },
+    "eye": {
+      "title": "The inner eye",
+      "line": "Meditations and workings to grow your intuition, sharpen your discernment and trust what you sense.",
+      "note": ""
+    },
+    "astral": {
+      "title": "Between worlds",
+      "line": "Preparing for astral work, crossing with care, and the rituals of the seasons when the veil is said to be thin.",
+      "note": ""
+    }
+  },
+  "mirror": {
+    "kicker": "Prompts to ponder",
+    "label": "Press and hold to still the mirror for a prompt to ponder",
+    "idle": "Press and hold the mirror, and be still",
+    "hint": "A symbol rises with a prompt to sit with: something to ponder, never a prediction. There is no right answer.",
+    "prompts": [
+      {
+        "symbol": "a door",
+        "prompt": "What are you ready to walk through?"
+      },
+      {
+        "symbol": "a key",
+        "prompt": "What is already in your hand?"
+      },
+      {
+        "symbol": "a road",
+        "prompt": "Where is the path asking you to go?"
+      },
+      {
+        "symbol": "a flame",
+        "prompt": "What wants your warmth and attention?"
+      },
+      {
+        "symbol": "a bird",
+        "prompt": "What would you do if you felt free?"
+      },
+      {
+        "symbol": "a river",
+        "prompt": "What is moving on its own, if you let it?"
+      },
+      {
+        "symbol": "a moon",
+        "prompt": "What is growing in the dark?"
+      },
+      {
+        "symbol": "a tree",
+        "prompt": "Where are your roots?"
+      },
+      {
+        "symbol": "an eye",
+        "prompt": "What have you already noticed, but not yet trusted?"
+      },
+      {
+        "symbol": "a bridge",
+        "prompt": "What two things are you being asked to join?"
+      },
+      {
+        "symbol": "a seed",
+        "prompt": "What is small now, and will grow?"
+      },
+      {
+        "symbol": "a wave",
+        "prompt": "What would it mean to let this pass?"
+      },
+      {
+        "symbol": "a lantern",
+        "prompt": "What would you see if you held a little more light to it?"
+      },
+      {
+        "symbol": "a thread",
+        "prompt": "What connects the things you keep thinking about?"
+      },
+      {
+        "symbol": "a mountain",
+        "prompt": "What is asking for your patience?"
+      },
+      {
+        "symbol": "a nest",
+        "prompt": "What are you making a home for?"
+      },
+      {
+        "symbol": "a well",
+        "prompt": "What lies deeper than your first answer?"
+      },
+      {
+        "symbol": "a lotus",
+        "prompt": "What could grow from the place that felt like mud?"
+      },
+      {
+        "symbol": "a shell",
+        "prompt": "What do you protect, and what does it protect you from?"
+      },
+      {
+        "symbol": "a feather",
+        "prompt": "What would it be like to hold this lightly?"
+      },
+      {
+        "symbol": "a crossroads",
+        "prompt": "Which way are you leaning, before you decide?"
+      },
+      {
+        "symbol": "a candle",
+        "prompt": "What is quietly burning down, and what is it lighting?"
+      },
+      {
+        "symbol": "a spiral",
+        "prompt": "What keeps returning, and what has changed each time?"
+      },
+      {
+        "symbol": "a star",
+        "prompt": "What still guides you, even from far away?"
+      }
+    ]
+  },
+  "close": {
+    "kicker": "When you are ready",
+    "title": "Bring a question, or just yourself",
+    "lede": "Tell Sarvakali what you are wondering about. A reading begins there.",
+    "button": "Request a reading",
+    "card": "Draw today’s card"
+  }
+}

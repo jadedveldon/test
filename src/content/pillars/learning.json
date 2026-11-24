@@ -1,0 +1,219 @@
+{
+  "formats": {
+    "kicker": "Ways to learn",
+    "services": [
+      "One-to-One Spirituality Classes",
+      "Group Spirituality Classes",
+      "Customised Spiritual Learning Programmes",
+      "Guided Spiritual Discussions"
+    ]
+  },
+  "rooms": {
+    "library": "in the library",
+    "leaf": "on the palm leaf",
+    "sky": "under the stars"
+  },
+  "chapters": {
+    "foundations": {
+      "title": "Foundations",
+      "line": "Where to begin: what spirituality is and is not, understanding your experiences, energy work, the aura and the chakras, and shadow work.",
+      "note": ""
+    },
+    "craft": {
+      "title": "Witchcraft and spellcraft",
+      "line": "An introduction to witchcraft, then the hands-on craft: spells, sigils, candles, jars and protection.",
+      "note": ""
+    },
+    "tantra": {
+      "title": "Tantra, mantra and yantra",
+      "line": "First steps into the three: what they are, how they are practised, and what the mantras mean.",
+      "note": "A mantra is a sacred utterance: a sound, a syllable, a word or a verse. A yantra is a geometric diagram. Tantra comes from a word for a loom, a weave."
+    },
+    "deity": {
+      "title": "Deities and devotion",
+      "line": "Studying the gods and goddesses (Hindu, Greek, the Devi and the Mahavidyas), and building a devotional practice and altar of your own.",
+      "note": ""
+    },
+    "mentoring": {
+      "title": "Mentoring and consultations",
+      "line": "One-to-one guidance for your own practice: your grimoire, your spells and sigils, your altar, and programmes made for you.",
+      "note": ""
+    }
+  },
+  "finder": {
+    "kicker": "Find your class",
+    "questions": [
+      {
+        "question": "What draws you?",
+        "answers": [
+          {
+            "label": "Understanding my spiritual experiences",
+            "services": [
+              "Spirituality Fundamentals Classes",
+              "Understanding Spiritual Experiences"
+            ]
+          },
+          {
+            "label": "The craft: spells, candles, sigils",
+            "services": [
+              "Introduction to Witchcraft",
+              "Introductory Spellcraft"
+            ]
+          },
+          {
+            "label": "Mantra, yantra and tantra",
+            "services": [
+              "Introduction to Mantra",
+              "Introduction to Yantra"
+            ]
+          },
+          {
+            "label": "The gods and devotion",
+            "services": [
+              "Deity Studies",
+              "Devotional Practices and Personal Spirituality"
+            ]
+          },
+          {
+            "label": "My own practice, with guidance",
+            "services": [
+              "Magical Practice Guidance",
+              "Personal Grimoire Development"
+            ]
+          }
+        ]
+      },
+      {
+        "question": "How do you like to learn?",
+        "answers": [
+          {
+            "label": "One to one",
+            "services": [
+              "One-to-One Spirituality Classes"
+            ]
+          },
+          {
+            "label": "In a small group",
+            "services": [
+              "Group Spirituality Classes"
+            ]
+          },
+          {
+            "label": "A programme made for me",
+            "services": [
+              "Customised Spiritual Learning Programmes"
+            ]
+          },
+          {
+            "label": "Talking it through",
+            "services": [
+              "Guided Spiritual Discussions"
+            ]
+          }
+        ]
+      },
+      {
+        "question": "Where are you starting from?",
+        "answers": [
+          {
+            "label": "New to all of this",
+            "services": [
+              "Spirituality Fundamentals Classes"
+            ]
+          },
+          {
+            "label": "Some practice already",
+            "services": [
+              "Personalised Spiritual Mentoring"
+            ]
+          },
+          {
+            "label": "Deep in my own practice",
+            "services": [
+              "Personalised Witchcraft & Spiritual Development Package"
+            ]
+          }
+        ]
+      }
+    ],
+    "result": "Classes that fit",
+    "ask": "Ask about these",
+    "more": "Or [see the whole road of study](#your-path), under the stars."
+  },
+  "path": {
+    "title": "Your path of study",
+    "lede": "A suggested road through the classes, from the first steps to mentoring, with three side paths. Tap any star to see the class and keep it.",
+    "note": "A road, not a rule: begin wherever you like.",
+    "begin": "Begin",
+    "end": "Mentoring",
+    "keep": "Keep this class",
+    "stations": [
+      {
+        "service": "Spirituality Fundamentals Classes",
+        "chapter": "foundations",
+        "line": "Where most people begin."
+      },
+      {
+        "service": "Understanding Spiritual Experiences",
+        "chapter": "foundations",
+        "line": "Making sense of what you have felt and seen."
+      },
+      {
+        "service": "Energy-Work Fundamentals",
+        "chapter": "foundations",
+        "line": "The basics of working with energy."
+      },
+      {
+        "service": "Introduction to Witchcraft",
+        "chapter": "craft",
+        "line": "What the craft is, and how it is practised."
+      },
+      {
+        "service": "Introductory Spellcraft",
+        "chapter": "craft",
+        "line": "Your first spells, made carefully."
+      },
+      {
+        "service": "Introduction to Mantra",
+        "chapter": "tantra",
+        "line": "Sacred sound, and how to use it."
+      },
+      {
+        "service": "Deity Studies",
+        "chapter": "deity",
+        "line": "Getting to know the gods and goddesses."
+      },
+      {
+        "service": "Altar Creation and Spiritual Practice",
+        "chapter": "deity",
+        "line": "A place, and a practice, of your own."
+      },
+      {
+        "service": "Personalised Spiritual Mentoring",
+        "chapter": "mentoring",
+        "line": "Guidance for the road ahead, one to one."
+      },
+      {
+        "service": "Aura and Chakra Education",
+        "chapter": "foundations",
+        "line": "A side path: the aura and the chakras."
+      },
+      {
+        "service": "Introduction to Yantra",
+        "chapter": "tantra",
+        "line": "A side path: sacred geometry."
+      },
+      {
+        "service": "Devi and Mahavidya Studies",
+        "chapter": "deity",
+        "line": "A side path: the Devi and the ten Mahavidyas."
+      }
+    ]
+  },
+  "close": {
+    "kicker": "When you are ready",
+    "title": "Every practice begins as a beginner’s",
+    "lede": "Tell Sarvakali what you would like to learn, and how. One to one, in a group, or a programme made for you.",
+    "button": "Ask about a class"
+  }
+}

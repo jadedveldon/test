@@ -1,0 +1,60 @@
+{
+  "festivals": [
+    {
+      "name": "Kali Puja",
+      "kind": "kalipuja",
+      "start": "2026-11-08",
+      "end": "2026-11-08",
+      "note": "Kartik Amavasya, the great night of Kali."
+    },
+    {
+      "name": "Diwali",
+      "kind": "diwali",
+      "start": "2026-11-08",
+      "end": "2026-11-08",
+      "note": "The festival of lamps."
+    },
+    {
+      "name": "Chaitra Navratri",
+      "kind": "navratri",
+      "start": "2027-04-07",
+      "end": "2027-04-15",
+      "note": "Nine nights of the Devi in spring."
+    },
+    {
+      "name": "Phalaharini Kali Puja",
+      "kind": "kalipuja",
+      "start": "2027-06-04",
+      "end": "2027-06-04",
+      "note": "Jyeshtha Amavasya: Kali as Phalaharini, who takes away the fruits of karma. Date from one source only; to confirm."
+    },
+    {
+      "name": "Solar eclipse",
+      "kind": "eclipse",
+      "start": "2027-08-02",
+      "end": "2027-08-02",
+      "note": "A partial eclipse, seen from parts of India."
+    },
+    {
+      "name": "Sharad Navratri",
+      "kind": "navratri",
+      "start": "2027-09-30",
+      "end": "2027-10-08",
+      "note": "Nine nights of the Devi in autumn."
+    },
+    {
+      "name": "Kali Puja",
+      "kind": "kalipuja",
+      "start": "2027-10-28",
+      "end": "2027-10-28",
+      "note": "Kartik Amavasya. Some calendars give 29 October."
+    },
+    {
+      "name": "Diwali",
+      "kind": "diwali",
+      "start": "2027-10-29",
+      "end": "2027-10-29",
+      "note": "The festival of lamps."
+    }
+  ]
+}

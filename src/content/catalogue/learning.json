@@ -1,0 +1,84 @@
+{
+  "name": "Learning",
+  "line": "Classes and mentoring in spirituality, witchcraft, tantra, mantra, yantra and the deities.",
+  "categories": [
+    {
+      "name": "Classes & Mentoring",
+      "subs": [
+        {
+          "name": "Spiritual Foundations",
+          "chapter": "foundations",
+          "icon": "sparkle",
+          "items": [
+            "Spirituality Fundamentals Classes",
+            "Understanding Spiritual Experiences",
+            "Energy-Work Fundamentals",
+            "Aura and Chakra Education",
+            "Shadow-Work Education"
+          ]
+        },
+        {
+          "name": "Witchcraft & Spellcraft Classes",
+          "chapter": "craft",
+          "icon": "wand",
+          "items": [
+            "Introduction to Witchcraft",
+            "Introductory Spellcraft",
+            "Sigil Creation Classes",
+            "Candle Magic Classes",
+            "Spell Jar Classes",
+            "Protection Magic Classes"
+          ]
+        },
+        {
+          "name": "Tantra, Mantra & Yantra",
+          "chapter": "tantra",
+          "icon": "lotus",
+          "items": [
+            "Introduction to Tantra",
+            "Introduction to Yantra",
+            "Introduction to Mantra",
+            "Mantra Meanings and Interpretations"
+          ]
+        },
+        {
+          "name": "Deity & Devotional Studies",
+          "chapter": "deity",
+          "icon": "candle",
+          "items": [
+            "Deity Studies",
+            "Hindu Spiritual Traditions",
+            "Devi and Mahavidya Studies",
+            "Greek Deity Studies",
+            "Devotional Practices and Personal Spirituality",
+            "Altar Creation and Spiritual Practice",
+            "Deity Offerings and Devotional Symbolism"
+          ]
+        },
+        {
+          "name": "Mentoring & Consultations",
+          "chapter": "mentoring",
+          "icon": "compass",
+          "items": [
+            "Spellcraft Consultation",
+            "Custom Magical Correspondence Research",
+            "Personal Grimoire Development",
+            "Magical Practice Guidance",
+            "Spell Jar Design Consultation",
+            "Sigil Design Consultation",
+            "Altar Design & Devotional Guidance",
+            "Custom Spellcraft Consultation",
+            "Personalised Grimoire Entry Creation",
+            "Bespoke Ritual & Correspondence Research",
+            "Personalised Witchcraft & Spiritual Development Package",
+            "Guided Spiritual Discussions",
+            "Personalised Spiritual Mentoring",
+            "One-to-One Spirituality Classes",
+            "Group Spirituality Classes",
+            "Customised Spiritual Learning Programmes"
+          ]
+        }
+      ]
+    }
+  ]
+}

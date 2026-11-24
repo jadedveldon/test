@@ -1,9 +1,15 @@
 /**
- * Site settings that change between the prototype and the real launch.
+ * Site settings that change between the prototype and the real launch. They are kept in
+ * src/content/settings.json, where the content editor writes ("Site settings").
  */
+import settings from './content/settings.json';
+
+type Provider = 'none' | 'cloudflare' | 'umami' | 'plausible';
+const PROVIDERS: Provider[] = ['none', 'cloudflare', 'umami', 'plausible'];
+
 export const site = {
-  /** the real address, once there is one (used for link previews) */
-  url: 'https://sarvakali.example',
+  /** the real address, once there is one (used for link previews); a mistyped one falls back to the placeholder */
+  url: /^https:\/\/[^\s/]+/.test(settings.url.trim()) ? settings.url.trim() : 'https://sarvakali.example',
 };
 
 /**
@@ -13,7 +19,12 @@ export const site = {
  *   umami:      the website ID, plus the script URL of your Umami instance
  *   plausible:  the domain registered with Plausible
  */
-export const analytics: { provider: 'none' | 'cloudflare' | 'umami' | 'plausible'; id: string; src?: string } = {
-  provider: 'none',
-  id: '',
+const a = settings.analytics;
+export const analytics: { provider: Provider; id: string; src?: string } = {
+  provider: PROVIDERS.includes(a.provider as Provider) ? (a.provider as Provider) : 'none',
+  id: a.id.trim(),
+  src: /^https:\/\//.test(a.src.trim()) ? a.src.trim() : undefined,
 };
+
+/** words shared by every pillar page */
+export const words = settings.words;

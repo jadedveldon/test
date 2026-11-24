@@ -3,6 +3,51 @@
 Every change to the site, newest first: what changed, why, and how it was checked.
 The rules for checking are in `CLAUDE.md`; the checks themselves are in `tools/qa/`.
 
+## 2026-11-24 · The content editor
+
+- **Added: the content editor** (Keystatic, at `/keystatic`). Every word and list on the homepage and the six
+  pillar pages, the whole catalogue (1,123 services), the writings, festival days, today's cards, kind words and
+  the site settings now live in plain files in `src/content/`, and the editor offers a field for each
+  (`keystatic.config.ts`). Each save is a commit; the host rebuilds the site from it. What the design depends on
+  stays in code: chapter keys and order, colours, drawings, timings, the wheel's dates, map positions. Where the
+  design needs a fixed number (ten Mahavidyas, seven chakras, twelve stars) the editor keeps it.
+- **Changed: the catalogue says where each subcategory sits.** Each subcategory now names its chapter on the
+  pillar page and its icon, chosen from lists in the editor, instead of pages finding them by name. A renamed
+  subcategory stays where it was; a new one appears in the chapter chosen for it; a new service in a chapter drawn
+  by hand (the Mahavidyas, the Devi, many lands) shows under "More in this chapter". Category addresses used by
+  search and Find your path keep working whatever the names become.
+- **Added: the door.** On the live site the editor answers "Not found" until the secret door address
+  (`/door/<word>`, the word set only in the host's settings) has been opened once on that device; behind it the
+  editor asks for its own sign-in (Keystatic Cloud or GitHub). With no door word set, the live editor stays shut.
+  Editor pages are never indexed or cached. `docs/editor.md` explains using it and the one-time setup, which needs
+  the owner's own accounts.
+- **Added: hosting with the editor.** `netlify.toml` and the Netlify adapter, used only when `EDITOR_HOST=netlify`;
+  a plain `npm run build` and the preview bundle are still static files with no editor in them. TypeScript set to
+  5.9 (from 7, which nothing ran): Netlify's packaging tools load TypeScript 5's interface and stopped with an error
+  under 7. `npm audit` reports moderate advisories inside Netlify's build-time packaging tools only (nothing that
+  reaches visitors); Netlify's fix is a downgrade of the adapter, so they are left as they are.
+- **Changed, small:** on Witchcraft & Magic and Healing, "Ask about this" fills the Connect form with the chapter's
+  title (as Pillars 4 to 6 already did), not the catalogue category's name. The 4-7-8 breath's internal key is now
+  `relax`. The unused generic pillar page (`pillars/[slug].astro`, which built no pages) is removed.
+- **Fixed: the offline helper saved every page visited, the editor and the door address (with its secret word)
+  included.** It now leaves them alone (`sw.js`, cache renamed so old copies are cleared). Check: `regressions.cjs`
+  15, which failed before the fix.
+- **Fixed before it shipped: moving the words dropped the shared words (back link, ask, previous and next pillar)
+  from Devotion,** where a local name hid the shared one. Found by comparing every page's text with the last
+  build; check: `regressions.cjs` 16, shown to fail with the mistake put back.
+- **Added: checks.** `content.mjs`: every content file opens as the editor reads it (shown to fail on a missing
+  Mahavidya, an unknown festival kind and an empty title). `rules.cjs` 10: every service a signature moment names
+  by hand is in its pillar's catalogue (shown to fail after renaming a service in the editor). `rules.cjs` 11:
+  every catalogue service can be kept on its pillar page and every category address exists (shown to fail with a
+  service removed from a page). Rule 9 (drafts marked) now covers all six pillars. Both suites run `content.mjs`.
+- **Verified:** the visible text and every address of the homepage and the six pillar pages compared with the
+  previous build: identical apart from the Ask topic above; the search index identical. A proof edit through the
+  editor (the homepage's opening line; a service renamed inside the Learning catalogue) saved as a one-line change
+  and reached the built pages. The door tested: "Not found" without it, with a wrong word, and for the editor's
+  API; the right word opens it; the cookie holds a fingerprint, never the word. The hosted build (Netlify) builds,
+  with the door inside the server function. Script downloads grew by about 4 KB in all (each pillar's words now
+  travel with its own code).
+
 ## 2026-11-24 · Pillars 4, 5 and 6 settled; the quality gate made permanent
 
 - **Added: the rules.** `CLAUDE.md` sets the quality gate for every change (reproduce a bug in a check first;

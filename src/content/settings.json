@@ -1,0 +1,16 @@
+{
+  "url": "https://sarvakali.example",
+  "analytics": {
+    "provider": "none",
+    "id": "",
+    "src": ""
+  },
+  "words": {
+    "allPillars": "← All pillars",
+    "ask": "Ask about this",
+    "previous": "Previous pillar",
+    "next": "Next pillar",
+    "care": "Boundaries and care",
+    "path": "Find your path"
+  }
+}

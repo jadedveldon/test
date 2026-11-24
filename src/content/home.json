@@ -1,0 +1,56 @@
+{
+  "hero": {
+    "kicker": "Welcome to",
+    "title": "Sarvakali",
+    "lede": "Devotion, magic, healing and insight, held in one place.",
+    "primary": "Request a conversation",
+    "secondary": "Explore the six pillars",
+    "scroll": "Scroll"
+  },
+  "connect": {
+    "kicker": "Connect",
+    "title": "Speak with Sarvakali",
+    "lede": "Share your name and a few times that suit you. Sarvakali confirms the meeting or suggests another time, and you meet over Google Meet.",
+    "primary": "Request a conversation",
+    "secondary": "Not sure where to begin? Find your path",
+    "steps": {
+      "request": {
+        "title": "Request a time",
+        "text": "Your name, email and a few times that suit you. Nothing about your situation."
+      },
+      "confirm": {
+        "title": "Sarvakali confirms",
+        "text": "The time is confirmed, or another one is suggested."
+      },
+      "meet": {
+        "title": "Meet on Google Meet",
+        "text": "The link arrives by email. Join from your phone or computer."
+      },
+      "pay": {
+        "title": "Pay by UPI",
+        "text": "An invoice with a UPI QR code. No card details, ever."
+      }
+    }
+  },
+  "pillars": {
+    "explore": "Explore this pillar",
+    "ask": "Ask about this",
+    "card": "Draw today's card"
+  },
+  "kind": {
+    "kicker": "Kind words",
+    "title": "From people who have sat with Sarvakali",
+    "note": "Sample words for the prototype. Real ones are shared only with each person's permission."
+  },
+  "close": {
+    "diya": "Light a diya",
+    "kicker": "When you are ready",
+    "title": "Every path begins with a conversation",
+    "primary": "Request a conversation",
+    "secondary": "Find your path",
+    "practice": "A little practice for today →"
+  },
+  "footer": {
+    "line": "Sarvakali · working prototype. Copy, colours and the intro artwork are placeholders."
+  }
+}

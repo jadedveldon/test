@@ -1,0 +1,464 @@
+{
+  "yantraHint": "Drag to turn the yantra into alignment",
+  "chapters": {
+    "vidyas": {
+      "menu": "Kali and the Mahavidyas",
+      "title": "Kali and the ten Mahavidyas",
+      "lede": "The ten great wisdom goddesses, ten faces of the one Mother, gathered around the bindu."
+    },
+    "devi": {
+      "menu": "The Devi and the Hindu deities",
+      "title": "The Devi and the Hindu deities",
+      "lede": "Durga and Lakshmi, Shiva and Bhairava, Ganesha who opens the way: the wider family of the Devi."
+    },
+    "greek": {
+      "menu": "The Greek gods",
+      "title": "The Greek gods",
+      "lede": "Hecate at the crossroads, Aphrodite from the foam, Persephone between two worlds: the Olympians, the gods of the underworld, the first powers and the Titans."
+    },
+    "lands": {
+      "menu": "Many traditions",
+      "title": "Goddesses and gods of many lands",
+      "lede": "Lilith and Isis, Brigid and Freyja, Mazu and Benzaiten: other skies, the same night."
+    },
+    "altar": {
+      "menu": "Altars and devotion",
+      "title": "Altars and devotion",
+      "lede": "Meeting a deity for the first time, keeping a living altar, and working alongside the gods you love."
+    },
+    "spirits": {
+      "menu": "Spirits and ancestors",
+      "title": "Spirits, Mediumship & Ancestors",
+      "lede": "Speaking with those who have gone before: loved ones, animals, ancestors. And, where it is needed, releasing what should not stay."
+    },
+    "shaman": {
+      "menu": "Shamanic work",
+      "title": "Shamanic Work",
+      "lede": "The drum, the journey and the world tree: walking between the lower, middle and upper worlds with power animals and guides."
+    }
+  },
+  "mahavidyas": [
+    {
+      "name": "Kali",
+      "deva": "काली",
+      "line": "Time, and freedom from it",
+      "service": "Kali Working"
+    },
+    {
+      "name": "Tara",
+      "deva": "तारा",
+      "line": "The star who carries you across",
+      "service": "Tara Working"
+    },
+    {
+      "name": "Tripura Sundari",
+      "deva": "त्रिपुरसुन्दरी",
+      "line": "Beauty of the three worlds",
+      "service": "Lalita Tripura Sundari Working"
+    },
+    {
+      "name": "Bhuvaneshvari",
+      "deva": "भुवनेश्वरी",
+      "line": "Queen of space and every world",
+      "service": "Bhuvaneshwari Working"
+    },
+    {
+      "name": "Bhairavi",
+      "deva": "भैरवी",
+      "line": "The fierce heat that transforms",
+      "service": "Bhairavi Working"
+    },
+    {
+      "name": "Chhinnamasta",
+      "deva": "छिन्नमस्ता",
+      "line": "The self offered, beyond the ego",
+      "service": "Chinnamasta Working"
+    },
+    {
+      "name": "Dhumavati",
+      "deva": "धूमावती",
+      "line": "Wisdom in smoke and in loss",
+      "service": "Dhumavati Working"
+    },
+    {
+      "name": "Bagalamukhi",
+      "deva": "बगलामुखी",
+      "line": "She who stills and silences",
+      "service": "Baglamukhi Working"
+    },
+    {
+      "name": "Matangi",
+      "deva": "मातङ्गी",
+      "line": "Speech, music and outsider wisdom",
+      "service": "Matangi Working"
+    },
+    {
+      "name": "Kamala",
+      "deva": "कमला",
+      "line": "The lotus: abundance and grace",
+      "service": "Kamala Working"
+    }
+  ],
+  "allTen": {
+    "service": "Dashamahavidya Working",
+    "label": "Dashamahavidya Working: all ten together"
+  },
+  "hindu": [
+    {
+      "name": "Durga",
+      "deva": "दुर्गा",
+      "line": "The invincible mother",
+      "service": "Durga Working"
+    },
+    {
+      "name": "Pratyangira",
+      "deva": "प्रत्यङ्गिरा",
+      "line": "The lion-faced shield",
+      "service": "Pratyangira Working"
+    },
+    {
+      "name": "Kamakhya",
+      "deva": "कामाख्या",
+      "line": "Desire, power and the source",
+      "service": "Kamakhya Devotional Working"
+    },
+    {
+      "name": "Lakshmi",
+      "deva": "लक्ष्मी",
+      "line": "Abundance and grace",
+      "service": "Lakshmi Working"
+    },
+    {
+      "name": "Saraswati",
+      "deva": "सरस्वती",
+      "line": "Knowledge, music and speech",
+      "service": "Saraswati Working"
+    },
+    {
+      "name": "Shiva",
+      "deva": "शिव",
+      "line": "Stillness, the auspicious one",
+      "service": "Shiva Working"
+    },
+    {
+      "name": "Bhairava",
+      "deva": "भैरव",
+      "line": "The fierce guardian of time",
+      "service": "Bhairava Working"
+    },
+    {
+      "name": "Narasimha",
+      "deva": "नरसिंह",
+      "line": "The man-lion who protects",
+      "service": "Narasimha Working"
+    },
+    {
+      "name": "Krishna",
+      "deva": "कृष्ण",
+      "line": "Love, play and devotion",
+      "service": "Krishna Working"
+    },
+    {
+      "name": "Hanuman",
+      "deva": "हनुमान्",
+      "line": "Strength in service",
+      "service": "Hanuman Working"
+    },
+    {
+      "name": "Ganesha",
+      "deva": "गणेश",
+      "line": "The remover of obstacles",
+      "service": "Ganesha Working"
+    },
+    {
+      "name": "Kartikeya",
+      "deva": "कार्तिकेय",
+      "line": "Courage and the spear; Murugan",
+      "service": "Kartikeya / Murugan Working"
+    }
+  ],
+  "deviAlso": {
+    "kicker": "Also for the Devi",
+    "services": [
+      "Devi Protection Working",
+      "Devi Invocation & Prayer",
+      "Goddess-Centred Spiritual Guidance"
+    ]
+  },
+  "tantra": {
+    "kicker": "Mantra, yantra and tantric devotion",
+    "services": [
+      "Mantra-Based Devotional Working",
+      "Yantra-Based Devotional Working",
+      "Tantric Symbolic Ritual Work",
+      "Personalised Devi Sadhana Guidance"
+    ]
+  },
+  "greek": {
+    "rootsCaption": "The four roots of Empedocles: fire, air, water and earth.",
+    "allLabel": "All",
+    "families": {
+      "olympians": "The Olympians",
+      "chthonic": "The underworld",
+      "first": "Primordials and Titans",
+      "others": "Others"
+    },
+    "gods": [
+      {
+        "name": "Zeus",
+        "greek": "Ζεύς",
+        "family": "olympians",
+        "line": "Sky, thunder and order",
+        "presiding": false
+      },
+      {
+        "name": "Hera",
+        "greek": "Ἥρα",
+        "family": "olympians",
+        "line": "Queen of the gods; marriage",
+        "presiding": false
+      },
+      {
+        "name": "Poseidon",
+        "greek": "Ποσειδῶν",
+        "family": "olympians",
+        "line": "The sea and earthquakes",
+        "presiding": false
+      },
+      {
+        "name": "Demeter",
+        "greek": "Δημήτηρ",
+        "family": "olympians",
+        "line": "The harvest, and a mother’s grief",
+        "presiding": false
+      },
+      {
+        "name": "Athena",
+        "greek": "Ἀθηνᾶ",
+        "family": "olympians",
+        "line": "Wisdom, strategy and craft",
+        "presiding": false
+      },
+      {
+        "name": "Apollo",
+        "greek": "Ἀπόλλων",
+        "family": "olympians",
+        "line": "Music, prophecy and healing",
+        "presiding": false
+      },
+      {
+        "name": "Artemis",
+        "greek": "Ἄρτεμις",
+        "family": "olympians",
+        "line": "The hunt and the wild",
+        "presiding": false
+      },
+      {
+        "name": "Ares",
+        "greek": "Ἄρης",
+        "family": "olympians",
+        "line": "War and courage",
+        "presiding": false
+      },
+      {
+        "name": "Aphrodite",
+        "greek": "Ἀφροδίτη",
+        "family": "olympians",
+        "line": "Love and beauty, born of sea foam",
+        "presiding": false
+      },
+      {
+        "name": "Hephaestus",
+        "greek": "Ἥφαιστος",
+        "family": "olympians",
+        "line": "The forge and every craft",
+        "presiding": false
+      },
+      {
+        "name": "Hermes",
+        "greek": "Ἑρμῆς",
+        "family": "olympians",
+        "line": "Messenger; roads, travellers and luck",
+        "presiding": false
+      },
+      {
+        "name": "Hestia",
+        "greek": "Ἑστία",
+        "family": "olympians",
+        "line": "The hearth and the home",
+        "presiding": false
+      },
+      {
+        "name": "Dionysus",
+        "greek": "Διόνυσος",
+        "family": "olympians",
+        "line": "Wine, ecstasy and release",
+        "presiding": false
+      },
+      {
+        "name": "Hades",
+        "greek": "ᾍδης",
+        "family": "chthonic",
+        "line": "King of the underworld and the dead",
+        "presiding": false
+      },
+      {
+        "name": "Persephone",
+        "greek": "Περσεφόνη",
+        "family": "chthonic",
+        "line": "Spring, and queen of the underworld",
+        "presiding": false
+      },
+      {
+        "name": "Hecate",
+        "greek": "Ἑκάτη",
+        "family": "chthonic",
+        "line": "Crossroads, torches and magic",
+        "presiding": true
+      },
+      {
+        "name": "Gaia",
+        "greek": "Γαῖα",
+        "family": "first",
+        "line": "The Earth herself",
+        "presiding": false
+      },
+      {
+        "name": "Nyx",
+        "greek": "Νύξ",
+        "family": "first",
+        "line": "Primordial night",
+        "presiding": false
+      },
+      {
+        "name": "Eros",
+        "greek": "Ἔρως",
+        "family": "first",
+        "line": "Desire; in Hesiod, one of the first powers",
+        "presiding": false
+      },
+      {
+        "name": "Kronos",
+        "greek": "Κρόνος",
+        "family": "first",
+        "line": "Titan of the harvest; later confused with Chronos, time",
+        "presiding": false
+      },
+      {
+        "name": "Rhea",
+        "greek": "Ῥέα",
+        "family": "first",
+        "line": "Titan; mother of the Olympians",
+        "presiding": false
+      },
+      {
+        "name": "Selene",
+        "greek": "Σελήνη",
+        "family": "first",
+        "line": "The moon, daughter of Titans",
+        "presiding": false
+      },
+      {
+        "name": "Nemesis",
+        "greek": "Νέμεσις",
+        "family": "others",
+        "line": "Retribution for arrogance",
+        "presiding": false
+      },
+      {
+        "name": "Nike",
+        "greek": "Νίκη",
+        "family": "others",
+        "line": "Victory",
+        "presiding": false
+      },
+      {
+        "name": "Psyche",
+        "greek": "Ψυχή",
+        "family": "others",
+        "line": "The soul; beloved of Eros",
+        "presiding": false
+      }
+    ],
+    "presidingTag": "Presiding goddess of Sarvakali’s craft",
+    "presidingLink": "Her page in Witchcraft & Magic →",
+    "pantheonKicker": "The whole pantheon, and gods together"
+  },
+  "lands": [
+    {
+      "land": "Mesopotamian and Jewish lore",
+      "names": [
+        "Lilith Devotional Working"
+      ]
+    },
+    {
+      "land": "Egyptian",
+      "names": [
+        "Isis Devotional Working"
+      ]
+    },
+    {
+      "land": "Celtic",
+      "names": [
+        "Brigid Devotional Working"
+      ]
+    },
+    {
+      "land": "Norse",
+      "names": [
+        "Odin Devotional Working",
+        "Loki Devotional Working",
+        "Freyja Devotional Working",
+        "Frigg Devotional Working",
+        "Sunna Devotional Working"
+      ]
+    },
+    {
+      "land": "Canaanite",
+      "names": [
+        "Asherah Devotional Working"
+      ]
+    },
+    {
+      "land": "Roman",
+      "names": [
+        "Flora Devotional Working"
+      ]
+    },
+    {
+      "land": "Japanese",
+      "names": [
+        "Benzaiten Devotional Working"
+      ]
+    },
+    {
+      "land": "Chinese",
+      "names": [
+        "Mazu Devotional Working",
+        "Nüwa Devotional Working"
+      ]
+    },
+    {
+      "land": "Tibetan Buddhist",
+      "names": [
+        "Kurukulla Devotional Study",
+        "Vajrayogini-Inspired Devotional Study",
+        "Vajravarahi-Inspired Devotional Study"
+      ]
+    },
+    {
+      "land": "Across traditions",
+      "names": [
+        "Lilith & Aphrodite Combined Working",
+        "Custom Cross-Pantheon Devotional Ritual"
+      ]
+    }
+  ],
+  "more": "More in this chapter",
+  "close": {
+    "kicker": "When you are ready",
+    "title": "Come and sit with the Mother",
+    "lede": "Not sure which deity or path is calling? Begin with a conversation.",
+    "button": "Request a conversation"
+  }
+}

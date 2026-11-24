@@ -1,18 +1,19 @@
 ---
 import type { Category } from '../data/site';
-import { ICONS } from '../data/magic';
+import { ICONS } from '../data/icons';
 /**
  * A category's subcategories as cards: a line icon, the name, the first few
- * services on show, and the rest a tap away. Every service can be kept.
+ * services on show, and the rest a tap away. Every service can be kept. Each subcategory's icon is named in
+ * the catalogue.
  */
-interface Props { category: Category; pillar: string; icons: Record<string, string>; show?: number }
-const { category, pillar, icons, show = 4 } = Astro.props;
+interface Props { category: Category; pillar: string; show?: number }
+const { category, pillar, show = 4 } = Astro.props;
 ---
 <ul class="sub-cards">
   {category.subs.map((s) => (
     <li class="sub-card" data-fade>
       <header>
-        <svg class="sub-icon" viewBox="0 0 24 24" aria-hidden="true"><path d={ICONS[icons[s.name]] ?? ICONS.circle} /></svg>
+        <svg class="sub-icon" viewBox="0 0 24 24" aria-hidden="true"><path d={ICONS[s.icon ?? ''] ?? ICONS.circle} /></svg>
         <h3>{s.name}</h3>
         <span class="sub-n">{s.items.length}</span>
       </header>

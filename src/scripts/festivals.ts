@@ -1,28 +1,28 @@
 import * as SunCalcNs from 'suncalc';
+import days from '../content/festivals.json';
 
 const SunCalc = ((SunCalcNs as unknown as { default?: typeof SunCalcNs }).default ?? SunCalcNs) as unknown as {
   getMoonIllumination(d: Date): { phase: number };
 };
 
 /**
- * Sacred days. The festival dates below come from public panchang listings and
- * MUST be confirmed with Sarvakali's own panchang (regional calendars can differ
- * by a day). New and full moons are worked out from the moon itself.
+ * Sacred days. The festival dates come from public panchang listings and MUST be
+ * confirmed with Sarvakali's own panchang (regional calendars can differ by a
+ * day); they are kept in src/content/festivals.json, where the content editor
+ * writes. New and full moons are worked out from the moon itself.
  */
 export type FestKind = 'kalipuja' | 'diwali' | 'navratri' | 'eclipse';
 export type FestMode = 'auto' | FestKind | 'none';
 export type Festival = { id: string; name: string; kind: FestKind; start: string; end: string; note: string };
 
-export const FESTIVALS: Festival[] = [
-  { id: 'kalipuja-2026', name: 'Kali Puja', kind: 'kalipuja', start: '2026-11-08', end: '2026-11-08', note: 'Kartik Amavasya, the great night of Kali.' },
-  { id: 'diwali-2026', name: 'Diwali', kind: 'diwali', start: '2026-11-08', end: '2026-11-08', note: 'The festival of lamps.' },
-  { id: 'navratri-chaitra-2027', name: 'Chaitra Navratri', kind: 'navratri', start: '2027-04-07', end: '2027-04-15', note: 'Nine nights of the Devi in spring.' },
-  { id: 'phalaharini-2027', name: 'Phalaharini Kali Puja', kind: 'kalipuja', start: '2027-06-04', end: '2027-06-04', note: 'Jyeshtha Amavasya: Kali as Phalaharini, who takes away the fruits of karma. Date from one source only; to confirm.' },
-  { id: 'eclipse-2027', name: 'Solar eclipse', kind: 'eclipse', start: '2027-08-02', end: '2027-08-02', note: 'A partial eclipse, seen from parts of India.' },
-  { id: 'navratri-sharad-2027', name: 'Sharad Navratri', kind: 'navratri', start: '2027-09-30', end: '2027-10-08', note: 'Nine nights of the Devi in autumn.' },
-  { id: 'kalipuja-2027', name: 'Kali Puja', kind: 'kalipuja', start: '2027-10-28', end: '2027-10-28', note: 'Kartik Amavasya. Some calendars give 29 October.' },
-  { id: 'diwali-2027', name: 'Diwali', kind: 'diwali', start: '2027-10-29', end: '2027-10-29', note: 'The festival of lamps.' },
-];
+const KINDS: FestKind[] = ['kalipuja', 'diwali', 'navratri', 'eclipse'];
+const isDay = (d: string) => /^\d{4}-\d{2}-\d{2}$/.test(d);
+/** in date order; an entry with a missing name or an unreadable date is left out rather than breaking the page */
+export const FESTIVALS: Festival[] = days.festivals
+  .map((f) => ({ ...f, name: f.name.trim(), end: isDay(f.end) && f.end >= f.start ? f.end : f.start }))
+  .filter((f) => f.name && isDay(f.start) && KINDS.includes(f.kind as FestKind))
+  .sort((x, y) => x.start.localeCompare(y.start))
+  .map((f) => ({ ...f, kind: f.kind as FestKind, id: `${f.kind}-${f.start}` }));
 
 /** how each festival changes the site */
 export const FEST_LOOK: Record<FestKind, { preset: string; moon: number; kicker: (f: Festival, day: number) => string }> = {
@@ -44,8 +44,11 @@ export function activeFestival(mode: FestMode, now = new Date()): { f: Festival;
     const f = FESTIVALS.find((x) => x.start <= today && today <= x.end);
     return f ? { f, day: Math.round((parse(today).getTime() - parse(f.start).getTime()) / 864e5) + 1, preview: false } : null;
   }
-  // previews show the main festival of that kind (Kali Puja itself, not Phalaharini)
-  const f = FESTIVALS.find((x) => x.kind === mode && x.id.startsWith(mode) && x.end >= today) ?? FESTIVALS.find((x) => x.kind === mode)!;
+  // previews show the main festival of that kind: the shortest name among those to come (Kali Puja itself, not Phalaharini)
+  const ahead = FESTIVALS.filter((x) => x.kind === mode && x.end >= today);
+  const pool = ahead.length ? ahead : FESTIVALS.filter((x) => x.kind === mode);
+  const f = pool.reduce<Festival | undefined>((a, x) => (!a || x.name.length < a.name.length ? x : a), undefined);
+  if (!f) return null;
   return { f, day: 3, preview: true };
 }
 

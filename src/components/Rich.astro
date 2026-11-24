@@ -1,0 +1,21 @@
+---
+/**
+ * A line from a content file, as the editor wrote it: [words](address) becomes a link, and the helpline
+ * number 14416 a link that dials it from a phone. Only addresses on this site (/… or #…), https:// pages and
+ * email or phone links become links; anything else stays plain text. Pages elsewhere open in a new tab.
+ */
+const { text = '' } = Astro.props as { text?: string };
+type Part = { kind: 'text'; v: string } | { kind: 'link'; label: string; href: string } | { kind: 'tel' };
+const safe = (h: string) => /^(\/(?!\/)|#|https:\/\/|mailto:|tel:)/.test(h);
+const parts: Part[] = [];
+const push = (v: string) => v.split('14416').forEach((s, i) => { if (i) parts.push({ kind: 'tel' }); if (s) parts.push({ kind: 'text', v: s }); });
+let last = 0;
+for (const m of text.matchAll(/\[([^\]]+)\]\(([^)\s]+)\)/g)) {
+  push(text.slice(last, m.index));
+  if (safe(m[2])) parts.push({ kind: 'link', label: m[1], href: m[2] });
+  else push(m[1]);
+  last = (m.index ?? 0) + m[0].length;
+}
+push(text.slice(last));
+---
+{parts.map((p) => p.kind === 'tel' ? <a href="tel:14416">14416</a> : p.kind === 'link' ? (p.href.startsWith('https://') ? <a href={p.href} target="_blank" rel="noopener">{p.label}</a> : <a href={p.href}>{p.label}</a>) : p.v)}

@@ -1,0 +1,138 @@
+{
+  "name": "Divination & Insight",
+  "line": "Psychic, tarot and oracle readings, dreamwork, psychic development and astral work.",
+  "categories": [
+    {
+      "name": "Readings & Divination",
+      "subs": [
+        {
+          "name": "Psychic & Intuitive Readings",
+          "chapter": "readings",
+          "icon": "eye",
+          "items": [
+            "Psychic Reading",
+            "Deep Psychic Session",
+            "Extended / Intensive Psychic Reading",
+            "Past, Present & Future Reading",
+            "Yes / No Intuitive Reading",
+            "Psychic + Deity Guidance Package"
+          ]
+        },
+        {
+          "name": "Tarot, Oracle & Card Readings",
+          "chapter": "readings",
+          "icon": "book",
+          "items": [
+            "Oracle Reading",
+            "Deep Oracle + Psychic Reading",
+            "Yogini Card Reading",
+            "Tarot Reading",
+            "Angel Card Reading",
+            "Goddess Oracle Reading",
+            "Psychic + Oracle + Spiritual Guidance Package"
+          ]
+        },
+        {
+          "name": "Themed Readings",
+          "chapter": "readings",
+          "icon": "compass",
+          "items": [
+            "Deity Guidance Reading",
+            "Ancestral Guidance Reading",
+            "Love & Relationship Reading",
+            "Career & Financial Reading",
+            "Life Path Reading",
+            "Spiritual Path Reading",
+            "Shadow Insight Reading",
+            "Intuitive Compatibility Reading",
+            "Ancestral Reading"
+          ]
+        },
+        {
+          "name": "Scrying, Pendulum & Other Divination",
+          "chapter": "seeing",
+          "icon": "drop",
+          "items": [
+            "Mirror Scrying",
+            "Waterless Scrying",
+            "Pendulum Divination",
+            "Bibliomancy",
+            "Scrying Session",
+            "Pendulum Guidance",
+            "Fire Scrying",
+            "Symbolic Divination"
+          ]
+        },
+        {
+          "name": "Spiritual Guidance & Direction",
+          "chapter": "seeing",
+          "icon": "compass",
+          "items": [
+            "Spiritual / Divine Guidance",
+            "Intuitive Guidance Session",
+            "Spiritual Blockage Insight",
+            "Personal Spiritual Direction"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Dreams, Psychic Development & Astral Work",
+      "subs": [
+        {
+          "name": "Dreamwork",
+          "chapter": "dreams",
+          "icon": "crescent",
+          "items": [
+            "Dream Interpretation",
+            "Symbolic Dream Analysis",
+            "Dream Enhancement Spell",
+            "Dream Magic",
+            "Dream Sigil",
+            "Dream Enhancement Spell Jar",
+            "Dream Enhancement Working",
+            "Dream Recall Working",
+            "Lucid Dreaming Intention Ritual",
+            "Dream Symbol Interpretation",
+            "Dream Protection Ritual",
+            "Sleep & Rest Intention Ritual",
+            "Dream Incubation Rituals",
+            "Dream Recall Spell",
+            "Lucid Dreaming Spell"
+          ]
+        },
+        {
+          "name": "Psychic & Intuitive Development",
+          "chapter": "eye",
+          "icon": "eye",
+          "items": [
+            "Divination Enhancement Spell",
+            "Divination Clarity Ritual",
+            "Intuition Development Meditation",
+            "Psychic Awareness Meditation",
+            "Third Eye Meditation",
+            "Spiritual Discernment Working",
+            "Intuitive Development Working",
+            "Discernment Spell",
+            "Spiritual Discernment Spell"
+          ]
+        },
+        {
+          "name": "Astral & Between-Worlds Work",
+          "chapter": "astral",
+          "icon": "spiral",
+          "items": [
+            "Astral Exploration Rituals",
+            "Astral Exploration Preparation",
+            "Astral Projection Intention Ritual",
+            "Between-Worlds Symbolic Ritual",
+            "Veil-Thinning Seasonal Ritual",
+            "Astral Work / Projection Intention Spell",
+            "Between-Worlds Spell",
+            "Veil-Thinning Ritual"
+          ]
+        }
+      ]
+    }
+  ]
+}

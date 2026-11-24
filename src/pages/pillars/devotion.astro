@@ -8,35 +8,43 @@
  *   shamanic work (the world tree).
  */
 import Base from '../../layouts/Base.astro';
+import { words } from '../../config';
 import Yantra from '../../components/Yantra.astro';
 import PillarSubs from '../../components/PillarSubs.astro';
 import { pillars, categoryCount } from '../../data/site';
-import { ELEMENTS, FAMILIES, GREEK, HINDU, HINDU_ALSO, LANDS, MAHAVIDYAS, TANTRA } from '../../data/devotion';
+import { CHAPTER_KEYS, COPY, ELEMENTS, FAMILIES, GREEK, HINDU, HINDU_ALSO, LANDS, MAHAVIDYAS, MOVES, TANTRA } from '../../data/devotion';
+import { categoryAliases, categoryOf, gather } from '../../data/chapters';
+import Rich from '../../components/Rich.astro';
 
 const index = pillars.findIndex((p) => p.slug === 'devotion');
 const p = pillars[index];
 const prev = pillars[(index + pillars.length - 1) % pillars.length];
 const next = pillars[(index + 1) % pillars.length];
-const [deity, spirits, shaman] = p.categories;
-const greekSub = deity.subs.find((s) => s.name === 'Greek Deities')!;
+// each catalogue subcategory names the movement it sits in
+const ch = Object.fromEntries(CHAPTER_KEYS.map((k) => [k, gather(p, k, COPY.chapters[k].title, CHAPTER_KEYS)]));
+const mv = COPY.chapters;
+const catName = (k: string) => categoryOf(p, k, CHAPTER_KEYS)?.name ?? '';
+const aliases = categoryAliases(p, CHAPTER_KEYS, Object.fromEntries(MOVES));
+const itemsOf = (k: string) => ch[k].subs.flatMap((s) => s.items);
+// a service added in the editor to a movement drawn by hand (the Mahavidyas, the Devi, many lands) still shows
+const left = (k: string, shown: string[]) => itemsOf(k).filter((it) => !shown.includes(it));
+const more = {
+  vidyas: left('vidyas', [...MAHAVIDYAS.map((v) => v.service), COPY.allTen.service]),
+  devi: left('devi', [...HINDU.map((d) => d.service), ...HINDU_ALSO, ...TANTRA]),
+  lands: left('lands', LANDS.flatMap((l) => l.names)),
+};
+const greekItems = itemsOf('greek');
 
 // each Greek god with the workings that name them; the rest form the pantheon list
 const hasName = (item: string, name: string) => new RegExp(`(^|[^A-Za-z])${name}([^A-Za-z]|$)`).test(item);
-const greekCards = GREEK.map((g) => ({ ...g, items: greekSub.items.filter((it) => hasName(it, g.name)) }));
-const pantheon = greekSub.items.filter((it) => GREEK.filter((g) => hasName(it, g.name)).length !== 1);
+const greekCards = GREEK.map((g) => ({ ...g, items: greekItems.filter((it) => hasName(it, g.name)) }));
+const pantheon = greekItems.filter((it) => GREEK.filter((g) => hasName(it, g.name)).length !== 1);
 const short = (s: string) => s.replace(/ Devotional (Working|Study)$/, '').replace(/-Inspired$/, '');
 
 const tri = (r: number) => [90, 210, 330].map((d) => { const a = (d * Math.PI) / 180; return `${(Math.cos(a) * r).toFixed(1)} ${(Math.sin(a) * r).toFixed(1)}`; });
 const triPath = (r: number) => { const t = tri(r); return `M${t[0]} L${t[1]} L${t[2]} Z`; };
-const MOVES = [
-  ['kali-and-the-mahavidyas', 'Kali and the Mahavidyas'],
-  ['the-devi-and-the-hindu-deities', 'The Devi and the Hindu deities'],
-  ['the-greek-gods', 'The Greek gods'],
-  ['many-traditions', 'Many traditions'],
-  ['altars-and-devotion', 'Altars and devotion'],
-  ['spirits-mediumship-and-ancestors', 'Spirits and ancestors'],
-  ['shamanic-work', 'Shamanic work'],
-];
+const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
+const alias = (k: string) => (aliases[k] || []);
 ---
 <Base title={`${p.name} · Sarvakali`} sequence="devC_hero" description={p.line}>
   <Yantra />
@@ -44,12 +52,12 @@ const MOVES = [
     <section class="chapter dv-hero" data-chapter="devC_hero" data-dev-chapter="hero">
       <div class="chapter-inner dv-hero-grid">
         <div class="dv-hero-copy">
-          <a class="back-link" href="/#paths">← All pillars</a>
+          <a class="back-link" href="/#paths">{words.allPillars}</a>
           <p class="kicker" data-hero>Pillar {index + 1} of {pillars.length} · {p.count} services</p>
           <h1 class="display-l dv-title" data-hero data-split transition:name="pt-devotion" data-pt>{p.name}</h1>
           <p class="lede" data-hero>{p.line}</p>
           <ol class="dv-moves" data-hero aria-label="In this pillar">
-            {MOVES.map(([id, name], i) => <li><a href={`#${id}`}><span>{['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'][i]}</span>{name}</a></li>)}
+            {MOVES.map(([k, id], i) => <li><a href={`#${id}`}><span>{ROMAN[i]}</span>{mv[k].menu}</a></li>)}
           </ol>
         </div>
         <div class="dv-sig" data-hero>
@@ -68,7 +76,7 @@ const MOVES = [
               <circle r="5" class="yt-bindu" />
             </svg>
             <ul class="yt-names" aria-hidden="true">{MAHAVIDYAS.map((v, i) => <li style={`--i:${i}`}>{v.name}</li>)}</ul>
-            <p class="dv-sig-hint" data-yt-hint>Drag to turn the yantra into alignment</p>
+            <p class="dv-sig-hint" data-yt-hint>{COPY.yantraHint}</p>
           </div>
         </div>
       </div>
@@ -76,12 +84,12 @@ const MOVES = [
 
     <!-- I · Kali and the Mahavidyas: the yantra -->
     <section class="chapter dv-move" id="kali-and-the-mahavidyas" data-chapter="devC_vidyas" data-dev-chapter="vidyas">
-      <span id="devi-and-deity-work" class="anchor-alias"></span>
+      {alias('vidyas').map((a) => <span id={a} class="anchor-alias" aria-hidden="true"></span>)}
       <div class="chapter-inner dv-inner">
         <header class="dv-head">
-          <p class="kicker" data-fade>I · {deity.name}</p>
-          <h2 class="display-l" data-split data-dust>Kali and the ten Mahavidyas</h2>
-          <p class="lede" data-fade>The ten great wisdom goddesses, ten faces of the one Mother, gathered around the bindu.</p>
+          <p class="kicker" data-fade>I · {catName('vidyas')}</p>
+          <h2 class="display-l" data-split data-dust>{mv.vidyas.title}</h2>
+          <p class="lede" data-fade><Rich text={mv.vidyas.lede} /></p>
         </header>
         <ol class="vidyas" data-fade>
           {MAHAVIDYAS.map((v, i) => (
@@ -96,17 +104,19 @@ const MOVES = [
         <ul class="vidya-lines" data-fade>
           {MAHAVIDYAS.map((v) => <li><b>{v.name}</b> {v.line}</li>)}
         </ul>
-        <p class="dv-also" data-fade><button type="button" class="pp-item" data-keep="Dashamahavidya Working" data-keep-p={p.name} aria-pressed="false">Dashamahavidya Working: all ten together</button></p>
+        {COPY.allTen.service && <p class="dv-also" data-fade><button type="button" class="pp-item" data-keep={COPY.allTen.service} data-keep-p={p.name} aria-pressed="false">{COPY.allTen.label || COPY.allTen.service}</button></p>}
+        {more.vidyas.length > 0 && <div class="dv-chips" data-fade><p class="kicker">{COPY.more}</p><ul>{more.vidyas.map((t) => <li><button type="button" class="chip-keep" data-keep={t} data-keep-p={p.name} aria-pressed="false">{t}</button></li>)}</ul></div>}
       </div>
     </section>
 
     <!-- II · the Devi and the Hindu deities: the yantra continues -->
     <section class="chapter dv-move" id="the-devi-and-the-hindu-deities" data-chapter="devC_devi" data-dev-chapter="devi">
+      {alias('devi').map((a) => <span id={a} class="anchor-alias" aria-hidden="true"></span>)}
       <div class="chapter-inner dv-inner">
         <header class="dv-head">
-          <p class="kicker" data-fade>II · {deity.name}</p>
-          <h2 class="display-l" data-split data-dust>The Devi and the Hindu deities</h2>
-          <p class="lede" data-fade>Durga and Lakshmi, Shiva and Bhairava, Ganesha who opens the way: the wider family of the Devi.</p>
+          <p class="kicker" data-fade>II · {catName('devi')}</p>
+          <h2 class="display-l" data-split data-dust>{mv.devi.title}</h2>
+          <p class="lede" data-fade><Rich text={mv.devi.lede} /></p>
         </header>
         <ul class="deity-grid" data-fade>
           {HINDU.map((d) => (
@@ -119,45 +129,47 @@ const MOVES = [
           ))}
         </ul>
         <div class="dv-chips" data-fade>
-          <p class="kicker">Also for the Devi</p>
+          <p class="kicker">{COPY.deviAlso.kicker}</p>
           <ul>{HINDU_ALSO.map((t) => <li><button type="button" class="chip-keep" data-keep={t} data-keep-p={p.name} aria-pressed="false">{t}</button></li>)}</ul>
-          <p class="kicker">Mantra, yantra and tantric devotion</p>
+          <p class="kicker">{COPY.tantra.kicker}</p>
           <ul>{TANTRA.map((t) => <li><button type="button" class="chip-keep" data-keep={t} data-keep-p={p.name} aria-pressed="false">{t}</button></li>)}</ul>
+          {more.devi.length > 0 && <Fragment><p class="kicker">{COPY.more}</p><ul>{more.devi.map((t) => <li><button type="button" class="chip-keep" data-keep={t} data-keep-p={p.name} aria-pressed="false">{t}</button></li>)}</ul></Fragment>}
         </div>
       </div>
     </section>
 
     <!-- III · the Greek gods: the temple and the five elements -->
     <section class="chapter dv-move dv-greek" id="the-greek-gods" data-chapter="devC_greek" data-dev-chapter="greek">
+      {alias('greek').map((a) => <span id={a} class="anchor-alias" aria-hidden="true"></span>)}
       <div class="meander" aria-hidden="true"></div>
       <div class="chapter-inner dv-inner">
         <header class="dv-head">
-          <p class="kicker" data-fade>III · {deity.name} · {greekSub.items.length} services</p>
-          <h2 class="display-l" data-split data-dust>The Greek gods</h2>
-          <p class="lede" data-fade>Hecate at the crossroads, Aphrodite from the foam, Persephone between two worlds: the Olympians, the gods of the underworld, the first powers and the Titans.</p>
+          <p class="kicker" data-fade>III · {catName('greek')} · {greekItems.length} services</p>
+          <h2 class="display-l" data-split data-dust>{mv.greek.title}</h2>
+          <p class="lede" data-fade><Rich text={mv.greek.lede} /></p>
         </header>
         <figure class="roots" data-fade>
           <ul aria-hidden="true">{ELEMENTS.map((e) => <li><svg viewBox="-20 -20 40 40"><path d={e.symbol} /></svg><small lang="grc">{e.greek}</small></li>)}</ul>
-          <figcaption>The four roots of Empedocles: fire, air, water and earth.</figcaption>
+          <figcaption>{COPY.greek.rootsCaption}</figcaption>
         </figure>
         <div class="elements" role="group" aria-label="Show one family of gods" data-fade data-elements>
-          <button type="button" data-el="all" aria-pressed="true"><span class="el-all">All</span></button>
+          <button type="button" data-el="all" aria-pressed="true"><span class="el-all">{COPY.greek.allLabel}</span></button>
           {FAMILIES.map((f) => <button type="button" data-el={f.key} aria-pressed="false"><span>{f.name}</span></button>)}
         </div>
         <ul class="greek-grid" data-greek-grid data-fade>
           {greekCards.map((g) => (
-            <li class={`greek-card${g.name === 'Hecate' ? ' is-presiding' : ''}`} data-el={g.fam}>
-              {g.name === 'Hecate' && <span class="presiding-tag">Presiding goddess of Sarvakali’s craft</span>}
+            <li class={`greek-card${g.presiding ? ' is-presiding' : ''}`} data-el={g.fam}>
+              {g.presiding && <span class="presiding-tag">{COPY.greek.presidingTag}</span>}
               <span class="greek-script" lang="grc">{g.greek}</span>
               <span class="deity-name">{g.name}</span>
               <span class="deity-line">{g.line}</span>
-              {g.name === 'Hecate' && <a class="presiding-link" href="/pillars/magic#hecate">Her page in Witchcraft &amp; Magic →</a>}
+              {g.presiding && <a class="presiding-link" href="/pillars/magic#hecate">{COPY.greek.presidingLink}</a>}
               <ul class="greek-work">{g.items.map((it) => <li><button type="button" class="chip-keep" data-keep={it} data-keep-p={p.name} aria-pressed="false">{it === g.name ? `${g.name} working` : it}</button></li>)}</ul>
             </li>
           ))}
         </ul>
         <div class="dv-chips" data-fade>
-          <p class="kicker">The whole pantheon, and gods together</p>
+          <p class="kicker">{COPY.greek.pantheonKicker}</p>
           <ul>{pantheon.map((t) => <li><button type="button" class="chip-keep" data-keep={t} data-keep-p={p.name} aria-pressed="false">{t}</button></li>)}</ul>
         </div>
       </div>
@@ -165,11 +177,12 @@ const MOVES = [
 
     <!-- IV · many traditions: the stars -->
     <section class="chapter dv-move" id="many-traditions" data-chapter="devC_lands" data-dev-chapter="lands">
+      {alias('lands').map((a) => <span id={a} class="anchor-alias" aria-hidden="true"></span>)}
       <div class="chapter-inner dv-inner">
         <header class="dv-head">
-          <p class="kicker" data-fade>IV · {deity.name}</p>
-          <h2 class="display-l" data-split data-dust>Goddesses and gods of many lands</h2>
-          <p class="lede" data-fade>Lilith and Isis, Brigid and Freyja, Mazu and Benzaiten: other skies, the same night.</p>
+          <p class="kicker" data-fade>IV · {catName('lands')}</p>
+          <h2 class="display-l" data-split data-dust>{mv.lands.title}</h2>
+          <p class="lede" data-fade><Rich text={mv.lands.lede} /></p>
         </header>
         <ul class="lands" data-fade>
           {LANDS.map((l) => (
@@ -179,42 +192,46 @@ const MOVES = [
             </li>
           ))}
         </ul>
+        {more.lands.length > 0 && <div class="dv-chips" data-fade><p class="kicker">{COPY.more}</p><ul>{more.lands.map((t) => <li><button type="button" class="chip-keep" data-keep={t} data-keep-p={p.name} aria-pressed="false">{t}</button></li>)}</ul></div>}
       </div>
     </section>
 
     <!-- V · altars and devotion: lamps -->
     <section class="chapter dv-move" id="altars-and-devotion" data-chapter="devC_altar" data-dev-chapter="altar">
+      {alias('altar').map((a) => <span id={a} class="anchor-alias" aria-hidden="true"></span>)}
       <div class="chapter-inner dv-inner">
         <header class="dv-head">
-          <p class="kicker" data-fade>V · {deity.name}</p>
-          <h2 class="display-l" data-split data-dust>Altars and devotion</h2>
-          <p class="lede" data-fade>Meeting a deity for the first time, keeping a living altar, and working alongside the gods you love.</p>
+          <p class="kicker" data-fade>V · {catName('altar')}</p>
+          <h2 class="display-l" data-split data-dust>{mv.altar.title}</h2>
+          <p class="lede" data-fade><Rich text={mv.altar.lede} /></p>
         </header>
-        <PillarSubs category={deity} pillar={p.name} only={['Devotional Practice, Altars & Sacred Space', 'Deity-Assisted Workings']} />
+        <PillarSubs category={ch.altar} pillar={p.name} />
       </div>
     </section>
 
     <!-- VI · spirits and ancestors: a nebula -->
     <section class="chapter dv-move" id="spirits-mediumship-and-ancestors" data-chapter="devC_spirits" data-dev-chapter="spirits">
+      {alias('spirits').map((a) => <span id={a} class="anchor-alias" aria-hidden="true"></span>)}
       <div class="chapter-inner dv-inner">
         <header class="dv-head">
-          <p class="kicker" data-fade>VI · {categoryCount(spirits)} services</p>
-          <h2 class="display-l" data-split data-dust>{spirits.name}</h2>
-          <p class="lede" data-fade>Speaking with those who have gone before: loved ones, animals, ancestors. And, where it is needed, releasing what should not stay.</p>
-          <div class="cta-row" data-fade><a class="btn btn-ghost btn-sm" href="/connect" data-topic={spirits.name}>Ask about this</a></div>
+          <p class="kicker" data-fade>VI · {categoryCount(ch.spirits)} services</p>
+          <h2 class="display-l" data-split data-dust>{mv.spirits.title}</h2>
+          <p class="lede" data-fade><Rich text={mv.spirits.lede} /></p>
+          <div class="cta-row" data-fade><a class="btn btn-ghost btn-sm" href="/connect" data-topic={mv.spirits.title}>{words.ask}</a></div>
         </header>
-        <PillarSubs category={spirits} pillar={p.name} />
+        <PillarSubs category={ch.spirits} pillar={p.name} />
       </div>
     </section>
 
     <!-- VII · shamanic work: the world tree and the drum -->
     <section class="chapter dv-move dv-shaman" id="shamanic-work" data-chapter="devC_shaman" data-dev-chapter="shaman">
+      {alias('shaman').map((a) => <span id={a} class="anchor-alias" aria-hidden="true"></span>)}
       <div class="chapter-inner dv-inner dv-split">
         <header class="dv-head">
-          <p class="kicker" data-fade>VII · {categoryCount(shaman)} services</p>
-          <h2 class="display-l" data-split data-dust>{shaman.name}</h2>
-          <p class="lede" data-fade>The drum, the journey and the world tree: walking between the lower, middle and upper worlds with power animals and guides.</p>
-          <div class="cta-row" data-fade><a class="btn btn-ghost btn-sm" href="/connect" data-topic={shaman.name}>Ask about this</a></div>
+          <p class="kicker" data-fade>VII · {categoryCount(ch.shaman)} services</p>
+          <h2 class="display-l" data-split data-dust>{mv.shaman.title}</h2>
+          <p class="lede" data-fade><Rich text={mv.shaman.lede} /></p>
+          <div class="cta-row" data-fade><a class="btn btn-ghost btn-sm" href="/connect" data-topic={mv.shaman.title}>{words.ask}</a></div>
         </header>
         <svg class="drum" viewBox="-110 -110 220 220" aria-hidden="true" data-fade>
           <circle r="96" class="drum-rim" /><circle r="88" class="drum-skin" />
@@ -222,25 +239,25 @@ const MOVES = [
           <ellipse class="drum-line thin" rx="70" ry="10" cy="-64" /><ellipse class="drum-line thin" rx="80" ry="10" cy="6" /><ellipse class="drum-line thin" rx="66" ry="9" cy="66" />
           <circle class="drum-dot" cx="-56" cy="-30" r="7" /><path class="drum-line" d="M52 -34 A12 12 0 1 1 52 -10 A9 9 0 1 0 52 -34" />
         </svg>
-        <div class="dv-split-full"><PillarSubs category={shaman} pillar={p.name} /></div>
+        <div class="dv-split-full"><PillarSubs category={ch.shaman} pillar={p.name} /></div>
       </div>
     </section>
 
     <section class="chapter dv-close" data-chapter="devC_close" data-dev-chapter="close">
       <div class="chapter-inner narrow center">
-        <p class="kicker" data-fade>When you are ready</p>
-        <h2 class="display-l" data-split>Come and sit with the Mother</h2>
-        <p class="lede" data-fade>Not sure which deity or path is calling? Begin with a conversation.</p>
+        <p class="kicker" data-fade>{COPY.close.kicker}</p>
+        <h2 class="display-l" data-split>{COPY.close.title}</h2>
+        <p class="lede" data-fade>{COPY.close.lede}</p>
         <div class="cta-row center" data-fade>
-          <a class="btn btn-solid" href="/connect" data-topic={p.name}>Request a conversation</a>
-          <a class="btn btn-ghost" href="/path">Find your path</a>
+          <a class="btn btn-solid" href="/connect" data-topic={p.name}>{COPY.close.button}</a>
+          <a class="btn btn-ghost" href="/path">{words.path}</a>
         </div>
       </div>
     </section>
 
     <nav class="pp-nav" aria-label="Other pillars">
-      <a href={`/pillars/${prev.slug}`}><span>Previous pillar</span><b transition:name={`pt-${prev.slug}`} data-pt>{prev.name}</b></a>
-      <a href={`/pillars/${next.slug}`}><span>Next pillar</span><b transition:name={`pt-${next.slug}`} data-pt>{next.name}</b></a>
+      <a href={`/pillars/${prev.slug}`}><span>{words.previous}</span><b transition:name={`pt-${prev.slug}`} data-pt>{prev.name}</b></a>
+      <a href={`/pillars/${next.slug}`}><span>{words.next}</span><b transition:name={`pt-${next.slug}`} data-pt>{next.name}</b></a>
     </nav>
   </div>
 </Base>

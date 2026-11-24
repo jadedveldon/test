@@ -1,0 +1,201 @@
+{
+  "presides": {
+    "small": "Under the keeping of",
+    "name": "Hecate"
+  },
+  "index": {
+    "hecate": "Hecate, presiding goddess",
+    "sigil": "Make a sigil"
+  },
+  "hecate": {
+    "kicker": "Presiding goddess",
+    "name": "Hecate",
+    "greek": "Ἑκάτη",
+    "words": [
+      "Mother of witchcraft.",
+      "Prime goddess of the craft.",
+      "Fierce protector."
+    ],
+    "wordsLine": "Hecate is one of the presiding deities of Sarvakali, and this pillar is under her keeping.",
+    "wordsNote": "In Sarvakali’s words · a placeholder until Sarvakali writes these lines",
+    "supper": {
+      "title": "The dark moon is hers",
+      "text": "In ancient Athens the last day of the lunar month, the dark moon, belonged to Hecate. Households set out a supper for her and the restless dead, at crossroads and on doorsteps: the Deipnon. The same dark moon is Amavasya, a night especially kept for Kali.",
+      "note": "The Athenian month began with the first sliver of the new moon, so the old reckoning can differ from a modern calendar by a day. The two traditions are separate; here they simply share a night.",
+      "href": "https://en.wikipedia.org/wiki/Deipnon",
+      "linkText": "About the Deipnon",
+      "when": "Next dark moon:",
+      "calendar": "Add the next three to your calendar",
+      "ask": "Ask about a dark-moon working"
+    },
+    "workKicker": "Workings in her name",
+    "also": "Hecate also stands among [the Greek gods, in Devotion](/pillars/devotion#the-greek-gods), and watches over the doorways in [Protection](#protection-cleansing-and-uncrossing)."
+  },
+  "sigil": {
+    "kicker": "Begin with an intention",
+    "title": "Make a sigil",
+    "lede": "Write what you wish for in a few words, then choose a way to turn it into a sigil. The same words give a different shape each way, and you can finish any of them by hand.",
+    "methods": {
+      "wheel": {
+        "name": "Letter wheel",
+        "how": "The alphabet is set round a circle. The line starts with a small ring on the first letter, runs from letter to letter, and ends with a short bar.",
+        "origin": "A modern way of tracing a name on letters set in a ring. The Golden Dawn’s Rose Cross, whose 22 petals carry the Hebrew letters, was called the key of sigils."
+      },
+      "monogram": {
+        "name": "Monogram",
+        "how": "The letters that repeat are struck out, and many modern versions drop the vowels too. What is left is joined into one figure: hung on a central line, set around a ring, or stacked. Then move, turn or flip any letter until it feels right.",
+        "origin": "The way made known by the artist Austin Osman Spare in The Book of Pleasure (1913), and taken up by chaos magic."
+      },
+      "square": {
+        "name": "Magic square",
+        "how": "Each letter becomes a number (A to I count 1 to 9, then J starts again at 1). The numbers are found on the square and joined in order.",
+        "origin": "Old seals of spirits were drawn this way, on number squares. This is the 3 × 3 square, which Agrippa gave to Saturn; counting Latin letters 1 to 9 is a modern adaptation."
+      },
+      "bindrune": {
+        "name": "Bindrune",
+        "how": "The first letter of each word becomes its nearest Elder Futhark rune, and the runes are bound onto one shared stave.",
+        "origin": "Runes joined into one figure appear in old inscriptions, some along a single stave. Making one from your own words is a modern use of that old form."
+      },
+      "draw": {
+        "name": "Draw your own",
+        "how": "No letters and no rule: draw whatever shape comes to you.",
+        "origin": "No tradition is claimed here: a free drawing."
+      }
+    },
+    "note": "Sarvakali may make sigils differently. Nothing you type or draw here is saved or sent.",
+    "placeholder": "Your intention, in a few words",
+    "make": "Make my sigil",
+    "arrange": "Arrange",
+    "line": "On a line",
+    "ring": "Around a ring",
+    "stack": "Stacked",
+    "picked": "Picked letter",
+    "turn": "Turn",
+    "flip": "Flip",
+    "pen": "Add strokes by hand",
+    "clear": "Clear",
+    "save": "Save it as a picture",
+    "hint": "Your sigil will be drawn here."
+  },
+  "chapters": {
+    "love": {
+      "title": "Love, attraction and glamour",
+      "line": "Calling love in, mending what can be mended, letting go of what cannot, and learning to love yourself."
+    },
+    "abundance": {
+      "title": "Abundance, career and success",
+      "line": "Money, work, clients and luck: opening the road and keeping it open."
+    },
+    "protection": {
+      "title": "Protection, cleansing and uncrossing",
+      "line": "Shielding you and your home, clearing what clings, and lifting what was laid on you."
+    },
+    "baneful": {
+      "title": "Baneful and dark craft",
+      "line": "Binding, justice and the older, darker arts, held with discernment."
+    },
+    "spellcraft": {
+      "title": "Spellcraft and magical objects",
+      "line": "Candles, jars, sigils, talismans, oils and the old folk ways: spells made by hand, for you."
+    },
+    "rituals": {
+      "title": "Rituals, ceremonies and paths",
+      "line": "Ceremony, fire and the four directions, rites of passage, and the many paths of the craft."
+    },
+    "nature": {
+      "title": "Nature, moon and cosmic magic",
+      "line": "The moon and the planets, the turning year, herbs, stones and the wild places."
+    }
+  },
+  "protectionKeeper": "Hecate, honoured of old at crossroads and doorways, keeps watch over this chapter, and over the home and threshold work in it.",
+  "banefulCare": "Baneful work is considered case by case and may be declined. [Read Boundaries and care](/care).",
+  "wheel": {
+    "sabbatsLabel": "Wheel of the year",
+    "ritusLabel": "Indian seasons",
+    "hint": "Drag to turn the wheel. The marker at the top is today.",
+    "sabbats": {
+      "samhain": {
+        "name": "Samhain",
+        "line": "The dark half of the year begins; a time to honour the dead"
+      },
+      "yule": {
+        "name": "Yule",
+        "line": "The winter solstice: the longest night, and the light’s return"
+      },
+      "imbolc": {
+        "name": "Imbolc",
+        "line": "The first stirrings of spring; associated with Brigid"
+      },
+      "ostara": {
+        "name": "Ostara",
+        "line": "The spring equinox: day and night in balance"
+      },
+      "beltane": {
+        "name": "Beltane",
+        "line": "The start of summer: fire, fertility and bloom"
+      },
+      "litha": {
+        "name": "Litha",
+        "line": "The summer solstice: the longest day"
+      },
+      "lughnasadh": {
+        "name": "Lughnasadh",
+        "line": "The first harvest, named for the god Lugh"
+      },
+      "mabon": {
+        "name": "Mabon",
+        "line": "The autumn equinox: balance again, and the second harvest"
+      }
+    },
+    "ritus": {
+      "vasanta": {
+        "name": "Vasanta",
+        "deva": "वसन्त",
+        "english": "spring",
+        "months": "Chaitra and Vaishakha",
+        "line": "Spring"
+      },
+      "grishma": {
+        "name": "Grishma",
+        "deva": "ग्रीष्म",
+        "english": "summer",
+        "months": "Jyeshtha and Ashadha",
+        "line": "Summer heat"
+      },
+      "varsha": {
+        "name": "Varsha",
+        "deva": "वर्षा",
+        "english": "monsoon",
+        "months": "Shravana and Bhadrapada",
+        "line": "The rains"
+      },
+      "sharad": {
+        "name": "Sharad",
+        "deva": "शरद्",
+        "english": "autumn",
+        "months": "Ashvin and Kartika",
+        "line": "Autumn after the rains"
+      },
+      "hemanta": {
+        "name": "Hemanta",
+        "deva": "हेमन्त",
+        "english": "pre-winter",
+        "months": "Margashirsha and Pausha",
+        "line": "The cool season"
+      },
+      "shishira": {
+        "name": "Shishira",
+        "deva": "शिशिर",
+        "english": "winter",
+        "months": "Magha and Phalguna",
+        "line": "Winter"
+      }
+    }
+  },
+  "close": {
+    "kicker": "When you are ready",
+    "title": "Every spell begins with an intention",
+    "lede": "Tell Sarvakali what you would like to change. Together you will find the right working.",
+    "button": "Request a conversation"
+  }
+}

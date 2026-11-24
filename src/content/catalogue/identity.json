@@ -1,0 +1,153 @@
+{
+  "name": "Identity, Intimacy & the Body",
+  "line": "Queer-affirming sessions and gentle work around intimacy, sexuality, the body and Lilith.",
+  "categories": [
+    {
+      "name": "Queer-Affirming Work",
+      "subs": [
+        {
+          "name": "Identity & Self-Acceptance",
+          "chapter": "queer",
+          "icon": "mirror",
+          "items": [
+            "Queer Identity Exploration",
+            "Queer Self-Acceptance",
+            "Body Autonomy and Self-Acceptance",
+            "Gender Identity Reflection",
+            "Sexuality and Identity Reflection",
+            "Internalised Shame Exploration",
+            "Queer Self-Expression"
+          ]
+        },
+        {
+          "name": "Coming Out, Family & Belonging",
+          "chapter": "queer",
+          "icon": "house",
+          "items": [
+            "Coming-Out-Related Emotional Processing",
+            "Family Acceptance and Rejection Processing",
+            "Queer Community and Belonging Exploration"
+          ]
+        },
+        {
+          "name": "Queer Relationships & Intimacy",
+          "chapter": "queer",
+          "icon": "rings",
+          "items": [
+            "Queer Relationship Exploration",
+            "Queer Relationship Healing",
+            "Queer Intimacy Exploration",
+            "Intimacy and Vulnerability Work",
+            "Navigating Emotional Safety in Intimacy",
+            "Queer Relationship Communication"
+          ]
+        },
+        {
+          "name": "Queer Inner Work & Empowerment",
+          "chapter": "queer",
+          "icon": "sparkle",
+          "items": [
+            "Queer Self-Worth and Confidence",
+            "Queer-Focused Shadow Work",
+            "Queer Inner-Child Work",
+            "Queer Boundaries and Assertiveness",
+            "Queer Empowerment"
+          ]
+        },
+        {
+          "name": "Queer Spirituality & Devotion",
+          "chapter": "queer",
+          "icon": "lotus",
+          "items": [
+            "Queer Spiritual Exploration",
+            "Queer Devotional and Deity Work"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Intimacy, Sexuality & the Body",
+      "subs": [
+        {
+          "name": "Intimacy & Vulnerability",
+          "chapter": "intimacy",
+          "icon": "heart",
+          "items": [
+            "Intimacy Exploration Sessions",
+            "Fear of Intimacy Exploration",
+            "Difficulty with Emotional Intimacy",
+            "Difficulty with Physical Intimacy",
+            "Intimacy-Related Anxiety",
+            "Relationship and Attachment Patterns",
+            "Emotional Availability Work",
+            "Shame around Intimacy",
+            "Intimacy-Related Inner-Child Work",
+            "Intimacy-Focused Journaling",
+            "Intimacy-Focused EFT",
+            "Intimacy-Focused Shadow Work"
+          ]
+        },
+        {
+          "name": "Trust, Safety & Consent",
+          "chapter": "intimacy",
+          "icon": "shield",
+          "items": [
+            "Personal Boundaries & Body Autonomy Ritual",
+            "Relearning Safe Touch Spell",
+            "Trust Rebuilding Spell with Devi",
+            "Vulnerability and Trust Exploration",
+            "Boundaries around Physical Intimacy",
+            "Body Safety and Autonomy",
+            "Consent and Communication Exploration",
+            "Rebuilding Trust and Emotional Safety"
+          ]
+        },
+        {
+          "name": "Body Reconnection & Self-Acceptance",
+          "chapter": "body",
+          "icon": "aura",
+          "items": [
+            "Body Reclamation Ritual",
+            "Body Connection Working",
+            "Self-Acceptance Working",
+            "Body Confidence Ritual",
+            "Their Actions Are Not My Body Spell",
+            "My Body Is Mine Spell",
+            "Return to the Body Spell",
+            "Reconnecting with One's Body",
+            "Self-Acceptance and Sexuality"
+          ]
+        },
+        {
+          "name": "Womb & Sacred Feminine",
+          "chapter": "womb",
+          "icon": "crescent",
+          "items": [
+            "Womb Healing",
+            "Womb Energy Work",
+            "Womb + Ancestral Work",
+            "Womb + Shadow Work",
+            "Womb-Centred Meditation",
+            "Sacred Feminine Working",
+            "Divine Feminine Meditation",
+            "Menstrual Cycle Reflection Ritual",
+            "Womb-Ancestral Symbolic Working",
+            "Sacred Anger & Empowerment Ritual",
+            "Womb Healing Intention Spell"
+          ]
+        },
+        {
+          "name": "Lilith & Sexual Energy",
+          "chapter": "lilith",
+          "icon": "fire",
+          "items": [
+            "Sexual Energy Reclamation Ritual",
+            "Lilith Wild Woman Spell",
+            "Sexual Energy Reclamation Spell",
+            "Lilith Exile & Return Spell"
+          ]
+        }
+      ]
+    }
+  ]
+}

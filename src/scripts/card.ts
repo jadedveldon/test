@@ -2,11 +2,12 @@ import gsap from 'gsap';
 import { buzz, PATTERNS } from './haptics';
 import { ring } from './audio';
 import type { WorldHandle as World } from './world/handle';
+import deck from '../content/cards.json';
 
 /**
  * Draw today's card. One card a day for each visitor: the same card all day,
- * a new one tomorrow. Names, symbols and messages are PLACEHOLDERS; the
- * institute would write its own deck.
+ * a new one tomorrow. Names and messages are PLACEHOLDERS (editable in the content
+ * editor); the institute would write its own deck.
  */
 
 type Card = { name: string; line: string; glyph: string };
@@ -21,20 +22,22 @@ const beads = () => {
   return d + 'M50 78 L50 90';
 };
 
-export const CARDS: Card[] = [
-  { name: 'The Lamp', line: 'A small light is enough to see the next step. Tend it today.', glyph: 'M18 62 Q50 96 82 62 Z M50 58 C41 47 45 34 50 22 C55 34 59 47 50 58 Z' },
-  { name: 'The Lotus', line: 'What grows from the mud is not stained by it. Let something bloom from a hard place.', glyph: 'M50 78 C30 70 25 50 31 33 C42 43 48 57 50 78 Z M50 78 C70 70 75 50 69 33 C58 43 52 57 50 78 Z M50 78 C41 60 41 40 50 20 C59 40 59 60 50 78 Z M22 80 L78 80' },
-  { name: 'The Sword', line: 'Cut one thread that no longer serves you. Clean cuts heal fastest.', glyph: 'M36 76 L64 34 Q72 20 82 16 Q78 32 66 40 L40 80 Z M26 70 L44 86 M30 82 L22 90' },
-  { name: 'The Garland', line: 'Every ending has taught you something. Count the lessons, not the losses.', glyph: beads() },
-  { name: 'The Third Eye', line: 'Look past the first answer. The second one is truer.', glyph: 'M50 16 Q72 50 50 84 Q28 50 50 16 Z M41 50 a9 9 0 1 0 18 0 a9 9 0 1 0 -18 0' },
-  { name: 'The Crescent', line: 'Something is beginning quietly. Do not rush it into the light.', glyph: 'M62 20 A31 31 0 1 0 62 80 A25 25 0 1 1 62 20 Z' },
-  { name: 'The Bell', line: 'Call your attention home. Begin again exactly where you are.', glyph: 'M50 16 L50 25 M29 70 Q31 29 50 25 Q69 29 71 70 Z M22 70 L78 70 M45 77 a5 5 0 1 0 10 0' },
-  { name: 'The River', line: 'Let it move. What is meant to stay will not be carried away.', glyph: 'M12 38 Q24 30 36 38 T60 38 T84 38 M12 52 Q24 44 36 52 T60 52 T84 52 M12 66 Q24 58 36 66 T60 66 T84 66' },
-  { name: 'The Serpent', line: 'Old skin is falling away. Rest while the new one hardens.', glyph: 'M26 84 C72 84 74 60 50 56 C28 52 28 30 50 28 C64 27 70 22 64 14 M64 14 L70 12' },
-  { name: 'The Night', line: 'In the dark nothing needs to be performed. Be still and be held.', glyph: 'M50 28 L53 47 L72 50 L53 53 L50 72 L47 53 L28 50 L47 47 Z M22 22 L24 28 L30 30 L24 32 L22 38 L20 32 L14 30 L20 28 Z M78 66 L80 71 L85 73 L80 75 L78 80 L76 75 L71 73 L76 71 Z' },
-  { name: 'The Dawn', line: 'You have already come through the darkest part of the night.', glyph: 'M12 66 L88 66 M28 66 A22 22 0 0 1 72 66 M50 34 L50 24 M31 42 L25 35 M69 42 L75 35 M21 55 L13 52 M79 55 L87 52' },
-  { name: 'The Fire', line: 'Offer one thing to the fire today: a fear, a habit, a word left unsaid.', glyph: 'M50 86 C30 82 27 62 37 47 C39 57 45 60 45 60 C41 45 47 30 58 16 C58 33 72 42 70 63 C69 77 60 86 50 86 Z' },
+/** the drawing on each card; the names and messages are in src/content/cards.json (the content editor writes there) */
+const GLYPHS: [keyof typeof deck.cards, string][] = [
+  ['lamp', 'M18 62 Q50 96 82 62 Z M50 58 C41 47 45 34 50 22 C55 34 59 47 50 58 Z'],
+  ['lotus', 'M50 78 C30 70 25 50 31 33 C42 43 48 57 50 78 Z M50 78 C70 70 75 50 69 33 C58 43 52 57 50 78 Z M50 78 C41 60 41 40 50 20 C59 40 59 60 50 78 Z M22 80 L78 80'],
+  ['sword', 'M36 76 L64 34 Q72 20 82 16 Q78 32 66 40 L40 80 Z M26 70 L44 86 M30 82 L22 90'],
+  ['garland', beads()],
+  ['eye', 'M50 16 Q72 50 50 84 Q28 50 50 16 Z M41 50 a9 9 0 1 0 18 0 a9 9 0 1 0 -18 0'],
+  ['crescent', 'M62 20 A31 31 0 1 0 62 80 A25 25 0 1 1 62 20 Z'],
+  ['bell', 'M50 16 L50 25 M29 70 Q31 29 50 25 Q69 29 71 70 Z M22 70 L78 70 M45 77 a5 5 0 1 0 10 0'],
+  ['river', 'M12 38 Q24 30 36 38 T60 38 T84 38 M12 52 Q24 44 36 52 T60 52 T84 52 M12 66 Q24 58 36 66 T60 66 T84 66'],
+  ['serpent', 'M26 84 C72 84 74 60 50 56 C28 52 28 30 50 28 C64 27 70 22 64 14 M64 14 L70 12'],
+  ['night', 'M50 28 L53 47 L72 50 L53 53 L50 72 L47 53 L28 50 L47 47 Z M22 22 L24 28 L30 30 L24 32 L22 38 L20 32 L14 30 L20 28 Z M78 66 L80 71 L85 73 L80 75 L78 80 L76 75 L71 73 L76 71 Z'],
+  ['dawn', 'M12 66 L88 66 M28 66 A22 22 0 0 1 72 66 M50 34 L50 24 M31 42 L25 35 M69 42 L75 35 M21 55 L13 52 M79 55 L87 52'],
+  ['fire', 'M50 86 C30 82 27 62 37 47 C39 57 45 60 45 60 C41 45 47 30 58 16 C58 33 72 42 70 63 C69 77 60 86 50 86 Z'],
 ];
+export const CARDS: Card[] = GLYPHS.map(([k, glyph]) => ({ ...deck.cards[k], glyph }));
 
 function today() {
   const d = new Date();

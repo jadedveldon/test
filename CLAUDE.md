@@ -14,7 +14,8 @@ site's owner; follow them every time.
    then serve `preview-artifact/` on port 8099). All must pass.
 4. **New features bring their own checks:** a signature moment goes into `tools/qa/pillars.cjs` (it must
    respond to mouse, touch and keyboard); a new page goes into the page lists of `audit.cjs`, `a11y.cjs`,
-   `layout.cjs` and `keyboard.cjs`.
+   `layout.cjs` and `keyboard.cjs`; a new content file or field must open in the editor (`content.mjs`), and
+   anything that names a catalogue service by hand goes into rule 10 of `rules.cjs`.
 5. **Never weaken or skip a check to make it pass.** If a check is wrong, fix the check and say why in
    the change log. Known false alarms are listed in `tools/qa/README.md`; add to that list only with a reason.
 6. **Log every change** in `CHANGELOG.md`: what changed, why, and which checks verified it.
@@ -25,7 +26,7 @@ site's owner; follow them every time.
 
 - No prices and no catalogue numbers anywhere on the site (the invoice maker is Sarvakali's own tool).
 - English only. Deity names in Devanagari or Greek are welcome as labels next to the English.
-- Payment is by UPI only. Booking (Cal.com), the content editor (Keystatic) and the WhatsApp button come later.
+- Payment is by UPI only. Booking (Cal.com) and the WhatsApp button come later.
 - Every factual claim is checked against a source. The sources live in the fact-check table on the preview
   cover, not as lists of facts on the pages. Interpretive copy is a draft for Sarvakali and is marked so in code.
 - Care first: where work touches the mind, the body or identity, a care note comes first, assumes nothing
@@ -42,6 +43,13 @@ site's owner; follow them every time.
   chapter's `data-chapter`. Forms that sit beside the words on wide screens have a `shift`; they sit below
   the words on phones.
 - Full-screen layers (menu, search) make the page behind inert (`src/scripts/inert.ts`).
+- **Words live in the content files, not in pages.** Every word and list a visitor reads on a settled page is
+  in `src/content/` (JSON, and Markdown for writings), with a field for it in `keystatic.config.ts`, so
+  Sarvakali can change it in the content editor. What the design depends on (chapter keys and order, colours,
+  drawings, timings, map positions) stays in code. Pages must survive any edit the editor allows: an empty
+  optional line, a renamed or added service, a list of a different length. See `docs/editor.md`.
+- The content editor is on only in `npm run dev` and on the host (`EDITOR_HOST`); a plain build is static
+  files with no editor. On the host it sits behind a secret door (`src/editor/`) and its own sign-in.
 
 ## Git
 

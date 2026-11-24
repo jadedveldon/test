@@ -4,64 +4,42 @@
  * orbiting one bindu. Each tradition gets its own movement with its own
  * iconography in the world behind it.
  *
+ * The words and lists live in src/content/pillars/devotion.json, where the content editor writes. What the
+ * design depends on stays here: the seven movements, their addresses and order, and the four elements.
  * Short descriptive lines are DRAFT copy for Sarvakali to refine.
  */
-export const DIRECTION = {
-  name: 'Cosmic mother',
-  palette: [
-    { name: 'Deep night', hex: '#050617' },
-    { name: 'Violet', hex: '#1f1450' },
-    { name: 'Nebula', hex: '#3a4fb8' },
-    { name: 'Gold', hex: '#e7c46a' },
-    { name: 'Rose', hex: '#d98cb3' },
-    { name: 'Starlight', hex: '#f1efff' },
-  ],
-  type: 'Cormorant Garamond (light italic, wide spacing) for titles; Inter for reading; Tiro Devanagari and Greek script for names',
-  imagery: 'Fine gold line drawings: yantras, a temple, the world tree, constellations; deities in outline',
-};
+import copy from '../content/pillars/devotion.json';
 
-/** the ten Mahavidyas */
-export const MAHAVIDYAS = [
-  { name: 'Kali', deva: 'काली', line: 'Time, and freedom from it', service: 'Kali Working' },
-  { name: 'Tara', deva: 'तारा', line: 'The star who carries you across', service: 'Tara Working' },
-  { name: 'Tripura Sundari', deva: 'त्रिपुरसुन्दरी', line: 'Beauty of the three worlds', service: 'Lalita Tripura Sundari Working' },
-  { name: 'Bhuvaneshvari', deva: 'भुवनेश्वरी', line: 'Queen of space and every world', service: 'Bhuvaneshwari Working' },
-  { name: 'Bhairavi', deva: 'भैरवी', line: 'The fierce heat that transforms', service: 'Bhairavi Working' },
-  { name: 'Chhinnamasta', deva: 'छिन्नमस्ता', line: 'The self offered, beyond the ego', service: 'Chinnamasta Working' },
-  { name: 'Dhumavati', deva: 'धूमावती', line: 'Wisdom in smoke and in loss', service: 'Dhumavati Working' },
-  { name: 'Bagalamukhi', deva: 'बगलामुखी', line: 'She who stills and silences', service: 'Baglamukhi Working' },
-  { name: 'Matangi', deva: 'मातङ्गी', line: 'Speech, music and outsider wisdom', service: 'Matangi Working' },
-  { name: 'Kamala', deva: 'कमला', line: 'The lotus: abundance and grace', service: 'Kamala Working' },
+export const COPY = copy;
+
+/** the seven movements: key, fixed address (links into the page use these) */
+export const MOVES: [keyof typeof copy.chapters, string][] = [
+  ['vidyas', 'kali-and-the-mahavidyas'],
+  ['devi', 'the-devi-and-the-hindu-deities'],
+  ['greek', 'the-greek-gods'],
+  ['lands', 'many-traditions'],
+  ['altar', 'altars-and-devotion'],
+  ['spirits', 'spirits-mediumship-and-ancestors'],
+  ['shaman', 'shamanic-work'],
 ];
+export const CHAPTER_KEYS = MOVES.map(([k]) => k);
+
+const list = (a: string[]) => a.map((t) => t.trim()).filter(Boolean);
+
+/** the ten Mahavidyas (the yantra holds ten) */
+export const MAHAVIDYAS = copy.mahavidyas.slice(0, 10);
 
 /** the Devi and the Hindu deities */
-export const HINDU = [
-  { name: 'Durga', deva: 'दुर्गा', line: 'The invincible mother', service: 'Durga Working' },
-  { name: 'Pratyangira', deva: 'प्रत्यङ्गिरा', line: 'The lion-faced shield', service: 'Pratyangira Working' },
-  { name: 'Kamakhya', deva: 'कामाख्या', line: 'Desire, power and the source', service: 'Kamakhya Devotional Working' },
-  { name: 'Lakshmi', deva: 'लक्ष्मी', line: 'Abundance and grace', service: 'Lakshmi Working' },
-  { name: 'Saraswati', deva: 'सरस्वती', line: 'Knowledge, music and speech', service: 'Saraswati Working' },
-  { name: 'Shiva', deva: 'शिव', line: 'Stillness, the auspicious one', service: 'Shiva Working' },
-  { name: 'Bhairava', deva: 'भैरव', line: 'The fierce guardian of time', service: 'Bhairava Working' },
-  { name: 'Narasimha', deva: 'नरसिंह', line: 'The man-lion who protects', service: 'Narasimha Working' },
-  { name: 'Krishna', deva: 'कृष्ण', line: 'Love, play and devotion', service: 'Krishna Working' },
-  { name: 'Hanuman', deva: 'हनुमान्', line: 'Strength in service', service: 'Hanuman Working' },
-  { name: 'Ganesha', deva: 'गणेश', line: 'The remover of obstacles', service: 'Ganesha Working' },
-  { name: 'Kartikeya', deva: 'कार्तिकेय', line: 'Courage and the spear; Murugan', service: 'Kartikeya / Murugan Working' },
-];
-export const HINDU_ALSO = ['Devi Protection Working', 'Devi Invocation & Prayer', 'Goddess-Centred Spiritual Guidance'];
-export const TANTRA = ['Mantra-Based Devotional Working', 'Yantra-Based Devotional Working', 'Tantric Symbolic Ritual Work', 'Personalised Devi Sadhana Guidance'];
+export const HINDU = copy.hindu.filter((d) => d.name.trim());
+export const HINDU_ALSO = list(copy.deviAlso.services);
+export const TANTRA = list(copy.tantra.services);
 
 /**
  * The Greek gods, gathered by family as the old sources describe them
  * (Hesiod's Theogony and the usual list of the twelve Olympians).
  */
-export const FAMILIES = [
-  { key: 'olympians', name: 'The Olympians' },
-  { key: 'chthonic', name: 'The underworld' },
-  { key: 'first', name: 'Primordials and Titans' },
-  { key: 'others', name: 'Others' },
-];
+const FAMILY_KEYS = ['olympians', 'chthonic', 'first', 'others'] as const;
+export const FAMILIES = FAMILY_KEYS.map((key) => ({ key, name: copy.greek.families[key] }));
 
 /**
  * Behind the section: the four "roots" of Empedocles (fire, air, water,
@@ -75,44 +53,7 @@ export const ELEMENTS: Element[] = [
   { key: 'earth', name: 'Earth', greek: 'Γῆ', symbol: 'M0 18 L16 -12 L-16 -12 Z M-10 -1 L10 -1' },
 ];
 
-export const GREEK = [
-  { name: 'Zeus', greek: 'Ζεύς', fam: 'olympians', line: 'Sky, thunder and order' },
-  { name: 'Hera', greek: 'Ἥρα', fam: 'olympians', line: 'Queen of the gods; marriage' },
-  { name: 'Poseidon', greek: 'Ποσειδῶν', fam: 'olympians', line: 'The sea and earthquakes' },
-  { name: 'Demeter', greek: 'Δημήτηρ', fam: 'olympians', line: 'The harvest, and a mother’s grief' },
-  { name: 'Athena', greek: 'Ἀθηνᾶ', fam: 'olympians', line: 'Wisdom, strategy and craft' },
-  { name: 'Apollo', greek: 'Ἀπόλλων', fam: 'olympians', line: 'Music, prophecy and healing' },
-  { name: 'Artemis', greek: 'Ἄρτεμις', fam: 'olympians', line: 'The hunt and the wild' },
-  { name: 'Ares', greek: 'Ἄρης', fam: 'olympians', line: 'War and courage' },
-  { name: 'Aphrodite', greek: 'Ἀφροδίτη', fam: 'olympians', line: 'Love and beauty, born of sea foam' },
-  { name: 'Hephaestus', greek: 'Ἥφαιστος', fam: 'olympians', line: 'The forge and every craft' },
-  { name: 'Hermes', greek: 'Ἑρμῆς', fam: 'olympians', line: 'Messenger; roads, travellers and luck' },
-  { name: 'Hestia', greek: 'Ἑστία', fam: 'olympians', line: 'The hearth and the home' },
-  { name: 'Dionysus', greek: 'Διόνυσος', fam: 'olympians', line: 'Wine, ecstasy and release' },
-  { name: 'Hades', greek: 'ᾍδης', fam: 'chthonic', line: 'King of the underworld and the dead' },
-  { name: 'Persephone', greek: 'Περσεφόνη', fam: 'chthonic', line: 'Spring, and queen of the underworld' },
-  { name: 'Hecate', greek: 'Ἑκάτη', fam: 'chthonic', line: 'Crossroads, torches and magic' },
-  { name: 'Gaia', greek: 'Γαῖα', fam: 'first', line: 'The Earth herself' },
-  { name: 'Nyx', greek: 'Νύξ', fam: 'first', line: 'Primordial night' },
-  { name: 'Eros', greek: 'Ἔρως', fam: 'first', line: 'Desire; in Hesiod, one of the first powers' },
-  { name: 'Kronos', greek: 'Κρόνος', fam: 'first', line: 'Titan of the harvest; later confused with Chronos, time' },
-  { name: 'Rhea', greek: 'Ῥέα', fam: 'first', line: 'Titan; mother of the Olympians' },
-  { name: 'Selene', greek: 'Σελήνη', fam: 'first', line: 'The moon, daughter of Titans' },
-  { name: 'Nemesis', greek: 'Νέμεσις', fam: 'others', line: 'Retribution for arrogance' },
-  { name: 'Nike', greek: 'Νίκη', fam: 'others', line: 'Victory' },
-  { name: 'Psyche', greek: 'Ψυχή', fam: 'others', line: 'The soul; beloved of Eros' },
-];
+export const GREEK = copy.greek.gods.filter((g) => g.name.trim()).map((g) => ({ name: g.name.trim(), greek: g.greek, fam: g.family, line: g.line, presiding: g.presiding }));
 
 /** goddesses and gods of many lands */
-export const LANDS = [
-  { land: 'Mesopotamian and Jewish lore', names: ['Lilith Devotional Working'] },
-  { land: 'Egyptian', names: ['Isis Devotional Working'] },
-  { land: 'Celtic', names: ['Brigid Devotional Working'] },
-  { land: 'Norse', names: ['Odin Devotional Working', 'Loki Devotional Working', 'Freyja Devotional Working', 'Frigg Devotional Working', 'Sunna Devotional Working'] },
-  { land: 'Canaanite', names: ['Asherah Devotional Working'] },
-  { land: 'Roman', names: ['Flora Devotional Working'] },
-  { land: 'Japanese', names: ['Benzaiten Devotional Working'] },
-  { land: 'Chinese', names: ['Mazu Devotional Working', 'Nüwa Devotional Working'] },
-  { land: 'Tibetan Buddhist', names: ['Kurukulla Devotional Study', 'Vajrayogini-Inspired Devotional Study', 'Vajravarahi-Inspired Devotional Study'] },
-  { land: 'Across traditions', names: ['Lilith & Aphrodite Combined Working', 'Custom Cross-Pantheon Devotional Ritual'] },
-];
+export const LANDS = copy.lands.map((l) => ({ land: l.land, names: list(l.names) })).filter((l) => l.land.trim() && l.names.length);

@@ -1,0 +1,779 @@
+{
+  "name": "Witchcraft & Magic",
+  "line": "Spells, rituals and protection, from love and abundance to uncrossing and baneful craft.",
+  "categories": [
+    {
+      "name": "Love, Attraction & Glamour",
+      "subs": [
+        {
+          "name": "Love & Attraction",
+          "chapter": "love",
+          "icon": "heart",
+          "items": [
+            "Love & Attraction Working",
+            "Partner Attraction Working",
+            "Calling in a Compatible Partner",
+            "Romantic Magnetism Working",
+            "Dating Confidence Working",
+            "Reciprocal Love Working",
+            "Healthy Partnership Manifestation",
+            "Heart Opening Ritual",
+            "Romantic Confidence Working",
+            "Dating & Social Magnetism",
+            "Love / Attraction Candle",
+            "Love Spellwork",
+            "Attraction Spellwork",
+            "Love Sigil",
+            "Love Spell Jar",
+            "Love & Attraction Package",
+            "Heart Opening Spell",
+            "Love Spell",
+            "Reciprocal Love Spell",
+            "Red Thread Spell",
+            "Love & Expansion Spell"
+          ]
+        },
+        {
+          "name": "Relationships, Reconciliation & Moving On",
+          "chapter": "love",
+          "icon": "rings",
+          "items": [
+            "Relationship Harmony",
+            "Release Old Relationship Patterns",
+            "Love + Cord Cutting + New Beginning",
+            "Emotional Availability Working",
+            "Relationship Communication Working",
+            "Reconciliation Intention Ritual",
+            "Separation & Moving-On Ritual",
+            "Love After Loss Working",
+            "Relationship Blessing Ritual",
+            "Emotional Bond Release",
+            "Self-Worth & Relationship Boundaries",
+            "Reconciliation Candle Working",
+            "Honey Jar Working",
+            "Sweetening Jar Working",
+            "Past Relationship Release",
+            "Closure & Moving-On Ritual",
+            "Love + Self-Worth + Relationship Healing Package",
+            "Obsession Pattern Release Spell",
+            "Reconciliation Spell",
+            "Moving-On Spell",
+            "Love After Loss Spell"
+          ]
+        },
+        {
+          "name": "Friendship & Social Connection",
+          "chapter": "love",
+          "icon": "friends",
+          "items": [
+            "Friendship Attraction Working",
+            "Friendship Harmony Working",
+            "Friendship Spell",
+            "Friendship Spell Jar"
+          ]
+        },
+        {
+          "name": "Glamour, Beauty & Self-Love",
+          "chapter": "love",
+          "icon": "mirror",
+          "items": [
+            "Venusian Beauty & Attraction Working",
+            "Self-Love Candle Working",
+            "Self-Love Spellwork",
+            "Glamour Spell",
+            "Beauty & Self-Presentation Spell",
+            "Glow-Up Spell",
+            "Glamour Magic",
+            "Self-Love Sigil",
+            "Glamour Sigil",
+            "Self-Love Spell Jar",
+            "Glamour Spell Jar",
+            "Beauty & Confidence Spell Jar",
+            "Scent-Based Glamour Magic",
+            "Self-Love + Empowerment Package",
+            "Skincare Intention Spell",
+            "Dream Body Intention Spell",
+            "Self-Love Spell",
+            "Venus Doorway Spell"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Abundance, Career & Success",
+      "subs": [
+        {
+          "name": "Money & Abundance",
+          "chapter": "abundance",
+          "icon": "coin",
+          "items": [
+            "Money / Abundance Candle",
+            "Money Spell",
+            "Money Sigil",
+            "Money & Abundance Spell Jar",
+            "Money + Career + Opportunity Package"
+          ]
+        },
+        {
+          "name": "Career, Business & Clients",
+          "chapter": "abundance",
+          "icon": "case",
+          "items": [
+            "Career / Success Candle",
+            "Career Spell",
+            "Client Attraction Spell",
+            "Business Growth Working",
+            "Career Sigil",
+            "Career & Success Spell Jar",
+            "Client Attraction Spell Jar",
+            "Business Growth Spell Jar",
+            "Career + Business + Client Attraction Package",
+            "Business Growth Spell"
+          ]
+        },
+        {
+          "name": "Luck, Success & Road Opening",
+          "chapter": "abundance",
+          "icon": "key",
+          "items": [
+            "Road Opener Candle Working",
+            "Luck & Fortune Spell",
+            "Success & Achievement Spell",
+            "Opportunity Attraction Spell",
+            "Road Opener Spell",
+            "Blockage Release Ritual",
+            "Success Sigil",
+            "Good Luck Spell Jar",
+            "Opportunity Spell Jar",
+            "Road Opener Spell Jar",
+            "Good Luck Sachet",
+            "Good Luck Spell",
+            "Success Spell",
+            "Opportunity Spell"
+          ]
+        },
+        {
+          "name": "Focus, Memory & Communication",
+          "chapter": "abundance",
+          "icon": "quill",
+          "items": [
+            "Discipline & Focus Spell",
+            "Memory & Concentration Intention Spell",
+            "Communication Spell",
+            "Discipline Spell Jar",
+            "Communication Spell Jar",
+            "Discipline Spell",
+            "Memory Spell"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Protection, Cleansing & Uncrossing",
+      "subs": [
+        {
+          "name": "Personal, Psychic & Evil-Eye Protection",
+          "chapter": "protection",
+          "icon": "eye",
+          "items": [
+            "Protection Spell",
+            "Evil Eye Cleansing",
+            "Spiritual Protection Spell",
+            "Psychic Protection Spell",
+            "Evil Eye Protection Jar",
+            "Knot Magic for Protection",
+            "Spiritual Shielding Ritual",
+            "Psychic Shielding Ritual",
+            "Protective Boundary Ritual",
+            "Multi-Layer Protection Ritual",
+            "Psychic Protection Ritual",
+            "Protection Package",
+            "Evil Eye Cleansing Spell",
+            "Shielding Spell"
+          ]
+        },
+        {
+          "name": "Home, Threshold & Warding",
+          "chapter": "protection",
+          "icon": "house",
+          "items": [
+            "Home Protection Spell",
+            "Protective Ward",
+            "Warding & Shielding Spell",
+            "Iron Magic",
+            "Threshold & Doorway Magic",
+            "Home Protection Working",
+            "Threshold / Doorway Protection",
+            "Household Protection Ritual",
+            "Property Protection Ritual",
+            "Four Corners Protection Ritual",
+            "New Room Intention Ritual",
+            "Threshold Protection Ritual",
+            "Doorway Warding",
+            "Mirror Protection Working",
+            "Protective Iron & Key Working",
+            "Doorway Magic",
+            "Threshold Magic",
+            "Eggshell Symbolic Protection Magic",
+            "Iron Protection Magic",
+            "Iron & Key Protection Working",
+            "Home Protection Package",
+            "Warding Spell",
+            "Threshold / Doorway Spell"
+          ]
+        },
+        {
+          "name": "Cleansing & Blessing",
+          "chapter": "protection",
+          "icon": "sparkle",
+          "items": [
+            "Personal Cleansing",
+            "Home Cleansing",
+            "Space Cleansing",
+            "Home Cleansing + Protection",
+            "Home Blessing",
+            "Room Cleansing",
+            "Bedroom Peace Ritual",
+            "New Home Blessing",
+            "Housewarming Ritual",
+            "Home Energy Reset",
+            "Home Harmony Ritual",
+            "Smoke Cleansing",
+            "Complete Home Cleansing + Protection Package",
+            "Room Cleansing Spell",
+            "Doorway Blessing Spell",
+            "Home Blessing Spell",
+            "Peaceful Home Spell",
+            "Bedroom Peace Spell",
+            "New Home Blessing Spell"
+          ]
+        },
+        {
+          "name": "Banishing",
+          "chapter": "protection",
+          "icon": "banish",
+          "items": [
+            "Banishing Candle Working",
+            "Banishing Spellwork",
+            "Banishing Spell Jar",
+            "Banishing Spell"
+          ]
+        },
+        {
+          "name": "Uncrossing, Reversal & Curse Removal",
+          "chapter": "protection",
+          "icon": "uncross",
+          "items": [
+            "Uncrossing Candle Working",
+            "Reversal Candle Working",
+            "Uncrossing Spellwork",
+            "Reversal Spellwork",
+            "Unbinding Spellwork",
+            "Reversal Spell Jar",
+            "Unbinding Ritual",
+            "Reversal Working",
+            "Uncrossing Spell",
+            "Unbinding Spell",
+            "Uncrossing",
+            "Curse Removal",
+            "Hex Removal",
+            "Reversal and Counter-Magic",
+            "Curse Removal Rituals",
+            "Hex Removal Rituals"
+          ]
+        },
+        {
+          "name": "Protective Candles, Jars & Charms",
+          "chapter": "protection",
+          "icon": "shield",
+          "items": [
+            "Protection Candle",
+            "Cleansing Candle Working",
+            "Spiritual Protection Candle",
+            "Protection Sigil",
+            "Psychic Protection Sigil",
+            "Protective Charm Creation",
+            "Protection Spell Jar",
+            "Home Protection Spell Jar",
+            "Psychic Protection Spell Jar",
+            "Protection Sachet",
+            "Protective Talisman Creation",
+            "Protective Amulet Creation",
+            "Protection Bottle Creation",
+            "Protective Charm / Talisman",
+            "Protective Charm Crafting",
+            "Custom Protection Talismans"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Baneful & Dark Craft",
+      "subs": [
+        {
+          "name": "Hexing & Curse Work",
+          "chapter": "baneful",
+          "icon": "box",
+          "items": [
+            "Mirror Box Ritual",
+            "Hexing",
+            "Curse Work",
+            "Mirror Box Hexing",
+            "Advanced Mirror Box Work",
+            "Curse and Hex Construction"
+          ]
+        },
+        {
+          "name": "Binding, Domination & Separation",
+          "chapter": "baneful",
+          "icon": "chain",
+          "items": [
+            "Binding Spellwork",
+            "Symbolic Binding Ritual",
+            "Domination Magic",
+            "Binding Magic",
+            "Separation Magic",
+            "Sour Jar Work",
+            "Sour Jar Magic",
+            "Freezer Spellwork",
+            "Domination Spellwork"
+          ]
+        },
+        {
+          "name": "Justice, Retribution & Return-to-Sender",
+          "chapter": "baneful",
+          "icon": "scales",
+          "items": [
+            "Justice Candle Working",
+            "Justice / Return-to-Sender Spell",
+            "Revenge / Justice Reflection Ritual",
+            "Hostile-Energy Reversal",
+            "Return-to-Sender Work",
+            "Justice and Retribution Workings"
+          ]
+        },
+        {
+          "name": "Graveyard & Cemetery Work",
+          "chapter": "baneful",
+          "icon": "grave",
+          "items": [
+            "Graveyard Magic",
+            "Graveyard Rituals",
+            "Cemetery-Based Spiritual Work",
+            "Graveyard Spellwork",
+            "Graveyard Offerings and Rituals"
+          ]
+        },
+        {
+          "name": "Dark Devotion",
+          "chapter": "baneful",
+          "icon": "crescent",
+          "items": [
+            "Deity-Assisted Baneful Working",
+            "Darker Deity-Assisted Workings",
+            "Dark Devotional Witchcraft",
+            "Dark Devotional Spellcraft"
+          ]
+        },
+        {
+          "name": "Dark Magic & Shadow Spellcraft",
+          "chapter": "baneful",
+          "icon": "hourglass",
+          "items": [
+            "Personalised Baneful Ritual",
+            "Dark Magic",
+            "Baneful Magic",
+            "Shadow-Oriented Spellcraft",
+            "Baneful Petition Magic"
+          ]
+        },
+        {
+          "name": "Spiritual Warfare & Defence",
+          "chapter": "baneful",
+          "icon": "shield",
+          "items": [
+            "Defensive Baneful Working",
+            "Enemy Protection and Defence",
+            "Spiritual Warfare",
+            "Protective Baneful Magic"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Spellcraft & Magical Objects",
+      "subs": [
+        {
+          "name": "Made-to-Order Spellwork",
+          "chapter": "spellcraft",
+          "icon": "wand",
+          "items": [
+            "Simple Spellwork",
+            "Personalised Spellwork",
+            "Deep / Custom Spellwork",
+            "Complex Spellwork",
+            "Custom Multi-Spell",
+            "Multi-Material Spell Construction",
+            "Candle + Sigil + Spellwork",
+            "Custom Multi-Spell Package",
+            "Custom Long-Term Spellwork Programme",
+            "Custom Multi-Layered Spellwork"
+          ]
+        },
+        {
+          "name": "Candle & Flame Magic",
+          "chapter": "spellcraft",
+          "icon": "candle",
+          "items": [
+            "Personalised Intention Candle",
+            "Personalised Candle Spellwork",
+            "Intensive Candle Working",
+            "Multi-Candle Ritual",
+            "Seven-Day Candle Working",
+            "Symbolic Fire Magic",
+            "Candle & Flame Magic",
+            "Candle Dressing & Intention Setting"
+          ]
+        },
+        {
+          "name": "Spell Jars, Bottles & Sachets",
+          "chapter": "spellcraft",
+          "icon": "jar",
+          "items": [
+            "Pouch & Sachet Magic",
+            "Spell Bottle Magic",
+            "Spell Jar Magic",
+            "Personalised Spell Jar",
+            "Personalised Multi-Intention Spell Jar",
+            "Spell Bottle Creation",
+            "Personal Charm Bag",
+            "Witch Bottle Creation",
+            "Spell Box Creation",
+            "Spell Chest Creation",
+            "Spirit Bottles",
+            "Magical Sachets"
+          ]
+        },
+        {
+          "name": "Sigils, Seals & Symbols",
+          "chapter": "spellcraft",
+          "icon": "sigil",
+          "items": [
+            "Sigil Magic",
+            "Personalised Sigil",
+            "Activated Sigil",
+            "Sigil + Candle",
+            "Sigil + Spellwork",
+            "Custom Sigil System",
+            "Custom Combination Sigils",
+            "Sigil Activation Ritual",
+            "Sigil Pendant / Talisman Design",
+            "Multi-Purpose Sigil System",
+            "Sacred Geometry-Inspired Symbolic Work",
+            "Sigil-Based Manifestation",
+            "Numerology-Inspired Magic",
+            "Sacred Geometry-Inspired Magic",
+            "Rune-Inspired Symbolic Work",
+            "Alphabet & Word Magic",
+            "Sigil-Activated Talisman",
+            "Custom Symbolic Magical System"
+          ]
+        },
+        {
+          "name": "Talismans, Amulets & Charms",
+          "chapter": "spellcraft",
+          "icon": "amulet",
+          "items": [
+            "Talismanic Magic",
+            "Amulet Creation",
+            "Charm Magic",
+            "Personalised Amulet Creation",
+            "Symbolic Charm Creation",
+            "Personalised Magical Charm",
+            "Personal Magical Object Creation"
+          ]
+        },
+        {
+          "name": "Oils, Powders & Washes",
+          "chapter": "spellcraft",
+          "icon": "drop",
+          "items": [
+            "Protection Water",
+            "Cleansing Water",
+            "Ritual Powders",
+            "Magical Oils and Anointing Blends, where Safely Prepared",
+            "Magical Washes and Cleansing Preparations",
+            "Banishing Powders",
+            "Protection Powders"
+          ]
+        },
+        {
+          "name": "Folk Techniques",
+          "chapter": "spellcraft",
+          "icon": "knot",
+          "items": [
+            "Mirror Magic",
+            "Knot Magic",
+            "Thread Magic",
+            "Petition Magic",
+            "Smoke & Incense Magic",
+            "Salt Magic",
+            "Key Magic",
+            "Colour Magic",
+            "Scent & Perfume Magic",
+            "Poppet Magic",
+            "Effigy & Symbolic Representation Magic",
+            "Knot & Cord Magic",
+            "Red Thread Magic",
+            "Petition Paper Magic",
+            "Written Intention Magic",
+            "Coin Magic",
+            "Incense Magic",
+            "Perfume Magic",
+            "Colour Correspondence Magic",
+            "Sound & Bell Rituals",
+            "Name Paper Ritual",
+            "Knot Spellwork",
+            "Red Thread Ritual"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Rituals, Ceremonies & Witchcraft Paths",
+      "subs": [
+        {
+          "name": "Personal & Custom Rituals",
+          "chapter": "rituals",
+          "icon": "circle",
+          "items": [
+            "Personalised Ritual",
+            "Custom Ritual",
+            "Intensive Ritual",
+            "Multi-Stage Ritual",
+            "Long-Term Spiritual Working",
+            "Intensive Spiritual Package",
+            "Long-Term / Multi-Stage Package",
+            "Full Personal Spiritual Working"
+          ]
+        },
+        {
+          "name": "Ceremonial, Fire & Elemental Rites",
+          "chapter": "rituals",
+          "icon": "fire",
+          "items": [
+            "Four Directions Rituals",
+            "Elemental Invocation",
+            "Ceremonial Ritual",
+            "Elemental Invocation Ritual",
+            "Four Directions Ritual",
+            "Sacred Fire Ritual",
+            "Fire Release Ritual",
+            "Four Directional Spell"
+          ]
+        },
+        {
+          "name": "Transitions, Rebirth & Dedication",
+          "chapter": "rituals",
+          "icon": "spiral",
+          "items": [
+            "Transformation Spell",
+            "Phoenix / Rebirth Spell",
+            "New Beginning Spell",
+            "Symbolic Burial Ritual",
+            "Rebirth & Renewal Ritual",
+            "Phoenix Transformation Ritual",
+            "Crossroads Ritual",
+            "Threshold Crossing Ritual",
+            "Life Transition Ritual",
+            "New Beginning Ritual",
+            "Personal Empowerment Ceremony",
+            "Spiritual Dedication Ritual",
+            "Sacred Object Consecration",
+            "Phoenix Spell",
+            "Time-Reconciliation Spell"
+          ]
+        },
+        {
+          "name": "Witchcraft Paths & Traditions",
+          "chapter": "rituals",
+          "icon": "cross",
+          "items": [
+            "Traditional Witchcraft-Inspired Spellwork",
+            "Contemporary Witchcraft",
+            "Eclectic Witchcraft",
+            "Solitary Witchcraft",
+            "Devotional Witchcraft",
+            "Shadow Witchcraft",
+            "Lunar Witchcraft",
+            "Solar Witchcraft",
+            "Planetary Witchcraft",
+            "Elemental Witchcraft",
+            "Green Witchcraft",
+            "Kitchen Witchcraft",
+            "Cottage Witchcraft",
+            "Garden Witchcraft",
+            "Forest Witchcraft",
+            "Sea & Ocean Witchcraft",
+            "Cosmic Witchcraft",
+            "Astrological Witchcraft",
+            "Ceremonial Magic",
+            "Chaos Magic",
+            "Folk-Inspired Magic",
+            "Seasonal Witchcraft",
+            "Ancestral Witchcraft",
+            "Deity-Centred Witchcraft"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Nature, Moon & Cosmic Magic",
+      "subs": [
+        {
+          "name": "Moon Magic",
+          "chapter": "nature",
+          "icon": "crescent",
+          "items": [
+            "New Moon Ritual",
+            "Full Moon Ritual",
+            "Personalised New Moon Ritual",
+            "Personalised Full Moon Ritual",
+            "Lunar Cleansing",
+            "Lunar Protection",
+            "Moon + Shadow Work",
+            "Waxing Moon Manifestation",
+            "Waning Moon Release Ritual",
+            "Dark Moon Ritual",
+            "Blue Moon Ritual",
+            "Blood Moon Reflection Ritual",
+            "Lunar Intention Setting",
+            "Lunar Spellwork",
+            "Eclipse Reflection Ritual",
+            "Moon + Spellwork"
+          ]
+        },
+        {
+          "name": "Sun, Planets & Astrology",
+          "chapter": "nature",
+          "icon": "sun",
+          "items": [
+            "Planetary Candle Working",
+            "Planetary Seal Working",
+            "Solar Ritual",
+            "Solar Manifestation Working",
+            "Planetary Hour Magic",
+            "Mercury Working",
+            "Venus Working",
+            "Mars Working",
+            "Jupiter Working",
+            "Saturn Working",
+            "Uranus Working",
+            "Neptune Working",
+            "Pluto Working",
+            "Astrological Birth Chart-Inspired Ritual",
+            "Zodiac-Based Spellwork",
+            "Planetary Candle Magic",
+            "Planetary Talisman Creation",
+            "Planetary Magic",
+            "Zodiac Magic"
+          ]
+        },
+        {
+          "name": "Seasons & Sabbats",
+          "chapter": "nature",
+          "icon": "wheel",
+          "items": [
+            "Seasonal Sabbat Rituals",
+            "Equinox Rituals",
+            "Solstice Rituals",
+            "Samhain Rituals",
+            "Imbolc Rituals",
+            "Beltane Rituals",
+            "Lughnasadh Rituals",
+            "Ostara Rituals",
+            "Mabon Rituals",
+            "Yule Rituals",
+            "Seasonal Transition Ritual",
+            "Equinox & Solstice Rituals",
+            "Sabbat & Seasonal Ceremony",
+            "Seasonal Botanical Ritual",
+            "Personalised Seasonal Ceremony"
+          ]
+        },
+        {
+          "name": "Herbal & Botanical Magic",
+          "chapter": "nature",
+          "icon": "leaf",
+          "items": [
+            "Herbal Magic",
+            "Flower Magic",
+            "Herbal Charm Pouch",
+            "Land & Garden Blessing",
+            "Herbal Spellwork",
+            "Herbal Protection Working",
+            "Herbal Cleansing Working",
+            "Rose Magic",
+            "Jasmine Magic",
+            "Lavender Magic",
+            "Rosemary Magic",
+            "Bay Leaf Magic",
+            "Cinnamon Magic",
+            "Basil Magic",
+            "Chamomile Magic",
+            "Botanical Spell Jars",
+            "Herbal Sachet Creation",
+            "Herbal Charm Creation",
+            "Garden Blessing Ritual",
+            "Bay Leaf Manifestation",
+            "Herbal Doll / Charm Creation",
+            "Herbal Protection Blends"
+          ]
+        },
+        {
+          "name": "Crystal & Stone Magic",
+          "chapter": "nature",
+          "icon": "crystal",
+          "items": [
+            "Crystal Magic",
+            "Stone & Mineral Magic",
+            "Crystal Grid Creation",
+            "Crystal Intention Setting",
+            "Crystal Cleansing Ritual",
+            "Crystal Charging Ritual",
+            "Crystal Protection Working",
+            "Personal Crystal Grid",
+            "Love Crystal Grid",
+            "Abundance Crystal Grid",
+            "Protection Crystal Grid",
+            "Chakra Crystal Grid",
+            "Crystal Spellwork"
+          ]
+        },
+        {
+          "name": "Elements & Wild Places",
+          "chapter": "nature",
+          "icon": "tree",
+          "items": [
+            "Elemental Candle Working",
+            "Tree & Wood Magic",
+            "Forest Intention Ritual",
+            "Tree Devotional Working",
+            "Nature Connection Ritual",
+            "Earth Element Ritual",
+            "Water Element Ritual",
+            "Air Element Ritual",
+            "Fire Element Ritual",
+            "Elemental Balance Ritual",
+            "Elemental Magic",
+            "Forest Spell",
+            "Ocean Spell",
+            "Mountain Spell",
+            "Fisherman's Knot Spell",
+            "Mermaid / Siren Spell"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -9,18 +9,23 @@
  *   IV  Journaling: a prompt for today
  */
 import Base from '../../layouts/Base.astro';
+import { words } from '../../config';
 import CareText from '../../components/CareText.astro';
 import SubCards from '../../components/SubCards.astro';
 import { pillars, categoryCount } from '../../data/site';
-import { BREATH_CARE, BREATHS, CARE, CHAKRAS, CHAPTERS, GROUNDING, PROMPTS, SUB_ICON } from '../../data/healing';
+import { BREATH_CARE, BREATHS, CARE, CHAKRAS, CHAPTER_KEYS, CHAPTERS, COPY, GROUNDING, PROMPTS } from '../../data/healing';
+import { categoryAliases, gather } from '../../data/chapters';
+import Rich from '../../components/Rich.astro';
 
 const index = pillars.findIndex((p) => p.slug === 'healing');
 const p = pillars[index];
 const prev = pillars[(index + pillars.length - 1) % pillars.length];
 const next = pillars[(index + 1) % pillars.length];
-const anchor = (s: string) => s.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const ROMAN = ['I', 'II', 'III', 'IV'];
-const moves = CHAPTERS.map((ch) => ({ ...ch, cat: p.categories.find((c) => c.name === ch.category)! }));
+/* each chapter keeps the address of the catalogue category it was made from, so links into the page keep working */
+const IDS: Record<string, string> = { energy: 'energy-healing-aura-and-chakra', mind: 'mind-and-subconscious-work', shadow: 'shadow-work-and-inner-healing', journal: 'journaling-and-guided-reflection' };
+const moves = CHAPTERS.map((ch) => ({ ...ch, cat: gather(p, ch.key, ch.title, CHAPTER_KEYS), id: IDS[ch.key] }));
+const aliases = categoryAliases(p, CHAPTER_KEYS, IDS);
 
 /* the body of light: where each chakra sits on the figure, crown first */
 const CK_Y = [-156, -128, -97, -62, -28, 6, 38];
@@ -69,13 +74,13 @@ const pieces = polys.map((poly, i) => {
     <section class="chapter hl-hero" data-chapter="heal_hero" data-heal-chapter="hero">
       <div class="chapter-inner hl-hero-grid">
         <div class="hl-hero-copy">
-          <a class="back-link" href="/#paths">← All pillars</a>
+          <a class="back-link" href="/#paths">{words.allPillars}</a>
           <p class="kicker" data-hero>Pillar {index + 1} of {pillars.length} · {p.count} services</p>
           <h1 class="display-l hl-title" data-hero data-split transition:name="pt-healing" data-pt>{p.name}</h1>
           <p class="lede" data-hero>{p.line}</p>
           <ol class="hl-index" data-hero aria-label="The four chapters">
             {moves.map((m, i) => (
-              <li><a href={`#${anchor(m.category)}`}><span class="hl-num" aria-hidden="true">{ROMAN[i]}</span><span class="hl-ix-title">{m.title}</span><span class="hl-ix-n">{categoryCount(m.cat)} services</span></a></li>
+              <li><a href={`#${m.id}`}><span class="hl-num" aria-hidden="true">{ROMAN[i]}</span><span class="hl-ix-title">{m.title}</span><span class="hl-ix-n">{categoryCount(m.cat)} services</span></a></li>
             ))}
           </ol>
         </div>
@@ -84,7 +89,7 @@ const pieces = polys.map((poly, i) => {
         <div class="breath" data-breath data-hero>
           <div class="br-modes" role="group" aria-label="Breathing patterns">
             {BREATHS.map((b, i) => <button type="button" data-breath-mode={b.key} aria-pressed={i === 0 ? 'true' : 'false'}>{b.name}</button>)}
-            <button type="button" data-breath-mode="ground" aria-pressed="false">Grounding 5-4-3-2-1</button>
+            <button type="button" data-breath-mode="ground" aria-pressed="false">{COPY.breath.grounding.name}</button>
           </div>
           <div class="br-stage">
             <svg viewBox="-150 -150 300 300" class="breath-svg" aria-hidden="true">
@@ -99,7 +104,7 @@ const pieces = polys.map((poly, i) => {
               </g>
             </svg>
             <div class="br-read">
-              <p class="br-word" data-breath-word aria-live="polite">Choose a pattern, then begin</p>
+              <p class="br-word" data-breath-word aria-live="polite">{COPY.breath.idle}</p>
               <p class="br-count" data-breath-count aria-hidden="true"></p>
             </div>
             <ol class="br-ground" data-ground hidden>
@@ -108,21 +113,22 @@ const pieces = polys.map((poly, i) => {
           </div>
           <p class="br-short" data-breath-short>{BREATHS[0].short}</p>
           <p class="br-about" data-breath-about>{BREATHS[0].about}</p>
-          <button type="button" class="btn btn-ghost btn-sm" data-breath-toggle>Begin</button>
-          <p class="br-care">{BREATH_CARE}</p>
+          <button type="button" class="btn btn-ghost btn-sm" data-breath-toggle>{COPY.breath.begin}</button>
+          <p class="br-care"><Rich text={BREATH_CARE} /></p>
         </div>
       </div>
     </section>
 
     {moves.map((m, i) => (
-      <section class={`chapter hl-move hl-${m.key}`} id={anchor(m.category)} data-chapter={`heal_${m.key}`} data-heal-chapter={m.key}>
+      <section class={`chapter hl-move hl-${m.key}`} id={m.id} data-chapter={`heal_${m.key}`} data-heal-chapter={m.key}>
+        {(aliases[m.key] || []).map((a) => <span id={a} class="anchor-alias" aria-hidden="true"></span>)}
         <div class={`chapter-inner hl-inner${m.key === 'energy' || m.key === 'shadow' ? ' hl-split' : ''}`}>
           <header class="hl-head">
             <p class="kicker" data-fade><span class="hl-num">{ROMAN[i]}</span> · {categoryCount(m.cat)} services</p>
             <h2 class="display-l" data-split data-dust>{m.title}</h2>
             <p class="lede" data-fade>{m.line}</p>
-            {m.care && <p class="hl-care" data-fade><CareText text={CARE} /> <a href="/care">Read Boundaries and care</a>.</p>}
-            <div class="cta-row" data-fade><a class="btn btn-ghost btn-sm" href="/connect" data-topic={m.category}>Ask about this</a></div>
+            {m.care && <p class="hl-care" data-fade><CareText text={CARE} /> <a href="/care">Read {words.care}</a>.</p>}
+            <div class="cta-row" data-fade><a class="btn btn-ghost btn-sm" href="/connect" data-topic={m.title}>{words.ask}</a></div>
           </header>
 
           {m.key === 'energy' && (
@@ -138,19 +144,19 @@ const pieces = polys.map((poly, i) => {
                 ))}
               </svg>
               <div class="bl-info" aria-live="polite">
-                <p class="kicker">The body of light</p>
+                <p class="kicker">{COPY.body.kicker}</p>
                 <p class="bl-deva" lang="sa" data-bl-deva>{CHAKRAS[3].deva}</p>
                 <h3 class="bl-name" data-bl-name>{CHAKRAS[3].name} · {CHAKRAS[3].english}</h3>
                 <p class="bl-place" data-bl-place>Placed {CHAKRAS[3].place}.</p>
                 <button type="button" class="chip-keep" data-bl-work data-keep={CHAKRAS[3].working} data-keep-p={p.name} aria-pressed="false">{CHAKRAS[3].working}</button>
-                <p class="dv-sig-hint small">Tap a centre on the figure. These are the seven chakras of the modern system, shaped by John Woodroffe’s The Serpent Power (1919); older Indian traditions count and place them differently, and the rainbow colours were added in the twentieth century.</p>
+                <p class="dv-sig-hint small">{COPY.body.hint}</p>
               </div>
             </div>
           )}
 
           {m.key === 'shadow' && (
             <div class="mend" data-mend data-fade>
-              <p class="kicker">Golden repair</p>
+              <p class="kicker">{COPY.mend.kicker}</p>
               <svg viewBox="-185 -185 370 370" class="mend-svg" data-mend-svg>
                 <circle r={R} class="md-guide" />
                 <circle r="44" class="md-foot" data-mend-foot />
@@ -161,40 +167,40 @@ const pieces = polys.map((poly, i) => {
                   </g>
                 ))}
               </svg>
-              <p class="br-word" data-mend-word aria-live="polite">Drag each piece home, or tap it</p>
-              <button type="button" class="btn btn-ghost btn-sm" data-mend-all>Set them all back</button>
-              <p class="dv-sig-hint" data-mend-note hidden>Kintsugi is the Japanese art of mending broken pottery with lacquer dusted or mixed with powdered gold. The break is not hidden; it becomes part of the bowl’s history.</p>
+              <p class="br-word" data-mend-word aria-live="polite">{COPY.mend.start}</p>
+              <button type="button" class="btn btn-ghost btn-sm" data-mend-all>{COPY.mend.all}</button>
+              <p class="dv-sig-hint" data-mend-note hidden>{COPY.mend.note}</p>
             </div>
           )}
 
           {m.key === 'journal' && (
             <div class="prompt-card" data-prompt data-fade>
-              <p class="kicker">A prompt for today</p>
+              <p class="kicker">{COPY.prompt.kicker}</p>
               <p class="prompt-text" data-prompt-text>{PROMPTS[0]}</p>
-              <div class="cta-row"><button type="button" class="btn btn-ghost btn-sm" data-prompt-next>Another prompt</button></div>
-              <p class="dv-sig-hint small">Draft prompts; Sarvakali will write their own. Nothing here is saved.</p>
+              <div class="cta-row"><button type="button" class="btn btn-ghost btn-sm" data-prompt-next>{COPY.prompt.next}</button></div>
+              <p class="dv-sig-hint small">{COPY.prompt.hint}</p>
             </div>
           )}
-          <SubCards category={m.cat} pillar={p.name} icons={SUB_ICON} />
+          <SubCards category={m.cat} pillar={p.name} />
         </div>
       </section>
     ))}
 
     <section class="chapter hl-close" data-chapter="heal_close" data-heal-chapter="close">
       <div class="chapter-inner narrow center">
-        <p class="kicker" data-fade>When you are ready</p>
-        <h2 class="display-l" data-split>Healing begins with being heard</h2>
-        <p class="lede" data-fade>Tell Sarvakali what you are carrying. Together you will find a gentle place to start.</p>
+        <p class="kicker" data-fade>{COPY.close.kicker}</p>
+        <h2 class="display-l" data-split>{COPY.close.title}</h2>
+        <p class="lede" data-fade>{COPY.close.lede}</p>
         <div class="cta-row center" data-fade>
-          <a class="btn btn-solid" href="/connect" data-topic={p.name}>Request a conversation</a>
-          <a class="btn btn-ghost" href="/care">Boundaries and care</a>
+          <a class="btn btn-solid" href="/connect" data-topic={p.name}>{COPY.close.button}</a>
+          <a class="btn btn-ghost" href="/care">{words.care}</a>
         </div>
       </div>
     </section>
 
     <nav class="pp-nav" aria-label="Other pillars">
-      <a href={`/pillars/${prev.slug}`}><span>Previous pillar</span><b transition:name={`pt-${prev.slug}`} data-pt>{prev.name}</b></a>
-      <a href={`/pillars/${next.slug}`}><span>Next pillar</span><b transition:name={`pt-${next.slug}`} data-pt>{next.name}</b></a>
+      <a href={`/pillars/${prev.slug}`}><span>{words.previous}</span><b transition:name={`pt-${prev.slug}`} data-pt>{prev.name}</b></a>
+      <a href={`/pillars/${next.slug}`}><span>{words.next}</span><b transition:name={`pt-${next.slug}`} data-pt>{next.name}</b></a>
     </nav>
   </div>
 </Base>

@@ -1,0 +1,355 @@
+{
+  "name": "Devotion & the Unseen",
+  "line": "Work with Kali and the Devi, deities across traditions, spirits, ancestors and shamanic journeys.",
+  "categories": [
+    {
+      "name": "Devi & Deity Work",
+      "subs": [
+        {
+          "name": "Kali & the Mahavidyas",
+          "chapter": "vidyas",
+          "items": [
+            "Kali Working",
+            "Tara Working",
+            "Chinnamasta Working",
+            "Dhumavati Working",
+            "Baglamukhi Working",
+            "Lalita Tripura Sundari Working",
+            "Dashamahavidya Working",
+            "Matangi Working",
+            "Bhuvaneshwari Working",
+            "Kamala Working",
+            "Bhairavi Working"
+          ]
+        },
+        {
+          "name": "Devi & Hindu Deities",
+          "chapter": "devi",
+          "items": [
+            "Pratyangira Working",
+            "Shiva Working",
+            "Bhairava Working",
+            "Narasimha Working",
+            "Krishna Working",
+            "Hanuman Working",
+            "Durga Working",
+            "Lakshmi Working",
+            "Saraswati Working",
+            "Ganesha Working",
+            "Kartikeya / Murugan Working",
+            "Kamakhya Devotional Working",
+            "Devi Protection Working",
+            "Devi Invocation & Prayer",
+            "Goddess-Centred Spiritual Guidance"
+          ]
+        },
+        {
+          "name": "Mantra, Yantra & Tantric Devotion",
+          "chapter": "devi",
+          "items": [
+            "Mantra-Based Devotional Working",
+            "Yantra-Based Devotional Working",
+            "Tantric Symbolic Ritual Work",
+            "Personalised Devi Sadhana Guidance"
+          ]
+        },
+        {
+          "name": "Greek Deities",
+          "chapter": "greek",
+          "items": [
+            "Individual Greek deity working",
+            "Hecate",
+            "Aphrodite",
+            "Athena",
+            "Artemis",
+            "Apollo",
+            "Hermes",
+            "Ares",
+            "Hephaestus",
+            "Demeter",
+            "Persephone",
+            "Hades",
+            "Dionysus",
+            "Hera",
+            "Zeus",
+            "Poseidon",
+            "Gaia",
+            "Nyx",
+            "Selene",
+            "Eros",
+            "Hestia",
+            "Kronos",
+            "Rhea",
+            "Nemesis",
+            "Nike",
+            "Greek Pantheon Devotional Working",
+            "Hecate Crossroads Ritual",
+            "Aphrodite Love & Beauty Working",
+            "Athena Wisdom & Strategy Working",
+            "Artemis Independence & Wilderness Working",
+            "Apollo Creativity & Clarity Working",
+            "Hermes Communication & Opportunity Working",
+            "Persephone Shadow & Transformation Working",
+            "Hades Ancestral & Underworld Devotion",
+            "Dionysus Liberation & Expression Working",
+            "Selene Lunar Devotional Working",
+            "Nyx Night & Shadow Working",
+            "Hecate-Inspired Witchcraft",
+            "Persephone Devotional Working",
+            "Gaia Devotional Working",
+            "Psyche Devotional Working",
+            "Nyx & Hecate Combined Working",
+            "Aphrodite & Persephone Combined Working",
+            "Aphrodite Partner Attraction",
+            "Self-Love + Aphrodite",
+            "Aphrodite Relationship Blessing",
+            "Aphrodite + Hecate Love Transition",
+            "Artemis Wilderness Spell",
+            "Hermes Spell"
+          ]
+        },
+        {
+          "name": "Lilith & Other Traditions",
+          "chapter": "lands",
+          "items": [
+            "Lilith Devotional Working",
+            "Isis Devotional Working",
+            "Brigid Devotional Working",
+            "Odin Devotional Working",
+            "Loki Devotional Working",
+            "Freyja Devotional Working",
+            "Frigg Devotional Working",
+            "Benzaiten Devotional Working",
+            "Asherah Devotional Working",
+            "Mazu Devotional Working",
+            "Nüwa Devotional Working",
+            "Flora Devotional Working",
+            "Sunna Devotional Working",
+            "Kurukulla Devotional Study",
+            "Vajrayogini-Inspired Devotional Study",
+            "Vajravarahi-Inspired Devotional Study",
+            "Lilith & Aphrodite Combined Working",
+            "Custom Cross-Pantheon Devotional Ritual"
+          ]
+        },
+        {
+          "name": "Devotional Practice, Altars & Sacred Space",
+          "chapter": "altar",
+          "items": [
+            "Deity Invocation",
+            "Personalised Deity Working",
+            "Multi-Deity Ritual",
+            "Deity Devotional Working",
+            "Deity Connection Ritual",
+            "Deity Introduction & Guidance",
+            "Deity Offering Ritual",
+            "Deity Prayer & Invocation",
+            "Deity Altar Blessing",
+            "Deity Devotion Package",
+            "Divine Feminine Working",
+            "Divine Masculine Working",
+            "Goddess Devotion Working",
+            "God Devotion Working",
+            "Sacred Devotional Ritual",
+            "Personalised Deity Correspondence Working",
+            "Devotional Altar & Offering Working",
+            "Spiritual Reconnection Spell",
+            "Sacred Space Magic",
+            "Spiritual Connection Spell Jar",
+            "Altar Cleansing",
+            "Altar Blessing",
+            "Sacred Space Creation",
+            "Personal Altar Consecration",
+            "Dream & Deity Connection Ritual",
+            "Custom Multi-Deity Ceremony",
+            "Multi-Deity Package",
+            "Altar Cleansing Spell",
+            "Deity Connection Spell",
+            "Return to Spirituality Spell"
+          ]
+        },
+        {
+          "name": "Deity-Assisted Workings",
+          "chapter": "altar",
+          "items": [
+            "Deity-Assisted Spellwork",
+            "Deity-Assisted Shadow Work",
+            "Deity-Assisted Protection",
+            "Deity-Assisted Cleansing",
+            "Deity-Assisted Manifestation",
+            "Deity Candle Working",
+            "Deity Sigil",
+            "Deity Devotional Sigil",
+            "Deity Devotional Spell Jar",
+            "Deity + Moon Working",
+            "Deity Talisman Creation",
+            "Deity-Assisted Ceremonial Ritual",
+            "Deity + Candle + Sigil Package",
+            "Moon + Deity + Spellwork Package",
+            "Ancestral + Deity + Protection Package"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Spirits, Mediumship & Ancestors",
+      "subs": [
+        {
+          "name": "Mediumship & Spirit Communication",
+          "chapter": "spirits",
+          "items": [
+            "Spirit Communication",
+            "Mediumship",
+            "Spiritual Messages and Intuitive Interpretation"
+          ]
+        },
+        {
+          "name": "Loved Ones & Grief",
+          "chapter": "spirits",
+          "items": [
+            "Communication with Deceased Loved Ones",
+            "Grief-Oriented Spiritual Communication Sessions"
+          ]
+        },
+        {
+          "name": "Animal & Pet Spirits",
+          "chapter": "spirits",
+          "items": [
+            "Communication with Deceased Animals",
+            "Communication with Deceased Cats",
+            "Animal Spirit Communication",
+            "Pet Spirit Communication",
+            "Deceased Pet Connection Sessions",
+            "Animal Afterlife Communication"
+          ]
+        },
+        {
+          "name": "Ancestors & Lineage",
+          "chapter": "spirits",
+          "items": [
+            "Ancestral Pattern Release",
+            "Ancestor Guidance",
+            "Ancestor Connection",
+            "Ancestor Healing",
+            "Ancestral Pattern Work",
+            "Ancestral Release",
+            "Ancestor Protection",
+            "Personalised Ancestor Ritual",
+            "Ancestor + Grief Working",
+            "Ancestral Honour Ritual",
+            "Ancestral Altar Working",
+            "Ancestral Gratitude Ritual",
+            "Ancestral Pattern Exploration",
+            "Lineage Reflection Working",
+            "Ancestor Devotional Offering",
+            "Ancestor-Inspired Protection",
+            "Ancestral Dream Reflection",
+            "Family Pattern Release Ritual",
+            "Ancestral Remembrance Ritual",
+            "Ancestor Guidance + Healing",
+            "Ancestor Communication",
+            "Ancestral Spirit Communication",
+            "Ancestral Spirit Release"
+          ]
+        },
+        {
+          "name": "Spirit Discernment & Attachment",
+          "chapter": "spirits",
+          "items": [
+            "Spirit Identification and Discernment",
+            "Spirit Attachment Assessment",
+            "Spiritual Disturbance Assessment",
+            "Spiritual Discernment Sessions"
+          ]
+        },
+        {
+          "name": "Exorcism, Spirit Release & Spiritual Cleansing",
+          "chapter": "spirits",
+          "items": [
+            "Banishing and Spirit Removal",
+            "Spirit Release Work",
+            "Spirit Cleansing",
+            "Spiritual Protection Following Communication",
+            "Exorcism Sessions",
+            "Spirit Release Sessions",
+            "Spiritual Cleansing",
+            "Entity-Release Rituals",
+            "Home Spirit Cleansing",
+            "Personal Spiritual Cleansing",
+            "Banishing Rituals",
+            "Spiritual Oppression Cleansing",
+            "Protective Warding",
+            "Post-Cleansing Protection",
+            "Spiritual Space Restoration",
+            "Multi-Stage Cleansing and Protection"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Shamanic Work",
+      "subs": [
+        {
+          "name": "Journeying, Guidance & Divination",
+          "chapter": "shaman",
+          "items": [
+            "Shamanic Journeying",
+            "Guided Shamanic Journeys",
+            "Spirit Guide Communication",
+            "Shamanic Divination",
+            "Shadow Journeying",
+            "Spirit-World Exploration",
+            "Shamanic Journey Interpretation"
+          ]
+        },
+        {
+          "name": "Power Animals & Animal Spirits",
+          "chapter": "shaman",
+          "items": [
+            "Power Animal Connection",
+            "Animal Spirit Work"
+          ]
+        },
+        {
+          "name": "Soul Retrieval & Integration",
+          "chapter": "shaman",
+          "items": [
+            "Soul Retrieval Work",
+            "Soul Integration Work"
+          ]
+        },
+        {
+          "name": "Shamanic Healing & Protection",
+          "chapter": "shaman",
+          "items": [
+            "Shamanic Healing",
+            "Shamanic Energy Cleansing",
+            "Shamanic Protection",
+            "Shamanic Extraction Work",
+            "Shamanic Cord Release",
+            "Shamanic Grounding"
+          ]
+        },
+        {
+          "name": "Ceremony, Drum & Initiation",
+          "chapter": "shaman",
+          "items": [
+            "Shamanic Rituals",
+            "Shamanic Drumming",
+            "Shamanic Trance Work",
+            "Shamanic Initiation and Spiritual Development Guidance",
+            "Shamanic Altar and Sacred-Space Work"
+          ]
+        },
+        {
+          "name": "Ancestors, Nature & the Elements",
+          "chapter": "shaman",
+          "items": [
+            "Ancestral Shamanic Work",
+            "Shamanic Work with Nature and Elements"
+          ]
+        }
+      ]
+    }
+  ]
+}

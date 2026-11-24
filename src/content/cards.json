@@ -1,0 +1,52 @@
+{
+  "cards": {
+    "lamp": {
+      "name": "The Lamp",
+      "line": "A small light is enough to see the next step. Tend it today."
+    },
+    "lotus": {
+      "name": "The Lotus",
+      "line": "What grows from the mud is not stained by it. Let something bloom from a hard place."
+    },
+    "sword": {
+      "name": "The Sword",
+      "line": "Cut one thread that no longer serves you. Clean cuts heal fastest."
+    },
+    "garland": {
+      "name": "The Garland",
+      "line": "Every ending has taught you something. Count the lessons, not the losses."
+    },
+    "eye": {
+      "name": "The Third Eye",
+      "line": "Look past the first answer. The second one is truer."
+    },
+    "crescent": {
+      "name": "The Crescent",
+      "line": "Something is beginning quietly. Do not rush it into the light."
+    },
+    "bell": {
+      "name": "The Bell",
+      "line": "Call your attention home. Begin again exactly where you are."
+    },
+    "river": {
+      "name": "The River",
+      "line": "Let it move. What is meant to stay will not be carried away."
+    },
+    "serpent": {
+      "name": "The Serpent",
+      "line": "Old skin is falling away. Rest while the new one hardens."
+    },
+    "night": {
+      "name": "The Night",
+      "line": "In the dark nothing needs to be performed. Be still and be held."
+    },
+    "dawn": {
+      "name": "The Dawn",
+      "line": "You have already come through the darkest part of the night."
+    },
+    "fire": {
+      "name": "The Fire",
+      "line": "Offer one thing to the fire today: a fear, a habit, a word left unsaid."
+    }
+  }
+}
