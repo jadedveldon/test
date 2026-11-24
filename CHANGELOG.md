@@ -3,9 +3,37 @@
 Every change to the site, newest first: what changed, why, and how it was checked.
 The rules for checking are in `CLAUDE.md`; the checks themselves are in `tools/qa/`.
 
-## 2026-11-24 · Pillars 4, 5 and 6 settled
+## 2026-11-24 · Pillars 4, 5 and 6 settled; the quality gate made permanent
 
-_In progress; each entry is filled in as the work is done._
+- **Added: the rules.** `CLAUDE.md` sets the quality gate for every change (reproduce a bug in a check first;
+  the quick suite after every change; the full suite and the preview check before publishing; new features
+  bring their own checks; never weaken a check; log every change here; look at it on a phone and a desktop).
+- **Added: checks.** `rules.cjs` (the content rules, in seconds), `pillars.cjs` (Pillars 4 to 6: every chapter's
+  world, every signature moment by mouse, touch and keyboard), `preview-check.cjs` (the shareable bundle),
+  `run-quick.sh`. `review-verify.cjs` became `regressions.cjs`, the home of every bug's check.
+- **Fixed (a check, not the site):** the first run of `rules.cjs` flagged About's sentence "Fees are discussed
+  directly, and paid by UPI against an invoice". It shows no price, so it follows the rule; the check now looks
+  for amounts and price-list wording rather than the words "fee" or "price" alone.
+- **Changed: Pillar 4, Identity, settled on B (Soft prism)**, as chosen. A (Two halves, one whole) and C (Night
+  rose), with their signature moments (the line of Ardhanarishvara, the body scan), are in the history.
+- **Changed: Pillar 5, Divination, A and B merged: candlelight and the black mirror.** One book with two kinds of
+  page: table pages (Readings, The inner eye, the close) in A's wine, gold leaf and card frames; mirror pages
+  (Other ways of seeing, Dreams, Between worlds) in B's obsidian, silver and arched mirrors. The opening is where
+  they meet: the black mirror in a gilt frame, renamed **Prompts to ponder** ("something to ponder, never a
+  prediction"), with 24 prompts (12 new, draft wording) and never the same one twice in a row. Type: Cormorant
+  Unicase with Tenor Sans. The three-card draw and the pendulum (C) are in the history; the tarot note moved
+  to the Readings chapter.
+- **Changed: Pillar 6, Learning, A, B and C combined: the library, the leaf and the stars.** The page walks
+  through three rooms: the library by lamplight (opening with Find your class, Foundations, Witchcraft and
+  spellcraft), the palm-leaf manuscripts (Tantra, mantra and yantra; Deities and devotion) and the night road of
+  study (Your path of study, Mentoring, the close). Each room keeps its own type (Libre Baskerville, Gotu,
+  Josefin Slab) and colours; light and dark pages blend at the edges. The yantra drawing is removed, as asked.
+- **Changed: under the hood.** The A/B/C direction system (switch, briefs, per-direction worlds and fonts) is
+  retired; each settled pillar loads only its own code, like Pillars 1 to 3. The closing worlds of all three
+  pillars are quieter so the closing words lead.
+- **Verified:** `rules.cjs`, `pillars.cjs` (54 checks, desktop and phone), the quick suite, the full suite and
+  the preview check (results in the round's report on the preview cover); screenshots of every section on a
+  phone and a desktop, looked at.
 
 ## 2026-11-24 · Deep audit, code review and peer testing
 

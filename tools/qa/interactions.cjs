@@ -38,7 +38,7 @@ const W = Number(process.env.W || 1440), H = Number(process.env.H || 855);
   await p.keyboard.press('Escape');
   await p.waitForTimeout(500);
   // keep a service from a pillar page and see the list
-  await go('/pillars/divination?dir=a');
+  await go('/pillars/divination');
   await p.evaluate(() => document.querySelector('.sub-card .chip-keep').scrollIntoView({ block: 'center' }));
   await p.waitForTimeout(800);
   await p.click('.sub-card .chip-keep');

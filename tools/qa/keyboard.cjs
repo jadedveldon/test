@@ -23,7 +23,7 @@ const ok = (n, v, extra = '') => console.log(`${v ? 'ok  ' : 'FAIL'} ${n}${extra
   });
 
   // 1. tab through whole pages
-  for (const u of (process.env.KPAGES || '/,/pillars/magic,/pillars/healing,/pillars/identity?dir=b,/pillars/divination?dir=c,/pillars/learning?dir=b,/practice,/connect,/path,/invoice').split(',')) {
+  for (const u of (process.env.KPAGES || '/,/pillars/magic,/pillars/healing,/pillars/identity,/pillars/divination,/pillars/learning,/practice,/connect,/path,/invoice').split(',')) {
     await go(u);
     const bad = []; const seen = []; let n = 0;
     for (let i = 0; i < 160; i++) {
@@ -82,16 +82,16 @@ const ok = (n, v, extra = '') => console.log(`${v ? 'ok  ' : 'FAIL'} ${n}${extra
   ok('chakra chosen from the keyboard', await p.evaluate(() => document.querySelector('[data-ck="0"]').classList.contains('is-on')));
   await p.focus('[data-piece="3"]'); await p.keyboard.press('Enter'); await p.waitForTimeout(700);
   ok('kintsugi piece set from the keyboard', await p.evaluate(() => document.querySelector('[data-piece="3"]').classList.contains('is-home')));
-  await go('/pillars/identity?dir=a');
-  await p.focus('[data-continuum-range]'); for (let i = 0; i < 8; i++) await p.keyboard.press('ArrowRight');
-  ok('identity line moves with arrow keys', await p.evaluate(() => Number(document.querySelector('[data-continuum-range]').value) > 50));
-  await go('/pillars/divination?dir=b');
+  await go('/pillars/identity');
+  await p.focus('input[name="cf-pace"]:checked'); await p.keyboard.press('ArrowRight'); await p.keyboard.press('Tab'); await p.keyboard.press('Space');
+  await p.focus('[data-comfort] button[type="submit"]'); await p.keyboard.press('Enter'); await p.waitForTimeout(500);
+  ok('identity: the comfort note made by keyboard', await p.evaluate(() => !document.querySelector('[data-comfort-note]').hidden));
+  await go('/pillars/divination');
   await p.focus('[data-mirror-surface]'); await p.keyboard.down('Enter'); await p.waitForTimeout(3800); await p.keyboard.up('Enter'); await p.waitForTimeout(800);
   ok('mirror: hold Enter to still it', await p.evaluate(() => (document.querySelector('[data-mirror-symbol]')?.textContent || '').length > 0));
-  await go('/pillars/learning?dir=b');
+  await go('/pillars/learning');
   await p.focus('[data-station="5"]'); await p.keyboard.press('Enter'); await p.waitForTimeout(500);
   ok('path of study: a star chosen from the keyboard', await p.evaluate(() => document.querySelector('[data-station="5"]').classList.contains('is-on')));
-  await go('/pillars/learning?dir=a');
   await p.focus('input[name="fd-0"]'); await p.keyboard.press('Space'); await p.keyboard.press('ArrowDown');
   await p.focus('input[name="fd-1"]'); await p.keyboard.press('Space');
   await p.focus('input[name="fd-2"]'); await p.keyboard.press('Space'); await p.waitForTimeout(700);

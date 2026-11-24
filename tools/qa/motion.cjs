@@ -22,7 +22,7 @@ const ok = (n, v, extra = '') => console.log(`${v ? 'ok  ' : 'FAIL'} ${n}${extra
   { const ctx = await b.newContext({ viewport: { width: 1440, height: 855 }, forcedColors: 'active', colorScheme: 'dark', serviceWorkers: 'block' });
     await ctx.addInitScript(() => { try { sessionStorage.setItem('sk-intro-seen', '1'); } catch (e) {} });
     const p = await ctx.newPage();
-    for (const u of ['/', '/pillars/healing', '/pillars/divination?dir=a', '/connect']) {
+    for (const u of ['/', '/pillars/healing', '/pillars/identity', '/pillars/divination', '/pillars/learning', '/connect']) {
       await p.goto(`${B}${u}${u.includes('?') ? '&' : '?'}tier=calm`); await p.waitForTimeout(1500);
       await p.screenshot({ path: `${OUT}/forced-${u.replace(/[/?=]/g, '_')}.jpg`, type: 'jpeg', quality: 55 });
       const r = await p.evaluate(() => Array.from(document.querySelectorAll('button, a.btn, .chip-keep, input, textarea')).filter((e) => e.getClientRects().length && !e.closest('[hidden]')).map((e) => { const cs = getComputedStyle(e); return cs.borderStyle !== 'none' && parseFloat(cs.borderWidth) > 0 || cs.outlineStyle !== 'none' || e.tagName === 'A' && cs.textDecorationLine.includes('underline') || e.tagName === 'BUTTON' && cs.backgroundColor !== 'rgba(0, 0, 0, 0)'; }));

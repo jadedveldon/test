@@ -25,13 +25,12 @@ const visibleH1 = (p) => p.evaluate(() => { const h = document.querySelector('h1
       await p.goto(`${B}${u}?cursor=off`); await p.waitForTimeout(3500);
       res.push(`${u}:${await visibleH1(p) ? 'shown' : 'HIDDEN'}`);
     }
-    await p.evaluate(() => document.querySelector('[data-dir-set="b"]')?.click());
     await p.goto(`${B}/pillars/identity?cursor=off`); await p.waitForTimeout(2500);
-    await p.evaluate(() => document.querySelector('[data-dir-set="c"]').click()); await p.waitForTimeout(800);
-    const dir = await p.evaluate(() => document.documentElement.dataset.dir);
     await p.evaluate(() => document.querySelector('.sub-card .chip-keep').click()); await p.waitForTimeout(300);
     const kept = await p.evaluate(() => document.querySelector('[data-keep-count]')?.textContent);
-    ok('storage blocked: pages load, direction switch and keep still work this visit', p.errs.length === 0 && !res.join().includes('HIDDEN') && dir === 'c', `${res.join(' ')} dir=${dir} kept=${kept} ${p.errs.join(' | ')}`);
+    await p.evaluate(() => { document.querySelector('input[name="cf-pronouns"]').value = 'she/her'; document.querySelector('[data-comfort] button[type="submit"]').click(); }); await p.waitForTimeout(500);
+    const note = await p.evaluate(() => document.querySelector('[data-comfort-text]').textContent.includes('she/her'));
+    ok('storage blocked: pages load, keep and the comfort note still work this visit', p.errs.length === 0 && !res.join().includes('HIDDEN') && kept === '1' && note, `${res.join(' ')} kept=${kept} note=${note} ${p.errs.join(' | ')}`);
     await ctx.close(); }
   // 2. no WebGL at all
   { const b2 = await chromium.launch({ args: ['--disable-webgl', '--disable-3d-apis'] });
@@ -39,7 +38,7 @@ const visibleH1 = (p) => p.evaluate(() => { const h = document.querySelector('h1
     await ctx.addInitScript(() => { try { sessionStorage.setItem('sk-intro-seen', '1'); } catch (e) {} });
     const p = await ctx.newPage(); const errs = []; p.on('pageerror', (e) => errs.push(e.message.slice(0, 120)));
     const res = [];
-    for (const u of ['/', '/pillars/devotion', '/pillars/magic', '/pillars/divination?dir=c', '/depth', '/practice']) {
+    for (const u of ['/', '/pillars/devotion', '/pillars/magic', '/pillars/divination', '/pillars/learning', '/depth', '/practice']) {
       await p.goto(`${B}${u}`); await p.waitForTimeout(3000);
       res.push(`${u}:${await p.evaluate(() => document.documentElement.dataset.tier)}${await visibleH1(p) ? '' : ':HIDDEN'}`);
     }
@@ -62,7 +61,7 @@ const visibleH1 = (p) => p.evaluate(() => { const h = document.querySelector('h1
     await ctx.close(); }
   // 4. nonsense in the address
   { const { ctx, p } = await mk({}, () => { try { sessionStorage.setItem('sk-intro-seen', '1'); } catch (e) {} });
-    const urls = ['/pillars/identity?dir=z', '/?tier=banana', '/?festival=nope', '/?hero=%3Cb%3E', '/pillars/learning?find=%3Cscript%3Ealert(1)%3C/script%3E', '/connect?topic=%3Cimg%20src%3Dx%20onerror%3Dalert(1)%3E', '/?page=zzz', '/pillars/divination?dir=', '/practice?card=1'];
+    const urls = ['/pillars/identity?dir=z&find=%3Cb%3E', '/?tier=banana', '/?festival=nope', '/?hero=%3Cb%3E', '/pillars/learning?find=%3Cscript%3Ealert(1)%3C/script%3E', '/connect?topic=%3Cimg%20src%3Dx%20onerror%3Dalert(1)%3E', '/?page=zzz', '/pillars/divination?dir=', '/pillars/learning#nowhere', '/practice?card=1'];
     const res = [];
     for (const u of urls) { await p.goto(`${B}${u}`); await p.waitForTimeout(2200); res.push(`${u.slice(0, 32)}:${await visibleH1(p) ? 'ok' : 'HIDDEN'}`); }
     const topic = await p.goto(`${B}/connect?topic=%3Cimg%20src%3Dx%20onerror%3Dalert(1)%3E`).then(() => p.waitForTimeout(1500)).then(() => p.inputValue('#topic'));
@@ -96,7 +95,7 @@ const visibleH1 = (p) => p.evaluate(() => { const h = document.querySelector('h1
     const blocked = await p.evaluate(() => !document.getElementById('connect-form').hidden);
     ok('connect: a bad email is caught, markup in the name is harmless', blocked && p.errs.length === 0, p.errs.join(' | '));
     p.errs.length = 0;
-    await p.goto(`${B}/pillars/identity?dir=b&tier=still&cursor=off`); await p.waitForTimeout(1500);
+    await p.goto(`${B}/pillars/identity?tier=still&cursor=off`); await p.waitForTimeout(1500);
     await p.fill('[data-comfort] input[name="cf-name"]', '<img src=x onerror=alert(1)>');
     await p.fill('[data-comfort] input[name="cf-pronouns"]', 'they/them');
     await p.evaluate(() => document.querySelector('[data-comfort] button[type="submit"]').click()); await p.waitForTimeout(600);
@@ -112,16 +111,21 @@ const visibleH1 = (p) => p.evaluate(() => { const h = document.querySelector('h1
     await ctx.close(); }
   // 6. impatient visitors: rapid clicks
   { const { ctx, p } = await mk({}, () => { try { sessionStorage.setItem('sk-intro-seen', '1'); } catch (e) {} });
-    await p.goto(`${B}/pillars/divination?dir=a&tier=full&cursor=off`); await p.waitForTimeout(3500);
-    for (let i = 0; i < 12; i++) { await p.evaluate(() => document.querySelector('[data-draw-three]').click()); await p.waitForTimeout(60); }
-    await p.waitForTimeout(2500);
-    const open = await p.evaluate(() => document.querySelectorAll('[data-card].is-open').length);
-    for (const d of 'bcabcabcabcab') { await p.evaluate((d) => document.querySelector(`[data-dir-set="${d}"]`).click(), d); await p.waitForTimeout(40); }
-    await p.waitForTimeout(1500);
-    const st = await p.evaluate(() => ({ dir: document.documentElement.dataset.dir, key: window.sarvakali.world.chapterKey }));
-    await p.evaluate(() => document.querySelector('[data-dir-set="c"]').click()); await p.waitForTimeout(600);
-    for (let i = 0; i < 8; i++) { await p.evaluate(() => document.querySelector('[data-pendulum-ask]').click()); await p.waitForTimeout(50); }
-    ok('rapid clicks: card draws, direction switches, pendulum', p.errs.length === 0 && open === 3 && st.dir === 'b' && /^divB_/.test(st.key), `open=${open} ${JSON.stringify(st)} ${p.errs.join(' | ')}`);
+    await p.goto(`${B}/pillars/divination?tier=full&cursor=off`); await p.waitForTimeout(3500);
+    // the mirror pressed and let go, over and over, then held properly
+    const mr = await p.$('[data-mirror-surface]'); const bx = await mr.boundingBox();
+    await p.mouse.move(bx.x + bx.width / 2, bx.y + bx.height / 2);
+    for (let i = 0; i < 15; i++) { await p.mouse.down(); await p.waitForTimeout(40 + (i % 3) * 120); await p.mouse.up(); await p.waitForTimeout(30); }
+    await p.mouse.down(); await p.waitForTimeout(3700); await p.mouse.up(); await p.waitForTimeout(900);
+    const prompt = await p.evaluate(() => document.querySelector('[data-mirror-word]').textContent);
+    ok('rapid clicks: the mirror, pressed fifteen times, then held', p.errs.length === 0 && /\?$/.test(prompt), `${prompt} ${p.errs.join(' | ')}`);
+    p.errs.length = 0;
+    await p.goto(`${B}/pillars/learning?tier=full&cursor=off`); await p.waitForTimeout(3500);
+    for (let i = 0; i < 20; i++) { await p.evaluate((i) => { const r = document.querySelectorAll(`input[name="fd-${i % 3}"]`); r[i % r.length].click(); }, i); await p.waitForTimeout(30); }
+    for (let i = 0; i < 24; i++) { await p.evaluate((i) => document.querySelector(`[data-station="${i % 12}"]`).dispatchEvent(new MouseEvent('click', { bubbles: true })), i); await p.waitForTimeout(25); }
+    await p.waitForTimeout(800);
+    const lr = await p.evaluate(() => ({ fit: document.querySelectorAll('[data-finder-list] .chip-keep').length, star: document.querySelector('[data-station-name]').textContent }));
+    ok('rapid clicks: the class finder and the stars of the path', p.errs.length === 0 && lr.fit > 0 && !!lr.star, `${JSON.stringify(lr)} ${p.errs.join(' | ')}`);
     p.errs.length = 0;
     await p.goto(`${B}/pillars/healing?tier=full&cursor=off`); await p.waitForTimeout(3500);
     for (let i = 0; i < 9; i++) { await p.evaluate(() => document.querySelector('[data-breath-toggle]').click()); await p.waitForTimeout(70); }
@@ -141,7 +145,7 @@ const visibleH1 = (p) => p.evaluate(() => { const h = document.querySelector('h1
     const nav = async (r) => { await p.evaluate((r) => { const a = document.createElement('a'); a.href = r; document.body.appendChild(a); a.click(); a.remove(); }, r); await p.waitForTimeout(2600); };
     await p.goto(`${B}/?tier=full&cursor=off`); await p.waitForTimeout(3500);
     await nav('/pillars/healing'); await p.evaluate(() => document.querySelector('[data-breath-toggle]').click()); await p.waitForTimeout(600);
-    await nav('/pillars/identity?dir=c'); await p.evaluate(() => document.querySelector('[data-scan-toggle]').click()); await p.waitForTimeout(600);
+    await nav('/pillars/divination'); await p.evaluate(() => document.querySelector('[data-mirror-surface]').dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }))); await p.waitForTimeout(600);
     await nav('/pillars/magic');
     await p.goBack(); await p.waitForTimeout(2600);
     const b1 = await p.evaluate(() => ({ path: location.pathname, h1: document.querySelector('h1').textContent.trim().slice(0, 20), key: window.sarvakali.world.chapterKey }));
@@ -153,7 +157,7 @@ const visibleH1 = (p) => p.evaluate(() => { const h = document.querySelector('h1
     await p.evaluate(() => { for (const r of ['/pillars/devotion', '/pillars/learning']) { const a = document.createElement('a'); a.href = r; document.body.appendChild(a); a.click(); a.remove(); } });
     await p.waitForTimeout(3500);
     const dbl = await p.evaluate(() => ({ path: location.pathname, h1: document.querySelector('h1').textContent.trim().slice(0, 20), key: window.sarvakali.world.chapterKey }));
-    ok('back, forward and double clicks keep page and world in step', p.errs.length === 0 && b1.path.includes('identity') && /^id/.test(b1.key) && b2.path.includes('healing') && /^heal/.test(b2.key) && f1.path.includes('identity') && dbl.path.includes('learning') && /^lrn/.test(dbl.key),
+    ok('back, forward and double clicks keep page and world in step', p.errs.length === 0 && b1.path.includes('divination') && /^div_/.test(b1.key) && b2.path.includes('healing') && /^heal/.test(b2.key) && f1.path.includes('divination') && /^div_/.test(f1.key) && dbl.path.includes('learning') && /^lrn_/.test(dbl.key),
       `${JSON.stringify(b1)} ${JSON.stringify(b2)} ${JSON.stringify(f1)} ${JSON.stringify(dbl)} ${p.errs.join(' | ')}`);
     // resize from desktop to phone and back mid-page
     await p.setViewportSize({ width: 390, height: 844 }); await p.waitForTimeout(1200);

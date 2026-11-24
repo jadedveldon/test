@@ -1,4 +1,5 @@
-// Re-runs each code-review finding as a live check
+// Every bug found so far, re-created as a live check so it can never quietly return.
+// Rule (CLAUDE.md): a new bug gets its check here first, failing before the fix and passing after it.
 const { chromium } = require('playwright');
 const B = (process.env.QA_BASE || 'http://127.0.0.1:4321');
 const ok = (n, v, extra = '') => console.log(`${v ? 'ok  ' : 'FAIL'} ${n}${extra ? ' — ' + extra : ''}`);
@@ -13,7 +14,7 @@ const ARGS = { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', 
     p.on('pageerror', (e) => p.errs.push(e.message.slice(0, 120)));
     return { ctx, p };
   };
-  const setDir = (p, d) => p.evaluate((d) => document.querySelector(`[data-dir-set="${d}"]`).click(), d);
+  const nav = (p, r) => p.evaluate((r) => { const a = document.createElement('a'); a.href = r; document.body.appendChild(a); a.click(); a.remove(); }, r);
 
   // 1-2 depth demo
   { const { ctx, p } = await fresh();
@@ -25,30 +26,18 @@ const ARGS = { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', 
     await p.evaluate(() => document.querySelectorAll('[data-work]')[1].click()); await p.waitForTimeout(500);
     ok('depth: flat mode, switching paintings', p.errs.length === 0, p.errs.join(' | '));
     await ctx.close(); }
-  // 3 signature resets
+  // 3 signature moments put themselves back when you leave (they once stayed half-done when the page changed)
   { const { ctx, p } = await fresh();
-    await p.goto(`${B}/pillars/divination?dir=c&tier=full&cursor=off`); await p.waitForTimeout(3500);
-    await p.click('[data-pendulum-ask]'); await p.waitForTimeout(1500);
-    await setDir(p, 'a'); await p.waitForTimeout(600); await setDir(p, 'c'); await p.waitForTimeout(600);
-    ok('pendulum: usable after switching away mid-swing', await p.evaluate(() => !document.querySelector('[data-pendulum-ask]').disabled));
-    await setDir(p, 'b'); await p.waitForTimeout(800);
+    await p.goto(`${B}/pillars/divination?tier=full&cursor=off`); await p.waitForTimeout(3500);
     const s = await p.$('[data-mirror-surface]'); const bx = await s.boundingBox();
     await p.mouse.move(bx.x + bx.width / 2, bx.y + bx.height / 2); await p.mouse.down(); await p.waitForTimeout(1200);
-    await setDir(p, 'a'); await p.mouse.up(); await p.waitForTimeout(500); await setDir(p, 'b'); await p.waitForTimeout(600);
-    ok('mirror: still water after switching mid-hold', await p.evaluate(() => !document.querySelector('[data-mirror-surface]').classList.contains('is-held') && getComputedStyle(document.querySelector('[data-mirror-mist]')).opacity === '1'));
-    ok('divination: no errors', p.errs.length === 0, p.errs.join(' | '));
-    await ctx.close(); }
-  { const { ctx, p } = await fresh();
-    await p.goto(`${B}/pillars/identity?dir=c&tier=full&cursor=off`); await p.waitForTimeout(3500);
-    await p.click('[data-scan-toggle]'); await p.waitForTimeout(1200);
-    await setDir(p, 'a'); await p.waitForTimeout(500); await setDir(p, 'c'); await p.waitForTimeout(500);
-    ok('body scan: fresh after switching mid-scan', await p.evaluate(() => document.querySelector('[data-scan-toggle]').textContent.trim() === 'Begin' && document.querySelector('[data-scan-skip]').hidden));
-    await ctx.close(); }
-  { const { ctx, p } = await fresh();
-    await p.goto(`${B}/pillars/learning?dir=c&tier=full&cursor=off`); await p.waitForTimeout(3500);
-    await p.click('[data-yantra-next]'); await p.waitForTimeout(300); await p.click('[data-yantra-next]'); await p.waitForTimeout(300);
-    await setDir(p, 'b'); await p.waitForTimeout(500); await setDir(p, 'c'); await p.waitForTimeout(500);
-    ok('yantra: drawing and words agree after switching', await p.evaluate(() => document.querySelectorAll('[data-yd].is-on').length === 1 && document.querySelector('[data-yantra-step]').textContent.startsWith('The bindu')));
+    await nav(p, '/pillars/learning'); await p.mouse.up(); await p.waitForTimeout(3000);
+    await nav(p, '/pillars/divination'); await p.waitForTimeout(3500);
+    ok('mirror: still water after leaving mid-hold and coming back', await p.evaluate(() => !document.querySelector('[data-mirror-surface]').classList.contains('is-held') && getComputedStyle(document.querySelector('[data-mirror-mist]')).opacity === '1' && !document.querySelector('[data-mirror-symbol]').textContent));
+    // a prompt shown, then leave before the water settles back: nothing fires on the next page
+    await p.mouse.move(bx.x + bx.width / 2, bx.y + bx.height / 2); await p.mouse.down(); await p.waitForTimeout(3700); await p.mouse.up(); await p.waitForTimeout(400);
+    await nav(p, '/pillars/learning'); await p.waitForTimeout(3500);
+    ok('mirror: leaving after a prompt, no errors on the next page', p.errs.length === 0, p.errs.join(' | '));
     await ctx.close(); }
   // 8 kintsugi order
   { const { ctx, p } = await fresh();
@@ -99,15 +88,15 @@ const ARGS = { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', 
     await ctx.close(); }
   // 12 search reveal on Learning A
   { const { ctx, p } = await fresh();
-    await p.goto(`${B}/pillars/learning?dir=a&tier=still&cursor=off&find=${encodeURIComponent('Spirituality Fundamentals Classes')}`); await p.waitForTimeout(3000);
-    ok('search: reveals the visible service', await p.evaluate(() => { const f = document.querySelector('.is-found'); return !!f && f.getClientRects().length > 0 && !f.closest('[data-dir-only]'); }));
+    await p.goto(`${B}/pillars/learning?tier=still&cursor=off&find=${encodeURIComponent('Spirituality Fundamentals Classes')}`); await p.waitForTimeout(3000);
+    ok('search: reveals the service in its chapter list', await p.evaluate(() => { const f = document.querySelector('.is-found'); return !!f && f.getClientRects().length > 0 && !!f.closest('.sub-card') && !f.closest('.pd-sig, .pathmap'); }));
     await ctx.close(); }
   // 13 connect topic used once
   { const { ctx, p } = await fresh();
-    await p.goto(`${B}/pillars/divination?dir=a&tier=still&cursor=off`); await p.waitForTimeout(2500);
+    await p.goto(`${B}/pillars/divination?tier=still&cursor=off`); await p.waitForTimeout(2500);
     await p.evaluate(() => document.querySelector('.pd-move [data-topic]').click()); await p.waitForTimeout(2500);
     const first = await p.inputValue('#topic');
-    await p.goto(`${B}/pillars/learning?dir=a&tier=still&cursor=off`); await p.waitForTimeout(2500);
+    await p.goto(`${B}/pillars/learning?tier=still&cursor=off`); await p.waitForTimeout(2500);
     await p.evaluate(() => document.querySelector('.sub-card .chip-keep').click()); await p.waitForTimeout(300);
     await p.evaluate(() => document.querySelector('.book-btn').click()); await p.waitForTimeout(2500);
     const second = await p.inputValue('#topic');

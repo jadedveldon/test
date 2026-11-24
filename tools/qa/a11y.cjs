@@ -5,14 +5,13 @@ const fs = require('fs');
 const AXE = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
 const B = (process.env.QA_BASE || 'http://127.0.0.1:4321');
 const PAGES = ['/', '/about', '/care', '/connect', '/path', '/practice', '/writings', '/writings/who-is-kali', '/writings/the-thirty-moons', '/writings/what-happens-in-a-reading', '/invoice', '/depth',
-  '/pillars/devotion', '/pillars/magic', '/pillars/healing', '/pillars/identity?dir=a', '/pillars/identity?dir=b', '/pillars/identity?dir=c', '/pillars/divination?dir=a', '/pillars/divination?dir=b', '/pillars/divination?dir=c',
-  '/pillars/learning?dir=a', '/pillars/learning?dir=b', '/pillars/learning?dir=c'];
+  '/pillars/devotion', '/pillars/magic', '/pillars/healing', '/pillars/identity', '/pillars/divination', '/pillars/learning'];
 const TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'];
 const OVERLAYS = [
   ['menu', async (p) => { await p.click('[data-menu-open]'); }],
   ['search', async (p) => { await p.click('[data-search-open]'); await p.waitForTimeout(400); await p.keyboard.type('love'); }],
   ['card', async (p) => { await p.evaluate(() => document.querySelector('[data-card-open]')?.click()); }],
-  ['keep', async (p) => { await p.evaluate(() => document.querySelector('.chip-keep')?.click()); await p.waitForTimeout(300); await p.click('[data-keep-open]'); }],
+  ['keep', async (p) => { await p.evaluate(() => Array.from(document.querySelectorAll('.chip-keep')).find((c) => c.getClientRects().length)?.click()); await p.waitForTimeout(300); await p.click('[data-keep-open]'); }],
   ['sky', async (p) => { await p.click('[data-sky-btn]'); }],
   ['hud', async (p) => { await p.click('[data-hud-toggle]'); }],
 ];
@@ -60,7 +59,7 @@ const summary = {};
       await p.close();
     }
     // overlays, on the homepage and a pillar page
-    for (const path of ['/', '/pillars/learning?dir=a']) {
+    for (const path of ['/', '/pillars/learning']) {
       for (const [name, open] of OVERLAYS) {
         const p = await ctx.newPage();
         await p.goto(`${B}${path}${path.includes('?') ? '&' : '?'}tier=calm&cursor=off`, { waitUntil: 'domcontentloaded' });

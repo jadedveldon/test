@@ -5,7 +5,7 @@ const OUT = require('path').join(process.env.QA_OUT || 'qa-output', 'layout');
 require('fs').mkdirSync(OUT, { recursive: true });
 const B = (process.env.QA_BASE || 'http://127.0.0.1:4321');
 const SIZES = (process.env.SIZES || '320x568,360x740,768x1024,1024x768,844x390,1920x1080,2560x1440').split(',').map((s) => s.split('x').map(Number));
-const PAGES = (process.env.PAGES || '/,/pillars/devotion,/pillars/magic,/pillars/healing,/pillars/identity?dir=b,/pillars/divination?dir=a,/pillars/learning?dir=c,/practice,/connect,/invoice,/path,/writings/who-is-kali').split(',');
+const PAGES = (process.env.PAGES || '/,/pillars/devotion,/pillars/magic,/pillars/healing,/pillars/identity,/pillars/divination,/pillars/learning,/practice,/connect,/invoice,/path,/writings/who-is-kali').split(',');
 const MODES = (process.env.MODES || 'plain,text200,spacing').split(',');
 (async () => {
   const b = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
@@ -42,7 +42,7 @@ const MODES = (process.env.MODES || 'plain,text200,spacing').split(',');
         if (r.under) issues.push(r.under.toUpperCase());
         if (errs.length) issues.push('ERR ' + errs.join(' | '));
         if (issues.length) console.log(`${mode.padEnd(8)} ${w}x${h} ${path.padEnd(28)} ${issues.join(' / ')}`);
-        if (mode === 'plain' || path === '/' || path.includes('identity')) await p.screenshot({ path: `${OUT}/${mode}-${w}x${h}-${path.replace(/[/?=]/g, '_')}.jpg`, type: 'jpeg', quality: 50 });
+        if (mode === 'plain' || path === '/' || path.includes('identity') || path.includes('learning')) await p.screenshot({ path: `${OUT}/${mode}-${w}x${h}-${path.replace(/[/?=]/g, '_')}.jpg`, type: 'jpeg', quality: 50 });
         await p.close();
       }
       await ctx.close();
