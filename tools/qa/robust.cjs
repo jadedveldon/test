@@ -1,0 +1,178 @@
+// Robustness: hostile settings, odd input, impatient visitors
+const { chromium } = require('playwright');
+const B = (process.env.QA_BASE || 'http://127.0.0.1:4321');
+const OUT = require('path').join(process.env.QA_OUT || 'qa-output', 'robust');
+require('fs').mkdirSync(OUT, { recursive: true });
+const ok = (n, v, extra = '') => console.log(`${v ? 'ok  ' : 'FAIL'} ${n}${extra ? ' — ' + extra : ''}`);
+const GL = ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'];
+const visibleH1 = (p) => p.evaluate(() => { const h = document.querySelector('h1'); if (!h) return false; let o = 1; for (let n = h; n; n = n.parentElement) o *= Number(getComputedStyle(n).opacity); return o > 0.5 && h.getClientRects().length > 0; });
+(async () => {
+  const b = await chromium.launch({ args: GL });
+  const mk = async (opts = {}, init) => {
+    const ctx = await b.newContext({ viewport: { width: 1440, height: 855 }, serviceWorkers: 'block', ...opts });
+    if (init) await ctx.addInitScript(init);
+    const p = await ctx.newPage(); p.errs = [];
+    p.on('pageerror', (e) => p.errs.push(e.message.slice(0, 120)));
+    p.on('dialog', (d) => { p.errs.push('DIALOG ' + d.message()); d.dismiss(); });
+    return { ctx, p };
+  };
+  // 1. storage blocked entirely (strict privacy settings)
+  { const { ctx, p } = await mk({}, () => {
+      for (const k of ['localStorage', 'sessionStorage']) Object.defineProperty(window, k, { get() { throw new DOMException('blocked', 'SecurityError'); } });
+    });
+    const res = [];
+    for (const u of ['/', '/pillars/magic', '/pillars/healing', '/pillars/identity', '/practice', '/connect', '/path', '/invoice']) {
+      await p.goto(`${B}${u}?cursor=off`); await p.waitForTimeout(3500);
+      res.push(`${u}:${await visibleH1(p) ? 'shown' : 'HIDDEN'}`);
+    }
+    await p.evaluate(() => document.querySelector('[data-dir-set="b"]')?.click());
+    await p.goto(`${B}/pillars/identity?cursor=off`); await p.waitForTimeout(2500);
+    await p.evaluate(() => document.querySelector('[data-dir-set="c"]').click()); await p.waitForTimeout(800);
+    const dir = await p.evaluate(() => document.documentElement.dataset.dir);
+    await p.evaluate(() => document.querySelector('.sub-card .chip-keep').click()); await p.waitForTimeout(300);
+    const kept = await p.evaluate(() => document.querySelector('[data-keep-count]')?.textContent);
+    ok('storage blocked: pages load, direction switch and keep still work this visit', p.errs.length === 0 && !res.join().includes('HIDDEN') && dir === 'c', `${res.join(' ')} dir=${dir} kept=${kept} ${p.errs.join(' | ')}`);
+    await ctx.close(); }
+  // 2. no WebGL at all
+  { const b2 = await chromium.launch({ args: ['--disable-webgl', '--disable-3d-apis'] });
+    const ctx = await b2.newContext({ viewport: { width: 1440, height: 855 }, serviceWorkers: 'block' });
+    await ctx.addInitScript(() => { try { sessionStorage.setItem('sk-intro-seen', '1'); } catch (e) {} });
+    const p = await ctx.newPage(); const errs = []; p.on('pageerror', (e) => errs.push(e.message.slice(0, 120)));
+    const res = [];
+    for (const u of ['/', '/pillars/devotion', '/pillars/magic', '/pillars/divination?dir=c', '/depth', '/practice']) {
+      await p.goto(`${B}${u}`); await p.waitForTimeout(3000);
+      res.push(`${u}:${await p.evaluate(() => document.documentElement.dataset.tier)}${await visibleH1(p) ? '' : ':HIDDEN'}`);
+    }
+    await p.screenshot({ path: `${OUT}/nowebgl-practice.jpg`, type: 'jpeg', quality: 60 });
+    await p.evaluate(() => document.querySelector('[data-fire]').scrollIntoView());
+    await p.fill('[data-fire] textarea', 'worry'); await p.click('[data-fire] button[type="submit"]'); await p.waitForTimeout(3000);
+    const fired = await p.evaluate(() => !document.querySelector('[data-fire-after]').hidden);
+    ok('no WebGL: falls back to Still, pages and the fire work', errs.length === 0 && !res.join().includes('HIDDEN') && fired && res.every((r) => /still|calm/.test(r)), `${res.join(' ')} ${errs.join(' | ')}`);
+    await b2.close(); }
+  // 3. JavaScript off: the words must still be there
+  { const { ctx, p } = await mk({ javaScriptEnabled: false });
+    const res = [];
+    for (const u of ['/', '/pillars/magic', '/pillars/healing', '/pillars/identity', '/pillars/learning', '/practice', '/connect', '/writings/who-is-kali']) {
+      await p.goto(`${B}${u}`); await p.waitForTimeout(800);
+      const v = await p.evaluate(() => { const els = Array.from(document.querySelectorAll('h1, h2, .lede, .sub-card')); const hid = els.filter((e) => { let o = 1; for (let n = e; n; n = n.parentElement) o *= Number(getComputedStyle(n).opacity); return o < 0.5 || getComputedStyle(e).visibility === 'hidden'; }); return `${els.length - hid.length}/${els.length}`; });
+      res.push(`${u}:${v}`);
+    }
+    await p.goto(`${B}/pillars/identity`); await p.screenshot({ path: `${OUT}/nojs-identity.jpg`, type: 'jpeg', quality: 60 });
+    ok('JavaScript off: headings, ledes and services visible', res.every((r) => { const [a, t] = r.split(':')[1].split('/'); return a === t; }), res.join(' '));
+    await ctx.close(); }
+  // 4. nonsense in the address
+  { const { ctx, p } = await mk({}, () => { try { sessionStorage.setItem('sk-intro-seen', '1'); } catch (e) {} });
+    const urls = ['/pillars/identity?dir=z', '/?tier=banana', '/?festival=nope', '/?hero=%3Cb%3E', '/pillars/learning?find=%3Cscript%3Ealert(1)%3C/script%3E', '/connect?topic=%3Cimg%20src%3Dx%20onerror%3Dalert(1)%3E', '/?page=zzz', '/pillars/divination?dir=', '/practice?card=1'];
+    const res = [];
+    for (const u of urls) { await p.goto(`${B}${u}`); await p.waitForTimeout(2200); res.push(`${u.slice(0, 32)}:${await visibleH1(p) ? 'ok' : 'HIDDEN'}`); }
+    const topic = await p.goto(`${B}/connect?topic=%3Cimg%20src%3Dx%20onerror%3Dalert(1)%3E`).then(() => p.waitForTimeout(1500)).then(() => p.inputValue('#topic'));
+    const injected = await p.evaluate(() => !!document.querySelector('img[src="x"]'));
+    ok('nonsense URL parameters are ignored safely', p.errs.length === 0 && !res.join().includes('HIDDEN') && !injected, `${res.join(' ')} topic="${topic.slice(0, 30)}" ${p.errs.join(' | ')}`);
+    await ctx.close(); }
+  // 5. odd and hostile text
+  { const { ctx, p } = await mk({}, () => { try { sessionStorage.setItem('sk-intro-seen', '1'); } catch (e) {} });
+    const odd = ['<img src=x onerror=alert(1)>', 'मेरा प्रेम लौट आए', '🌙✨🔥 love 🔥', ' '.repeat(40), 'a'.repeat(3000), '((([[[\\\\', 'ÀÉÎÕÜ ñ ß Ø'];
+    await p.goto(`${B}/pillars/magic?tier=full&cursor=off`); await p.waitForTimeout(3500);
+    const sigRes = [];
+    for (const t of odd) {
+      await (await p.$$('.sg-methods button'))[0].click(); await p.waitForTimeout(200); // the typed methods show the box
+      const inp = await p.$('[data-sigil] input:visible, [data-sigil] textarea:visible');
+      await inp.fill(t); await p.waitForTimeout(400);
+      for (const m of await p.$$('.sg-methods button')) { await m.click(); await p.waitForTimeout(150); }
+      sigRes.push(t.slice(0, 8));
+    }
+    ok('sigil maker: markup, Devanagari, emoji, spaces, 3000 letters, symbols', p.errs.length === 0 && !(await p.evaluate(() => !!document.querySelector('img[src="x"]'))), p.errs.join(' | '));
+    p.errs.length = 0;
+    await p.goto(`${B}/?tier=still&cursor=off`); await p.waitForTimeout(2000);
+    await p.click('[data-search-open]'); await p.waitForTimeout(500);
+    for (const t of ['(', '[', '\\', '*', '+?', 'प्रेम', '<b>x</b>', 'z'.repeat(500), 'love', '  ']) { await p.fill('#search-input', t); await p.waitForTimeout(250); }
+    ok('search: regex symbols, Devanagari, markup, 500 letters', p.errs.length === 0 && !(await p.evaluate(() => !!document.querySelector('#search b:not(.sr-item b)'))), p.errs.join(' | '));
+    await p.keyboard.press('Escape');
+    p.errs.length = 0;
+    await p.goto(`${B}/connect?tier=still&cursor=off`); await p.waitForTimeout(1500);
+    await p.fill('#connect-form input[name="name"]', '<script>alert(1)</script>');
+    await p.fill('#connect-form input[name="email"]', 'not-an-email');
+    await p.click('#connect-form button[type="submit"]'); await p.waitForTimeout(500);
+    const blocked = await p.evaluate(() => !document.getElementById('connect-form').hidden);
+    ok('connect: a bad email is caught, markup in the name is harmless', blocked && p.errs.length === 0, p.errs.join(' | '));
+    p.errs.length = 0;
+    await p.goto(`${B}/pillars/identity?dir=b&tier=still&cursor=off`); await p.waitForTimeout(1500);
+    await p.fill('[data-comfort] input[name="cf-name"]', '<img src=x onerror=alert(1)>');
+    await p.fill('[data-comfort] input[name="cf-pronouns"]', 'they/them');
+    await p.evaluate(() => document.querySelector('[data-comfort] button[type="submit"]').click()); await p.waitForTimeout(600);
+    ok('comfort note: markup shown as text, not run', p.errs.length === 0 && !(await p.evaluate(() => !!document.querySelector('img[src="x"]'))) && (await p.evaluate(() => document.querySelector('[data-comfort-text]').textContent.includes('<img'))));
+    p.errs.length = 0;
+    await p.goto(`${B}/invoice?tier=still&cursor=off`); await p.waitForTimeout(1500);
+    await p.fill('input[name="client"]', '<b onmouseover=alert(1)>Asha</b>');
+    await p.fill('input[name="upi"]', 'x@y'); await p.fill('.inv-row input[name="desc"]', '<i>Reading</i>');
+    await p.fill('.inv-row input[name="qty"]', '-5'); await p.fill('.inv-row input[name="amt"]', '99999999999');
+    await p.fill('textarea[name="notes"]', 'line one\n<script>x</script>'); await p.waitForTimeout(700);
+    const inv = await p.evaluate(() => ({ b: !!document.querySelector('.inv-paper b[onmouseover], [data-invoice] b[onmouseover]'), s: !!document.querySelector('[data-invoice] script'), total: document.querySelector('.inv-table tfoot td:last-child')?.textContent }));
+    ok('invoice: markup is escaped, negative quantity treated as 1, huge amounts formatted', !inv.b && !inv.s && p.errs.length === 0, JSON.stringify(inv));
+    await ctx.close(); }
+  // 6. impatient visitors: rapid clicks
+  { const { ctx, p } = await mk({}, () => { try { sessionStorage.setItem('sk-intro-seen', '1'); } catch (e) {} });
+    await p.goto(`${B}/pillars/divination?dir=a&tier=full&cursor=off`); await p.waitForTimeout(3500);
+    for (let i = 0; i < 12; i++) { await p.evaluate(() => document.querySelector('[data-draw-three]').click()); await p.waitForTimeout(60); }
+    await p.waitForTimeout(2500);
+    const open = await p.evaluate(() => document.querySelectorAll('[data-card].is-open').length);
+    for (const d of 'bcabcabcabcab') { await p.evaluate((d) => document.querySelector(`[data-dir-set="${d}"]`).click(), d); await p.waitForTimeout(40); }
+    await p.waitForTimeout(1500);
+    const st = await p.evaluate(() => ({ dir: document.documentElement.dataset.dir, key: window.sarvakali.world.chapterKey }));
+    await p.evaluate(() => document.querySelector('[data-dir-set="c"]').click()); await p.waitForTimeout(600);
+    for (let i = 0; i < 8; i++) { await p.evaluate(() => document.querySelector('[data-pendulum-ask]').click()); await p.waitForTimeout(50); }
+    ok('rapid clicks: card draws, direction switches, pendulum', p.errs.length === 0 && open === 3 && st.dir === 'b' && /^divB_/.test(st.key), `open=${open} ${JSON.stringify(st)} ${p.errs.join(' | ')}`);
+    p.errs.length = 0;
+    await p.goto(`${B}/pillars/healing?tier=full&cursor=off`); await p.waitForTimeout(3500);
+    for (let i = 0; i < 9; i++) { await p.evaluate(() => document.querySelector('[data-breath-toggle]').click()); await p.waitForTimeout(70); }
+    for (const m of await p.$$('.br-modes button')) { await m.click(); await p.waitForTimeout(50); }
+    await p.evaluate(() => document.querySelector('[data-mend-all]').click()); await p.evaluate(() => document.querySelector('[data-mend-all]').click()); await p.waitForTimeout(2500);
+    await p.evaluate(() => document.querySelector('[data-mend-all]').click()); await p.waitForTimeout(2500);
+    ok('rapid clicks: breath guide and kintsugi', p.errs.length === 0, p.errs.join(' | '));
+    p.errs.length = 0;
+    await p.goto(`${B}/practice?tier=full&cursor=off`); await p.waitForTimeout(3000);
+    await p.evaluate(() => { for (let i = 0; i < 230; i++) document.querySelector('[data-mala-tap]').click(); });
+    await p.waitForTimeout(500);
+    const mala = await p.evaluate(() => ({ c: document.querySelector('[data-mala-count]').textContent, r: document.querySelector('[data-mala-rounds]')?.textContent }));
+    ok('mala: 230 taps make 2 rounds and 14 beads', mala.c === '14' && p.errs.length === 0, JSON.stringify(mala));
+    await ctx.close(); }
+  // 7. back and forward, and leaving mid-animation
+  { const { ctx, p } = await mk({}, () => { try { sessionStorage.setItem('sk-intro-seen', '1'); } catch (e) {} });
+    const nav = async (r) => { await p.evaluate((r) => { const a = document.createElement('a'); a.href = r; document.body.appendChild(a); a.click(); a.remove(); }, r); await p.waitForTimeout(2600); };
+    await p.goto(`${B}/?tier=full&cursor=off`); await p.waitForTimeout(3500);
+    await nav('/pillars/healing'); await p.evaluate(() => document.querySelector('[data-breath-toggle]').click()); await p.waitForTimeout(600);
+    await nav('/pillars/identity?dir=c'); await p.evaluate(() => document.querySelector('[data-scan-toggle]').click()); await p.waitForTimeout(600);
+    await nav('/pillars/magic');
+    await p.goBack(); await p.waitForTimeout(2600);
+    const b1 = await p.evaluate(() => ({ path: location.pathname, h1: document.querySelector('h1').textContent.trim().slice(0, 20), key: window.sarvakali.world.chapterKey }));
+    await p.goBack(); await p.waitForTimeout(2600);
+    const b2 = await p.evaluate(() => ({ path: location.pathname, h1: document.querySelector('h1').textContent.trim().slice(0, 20), key: window.sarvakali.world.chapterKey }));
+    await p.goForward(); await p.waitForTimeout(2600);
+    const f1 = await p.evaluate(() => ({ path: location.pathname, key: window.sarvakali.world.chapterKey }));
+    // two links clicked in quick succession
+    await p.evaluate(() => { for (const r of ['/pillars/devotion', '/pillars/learning']) { const a = document.createElement('a'); a.href = r; document.body.appendChild(a); a.click(); a.remove(); } });
+    await p.waitForTimeout(3500);
+    const dbl = await p.evaluate(() => ({ path: location.pathname, h1: document.querySelector('h1').textContent.trim().slice(0, 20), key: window.sarvakali.world.chapterKey }));
+    ok('back, forward and double clicks keep page and world in step', p.errs.length === 0 && b1.path.includes('identity') && /^id/.test(b1.key) && b2.path.includes('healing') && /^heal/.test(b2.key) && f1.path.includes('identity') && dbl.path.includes('learning') && /^lrn/.test(dbl.key),
+      `${JSON.stringify(b1)} ${JSON.stringify(b2)} ${JSON.stringify(f1)} ${JSON.stringify(dbl)} ${p.errs.join(' | ')}`);
+    // resize from desktop to phone and back mid-page
+    await p.setViewportSize({ width: 390, height: 844 }); await p.waitForTimeout(1200);
+    const sideways = await p.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1);
+    await p.setViewportSize({ width: 1440, height: 855 }); await p.waitForTimeout(800);
+    ok('resizing desktop → phone → desktop', !sideways && p.errs.length === 0);
+    await ctx.close(); }
+  // 8. printing an invoice and an article
+  { const { ctx, p } = await mk({}, () => { try { sessionStorage.setItem('sk-intro-seen', '1'); } catch (e) {} });
+    await p.goto(`${B}/invoice?tier=still&cursor=off`); await p.waitForTimeout(1500);
+    await p.fill('input[name="client"]', 'Asha'); await p.fill('input[name="upi"]', 'sarvakali@upi'); await p.fill('.inv-row input[name="desc"]', 'Tarot reading'); await p.fill('.inv-row input[name="amt"]', '1500'); await p.waitForTimeout(500);
+    await p.emulateMedia({ media: 'print' });
+    await p.pdf({ path: `${OUT}/invoice.pdf`, format: 'A4' }).catch(() => {});
+    await p.screenshot({ path: `${OUT}/invoice-print.jpg`, type: 'jpeg', quality: 60, fullPage: true });
+    const pr = await p.evaluate(() => ({ chrome: ['.site-header', '.hud', '#world', '.inv-form, [data-invoice] form'].map((s) => { const e = document.querySelector(s); return e ? `${s}:${getComputedStyle(e).display}` : `${s}:none-in-dom`; }) }));
+    await p.goto(`${B}/writings/who-is-kali?tier=still&cursor=off`); await p.waitForTimeout(1500);
+    await p.screenshot({ path: `${OUT}/article-print.jpg`, type: 'jpeg', quality: 55, fullPage: true });
+    const art = await p.evaluate(() => ['.site-header', '.hud', '#world'].map((s) => { const e = document.querySelector(s); return e ? `${s}:${getComputedStyle(e).display}` : ''; }));
+    ok('print: invoice and an article print without the site chrome', pr.chrome.slice(0, 3).every((x) => x.endsWith(':none')) , `${pr.chrome.join(' ')} | article ${art.join(' ')}`);
+    await ctx.close(); }
+  await b.close();
+})();

@@ -3,3 +3,4 @@ dist/
 .astro/
 preview-artifact/
 .DS_Store
+qa-output/

@@ -76,6 +76,19 @@ Pillars 4 to 6 share one direction system (`src/scripts/dirs.ts`, `src/scripts/d
 
 Every factual line is checked against sources before it goes on the site; anything interpretive is marked as a draft for Sarvakali. The current fact-check table (claims, status, sources, changes) is on the prototype's cover page. Festival dates live in `src/scripts/festivals.ts` and must be confirmed with Sarvakali's panchang.
 
+## Quality checks
+
+The site has been through a code review and a deep test pass (see the preview cover for the findings). The
+checks are kept in `tools/qa/` and can be re-run against the built site: every page on desktop and phone,
+every interaction, each direction of Pillars 4 to 6, accessibility (WCAG 2.2 AA, keyboard only, reduced motion,
+high contrast, 200% text), robustness (storage blocked, no WebGL, JavaScript off, odd input, rapid clicks),
+seven screen sizes, memory over many page changes, and load on a slow phone. `tools/qa/README.md` says how.
+
+Things the checks rely on: each pillar's own script loads only on its own page (`pageModule` in
+`src/scripts/app.ts`, `STARTERS` in `src/scripts/dirpages.ts`); a page's start function returns a stop function
+that puts its moment back as it found it; the prototype panel starts closed before the first paint; full-screen
+layers make the page behind inert (`src/scripts/inert.ts`).
+
 ## Next
 
-Art direction per pillar, the commissioned Kali painting (layers + depth map), Cal.com booking on the Connect page, the content editor (Keystatic), real-phone testing, and the accounts for email reminders and visitor counts. The WhatsApp button is waiting for a decision.
+The real web address (link previews use the placeholder `sarvakali.example`), testing on real phones (Safari on iPhone especially), art direction per pillar, the commissioned Kali painting (layers + depth map), Cal.com booking on the Connect page, the content editor (Keystatic), and the accounts for email reminders and visitor counts. The WhatsApp button is waiting for a decision.
