@@ -48,8 +48,6 @@ node tools/qa/preview-check.cjs
 
 Each one has been looked at and is not a problem; add to this list only with a reason.
 
-- `audit.cjs`, phone, `/about`: "SMALL AI depth demo". A link inside a sentence of a caption; WCAG exempts
-  links in running text from the target-size rule.
 - `audit.cjs`, phone, `/pillars/learning` and `/pillars/identity`: "SMALL 13x13" (several). The radio buttons
   and checkboxes of Find your class and of the comfort note are hidden on purpose; the visible chip is the
   target, and it is 36px tall on touch screens (keyboard focus shows a ring on the chip).

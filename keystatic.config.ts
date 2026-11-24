@@ -280,7 +280,7 @@ const home = singleton({
     hero: fields.object({ kicker: line('Small heading'), title: must('Name'), lede: para('Line'), primary: line('Main button'), secondary: line('Second button'), scroll: line('“Scroll”') }, { label: 'The opening' }),
     connect: fields.object({
       kicker: line('Small heading'), title: must('Heading'), lede: para('Text'), primary: line('Main button'), secondary: line('Second button'),
-      steps: fields.object({ request: step('1 · Request'), confirm: step('2 · Confirm'), meet: step('3 · Meet'), pay: step('4 · Pay') }, { label: 'How it works' }),
+      steps: fields.object({ request: step('1 · Request'), confirm: step('2 · Confirm'), meet: step('3 · Meet'), pay: step('4 · Pay') }, { label: 'How it works (also shown on Connect)' }),
     }, { label: 'Connect' }),
     pillars: fields.object({ explore: line('Explore button'), ask: line('Ask button'), card: line('Card button (Divination)') }, { label: 'The six pillars (their names and lines are in the Catalogue)' }),
     kind: fields.object({ kicker: line('Small heading'), title: must('Heading'), note: para('Note under the words (leave empty once the words are real)') }, { label: 'Kind words (the words themselves have their own page)' }),
@@ -325,6 +325,48 @@ const cards = singleton({
   },
 });
 
+/* ---------------------------------------------------------------- the pages around the pillars */
+
+const connect = singleton({
+  label: 'Connect', path: 'src/content/pages/connect', format: { data: 'json' },
+  schema: {
+    kicker: line('Small heading'), title: must('Heading'), lede: para('Text'),
+    next: line('Heading over “what happens next”', 'The four steps themselves are the homepage’s How it works.'),
+    assurance: para('Reassurance under the steps', LINKS),
+    form: fields.object({
+      name: line('Name field'), email: line('Email field'), emailHint: line('Under the email field'), phone: line('Phone field'), optional: line('“(optional)”'),
+      kept: line('Heading over the kept services'), keptHint: line('Under the kept services'),
+      topic: line('Topic box'), topicExample: line('Example in the topic box'),
+      times: line('Heading over the times'), first: line('First choice'), second: line('Second choice'), third: line('Third choice'),
+      privacy: para('Privacy note'), send: line('Send button'),
+    }, { label: 'The form' }),
+    done: fields.object({ title: must('Heading'), text: para('Text'), back: line('Back button') }, { label: 'After sending' }),
+  },
+});
+
+const about = singleton({
+  label: 'About', path: 'src/content/pages/about', format: { data: 'json' },
+  schema: {
+    hero: fields.object({ kicker: line('Small heading'), title: must('Heading'), lede: para('Text') }, { label: 'The opening' }),
+    portrait: fields.object({ caption: para('Caption under the portrait', LINKS), hint: line('Hint for looking into it') }, { label: 'The portrait (the photograph itself is placed in code)' }),
+    quote: para('One line in Sarvakali’s own words', 'Set large, on its own. Leave empty to leave it out.'),
+    path: fields.object({
+      title: line('Heading'), intro: para('The story, in a few sentences', LINKS),
+      moments: fields.array(fields.object({ when: line('When'), what: line('What happened', LINKS) }), { label: 'Moments on the thread', itemLabel: (p) => `${p.fields.when.value} · ${p.fields.what.value}` }),
+    }, { label: 'The path' }),
+    lineage: fields.object({ title: line('Heading'), items: lines('Lines', 'Line', { description: LINKS }) }, { label: 'Lineage and training' }),
+    promises: fields.object({
+      title: line('Heading'),
+      items: fields.array(fields.object({
+        icon: fields.select({ label: 'Drawing', options: ICON_NAMES.map((v) => ({ value: v, label: v })), defaultValue: 'circle' }),
+        title: must('Title'), text: para('Text', LINKS),
+      }), { label: 'Promises', itemLabel: (p) => p.fields.title.value, validation: { length: { min: 1, max: 8 } } }),
+    }, { label: 'How Sarvakali works' }),
+    forWhom: fields.object({ title: line('Heading'), text: para('Text', LINKS) }, { label: 'Who it is for' }),
+    close: fields.object({ primary: line('Main button'), secondary: line('Second button') }, { label: 'Buttons at the end' }),
+  },
+});
+
 const writings = collection({
   label: 'Writings', slugField: 'title', path: 'src/content/writings/*', entryLayout: 'content', columns: ['title', 'date'],
   format: { contentField: 'body' },
@@ -346,13 +388,14 @@ export default config({
     brand: { name: 'Sarvakali' },
     navigation: {
       'The site': ['home', 'kind', 'festivals', 'cards', 'writings', 'settings'],
+      Pages: ['about', 'connect'],
       'Pillar pages': ['devotion', 'magic', 'healing', 'identity', 'divination', 'learning'],
       Catalogue: ['catDevotion', 'catMagic', 'catHealing', 'catIdentity', 'catDivination', 'catLearning'],
     },
   },
   collections: { writings },
   singletons: {
-    home, kind, festivals, cards, settings,
+    home, kind, festivals, cards, settings, about, connect,
     devotion, magic, healing, identity, divination, learning,
     catDevotion: catalogue('devotion', 'Catalogue · Devotion & the Unseen', CH.devotion, false),
     catMagic: catalogue('magic', 'Catalogue · Witchcraft & Magic', CH.magic),

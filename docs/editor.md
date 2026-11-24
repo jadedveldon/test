@@ -23,6 +23,8 @@ password on. Behind the door the editor still asks for its own sign-in, so knowi
 | Today's card | The twelve cards' names and messages |
 | Writings | The articles: add, edit, mark as draft |
 | Site settings | The site's address, visitor counts, the words shared by every pillar page |
+| About | The opening, the portrait's caption, Sarvakali's line, the path and its moments, lineage and training, the promises (each with a drawing), who it is for |
+| Connect | Every word of the page and the form; the four steps are the homepage's How it works |
 | Pillar pages (six) | Every heading and paragraph, care notes, and the signature moments' words and lists (prompts, breathing steps, chakras, the comfort note, the class finder, the path of study, the Mahavidyas, the Greek gods, the sabbats and ritus, the sigil methods...) |
 | Catalogue (six) | Every category, subcategory and service; which chapter of the page each subcategory sits in; its icon |
 
@@ -39,8 +41,8 @@ Small things to know:
   that no longer match.
 - **A new service** in a subcategory shows on the page by itself, in the chapter its subcategory sits in.
 
-Not yet in the editor: About, Boundaries and care, Connect, Find your path, Daily practice, the invoice maker
-and the depth demo (they join after their design pass, so nothing is built twice), the menu and search, and
+Not yet in the editor: Boundaries and care, Find your path, Daily practice, the invoice maker and the depth
+demo (they join after their design pass, so nothing is built twice), the menu and search, and
 the short messages that interactive moments show while you use them.
 
 ## Setting it up (once, by the site's owner, about fifteen minutes)

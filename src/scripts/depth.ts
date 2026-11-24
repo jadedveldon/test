@@ -1,7 +1,7 @@
 /**
- * The AI depth demo: a painting plus its depth map (made ahead of time by
- * Depth Anything V2). Near parts of the picture move more than far parts as
- * you look around, which reads as real depth.
+ * A painting (or photograph) plus its depth map, made ahead of time by Depth Anything V2. Near parts of the
+ * picture move more than far parts as you look around, which reads as real depth. Used by the depth demo and
+ * by About's portrait. Look around with the pointer, a finger, the phone's tilt, or the arrow keys.
  */
 const VS = `
 attribute vec2 aPos;
@@ -60,8 +60,8 @@ export function initDepth(live: boolean): (() => void) | null {
       if (gl) load();
     });
   });
-  const viewBtn = root.querySelector<HTMLButtonElement>('[data-depth-view]')!;
-  viewBtn.addEventListener('click', () => {
+  const viewBtn = root.querySelector<HTMLButtonElement>('[data-depth-view]');
+  viewBtn?.addEventListener('click', () => {
     showTarget = showTarget ? 0 : 1;
     viewBtn.setAttribute('aria-pressed', String(!!showTarget));
   });
@@ -128,13 +128,29 @@ export function initDepth(live: boolean): (() => void) | null {
     gl!.viewport(0, 0, canvas.width, canvas.height);
   }
 
+  /** where the viewer is looking, for the checks */
+  const mark = () => { stage.dataset.look = `${look.tx.toFixed(2)} ${look.ty.toFixed(2)}`; };
   const onMove = (e: PointerEvent) => {
     if (e.pointerType === 'touch' && !dragging) return;
     const r = stage.getBoundingClientRect();
     look.tx = Math.max(-1, Math.min(1, ((e.clientX - r.left) / r.width) * 2 - 1));
     look.ty = Math.max(-1, Math.min(1, ((e.clientY - r.top) / r.height) * 2 - 1));
     userMoved = 3;
+    mark();
   };
+  // the arrow keys look around too (the stage takes focus only once the depth view is running)
+  const KEYS: Record<string, [number, number]> = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] };
+  const onKey = (e: KeyboardEvent) => {
+    const k = KEYS[e.key];
+    if (e.key === 'Home') { look.tx = 0; look.ty = 0; }
+    else if (k) { look.tx = Math.max(-1, Math.min(1, look.tx + k[0] * 0.25)); look.ty = Math.max(-1, Math.min(1, look.ty + k[1] * 0.25)); }
+    else return;
+    e.preventDefault();
+    userMoved = 8;
+    mark();
+  };
+  stage.tabIndex = 0;
+  stage.addEventListener('keydown', onKey);
   const onDown = (e: PointerEvent) => { if (e.pointerType === 'touch') { dragging = true; onMove(e); } };
   const onUp = () => { dragging = false; };
   window.addEventListener('pointermove', onMove, { passive: true });
@@ -142,14 +158,14 @@ export function initDepth(live: boolean): (() => void) | null {
   window.addEventListener('pointerup', onUp);
   window.addEventListener('resize', size, { passive: true });
 
-  const tiltBtn = root.querySelector<HTMLButtonElement>('[data-depth-tilt]')!;
+  const tiltBtn = root.querySelector<HTMLButtonElement>('[data-depth-tilt]');
   const onTilt = (e: DeviceOrientationEvent) => {
     if (e.gamma == null || e.beta == null) return;
     look.tx = Math.max(-1, Math.min(1, e.gamma / 25));
     look.ty = Math.max(-1, Math.min(1, (e.beta - 45) / 25));
     userMoved = 3;
   };
-  if ('DeviceOrientationEvent' in window && matchMedia('(pointer: coarse)').matches) {
+  if (tiltBtn && 'DeviceOrientationEvent' in window && matchMedia('(pointer: coarse)').matches) {
     tiltBtn.hidden = false;
     tiltBtn.addEventListener('click', async () => {
       const DOE = DeviceOrientationEvent as unknown as { requestPermission?: () => Promise<string> };
@@ -186,6 +202,8 @@ export function initDepth(live: boolean): (() => void) | null {
     window.removeEventListener('pointerup', onUp);
     window.removeEventListener('resize', size);
     window.removeEventListener('deviceorientation', onTilt);
+    stage.removeEventListener('keydown', onKey);
+    stage.removeAttribute('tabindex');
     gl.getExtension('WEBGL_lose_context')?.loseContext();
   };
 }

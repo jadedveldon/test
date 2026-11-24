@@ -1,4 +1,4 @@
-// The settled Pillars 4 to 6, desktop and a touch phone: each chapter shows its own world, nothing is left
+// The settled Pillars 4 to 6 (and About's portrait), desktop and a touch phone: each chapter shows its own world, nothing is left
 // hidden or sideways, no errors, and every signature moment works by mouse, by touch and by keyboard.
 // Rule (CLAUDE.md): a new signature moment adds its checks here.
 const { chromium } = require('playwright');
@@ -96,6 +96,24 @@ const PILLARS = {
       home[pl] = await p.evaluate(() => window.sarvakali.world.chapterKey);
       ok(`${view} homepage: ${pl} chapter shows ${spec.home}`, home[pl] === spec.home, home[pl]);
     }
+    // About's portrait (a signature moment outside the pillars): it opens into depth and looks around by mouse,
+    // by finger and by keyboard
+    await go('/about');
+    const stage = p.locator('.about-stage');
+    await stage.scrollIntoViewIfNeeded(); await p.waitForTimeout(2500);
+    ok(`${view} about: the portrait opens into depth`, await stage.evaluate((el) => el.classList.contains('is-live')));
+    const bx = await stage.boundingBox();
+    const pt = [bx.x + bx.width * 0.15, bx.y + bx.height * 0.25];
+    if (!phone) { await p.mouse.move(pt[0], pt[1]); }
+    else {
+      await stage.evaluate((el, [x, y]) => { el.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerType: 'touch', isPrimary: true, clientX: x, clientY: y })); window.dispatchEvent(new PointerEvent('pointermove', { bubbles: true, pointerType: 'touch', isPrimary: true, clientX: x + 4, clientY: y + 4 })); window.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, pointerType: 'touch' })); }, pt);
+    }
+    await p.waitForTimeout(300);
+    const byPointer = await stage.getAttribute('data-look');
+    ok(`${view} about: the portrait follows the ${phone ? 'finger' : 'mouse'}`, !!byPointer && byPointer.split(' ').every((v) => Number(v) < 0), byPointer || 'no response');
+    await stage.focus(); await p.keyboard.press('Home'); await p.keyboard.press('ArrowRight'); await p.keyboard.press('ArrowRight'); await p.keyboard.press('ArrowDown');
+    const byKey = await stage.getAttribute('data-look');
+    ok(`${view} about: the portrait looks around by keyboard`, byKey === '0.50 0.25', byKey || 'no response');
     console.log(`ERRORS (${view}):`, errs.length ? [...new Set(errs)] : 'none');
     await ctx.close();
   }

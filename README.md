@@ -25,7 +25,7 @@ the site settings are edited in the **content editor** (Keystatic): run `npm run
 http://localhost:4321/keystatic. The files it writes are in `src/content/`. On the live site the editor sits
 behind a secret door and its own sign-in; `docs/editor.md` explains using it and the one-time setup.
 
-About, Boundaries and care, Connect, Find your path, Daily practice, the invoice maker and the depth demo are
+Boundaries and care, Find your path, Daily practice, the invoice maker and the depth demo are
 still edited in their pages (`src/pages/*.astro`) until their design pass is done.
 
 ## How it fits together

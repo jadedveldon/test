@@ -42,7 +42,7 @@ import { initPath } from './path';
 import { sampleHeading } from './dust';
 import { FEST_LOOK, activeFestival, daysUntil, inDays, nextMoon, niceDate, type FestMode } from './festivals';
 import { initSearch, revealFound, closeSearch } from './search';
-import { initKeep, keepTopic, renderKeep } from './keep';
+import { initKeep, keepLine, keepList, onKeepChange, renderKeep } from './keep';
 import { closeMenu, initMenu } from './menu';
 import { initPwa } from './pwa';
 import { runDeviceTest } from './devicetest';
@@ -579,7 +579,7 @@ function soundTick() {
   // the Devotion directions each have their own sound layer
   // Magic's night pages share Devotion's cosmic layer; its day pages are the quiet room of the book
   const layer = (k: string) => (k.startsWith('devC_') ? 'cosmic' : k.startsWith('magG_') ? (magPage(k.slice(5)) === 'day' ? 'learning' : 'cosmic')
-    : k.startsWith('heal_') ? 'healing' : k.startsWith('id_') ? 'identity' : k.startsWith('div_') ? 'divination' : k.startsWith('lrn_') ? 'learning' : k === 'practice' ? 'divination' : k === 'care' ? 'healing' : k);
+    : k.startsWith('heal_') ? 'healing' : k.startsWith('id_') ? 'identity' : k.startsWith('div_') ? 'divination' : k.startsWith('lrn_') ? 'learning' : k === 'practice' ? 'divination' : k === 'care' ? 'healing' : k === 'about' ? 'devotion' : k);
   const w: Record<string, number> = {};
   w[layer(a)] = (w[layer(a)] ?? 0) + (1 - t);
   w[layer(b)] = (w[layer(b)] ?? 0) + t;
@@ -747,9 +747,42 @@ function initConnect() {
   if (!form) return;
   const topicInput = form.querySelector<HTMLInputElement>('#topic');
   const fromUrl = new URLSearchParams(location.search).get('topic');
-  const topic = fromUrl || read('sk-topic') || keepTopic();
+  const topic = fromUrl || read('sk-topic');
   store('sk-topic', null); // used once; a later visit through Book or the menu starts from the kept list
   if (topic && topicInput) topicInput.value = topic;
+  // the services kept on the way, as chips that can be removed; they go with the request
+  const box = form.querySelector<HTMLElement>('[data-connect-kept]');
+  const ul = form.querySelector<HTMLElement>('[data-connect-kept-list]');
+  const value = form.querySelector<HTMLInputElement>('[data-connect-kept-value]');
+  if (box && ul && value) {
+    const draw = () => {
+      if (!ul.isConnected) { stop(); return; } // the page has gone: let it go
+      const list = keepList();
+      // removing a chip by keyboard keeps focus nearby: on the next chip, or the box below once none are left
+      const had = ul.contains(document.activeElement) ? [...ul.querySelectorAll('button')].indexOf(document.activeElement as HTMLButtonElement) : -1;
+      box.hidden = !list.length;
+      ul.replaceChildren(...list.map((k) => {
+        const li = document.createElement('li');
+        const name = document.createElement('span');
+        name.textContent = k.t;
+        const rm = document.createElement('button');
+        rm.type = 'button';
+        rm.className = 'kept-remove';
+        rm.dataset.keepRemove = k.t;
+        rm.setAttribute('aria-label', `Remove ${k.t} from your request`);
+        rm.textContent = '×';
+        li.append(name, rm);
+        return li;
+      }));
+      value.value = keepLine();
+      if (had >= 0) {
+        const next = ul.querySelectorAll<HTMLButtonElement>('button')[Math.min(had, list.length - 1)];
+        (next ?? topicInput)?.focus();
+      }
+    };
+    const stop = onKeepChange(draw);
+    draw();
+  }
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     if (!form.reportValidity()) return;

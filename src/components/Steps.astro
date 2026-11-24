@@ -1,0 +1,26 @@
+---
+/**
+ * How it works, in four steps. The words are the homepage's (src/content/home.json, "How it works" in the
+ * content editor), so the homepage and Connect always say the same thing; the drawings stay here.
+ */
+import home from '../content/home.json';
+interface Props { variant?: 'row' | 'column'; fade?: boolean }
+const { variant = 'row', fade = true } = Astro.props;
+const st = home.connect.steps;
+const ICON = {
+  request: '<rect x="7" y="12" width="34" height="24" rx="4" /><path d="M8 14l16 12 16-12" />',
+  confirm: '<rect x="8" y="10" width="32" height="30" rx="4" /><path d="M8 18h32M16 6v8M32 6v8M17 29l5 5 9-10" />',
+  meet: '<rect x="6" y="13" width="26" height="22" rx="4" /><path d="M32 21l10-6v18l-10-6z" />',
+  pay: '<path d="M14 10h22M14 18h22M14 10c10 0 14 4 14 8s-4 8-14 8l16 14" />',
+};
+const steps = (['request', 'confirm', 'meet', 'pay'] as const).map((k) => ({ k, ...st[k], icon: ICON[k] }));
+---
+<ol class={`how${variant === 'column' ? ' how-col' : ''}`} aria-label="How it works">
+  {steps.map((s) => (
+    <li data-fade={fade ? '' : undefined}>
+      <svg viewBox="0 0 48 48" aria-hidden="true" set:html={s.icon} />
+      <b>{s.title}</b>
+      <span>{s.text}</span>
+    </li>
+  ))}
+</ol>

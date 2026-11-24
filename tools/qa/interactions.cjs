@@ -78,6 +78,14 @@ const W = Number(process.env.W || 1440), H = Number(process.env.H || 855);
   await p.waitForTimeout(1500);
   ok('path quiz moves on', await p.evaluate(() => document.querySelectorAll('.path-options:not([hidden]) .path-opt, .path-result, a.btn').length > 0));
   await p.screenshot({ path: `${OUT}/${tag}path.jpg`, type: 'jpeg', quality: 60 });
+  // connect: the kept services show as chips; one removed by keyboard keeps focus in the list
+  await p.evaluate(() => localStorage.setItem('sk-keep', JSON.stringify([{ t: 'Kali Working', p: 'Devotion & the Unseen' }, { t: 'Tarot Reading', p: 'Divination & Insight' }])));
+  await go('/connect');
+  const kept0 = await p.evaluate(() => [...document.querySelectorAll('[data-connect-kept-list] li > span')].map((x) => x.textContent));
+  await p.locator('[data-connect-kept-list] .kept-remove').first().focus(); await p.keyboard.press('Enter'); await p.waitForTimeout(400);
+  const kept1 = await p.evaluate(() => ({ chips: [...document.querySelectorAll('[data-connect-kept-list] li > span')].map((x) => x.textContent), focus: document.activeElement?.getAttribute('aria-label') || '', value: document.querySelector('[data-connect-kept-value]').value, stored: JSON.parse(localStorage.getItem('sk-keep') || '[]').length }));
+  ok('connect: kept services show as chips; removing one by keyboard keeps focus and updates the request', kept0.length === 2 && kept1.chips.length === 1 && kept1.stored === 1 && /Tarot Reading/.test(kept1.focus) && kept1.value === 'Tarot Reading', JSON.stringify(kept1));
+  await p.evaluate(() => localStorage.removeItem('sk-keep'));
   // connect: validation, then a full request
   await go('/connect');
   await p.click('#connect-form button[type="submit"]');

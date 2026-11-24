@@ -1,0 +1,29 @@
+{
+  "kicker": "Connect",
+  "title": "Request a conversation",
+  "lede": "Leave your name and a few times that suit you. Sarvakali confirms the meeting or suggests another time, and the Google Meet link arrives by email.",
+  "next": "What happens next",
+  "assurance": "Nothing about your situation is asked for here. Share as much or as little as you like when you meet.",
+  "form": {
+    "name": "Your name",
+    "email": "Email",
+    "emailHint": "The meeting invitation is sent here.",
+    "phone": "Phone",
+    "optional": "(optional)",
+    "kept": "From your list",
+    "keptHint": "These go with your request. Remove any you would rather not mention.",
+    "topic": "What you would like to talk about",
+    "topicExample": "For example: Healing & Inner Work",
+    "times": "Times that suit you",
+    "first": "First choice",
+    "second": "Second choice",
+    "third": "Third choice",
+    "privacy": "We use your name, email and phone only to arrange this conversation. You can ask us to delete them at any time.",
+    "send": "Send request"
+  },
+  "done": {
+    "title": "Request received",
+    "text": "Sarvakali will confirm your time, or suggest another, by email.",
+    "back": "Back to the homepage"
+  }
+}

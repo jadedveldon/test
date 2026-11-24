@@ -1,0 +1,75 @@
+{
+  "hero": {
+    "kicker": "About",
+    "title": "The person behind Sarvakali",
+    "lede": "Who you will be speaking with, where the path began, and how the work is held."
+  },
+  "portrait": {
+    "caption": "A stand-in: a Kalighat painting of Kali, nineteenth century (Cleveland Museum of Art, public domain). Sarvakali’s own portrait or altar photograph goes here, and opens into depth the same way.",
+    "hint": "Move your pointer, drag, or use the arrow keys to look into it."
+  },
+  "quote": "[One line in Sarvakali’s own words: why this work, and why Kali.]",
+  "path": {
+    "title": "The path",
+    "intro": "[Sarvakali’s story, in a few sentences: how the path began, and how Kali came in.]",
+    "moments": [
+      {
+        "when": "[When]",
+        "what": "[Where the path began]"
+      },
+      {
+        "when": "[When]",
+        "what": "[The first teacher]"
+      },
+      {
+        "when": "[When]",
+        "what": "[How Kali came in]"
+      },
+      {
+        "when": "Today",
+        "what": "[Sarvakali, and the work held here]"
+      }
+    ]
+  },
+  "lineage": {
+    "title": "Lineage and training",
+    "items": [
+      "[Tradition and teacher]",
+      "[Initiations]",
+      "[Training and qualifications, for example in Reiki, hypnotherapy, CBT, NLP and EFT]"
+    ]
+  },
+  "promises": {
+    "title": "How Sarvakali works",
+    "items": [
+      {
+        "icon": "hands",
+        "title": "Listening first",
+        "text": "Every conversation begins with listening. You share as much or as little as you like."
+      },
+      {
+        "icon": "house",
+        "title": "From wherever you are",
+        "text": "Sessions are online, over Google Meet, at a time you agree together."
+      },
+      {
+        "icon": "shield",
+        "title": "No forms about your life",
+        "text": "You never have to explain your situation in a form."
+      },
+      {
+        "icon": "coin",
+        "title": "Plain about money",
+        "text": "Fees are discussed directly, and paid by UPI against an invoice."
+      }
+    ]
+  },
+  "forWhom": {
+    "title": "Who it is for",
+    "text": "People of every background, faith and identity, including queer and trans people, who will always be met with respect. [Sarvakali’s own words here.]"
+  },
+  "close": {
+    "primary": "Request a conversation",
+    "secondary": "Boundaries and care"
+  }
+}

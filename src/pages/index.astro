@@ -1,11 +1,12 @@
 ---
 import Base from '../layouts/Base.astro';
 import Loader from '../components/Loader.astro';
+import Steps from '../components/Steps.astro';
 import { pillars, totalServices } from '../data/site';
 import kind from '../content/kind-words.json';
 import home from '../content/home.json';
 
-const h = home, st = home.connect.steps;
+const h = home;
 const words = kind.words.filter((w) => w.text.trim());
 ---
 <Base title="Sarvakali">
@@ -62,28 +63,7 @@ const words = kind.words.filter((w) => w.text.trim());
         <a class="btn btn-solid" href="/connect">{h.connect.primary}</a>
         <a class="btn btn-ghost" href="/path">{h.connect.secondary}</a>
       </div>
-      <ol class="how" aria-label="How it works">
-        <li data-fade>
-          <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="7" y="12" width="34" height="24" rx="4" /><path d="M8 14l16 12 16-12" /></svg>
-          <b>{st.request.title}</b>
-          <span>{st.request.text}</span>
-        </li>
-        <li data-fade>
-          <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="10" width="32" height="30" rx="4" /><path d="M8 18h32M16 6v8M32 6v8M17 29l5 5 9-10" /></svg>
-          <b>{st.confirm.title}</b>
-          <span>{st.confirm.text}</span>
-        </li>
-        <li data-fade>
-          <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="13" width="26" height="22" rx="4" /><path d="M32 21l10-6v18l-10-6z" /></svg>
-          <b>{st.meet.title}</b>
-          <span>{st.meet.text}</span>
-        </li>
-        <li data-fade>
-          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M14 10h22M14 18h22M14 10c10 0 14 4 14 8s-4 8-14 8l16 14" /></svg>
-          <b>{st.pay.title}</b>
-          <span>{st.pay.text}</span>
-        </li>
-      </ol>
+      <Steps />
     </div>
   </section>
 

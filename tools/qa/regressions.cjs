@@ -91,7 +91,7 @@ const ARGS = { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', 
     await p.goto(`${B}/pillars/learning?tier=still&cursor=off&find=${encodeURIComponent('Spirituality Fundamentals Classes')}`); await p.waitForTimeout(3000);
     ok('search: reveals the service in its chapter list', await p.evaluate(() => { const f = document.querySelector('.is-found'); return !!f && f.getClientRects().length > 0 && !!f.closest('.sub-card') && !f.closest('.pd-sig, .pathmap'); }));
     await ctx.close(); }
-  // 13 connect topic used once
+  // 13 connect topic used once (since the Connect redesign the kept list shows as chips, not text in the topic box)
   { const { ctx, p } = await fresh();
     await p.goto(`${B}/pillars/divination?tier=still&cursor=off`); await p.waitForTimeout(2500);
     await p.evaluate(() => document.querySelector('.pd-move [data-topic]').click()); await p.waitForTimeout(2500);
@@ -100,7 +100,8 @@ const ARGS = { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', 
     await p.evaluate(() => document.querySelector('.sub-card .chip-keep').click()); await p.waitForTimeout(300);
     await p.evaluate(() => document.querySelector('.book-btn').click()); await p.waitForTimeout(2500);
     const second = await p.inputValue('#topic');
-    ok('connect: Book shows the kept list, not an old topic', second !== first && /Interested|kept|:/.test(second), `${first} → ${second}`);
+    const chips = await p.evaluate(() => [...document.querySelectorAll('[data-connect-kept-list] li > span')].map((x) => x.textContent));
+    ok('connect: Book shows the kept list, not an old topic', !!first && second !== first && chips.length > 0, `"${first}" → "${second}" · list: ${chips.join('; ')}`);
     await ctx.close(); }
   // 7 + 14 fire twice on Calm, and leaving mid-burn on Full
   { const { ctx, p } = await fresh();

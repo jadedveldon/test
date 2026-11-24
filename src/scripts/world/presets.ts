@@ -102,6 +102,11 @@ export const PRESETS: Record<string, Preset> = {
     a: '#07050f', b: '#2b0f2e', c: '#b8892f', glow: '#f2c66b',
     ink: '#f5ead9', inkSoft: '#c2ad98', scale: 1.6, warp: 2.8, speed: 0.05, light: 0, motes: 0.5, form: 'flames', shift: 4.6, fade: 0.45, narrow: 0,
   },
+  /* About: Devotion's night, with only drifting dust, so the portrait leads */
+  about: {
+    a: '#07050f', b: '#2b0f2e', c: '#b8892f', glow: '#f2c66b',
+    ink: '#f5ead9', inkSoft: '#c2ad98', scale: 1.5, warp: 2.4, speed: 0.04, light: 0, motes: 0.55, form: 'dust', shift: 0, fade: 0.35, narrow: 0,
+  },
   /* Boundaries and care: Healing's still water, quiet behind the words */
   care: {
     a: '#03111a', b: '#0b3d48', c: '#7fd1c0', glow: '#d9fff4',

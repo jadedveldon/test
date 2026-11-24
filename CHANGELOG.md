@@ -3,6 +3,32 @@
 Every change to the site, newest first: what changed, why, and how it was checked.
 The rules for checking are in `CLAUDE.md`; the checks themselves are in `tools/qa/`.
 
+## 2026-11-24 · Connect and About, designed
+
+- **Changed: Connect.** The services a visitor kept now show as chips they can remove (the list goes with the
+  request), and the box below is for their own words or the "Ask about this" topic only. Beside the form, "What
+  happens next": the homepage's four steps, drawn as a thread (one component, `Steps.astro`, so both pages always
+  say the same thing). The form is a solid surface, so the world never runs behind the fields; each time box has
+  its own visible label. On a phone the form comes straight after the opening and the steps follow it.
+- **Changed: About.** The portrait opens into depth (the depth demo's technique, in an arch like a shrine's
+  doorway); a public-domain Kalighat painting stands in until Sarvakali's own photograph. Then one line in
+  Sarvakali's own words, set large; the path as a thread of moments; lineage and training; "How Sarvakali works"
+  as four promises with drawings; who it is for. Its own quiet world (`about`: Devotion's night with drifting dust).
+- **Added: both pages' words to the content editor** ("Pages": About, Connect). About's bracketed lines are for
+  Sarvakali to write there. Each promise picks its drawing from a list.
+- **Changed: the depth view takes the keyboard** (arrow keys, Home to centre) once it is running, on About and on
+  the depth demo, and its buttons are optional so other pages can use it.
+- **Fixed (a check, not the site): `regressions.cjs` 13** read the kept list from the topic box; the list now
+  shows as chips, so the check reads the chips. It still asserts the same thing: the old topic does not come back
+  and the kept list is there. **Removed from the known false alarms:** About's small caption link (the caption
+  no longer has one).
+- **Added: checks.** `pillars.cjs`: About's portrait opens into depth and looks around by mouse, by finger and by
+  keyboard (desktop and phone). `interactions.cjs`: kept services show as chips on Connect; removing one by
+  keyboard keeps focus in the list and updates the request. `keyboard.cjs` now also walks About.
+- **Verified:** screenshots before and after, desktop and phone, looked at (two fixes came from looking: the
+  quote was one word per line, and on a phone the steps stood between the visitor and the form). Accessibility
+  on About, Connect and the depth demo: no violations.
+
 ## 2026-11-24 · Design pass, first look: the pages around the pillars
 
 - **Reviewed:** About, Boundaries and care, Connect, Find your path, Daily practice, Writings (list and article),

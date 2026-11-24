@@ -34,7 +34,7 @@ const works = [
       </p>
     </div>
 
-    <figure class="depth-stage" data-hero>
+    <figure class="depth-stage" data-hero role="img" aria-label="The painting in depth: move your pointer, drag, or use the arrow keys to look around it">
       {works.map((w, i) => (
         <div class="depth-work" data-work-pane={w.id} hidden={i !== 0} style={`aspect-ratio: ${w.w} / ${w.h}`}>
           <img class="depth-img" src={w.img} alt={`${w.title}, Kalighat painting, 19th century`} width={w.w} height={w.h} loading={i === 0 ? 'eager' : 'lazy'} />

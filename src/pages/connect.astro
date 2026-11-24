@@ -1,54 +1,75 @@
 ---
+/**
+ * Connect: request a conversation. Beside the form, what happens next (the homepage's How it works, so both
+ * always agree). The services a visitor kept appear as chips they can remove; their own words go in the box.
+ * The words are in src/content/pages/connect.json ("Connect" in the content editor). At launch the three time
+ * boxes become the Cal.com calendar, dressed to match.
+ */
 import Base from '../layouts/Base.astro';
+import Steps from '../components/Steps.astro';
+import Rich from '../components/Rich.astro';
+import c from '../content/pages/connect.json';
+const f = c.form;
 ---
 <Base title="Connect · Sarvakali" sequence="connect" description="Request a conversation with Sarvakali.">
   <section class="connect">
     <div class="connect-intro">
-      <p class="kicker" data-hero>Connect</p>
-      <h1 class="display-l" data-hero data-split>Request a conversation</h1>
-      <p class="lede" data-hero>
-        Leave your name and a few times that suit you. Sarvakali confirms the meeting or suggests another time, and the Google Meet link arrives by email.
-      </p>
+      <p class="kicker" data-hero>{c.kicker}</p>
+      <h1 class="display-l" data-hero data-split>{c.title}</h1>
+      <p class="lede" data-hero>{c.lede}</p>
+    </div>
+
+    <!-- beside the form on wide screens; after it on phones, so the form comes first -->
+    <div class="connect-aside">
+      <div class="connect-next" data-hero>
+        <p class="kicker">{c.next}</p>
+        <Steps variant="column" fade={false} />
+      </div>
+      <p class="connect-assure" data-hero><Rich text={c.assurance} /></p>
     </div>
 
     <form id="connect-form" class="connect-form" data-hero novalidate>
       <div class="field">
-        <label for="name">Your name</label>
+        <label for="name">{f.name}</label>
         <input id="name" name="name" type="text" autocomplete="name" required />
       </div>
       <div class="field">
-        <label for="email">Email</label>
-        <input id="email" name="email" type="email" autocomplete="email" required />
-        <p class="hint">The meeting invitation is sent here.</p>
+        <label for="email">{f.email}</label>
+        <input id="email" name="email" type="email" autocomplete="email" required aria-describedby="email-hint" />
+        <p class="hint" id="email-hint">{f.emailHint}</p>
       </div>
       <div class="field">
-        <label for="phone">Phone <span class="optional">(optional)</span></label>
+        <label for="phone">{f.phone} <span class="optional">{f.optional}</span></label>
         <input id="phone" name="phone" type="tel" autocomplete="tel" />
       </div>
+      <div class="field connect-kept" data-connect-kept hidden>
+        <p class="field-label" id="kept-label">{f.kept}</p>
+        <ul class="kept-chips" data-connect-kept-list aria-labelledby="kept-label"></ul>
+        <p class="hint">{f.keptHint}</p>
+        <input type="hidden" name="kept" data-connect-kept-value />
+      </div>
       <div class="field">
-        <label for="topic">What you would like to talk about <span class="optional">(optional)</span></label>
-        <textarea id="topic" name="topic" rows="2" placeholder="For example: Healing & Inner Work"></textarea>
-        <p class="hint">Services you kept in your list appear here.</p>
+        <label for="topic">{f.topic} <span class="optional">{f.optional}</span></label>
+        <textarea id="topic" name="topic" rows="2" placeholder={f.topicExample}></textarea>
       </div>
       <fieldset class="field">
-        <legend>Times that suit you</legend>
+        <legend>{f.times}</legend>
         <div class="times">
-          <input id="time1" name="time1" type="datetime-local" required aria-label="First choice" />
-          <input id="time2" name="time2" type="datetime-local" aria-label="Second choice (optional)" />
-          <input id="time3" name="time3" type="datetime-local" aria-label="Third choice (optional)" />
+          <label class="time"><span>{f.first}</span><input id="time1" name="time1" type="datetime-local" required /></label>
+          <label class="time"><span>{f.second} <span class="optional">{f.optional}</span></span><input id="time2" name="time2" type="datetime-local" /></label>
+          <label class="time"><span>{f.third} <span class="optional">{f.optional}</span></span><input id="time3" name="time3" type="datetime-local" /></label>
         </div>
       </fieldset>
-      <p class="notice">
-        We use your name, email and phone only to arrange this conversation. You can ask us to delete them at any time.
-      </p>
-      <button type="submit" class="btn btn-solid">Send request</button>
+      <p class="notice">{f.privacy}</p>
+      <button type="submit" class="btn btn-solid">{f.send}</button>
       <p class="proto-note">Prototype: in the finished site this step is the Cal.com booking calendar, styled to match. Nothing is sent from here.</p>
     </form>
 
     <div id="connect-done" class="connect-done" hidden>
-      <h2 class="display-m">Request received</h2>
-      <p class="lede">In the finished site, Sarvakali now sees your request and either confirms it or suggests another time. This prototype did not send anything.</p>
-      <a class="btn btn-ghost" href="/">Back to the homepage</a>
+      <h2 class="display-m">{c.done.title}</h2>
+      <p class="lede">{c.done.text}</p>
+      <p class="proto-note">This prototype did not send anything.</p>
+      <a class="btn btn-ghost" href="/">{c.done.back}</a>
     </div>
   </section>
 </Base>

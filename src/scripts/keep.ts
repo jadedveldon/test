@@ -40,15 +40,14 @@ export function toggleKeep(t: string, p: string) {
   return i < 0;
 }
 
+/** call fn whenever the list changes; returns a function that stops it */
 export function onKeepChange(fn: () => void) {
   listeners.add(fn);
+  return () => { listeners.delete(fn); };
 }
 
-/** the topic line the Connect form receives */
-export const keepTopic = () => {
-  const l = keepList();
-  return l.length ? `Interested in: ${l.map((k) => k.t).join('; ')}` : '';
-};
+/** the kept list as one line, as it goes with a request from the Connect form */
+export const keepLine = () => keepList().map((k) => k.t).join('; ');
 
 export function renderKeep() {
   const list = keepList();
@@ -107,6 +106,7 @@ export function initKeep() {
     }
     if (t?.closest('[data-keep-close]') && drawer) { drawer.hidden = true; return; }
     if (t?.closest('[data-keep-clear]')) { save([]); if (drawer) drawer.hidden = true; return; }
-    if (t?.closest('[data-keep-ask]')) store('sk-topic', keepTopic());
+    // the list itself shows on Connect as chips; an older topic must not come back with it
+    if (t?.closest('[data-keep-ask]')) store('sk-topic', null);
   });
 }
