@@ -27,7 +27,9 @@ The rules for checking are in `CLAUDE.md`; the checks themselves are in `tools/q
   keyboard keeps focus in the list and updates the request. `keyboard.cjs` now also walks About.
 - **Verified:** screenshots before and after, desktop and phone, looked at (two fixes came from looking: the
   quote was one word per line, and on a phone the steps stood between the visitor and the form). Accessibility
-  on About, Connect and the depth demo: no violations.
+  on About, Connect and the depth demo: no violations. The homepage and the six pillar pages say exactly what
+  the published build said. Full suite: 293 checks, no failures (only the known false alarms); memory flat; the
+  preview bundle checked.
 
 ## 2026-11-24 · Design pass, first look: the pages around the pillars
 
