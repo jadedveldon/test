@@ -20,9 +20,10 @@ import {
 } from 'three';
 import { PRESETS, toNumeric, mixInto, dampInto, cloneNumeric, type Numeric } from './presets';
 import {
-  FLAMES, GAL, TORUS, HALO_SECTORS, VORTEX_ARMS, MALA_BEADS, FORM_KEYS, buildForms, buildFormsAsync, lettersForm, makeDirs, makeSeeds, nameForm,
+  FLAMES, HALO_SECTORS, MALA_BEADS, FORM_KEYS, buildForms, buildFormsAsync, lettersForm, makeDirs, makeSeeds, nameForm,
   type FormKey,
 } from './forms';
+import { KEY_AXIS } from '../../data/hecate-key';
 import type { Tier } from '../tiers';
 
 /* ------------------------------------------------------------------ shaders */
@@ -246,17 +247,15 @@ uniform float uZoom;
 uniform vec2 uShift;
 uniform vec4 uW1; // flames, water, silk, stars
 uniform vec4 uW2; // letters, eye, horizon, sigils
-uniform vec4 uW3; // vortex, halo, name, dust
+uniform vec4 uW3; // bloom, halo, name, dust
 uniform vec4 uW4; // mala, lamps, agni, lotus
 uniform vec4 uW5; // yantra, temple, tree, crossroads
 uniform vec4 uW6; // rose, pentacle, astrolabe, moons
 uniform vec4 uW7; // chakras, bowl, halves, prism
 uniform vec4 uW8; // figure, cards, mirror, pendulum
-uniform vec4 uW9; // book, path, torches, key
-uniform vec4 uW10; // serpent, bloom, kolam, torus
+uniform vec4 uW9; // book, path, key, (spare)
 uniform float uAngMala;
 uniform float uAngFlame;
-uniform float uAngVortex;
 uniform float uAngHalo;
 uniform float uRise;
 uniform float uVeil;
@@ -272,10 +271,9 @@ attribute float aSeed;
 attribute vec3 aDir;
 varying float vA;
 varying float vSeed;
-varying vec2 vGal;
 const float CZ = -10.0;
-const float TR = ${TORUS.R.toFixed(3)}, TTILT = ${TORUS.tilt.toFixed(3)}, TCY = ${TORUS.cy.toFixed(3)};
-const float GA = ${GAL.A.toFixed(3)}, GB = ${GAL.B.toFixed(3)}, GC = ${GAL.C.toFixed(3)}, GD = ${GAL.D.toFixed(3)};
+const vec2 KC = vec2(${KEY_AXIS.c[0].toFixed(4)}, ${KEY_AXIS.c[1].toFixed(4)}), KD = vec2(${KEY_AXIS.d[0].toFixed(4)}, ${KEY_AXIS.d[1].toFixed(4)}), KN = vec2(${KEY_AXIS.n[0].toFixed(4)}, ${KEY_AXIS.n[1].toFixed(4)});
+const float KRAY = ${KEY_AXIS.ray.toFixed(4)};
 vec2 rot(vec2 p, float a) { float c = cos(a), s = sin(a); return vec2(c * p.x - s * p.y, s * p.x + c * p.y); }
 void main() {
   vec3 scrub = mix(aFrom, aTo, uMix);
@@ -296,13 +294,6 @@ void main() {
   p.xy = mix(p.xy, ec + (p.xy - ec) * (1.0 + 0.035 * sin(uTime * 1.2)), uW2.y);
   p.z += sin(uTime * 0.4 + aSeed * 10.0) * 0.25 * uW2.w;
   p.y += sin(uTime * 0.3 + aSeed * 7.0) * 0.06 * uW2.w;
-  // the galaxy turns in its own tilted plane; the turn grows with its weight, so it spins up and settles
-  float gz = p.z - CZ, gdet = GA * GD - GB * GC;
-  float gv = (GD * p.y - GB * gz) / gdet, gh = (GA * gz - GC * p.y) / gdet;
-  float gr = length(vec2(p.x, gv));
-  vec2 guv = rot(vec2(p.x, gv), uAngVortex * uW3.x);
-  p = mix(p, vec3(guv.x, guv.y * GA + gh * GB, CZ + guv.y * GC + gh * GD), uW3.x);
-  vGal = uW3.x * vec2(exp(-gr * gr * 2.2), smoothstep(1.2, 4.2, gr));
   vec2 hc = vec2(0.0, 1.7);
   p.xy = mix(p.xy, hc + rot(p.xy - hc, uAngHalo), uW3.y);
   float wr = uW2.z * step(0.55, aSeed);
@@ -339,42 +330,28 @@ void main() {
   float walker = uW5.w * step(aSeed, 0.1) * step(0.5, xr);
   float walk = fract(uTime * 0.05 + aSeed * 9.7);
   p.xy = mix(p.xy, xc + (p.xy - xc) * (1.0 - walk * 0.86), walker);
-  // Hecate's torches: the flames lick upward and sway; sparks rise from their tips and fade into the night
-  float fh = max(0.0, p.y - 1.16);
-  p.x += sin(uTime * 6.5 + aSeed * 31.0 + p.y * 5.0) * 0.035 * fh * uW9.z;
-  p.y += (sin(uTime * 4.1 + aSeed * 17.0) * 0.5 + 0.5) * 0.06 * fh * uW9.z;
-  float spark = uW9.z * step(aSeed, 0.07);
-  float sk = fract(uTime * 0.32 + aSeed * 11.0);
-  p.y += sk * 2.2 * spark;
-  p.x += sin(uTime * 1.6 + aSeed * 50.0) * 0.25 * sk * spark;
-  // Hecate's key turns slowly in its lock, about its own shank
-  vec2 kc = vec2(-1.87, 1.88), kd = vec2(0.743, -0.669), kn = vec2(0.669, 0.743);
-  vec2 kq = p.xy - kc;
-  float kal = dot(kq, kd), kpe = dot(kq, kn), kt = sin(uTime * 0.33) * 0.95;
-  p.xy = mix(p.xy, kc + kd * kal + kn * kpe * cos(kt), uW9.w);
-  p.z += kpe * sin(kt) * 0.7 * uW9.w;
-  // Hecate's serpent: the neck and head sway; the coil breathes
-  float sne = smoothstep(-1.0, 1.8, p.y);
-  p.x += sin(uTime * 0.8 - p.y * 1.3) * 0.12 * sne * sne * uW10.x;
-  vec2 scc = vec2(0.0, -1.5);
-  p.xy = mix(p.xy, scc + (p.xy - scc) * (1.0 + 0.015 * sin(uTime * 0.7)), uW10.x * (1.0 - sne));
+  // Hecate's key turns in its lock: a pause, a firm quarter-turn, a pause, and back. As it opens, light runs down
+  // the shank and the bow flares; the aureole of rays behind the bow stays still and pulses outward; sparks drift
+  // up from the wards and fade
+  vec2 kq = p.xy - KC;
+  float kal = dot(kq, KD), kpe = dot(kq, KN), kr = length(kq);
+  float kray = uW9.z * step(KRAY, kr) * step(0.62, abs(atan(kpe, kal)));
+  float kspark = uW9.z * step(aSeed, 0.05);
+  float ku = fract(uTime / 9.0);
+  float kt = 1.25 * (smoothstep(0.08, 0.24, ku) - smoothstep(0.58, 0.74, ku));
+  float kw = max(0.0, uW9.z - kray - kspark);
+  p.xy = mix(p.xy, KC + KD * kal + KN * kpe * cos(kt), kw);
+  p.z += kpe * sin(kt) * 0.7 * kw;
+  float krun = kw * exp(-pow(kal - mix(-0.6, 6.0, smoothstep(0.08, 0.3, ku)), 2.0) * 2.0) * smoothstep(0.06, 0.1, ku) * (1.0 - smoothstep(0.28, 0.36, ku));
+  float kflash = kw * step(kr, KRAY) * exp(-pow((ku - 0.25) * 28.0, 2.0));
+  float kpulse = kray * pow(0.5 + 0.5 * sin(uTime * 1.3 - kr * 3.2), 3.0);
+  float ks = fract(uTime * 0.22 + aSeed * 11.0);
+  p.y += ks * 1.5 * kspark;
+  p.x += sin(uTime * 1.3 + aSeed * 40.0) * 0.18 * ks * kspark;
   // the golden bloom breathes in a slow wave from its centre, turning a few degrees
   vec2 gbc = vec2(0.0, 0.3);
   float gbr = length(p.xy - gbc);
-  p.xy = mix(p.xy, gbc + rot(p.xy - gbc, sin(uTime * 0.12) * 0.1) * (1.0 + 0.03 * sin(uTime * 1.0 - gbr * 1.6)), uW10.y);
-  // the kolam: a ring of light crosses it from the centre (its brightness is set below)
-  float kring = uW10.z * pow(0.5 + 0.5 * sin(uTime * 1.1 - length(p.xy - vec2(0.0, 0.3)) * 2.2), 8.0);
-  // the energy field: its streams flow up through the centre and round over the outside
-  if (uW10.w > 0.001) {
-    float tc = cos(TTILT), ts = sin(TTILT);
-    vec3 tq = vec3(p.x, p.y - TCY, p.z - CZ);
-    vec3 tl = vec3(tq.x, tq.y * tc + tq.z * ts, -tq.y * ts + tq.z * tc);
-    float tth = atan(tl.z, tl.x), td = length(tl.xz) - TR;
-    float tph = atan(tl.y, td) - mod(uTime * 0.35, 6.2831853 / 6.0) * uW10.w, tro = length(vec2(td, tl.y));
-    float td2 = tro * cos(tph);
-    vec3 tl2 = vec3((TR + td2) * cos(tth), tro * sin(tph), (TR + td2) * sin(tth));
-    p = mix(p, vec3(tl2.x, TCY + tl2.y * tc - tl2.z * ts, CZ + tl2.y * ts + tl2.z * tc), uW10.w);
-  }
+  p.xy = mix(p.xy, gbc + rot(p.xy - gbc, sin(uTime * 0.12) * 0.1) * (1.0 + 0.03 * sin(uTime * 1.0 - gbr * 1.6)), uW3.x);
   // lotus: breathes slowly, the water rings a little more
   vec2 lc = vec2(0.0, -1.15);
   p.xy = mix(p.xy, lc + (p.xy - lc) * (1.0 + 0.025 * sin(uTime * 0.5)), uW4.w);
@@ -418,16 +395,15 @@ void main() {
   vec4 mv = modelViewMatrix * vec4(p, 1.0);
   gl_Position = projectionMatrix * mv;
   float depth = -mv.z;
-  float twinkle = 1.0 + sin(uTime * 2.6 + aSeed * 60.0) * 0.5 * uW1.w + sin(uTime * 9.0 + aSeed * 80.0) * 0.25 * uW4.y + sin(uTime * 1.9 + aSeed * 70.0) * 0.22 * vGal.y;
+  float twinkle = 1.0 + sin(uTime * 2.6 + aSeed * 60.0) * 0.5 * uW1.w + sin(uTime * 9.0 + aSeed * 80.0) * 0.25 * uW4.y;
   gl_PointSize = uSize * uPR * (0.55 + aSeed * 0.9) * twinkle * (10.0 / max(depth, 0.5)) * (1.0 + tf * 0.6);
   vA = (0.55 + 0.45 * fract(aSeed * 13.0)) * smoothstep(40.0, 12.0, depth) * smoothstep(0.5, 3.0, depth) * (1.0 - uVeil);
   vA *= 1.0 - wr * uRise * smoothstep(0.55, 1.0, climb);
   vA *= 1.0 + tf * 0.8;
   vA *= 1.0 - fl * smoothstep(0.5, 1.0, rise);
-  // the galaxy's core is brighter and its stars a little larger; flames glow; sparks fade as they rise
-  gl_PointSize *= (1.0 + 0.3 * vGal.x) * (1.0 + 0.45 * kring);
-  vA *= (1.0 + 1.4 * kring) * (1.0 + 0.5 * uW10.y);
-  vA *= (1.0 + 0.35 * vGal.x) * (1.0 + 0.35 * min(fh, 1.6) * uW9.z) * (1.0 - spark * smoothstep(0.35, 1.0, sk));
+  // the bloom glows a little brighter; the key's running light, flare and pulsing rays; its sparks fade as they rise
+  gl_PointSize *= 1.0 + 0.5 * krun + 0.4 * kflash;
+  vA *= (1.0 + 0.5 * uW3.x) * (1.0 + 2.0 * krun) * (1.0 + 1.4 * kflash) * (1.0 + 1.3 * kpulse) * (1.0 - kspark * smoothstep(0.3, 1.0, ks));
   vSeed = aSeed;
 }`;
 
@@ -440,14 +416,11 @@ uniform float uOpacity;
 uniform float uLight;
 varying float vA;
 varying float vSeed;
-varying vec2 vGal;
 void main() {
   vec2 c = gl_PointCoord - 0.5;
   float a = smoothstep(0.5, 0.0, length(c));
   a *= a;
   vec3 col = mix(uColor, uColor2, vSeed * 0.6);
-  col = mix(col, vec3(1.0, 0.85, 0.6), vGal.x * 0.75); // the galaxy's old, warm core
-  col = mix(col, vec3(0.62, 0.74, 1.0), vGal.y * 0.3); // and its young, blue arms
   col = mix(col, uInk, uLight);
   float alpha = a * vA * uOpacity;
   gl_FragColor = vec4(col * alpha, alpha * uLight);
@@ -590,7 +563,6 @@ export class World {
   private formsOn = true;
   private seqForms: FormKey[] = ['dust'];
   private angFlame = 0;
-  private angVortex = 0;
   private angHalo = 0;
   private malaAng = 0;
   private malaTarget = 0;
@@ -761,8 +733,8 @@ export class World {
       uniforms: {
         uTime: { value: 0 }, uMix: { value: 0 }, uT: { value: 0 }, uScatter: { value: 0.9 },
         uSize: { value: 1.9 }, uPR: { value: 1 }, uFit: { value: 1 }, uZoom: { value: 1 }, uShift: { value: new Vector2() },
-        uW1: { value: [0, 0, 0, 0] }, uW2: { value: [0, 0, 0, 0] }, uW3: { value: [0, 0, 0, 0] }, uW4: { value: [0, 0, 0, 0] }, uW5: { value: [0, 0, 0, 0] }, uW6: { value: [0, 0, 0, 0] }, uW7: { value: [0, 0, 0, 0] }, uW8: { value: [0, 0, 0, 0] }, uW9: { value: [0, 0, 0, 0] }, uW10: { value: [0, 0, 0, 0] }, uAngMala: { value: 0 },
-        uAngFlame: { value: 0 }, uAngVortex: { value: 0 }, uAngHalo: { value: 0 }, uRise: { value: 1 }, uVeil: { value: 0 },
+        uW1: { value: [0, 0, 0, 0] }, uW2: { value: [0, 0, 0, 0] }, uW3: { value: [0, 0, 0, 0] }, uW4: { value: [0, 0, 0, 0] }, uW5: { value: [0, 0, 0, 0] }, uW6: { value: [0, 0, 0, 0] }, uW7: { value: [0, 0, 0, 0] }, uW8: { value: [0, 0, 0, 0] }, uW9: { value: [0, 0, 0, 0] }, uAngMala: { value: 0 },
+        uAngFlame: { value: 0 }, uAngHalo: { value: 0 }, uRise: { value: 1 }, uVeil: { value: 0 },
         uColor: { value: new Vector3(1, 0.8, 0.5) }, uColor2: { value: new Vector3(1, 0.5, 0.3) }, uInk: { value: new Vector3() },
         uOpacity: { value: 0.8 }, uLight: { value: 0 },
         uNameC0: { value: new Vector2(0, 0.25) }, uNameC: { value: new Vector2(0, 0.25) }, uNameS: { value: 1 },
@@ -1164,8 +1136,6 @@ export class World {
       this.tE = ease(this.tT);
     }
     this.angFlame = (this.angFlame + dt * 0.07) % ((Math.PI * 2) / FLAMES);
-    // the galaxy turns only while it is fully shown, so its loop (half a turn) never shows mid-change
-    if (this.view.w[idx('vortex')] > 0.98) this.angVortex = (this.angVortex + dt * 0.05) % ((Math.PI * 2) / VORTEX_ARMS);
     this.angHalo = (this.angHalo + dt * 0.05) % ((Math.PI * 2) / HALO_SECTORS);
 
     this.writeCss();
@@ -1239,18 +1209,16 @@ export class World {
       fu.uShift.value.set(c.shift * this.shiftScale * this.fit, -this.narrowDrop * Math.min(1, Math.abs(c.shift) / 4.4));
       fu.uW1.value = [w[idx('flames')], w[idx('water')], w[idx('silk')], w[idx('stars')]];
       fu.uW2.value = [w[idx('letters')], w[idx('eye')], w[idx('horizon')], w[idx('sigils')]];
-      fu.uW3.value = [w[idx('vortex')], w[idx('halo')], w[idx('name')], w[idx('dust')]];
+      fu.uW3.value = [w[idx('bloom')], w[idx('halo')], w[idx('name')], w[idx('dust')]];
       fu.uW4.value = [w[idx('mala')], w[idx('lamps')], w[idx('agni')], w[idx('lotus')]];
       fu.uW5.value = [w[idx('yantra')], w[idx('temple')], w[idx('tree')], w[idx('crossroads')]];
       fu.uW6.value = [w[idx('rose')], w[idx('pentacle')], w[idx('astrolabe')], w[idx('moons')]];
       fu.uW7.value = [w[idx('chakras')], w[idx('bowl')], w[idx('halves')], w[idx('prism')]];
       fu.uW8.value = [w[idx('figure')], w[idx('cards')], w[idx('mirror')], w[idx('pendulum')]];
-      fu.uW9.value = [w[idx('book')], w[idx('path')], w[idx('torches')], w[idx('key')]];
-      fu.uW10.value = [w[idx('serpent')], w[idx('bloom')], w[idx('kolam')], w[idx('torus')]];
+      fu.uW9.value = [w[idx('book')], w[idx('path')], w[idx('key')], 0];
       this.malaAng += (this.malaTarget - this.malaAng) * (1 - Math.exp(-dt * 7));
       fu.uAngMala.value = this.malaAng;
       fu.uAngFlame.value = this.angFlame;
-      fu.uAngVortex.value = this.angVortex;
       fu.uAngHalo.value = this.angHalo;
       fu.uRise.value = this.dawnProgress;
       fu.uVeil.value = this.veil;

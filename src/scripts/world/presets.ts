@@ -51,17 +51,17 @@ export const PRESETS: Record<string, Preset> = {
   },
   connect: {
     a: '#0c0706', b: '#3a1a12', c: '#c9773a', glow: '#ffcf8a',
-    ink: '#f8eee3', inkSoft: '#cdb6a4', scale: 1.3, warp: 2.0, speed: 0.06, light: 0, motes: 0.4, form: 'vortex', shift: 3.0, zoom: 2.0, fade: 0.6, narrow: 0,
+    ink: '#f8eee3', inkSoft: '#cdb6a4', scale: 1.3, warp: 2.0, speed: 0.06, light: 0, motes: 0.4, form: 'bloom', shift: 3.0, zoom: 1.6, fade: 0.6, narrow: 0,
   },
-  /* the homepage's Connect chapter: the galaxy beside the words */
+  /* the homepage's Connect chapter: the golden bloom beside the words */
   connectHome: {
     a: '#0c0706', b: '#3a1a12', c: '#c9773a', glow: '#ffcf8a',
-    ink: '#f8eee3', inkSoft: '#cdb6a4', scale: 1.3, warp: 2.0, speed: 0.06, light: 0, motes: 0.4, form: 'vortex', shift: 5.2, zoom: 1.05, fade: 0.7,
+    ink: '#f8eee3', inkSoft: '#cdb6a4', scale: 1.3, warp: 2.0, speed: 0.06, light: 0, motes: 0.4, form: 'bloom', shift: 5.2, zoom: 0.84, fade: 0.7,
   },
   /* Find your path: the same form, quieter, beside the question (clear of the heading) */
   findpath: {
     a: '#0c0706', b: '#3a1a12', c: '#c9773a', glow: '#ffcf8a',
-    ink: '#f8eee3', inkSoft: '#cdb6a4', scale: 1.3, warp: 2.0, speed: 0.06, light: 0, motes: 0.4, form: 'vortex', shift: 5.2, zoom: 0.95, fade: 0.38, narrow: 0,
+    ink: '#f8eee3', inkSoft: '#cdb6a4', scale: 1.3, warp: 2.0, speed: 0.06, light: 0, motes: 0.4, form: 'bloom', shift: 5.2, zoom: 0.76, fade: 0.38, narrow: 0,
   },
   devotion: {
     a: '#07050f', b: '#2b0f2e', c: '#b8892f', glow: '#f2c66b',
@@ -213,20 +213,21 @@ export const PRESETS: Record<string, Preset> = {
   /* ---------------- Pillar 2, Witchcraft & Magic · the gilded grimoire
      Day pages are parchment (light: 1); night pages are black, emerald and gold.
      Between the two, the shader spreads the night in like ink. */
-  // night · the opening: Hecate's sign (the torches, until another is chosen: setHecateSign)
+  // night · the opening: Hecate's key (src/data/hecate-key.ts), turning in its lock; on phones, where it sits
+  // behind the chapter list, quieter (narrow) than most forms, as it is bright and large
   magG_hero: {
     a: '#050505', b: '#0d3b2e', c: '#b8693a', glow: '#d9b25a',
-    ink: '#f3ecdd', inkSoft: '#c2b59a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'torches', shift: 4.4, fade: 0.95,
+    ink: '#f3ecdd', inkSoft: '#c2b59a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'key', shift: 4.4, fade: 0.95, narrow: 0.6,
   },
   // night · the homepage chapter for this pillar
   magG_home: {
     a: '#050505', b: '#0d3b2e', c: '#b8693a', glow: '#d9b25a',
-    ink: '#f3ecdd', inkSoft: '#c2b59a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'torches', shift: 5.4, fade: 0.95,
+    ink: '#f3ecdd', inkSoft: '#c2b59a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'key', shift: 5.4, fade: 0.95, narrow: 0.6,
   },
-  // night · Hecate, presiding goddess: her sign beside Sarvakali's words
+  // night · Hecate, presiding goddess: her key beside Sarvakali's words
   magG_hecate: {
     a: '#050505', b: '#0b2f25', c: '#c8321e', glow: '#d9b25a',
-    ink: '#f3ecdd', inkSoft: '#c2b59a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'torches', shift: 4.2, fade: 0.6, moon: 0,
+    ink: '#f3ecdd', inkSoft: '#c2b59a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'key', shift: 4.2, fade: 0.6, moon: 0, narrow: 0.6,
   },
   // day · make a sigil (the page itself is the focus, the world stays faint)
   magG_sigil: {
@@ -238,10 +239,10 @@ export const PRESETS: Record<string, Preset> = {
     a: '#e8dcc0', b: '#cdb98f', c: '#c8321e', glow: '#fff6e2',
     ink: '#2a1d14', inkSoft: '#5a4330', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'rose', shift: 4.2, fade: 0.55,
   },
-  // day · II abundance: the road opening, in gold
+  // day · II abundance: the golden bloom, in ink on parchment
   magG_abundance: {
     a: '#e8dcc0', b: '#cdb98f', c: '#b8893a', glow: '#fff6e2',
-    ink: '#2a1d14', inkSoft: '#5a4330', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'vortex', shift: 4.2, fade: 0.55,
+    ink: '#2a1d14', inkSoft: '#5a4330', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'bloom', shift: 4.2, zoom: 0.8, fade: 0.55,
   },
   // night · III protection: copper pentacle; Hecate keeps the doorways
   magG_protection: {
@@ -268,10 +269,10 @@ export const PRESETS: Record<string, Preset> = {
     a: '#e8dcc0', b: '#cdb98f', c: '#3f6f5e', glow: '#fff6e2',
     ink: '#2a1d14', inkSoft: '#5a4330', scale: 1.0, warp: 1.4, speed: 0.03, light: 1, motes: 0.2, form: 'moons', shift: 4.2, fade: 0.55,
   },
-  // night · the close: her sign again
+  // night · the close: her key again
   magG_close: {
     a: '#050505', b: '#0d3b2e', c: '#b8693a', glow: '#d9b25a',
-    ink: '#f3ecdd', inkSoft: '#c2b59a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'torches', shift: 0, fade: 0.42,
+    ink: '#f3ecdd', inkSoft: '#c2b59a', scale: 1.7, warp: 2.6, speed: 0.05, light: 0, motes: 0.8, form: 'key', shift: 0, fade: 0.42, narrow: 0.6,
   },
   /* ---------------- Pillar 3, Healing & Inner Work · still water, with gold
      Teal night water and pearl text, gold for accents and for the light itself. */
@@ -290,10 +291,10 @@ export const PRESETS: Record<string, Preset> = {
     a: '#04161a', b: '#0d3a3f', c: '#9ed3c9', glow: '#e2c27a',
     ink: '#eef5f1', inkSoft: '#a9c4bd', scale: 1.2, warp: 1.8, speed: 0.03, light: 0, motes: 0.4, form: 'halo', shift: 1.8, fade: 0.3, zoom: 0.85,
   },
-  // II · mind: a slow spiral beside the text
+  // II · mind: the golden bloom beside the text
   heal_mind: {
     a: '#04161a', b: '#0d3a3f', c: '#6aa6b8', glow: '#e2c27a',
-    ink: '#eef5f1', inkSoft: '#a9c4bd', scale: 1.2, warp: 1.8, speed: 0.03, light: 0, motes: 0.4, form: 'vortex', shift: 4.2, fade: 0.45,
+    ink: '#eef5f1', inkSoft: '#a9c4bd', scale: 1.2, warp: 1.8, speed: 0.03, light: 0, motes: 0.4, form: 'bloom', shift: 4.2, zoom: 0.8, fade: 0.45,
   },
   // III · shadow: the water itself, low and quiet, under the golden repair
   heal_shadow: {
@@ -492,30 +493,4 @@ export function dampInto(cur: Numeric, target: Numeric, k: number) {
 
 export function cloneNumeric(n: Numeric): Numeric {
   return JSON.parse(JSON.stringify(n));
-}
-
-/** the worlds that show Hecate's sign; the prototype panel (or ?hecate=) chooses which sign they show */
-const HECATE_WORLDS = ['magG_hero', 'magG_home', 'magG_hecate', 'magG_close'];
-export function setHecateSign(sign: FormKey) {
-  HECATE_WORLDS.forEach((k) => { if (PRESETS[k]) PRESETS[k].form = sign; });
-}
-
-/**
- * The places the galaxy used to be. Each option has its own size there (the galaxy was the widest). The prototype
- * panel (or ?ambient=) chooses which one they show, to compare.
- */
-const AMBIENT_WORLDS = ['connect', 'connectHome', 'findpath', 'magG_abundance', 'heal_mind'];
-const AMBIENT_ZOOM: Partial<Record<FormKey, number>> = { vortex: 1, kolam: 0.9, bloom: 0.8, torus: 0.85 };
-// on phones the form sits behind the words; the kolam's crisp lines and dots stand out more than the others, so it is quieter
-const AMBIENT_NARROW: Partial<Record<FormKey, number>> = { kolam: 0.6 };
-const base: Record<string, { zoom: number; narrow: number }> = {};
-export function setAmbientForm(form: FormKey) {
-  AMBIENT_WORLDS.forEach((k) => {
-    const p = PRESETS[k];
-    if (!p) return;
-    base[k] ??= { zoom: p.zoom ?? 1, narrow: p.narrow ?? 1 };
-    p.form = form;
-    p.zoom = base[k].zoom * (AMBIENT_ZOOM[form] ?? 1);
-    p.narrow = base[k].narrow * (AMBIENT_NARROW[form] ?? 1);
-  });
 }

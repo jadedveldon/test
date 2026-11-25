@@ -210,27 +210,23 @@ const ARGS = { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', 
     ok('cursor: stays visible over the menu, search and today\'s card', menu && search && card, `menu ${menu} · search ${search} · card ${card}`);
     await ctx.close(); }
   // 21 Hecate's mark on Witchcraft & Magic, a circle with three roads meeting, read as a peace sign; it is replaced by
-  //    a sign of hers (twin torches by default; her key or her serpent to compare, by ?hecate=), in the world and the badge
+  //    her key (chosen from her torches, key and serpent), in the world and the badge
   { const { ctx, p } = await fresh();
-    const shown = [];
-    for (const sign of ['torches', 'key', 'serpent']) {
-      await p.goto(`${B}/pillars/magic?tier=full&cursor=off&hecate=${sign}`); await p.waitForTimeout(4000);
-      const r = await p.evaluate(() => ({
-        form: window.sarvakali.world.formKey,
-        badge: [...document.querySelectorAll('.mg-presides .hk-sign [data-sign]')].filter((g) => getComputedStyle(g).display !== 'none').map((g) => g.dataset.sign),
-        roads: document.querySelectorAll('.hk-moon-road, .mg-presides path[d^="M0 0 L"]').length,
-      }));
-      shown.push(`${sign}: ${r.form} / ${r.badge.join('+')}${r.roads ? ' / roads ' + r.roads : ''}`);
-      if (r.form !== sign || r.badge.join() !== sign || r.roads) shown.push('MISMATCH');
-    }
-    ok('magic: Hecate\'s sign, not three roads, in the world and the badge', !shown.includes('MISMATCH'), shown.filter((x) => x !== 'MISMATCH').join(' · '));
+    await p.goto(`${B}/pillars/magic?tier=full&cursor=off`); await p.waitForTimeout(4000);
+    const r = await p.evaluate(() => ({
+      form: window.sarvakali.world.formKey,
+      badge: [...document.querySelectorAll('.mg-presides .hk-sign [data-sign]')].filter((g) => getComputedStyle(g).display !== 'none').map((g) => g.dataset.sign),
+      roads: document.querySelectorAll('.hk-moon-road, .mg-presides path[d^="M0 0 L"]').length,
+    }));
+    ok('magic: Hecate\'s key, not three roads, in the world and the badge', r.form === 'key' && r.badge.join() === 'key' && !r.roads, `${r.form} / ${r.badge.join('+')}${r.roads ? ' / roads ' + r.roads : ''}`);
     await ctx.close(); }
   // 22 arriving at a chapter's heading (from the menu, search or a link) left its light form still 5% dissolved out of
-  //    the one before, which blurred fine line forms such as the kolam (the galaxy's fuzz had hidden it)
+  //    the one before, which blurred fine line forms such as a kolam (the galaxy's fuzz had hidden it); the golden
+  //    bloom now stands there
   { const { ctx, p } = await fresh();
-    await p.goto(`${B}/pillars/healing?tier=full&cursor=off&ambient=kolam#mind-and-subconscious-work`); await p.waitForTimeout(5000);
+    await p.goto(`${B}/pillars/healing?tier=full&cursor=off#mind-and-subconscious-work`); await p.waitForTimeout(5000);
     const r = await p.evaluate(() => ({ form: window.sarvakali.world.formKey, settled: window.sarvakali.world.formSettled }));
-    ok('world: a chapter\'s form is whole at its heading', r.form === 'kolam' && r.settled > 0.99, `${r.form} settled ${r.settled.toFixed(3)}`);
+    ok('world: a chapter\'s form is whole at its heading', r.form === 'bloom' && r.settled > 0.99, `${r.form} settled ${r.settled.toFixed(3)}`);
     await ctx.close(); }
   await b.close();
 })();

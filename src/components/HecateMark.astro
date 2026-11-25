@@ -1,19 +1,16 @@
 ---
 /**
- * Hecate's sign, small, for the marks on the page. All three are drawn; the page shows the one chosen
- * (html[data-hecate], set from the prototype panel or ?hecate=; the torches until then). The drawings are the
- * ones the light form uses (src/data/hecate-signs.ts).
+ * Hecate's key, small, for the mark beside her name: the main strokes and the glows of the drawing the light form
+ * uses (src/data/hecate-key.ts); the finer detail is left out, as it would blur at this size.
  */
-import { HECATE_SIGNS, SIGNS } from '../data/hecate-signs';
+import { KEY } from '../data/hecate-key';
 interface Props { x?: number; y?: number; size?: number }
 const { x = 0, y = 0, size = 400 } = Astro.props;
-const place = (t?: [number, number, number, number]) => (t ? `translate(${t[0]} ${t[1]}) rotate(${t[2]}) scale(${t[3]})` : undefined);
+const t = KEY.transform;
 ---
 <svg class="hk-sign" x={x} y={y} width={size} height={size} viewBox="0 0 400 400" aria-hidden="true">
-  {HECATE_SIGNS.map((k) => (
-    <g data-sign={k} transform={place(SIGNS[k].transform)}>
-      {SIGNS[k].glows.map((d) => <path d={d} class="hk-sign-glow" />)}
-      {SIGNS[k].lines.map((d) => <path d={d} class="hk-sign-line" />)}
-    </g>
-  ))}
+  <g data-sign="key" transform={`translate(${t[0]} ${t[1]}) rotate(${t[2]}) scale(${t[3]})`}>
+    {KEY.glows.map((d) => <path d={d} class="hk-sign-glow" />)}
+    {KEY.lines.map((d) => <path d={d} class="hk-sign-line" />)}
+  </g>
 </svg>

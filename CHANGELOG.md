@@ -3,6 +3,33 @@
 Every change to the site, newest first: what changed, why, and how it was checked.
 The rules for checking are in `CLAUDE.md`; the checks themselves are in `tools/qa/`.
 
+## 2026-11-25 · The golden bloom and Hecate's key, locked in; the key made dramatic
+
+- **Chosen by the owner: the golden bloom** where the galaxy was (the homepage's Connect chapter, Connect, Find your
+  path, Abundance, Mind), at the sizes it had in the comparison, and **Hecate's key** as her sign.
+- **Removed: the forms not chosen** (the galaxy, the kolam, the energy field, the twin torches, the serpent), with
+  their shader motion, and the switches that compared them (`?ambient=`, `?hecate=`, and the two prototype-panel
+  groups). Every page builds five fewer forms when it loads. The form weights are repacked: the bloom takes the
+  galaxy's slot (`uW3.x`), the key moves to `uW9.z`, `uW10` is gone. All of them stay in the project's history.
+- **Changed: the key, redrawn to be dramatic** (`src/data/hecate-key.ts`, which replaces `hecate-signs.ts`). It is
+  larger and steeper; its bow has three lobes, for her triple form, each with a small light, an engraved double
+  edge, and the dark moon's crescent glowing at its heart (the crescent was a degenerate path before, so its glow
+  never showed); an aureole of rays stands behind it; the shank has a twisted collar, a beaded ring and a pointed
+  tip; the bit is deep and stepped. In the world it turns in its lock every nine seconds (a quarter-turn, a pause,
+  and back); as it turns, light runs down the shank and the bow flares, the rays stay still and pulse outward, and
+  sparks drift up from the wards. The key's axis for the turn is worked out from the drawing (`KEY_AXIS`), so the
+  drawing can move without breaking the turn. The small mark beside her name draws the main lines only. On phones
+  the key is quieter (`narrow: 0.6`), as it sits behind the chapter list.
+- **Fact check (cover):** the torches and serpent rows now read "Checked; not used"; the key row lists what is
+  ornament; an older row that found no ancient source for her keys now points to the one found since (Kleidouchos).
+- **Checks updated, not yet run** (at the owner's request): `regressions.cjs` 21 now expects the key (no longer
+  each of three signs by `?hecate=`) in the world and the badge; 22 now expects the bloom at Mind's heading (it was
+  checked with the kolam by `?ambient=`, which is gone; what it measures, how settled the form is, is unchanged).
+- **Looked at:** the drawing at full size and as the small mark; the key on the opening and in Hecate's section,
+  desktop and phone, and eight moments of one turn; the bloom in all five places. A type check shows no errors in
+  the changed files.
+- **Pushed and published to the preview without running the suites**, at the owner's request.
+
 ## 2026-11-25 · Options instead of the galaxy
 
 - **Added: three forms to compare in the galaxy's places** (the homepage's Connect chapter, Connect, Find your path,

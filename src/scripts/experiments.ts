@@ -1,7 +1,6 @@
 import gsap from 'gsap';
 import { read, store } from './tiers';
 import type { WorldHandle as World } from './world/handle';
-import { HECATE_SIGNS, type HecateSign } from '../data/hecate-signs';
 
 /* -------------------------------------------------------------- state */
 
@@ -22,23 +21,16 @@ export type Exp = {
   haptics: OnOff;
   saver: OnOff;
   festival: 'auto' | 'kalipuja' | 'diwali' | 'navratri' | 'eclipse' | 'none';
-  /** Hecate's sign on Witchcraft & Magic, to compare (see src/data/hecate-signs.ts) */
-  hecate: HecateSign;
-  /** what shows where the galaxy was (Connect, Find your path, Abundance, Mind), to compare */
-  ambient: Ambient;
 };
-export type Ambient = 'kolam' | 'bloom' | 'torus' | 'galaxy';
 
 const DEFAULTS: Exp = {
-  forms: 'on', hero: 'dawneye', page: 'eye', bend: 'off', cursor: 'flame', sky: 'now', touch: 'on', dust: 'on', haptics: 'on', saver: 'off', festival: 'auto', hecate: 'torches', ambient: 'kolam',
+  forms: 'on', hero: 'dawneye', page: 'eye', bend: 'off', cursor: 'flame', sky: 'now', touch: 'on', dust: 'on', haptics: 'on', saver: 'off', festival: 'auto',
 };
 const ALLOWED: Record<keyof Exp, string[]> = {
   forms: ['on', 'off'], hero: ['dawneye', 'eye', 'name', 'dawn'], page: ['eye', 'smoke', 'ink', 'morph', 'fade'], bend: ['on', 'off'],
   cursor: ['flame', 'incense', 'off'], sky: ['now', 'amavasya', 'purnima', 'night', 'day', 'off'],
   touch: ['on', 'off'], dust: ['on', 'off'], haptics: ['on', 'off'], saver: ['on', 'off'],
   festival: ['auto', 'kalipuja', 'diwali', 'navratri', 'eclipse', 'none'],
-  hecate: HECATE_SIGNS,
-  ambient: ['kolam', 'bloom', 'torus', 'galaxy'],
 };
 export const exp: Exp = { ...DEFAULTS };
 export type ToggleKey = 'bend' | 'touch' | 'dust' | 'haptics' | 'saver';
