@@ -16,7 +16,7 @@ node tools/make-previews.cjs     # app icons + link-preview pictures (needs the 
 
 Add `?tier=ultra|full|lighter|still|calm` to any URL to force a quality level, and `?intro=1` to replay the intro.
 Experiments can be set by URL too: `?hero=dawneye|eye|name|dawn`, `?page=eye|smoke|ink|morph|fade`, `?cursor=flame|incense|off`,
-`?sky=now|amavasya|purnima|night|day|off`, `?festival=auto|kalipuja|diwali|navratri|eclipse|none`, `?forms=on|off`, `?bend=on|off`, `?touch=on|off`, `?dust=on|off`, `?haptics=on|off`, `?saver=on|off`.
+`?sky=now|amavasya|purnima|night|day|off`, `?festival=auto|kalipuja|diwali|navratri|eclipse|none`, `?forms=on|off`, `?bend=on|off`, `?touch=on|off`, `?dust=on|off`, `?haptics=on|off`, `?saver=on|off`, `?hecate=torches|key|serpent` (Hecate's sign on Witchcraft & Magic, to compare).
 
 ## Editing content
 

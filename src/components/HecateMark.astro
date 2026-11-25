@@ -1,0 +1,19 @@
+---
+/**
+ * Hecate's sign, small, for the marks on the page. All three are drawn; the page shows the one chosen
+ * (html[data-hecate], set from the prototype panel or ?hecate=; the torches until then). The drawings are the
+ * ones the light form uses (src/data/hecate-signs.ts).
+ */
+import { HECATE_SIGNS, SIGNS } from '../data/hecate-signs';
+interface Props { x?: number; y?: number; size?: number }
+const { x = 0, y = 0, size = 400 } = Astro.props;
+const place = (t?: [number, number, number, number]) => (t ? `translate(${t[0]} ${t[1]}) rotate(${t[2]}) scale(${t[3]})` : undefined);
+---
+<svg class="hk-sign" x={x} y={y} width={size} height={size} viewBox="0 0 400 400" aria-hidden="true">
+  {HECATE_SIGNS.map((k) => (
+    <g data-sign={k} transform={place(SIGNS[k].transform)}>
+      {SIGNS[k].glows.map((d) => <path d={d} class="hk-sign-glow" />)}
+      {SIGNS[k].lines.map((d) => <path d={d} class="hk-sign-line" />)}
+    </g>
+  ))}
+</svg>

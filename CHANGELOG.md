@@ -3,6 +3,38 @@
 Every change to the site, newest first: what changed, why, and how it was checked.
 The rules for checking are in `CLAUDE.md`; the checks themselves are in `tools/qa/`.
 
+## 2026-11-25 · The cursor in the menu, Hecate's sign, a real galaxy
+
+- **Fixed: the cursor vanished over the menu.** With the flame cursor on, the arrow is hidden and a drawn cursor
+  takes its place; it was drawn beneath the full-screen menu and search (so nothing showed), and today's card and
+  the device report open in the browser's top layer, above anything a page can draw. The drawn cursor now sits
+  above the menu, search and page changes, and while a dialog is open the arrow comes back. Check:
+  `regressions.cjs` 20 (failed before the fix over the menu and the card).
+- **Changed: Hecate's sign.** Her mark on Witchcraft & Magic (the opening, her section, the close, the homepage
+  chapter and the small "Under the keeping of" badge) was a circle with three roads meeting in it, which reads as a
+  peace sign. It is now one of her own attributes, drawn once as engraved line art (`src/data/hecate-signs.ts`) and
+  used both as the light form and as the badge: **twin torches** (the default; Phosphoros, the light-bringer: the
+  flames lick upward and sparks rise into the night), **her key** (Kleidouchos, keeper of the keys; its bow holds
+  the dark moon's crescent and it turns slowly as if in a lock) or **her serpent** (coiled, the neck rising and
+  swaying). The three are offered to compare (`?hecate=torches|key|serpent`, or the prototype panel); her sources
+  are in the cover's fact check. The dark moon in her supper section lost its three road lines too. The popular
+  "Hecate's wheel" was left out: only the strophalos of the Chaldean Oracles is ancient, and the wheel's design
+  could not be traced to a source.
+- **Changed: the galaxy** (the homepage's Connect chapter, Connect, Find your path, Abundance, Mind) was a thin
+  three-armed spiral of evenly scattered dots. It is rebuilt the way a real galaxy is put together: a dense, puffy
+  bulge with a short bar; two open grand-design arms (pitch 24°) with a bright spine inside a broader glow, a dark
+  dust lane along their inner edge, feathered spurs and soft knots of young stars; a disc between the arms that is
+  denser near them; a sparse halo. The arms trail the turning, as real ones do. The shader warms the core to old
+  gold and cools the arms towards blue, enlarges and brightens the core a little, lets arm stars twinkle, and turns
+  the galaxy in its own tilted plane with the turn growing with its weight, so it spins up and settles instead of
+  sliding. On Connect it is large enough to sweep around the form; the homepage chapter (`connectHome`) keeps it
+  beside the words; Find your path (`findpath`) keeps the quieter one.
+- **Checks written, not yet run** (at the owner's request the suites wait): `regressions.cjs` 21 (Hecate's sign,
+  not three roads, in the world and the badge, for each of the three). The world now reports its form
+  (`formKey`) for checks.
+- **Looked at:** each sign on the opening and in Hecate's section, desktop and phone; the galaxy before and after on
+  the homepage, Connect, Find your path, Abundance and Mind.
+
 ## 2026-11-24 · Connect and About, designed
 
 - **Changed: Connect.** The services a visitor kept now show as chips they can remove (the list goes with the

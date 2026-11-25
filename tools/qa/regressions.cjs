@@ -183,5 +183,47 @@ const ARGS = { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', 
     const r = await p.evaluate(() => { const de = document.documentElement; return { sw: de.scrollWidth, cw: de.clientWidth }; });
     ok('devotion: no sideways scrolling at 200% text on a phone', r.sw <= r.cw + 1, `${r.sw} wide in ${r.cw}`);
     await ctx.close(); }
+  // 20 with the flame cursor on (it hides the arrow), the cursor vanished over the menu and search, which were
+  //    drawn above it, and over today's card, which opens in the browser's top layer above everything
+  { const { ctx, p } = await fresh();
+    await p.goto(`${B}/?tier=still&cursor=flame`); await p.waitForTimeout(2500);
+    const seen = async (sel) => {
+      const el = p.locator(sel).first(); const bx = await el.boundingBox();
+      await p.mouse.move(bx.x + bx.width / 2, bx.y + bx.height / 2, { steps: 4 }); await p.waitForTimeout(400);
+      return el.evaluate((t) => {
+        const c = document.getElementById('cursor');
+        // the drawn cursor shows if it is visible and stacked above the layer t sits in; otherwise the arrow must show
+        const layer = t.closest('.menu, .search, dialog');
+        const drawn = c.classList.contains('is-visible') && getComputedStyle(c).opacity !== '0' && !layer?.matches('dialog') && Number(getComputedStyle(c).zIndex) > Number(getComputedStyle(layer).zIndex);
+        const arrow = getComputedStyle(t).cursor !== 'none';
+        return drawn || arrow;
+      });
+    };
+    await p.click('[data-menu-open]'); await p.waitForTimeout(900);
+    const menu = await seen('.menu-main a');
+    await p.keyboard.press('Escape'); await p.waitForTimeout(700);
+    await p.click('[data-search-open]'); await p.waitForTimeout(900);
+    const search = await seen('.search input, .search button');
+    await p.keyboard.press('Escape'); await p.waitForTimeout(700);
+    await p.evaluate(() => document.querySelector('[data-card-open]').click()); await p.waitForTimeout(1500);
+    const card = await seen('#card-dialog button');
+    ok('cursor: stays visible over the menu, search and today\'s card', menu && search && card, `menu ${menu} · search ${search} · card ${card}`);
+    await ctx.close(); }
+  // 21 Hecate's mark on Witchcraft & Magic, a circle with three roads meeting, read as a peace sign; it is replaced by
+  //    a sign of hers (twin torches by default; her key or her serpent to compare, by ?hecate=), in the world and the badge
+  { const { ctx, p } = await fresh();
+    const shown = [];
+    for (const sign of ['torches', 'key', 'serpent']) {
+      await p.goto(`${B}/pillars/magic?tier=full&cursor=off&hecate=${sign}`); await p.waitForTimeout(4000);
+      const r = await p.evaluate(() => ({
+        form: window.sarvakali.world.formKey,
+        badge: [...document.querySelectorAll('.mg-presides .hk-sign [data-sign]')].filter((g) => getComputedStyle(g).display !== 'none').map((g) => g.dataset.sign),
+        roads: document.querySelectorAll('.hk-moon-road, .mg-presides path[d^="M0 0 L"]').length,
+      }));
+      shown.push(`${sign}: ${r.form} / ${r.badge.join('+')}${r.roads ? ' / roads ' + r.roads : ''}`);
+      if (r.form !== sign || r.badge.join() !== sign || r.roads) shown.push('MISMATCH');
+    }
+    ok('magic: Hecate\'s sign, not three roads, in the world and the badge', !shown.includes('MISMATCH'), shown.filter((x) => x !== 'MISMATCH').join(' · '));
+    await ctx.close(); }
   await b.close();
 })();

@@ -6,14 +6,16 @@
  * Forms are shuffled (or evenly interleaved) so that the first k points are
  * always a fair sample: lighter devices simply draw fewer points.
  */
+import { SIGNS, type HecateSign } from '../../data/hecate-signs';
+
 export const CZ = -10;
 
-export const FORM_KEYS = ['dust', 'halo', 'name', 'vortex', 'flames', 'sigils', 'water', 'silk', 'stars', 'letters', 'eye', 'horizon', 'mala', 'lamps', 'agni', 'yantra', 'temple', 'tree', 'rose', 'pentacle', 'astrolabe', 'moons', 'crossroads', 'lotus', 'chakras', 'bowl', 'halves', 'prism', 'figure', 'cards', 'mirror', 'pendulum', 'book', 'path'] as const;
+export const FORM_KEYS = ['dust', 'halo', 'name', 'vortex', 'flames', 'sigils', 'water', 'silk', 'stars', 'letters', 'eye', 'horizon', 'mala', 'lamps', 'agni', 'yantra', 'temple', 'tree', 'rose', 'pentacle', 'astrolabe', 'moons', 'crossroads', 'lotus', 'chakras', 'bowl', 'halves', 'prism', 'figure', 'cards', 'mirror', 'pendulum', 'book', 'path', 'torches', 'key', 'serpent'] as const;
 export type FormKey = (typeof FORM_KEYS)[number];
 
 export const FLAMES = 108;
 export const HALO_SECTORS = 72;
-export const VORTEX_ARMS = 3;
+export const VORTEX_ARMS = 2;
 export const MALA_BEADS = 108;
 
 /** the 51 letters of Kali's garland (varnamala): 16 vowels, 33 consonants, kṣa and jña */
@@ -91,22 +93,69 @@ function halo(n: number) {
   return o;
 }
 
-/** a slow three-armed spiral, made of identical arms */
+/**
+ * The galaxy plane, tilted towards the viewer: plane coordinates (u, v) and height h above the plane map to the
+ * world as x = u, y = v·A + h·B, z = CZ + v·C + h·D. The shader inverts this to turn the galaxy in its own plane.
+ */
+export const GAL = { A: 0.6, B: 0.85, C: 0.38, D: -0.42 };
+
+/**
+ * A spiral galaxy, built the way a real one is put together: a dense, puffy bulge with a short bar; two
+ * grand-design arms that widen as they wind out, with a dark dust lane along their inner edge, feathered spurs
+ * and bright knots of young stars; a soft disc between the arms, denser near them; and a sparse halo around it
+ * all. The arms trail the turning, as real arms do. Built as two identical halves (VORTEX_ARMS) so its slow turn
+ * can loop invisibly; the shader warms the core and cools the arms.
+ */
 function vortex(n: number) {
   const r = rng(7); const o = new Float32Array(n * 3);
   const per = Math.ceil(n / VORTEX_ARMS);
+  const pitch = Math.tan((24 * Math.PI) / 180), r0 = 0.55;
+  const ridge = (rad: number) => -Math.log(rad / r0) / pitch; // the arm's angle at a radius (trailing)
+  const armDist = (rad: number, a: number) => { // distance along the circle to the nearest of the two arms
+    let d = (a - ridge(rad)) % Math.PI; if (d < 0) d += Math.PI; if (d > Math.PI / 2) d -= Math.PI;
+    return d * rad;
+  };
+  const knots = Array.from({ length: 30 }, () => {
+    const rad = 1.15 + Math.pow(r(), 0.85) * 3.9;
+    return [rad, ridge(rad) + (gauss(r) * 0.35 * (0.07 + 0.1 * rad)) / rad, 0.05 + r() * 0.07];
+  });
+  const bar = 0.35;
   const tpl: number[][] = [];
-  for (let k = 0; k < per; k++) {
-    const core = r() < 0.18;
-    const rad = core ? Math.pow(r(), 1.5) * 0.9 : 0.3 + Math.pow(r(), 0.75) * 4.6;
-    const a = core ? r() * Math.PI * 2 : rad * 1.05 + gauss(r) * 0.45 / (rad + 0.4);
-    tpl.push([a, rad, gauss(r) * 0.12]);
+  while (tpl.length < per) {
+    const c = r();
+    if (c < 0.12) { // the bulge, with a short bar
+      const rad = 0.9 * Math.pow(r(), 1.85) + 0.02, a = r() * Math.PI * 2;
+      const u0 = Math.cos(a) * rad, v0 = Math.sin(a) * rad * 0.66;
+      tpl.push([u0 * Math.cos(bar) - v0 * Math.sin(bar), u0 * Math.sin(bar) + v0 * Math.cos(bar), gauss(r) * 0.34 * Math.max(0.12, 1 - rad / 1.15)]);
+    } else if (c < 0.66) { // the arms
+      let rad = 0.62 + Math.pow(r(), 1.25) * 5.1;
+      // a bright spine inside a broader glow
+      const w = (0.05 + 0.06 * rad) * (r() < 0.45 ? 1 : 2.3);
+      const off = gauss(r) * w; // across the arm; negative is its inner, leading edge
+      if (off < -0.3 * w && off > -1.05 * w && r() < 0.88) continue; // the dust lane
+      let a = ridge(rad) + off / rad;
+      if (r() < 0.14) { const spur = r() * 0.75; rad += spur; a += (spur * 0.5) / rad; } // feathering: spurs leave the arm more steeply
+      tpl.push([Math.cos(a) * rad, Math.sin(a) * rad, gauss(r) * 0.045]);
+    } else if (c < 0.71) { // knots of young stars along the arms
+      const [kr, ka, ks] = knots[Math.floor(r() * knots.length)];
+      const rad = kr + gauss(r) * ks, a = ka + (gauss(r) * ks) / kr;
+      tpl.push([Math.cos(a) * rad, Math.sin(a) * rad, gauss(r) * 0.025]);
+    } else if (c < 0.975) { // the disc, a little denser near the arms
+      const rad = 0.25 - Math.log(1 - r() * 0.975) * 1.55;
+      if (rad > 6.2) continue;
+      const a = r() * Math.PI * 2;
+      const near = Math.exp(-Math.pow(armDist(rad, a) / (0.22 + 0.12 * rad), 2));
+      if (r() > 0.12 + 0.88 * near) continue;
+      tpl.push([Math.cos(a) * rad, Math.sin(a) * rad, gauss(r) * (0.05 + 0.02 * rad)]);
+    } else { // the halo: a few old stars all around
+      const rad = 1.2 + Math.pow(r(), 0.55) * 6.4, a = r() * Math.PI * 2, el = (r() * 2 - 1) * 0.9;
+      tpl.push([Math.cos(a) * rad * Math.cos(el), Math.sin(a) * rad * Math.cos(el), Math.sin(el) * rad * 0.45]);
+    }
   }
   for (let i = 0; i < n; i++) {
-    const arm = i % VORTEX_ARMS, [a0, rad, dz] = tpl[Math.floor(i / VORTEX_ARMS)];
-    const a = a0 + arm * (Math.PI * 2 / VORTEX_ARMS);
-    const u = Math.cos(a) * rad, v = Math.sin(a) * rad;
-    put(o, i, u, v * 0.42, CZ + v * 0.5 + dz);
+    const half = i % VORTEX_ARMS, [u0, v0, h] = tpl[Math.floor(i / VORTEX_ARMS)];
+    const t = (half * Math.PI * 2) / VORTEX_ARMS, u = u0 * Math.cos(t) - v0 * Math.sin(t), v = u0 * Math.sin(t) + v0 * Math.cos(t);
+    put(o, i, u, v * GAL.A + h * GAL.B, CZ + v * GAL.C + h * GAL.D);
   }
   return o;
 }
@@ -726,6 +775,53 @@ function sampleCanvas(n: number, draw: (ctx: CanvasRenderingContext2D) => void, 
   return o;
 }
 
+/** the pixels a drawing covers, every other pixel, as a flat list of x, y */
+function inked(draw: (ctx: CanvasRenderingContext2D) => void, S: number) {
+  const c = document.createElement('canvas');
+  c.width = S; c.height = S;
+  const ctx = c.getContext('2d', { willReadFrequently: true });
+  if (!ctx) return [];
+  draw(ctx);
+  const d = ctx.getImageData(0, 0, S, S).data;
+  const px: number[] = [];
+  for (let y = 0; y < S; y += 2) for (let x = 0; x < S; x += 2) if (d[(y * S + x) * 4 + 3] > 140) px.push(x, y);
+  return px;
+}
+
+/**
+ * Hecate's sign in light (the drawings are in src/data/hecate-signs.ts, shared with the marks on the page):
+ * engraved lines, a soft glow where there is one, and for the torches a few sparks at each flame's tip that the
+ * shader lifts into the night. Points are placed by their seed (not shuffled), so the sparks stay sparks.
+ */
+function hecateSign(n: number, seeds: Float32Array, key: HecateSign) {
+  const sign = SIGNS[key], S = 1000, k = S / 400, t = sign.transform;
+  const place = (ctx: CanvasRenderingContext2D) => {
+    ctx.scale(k, k);
+    if (t) { ctx.translate(t[0], t[1]); ctx.rotate((t[2] * Math.PI) / 180); ctx.scale(t[3], t[3]); }
+  };
+  const lines = inked((ctx) => {
+    place(ctx); ctx.strokeStyle = '#fff'; ctx.lineWidth = 2.2 / (t ? t[3] : 1); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    sign.lines.forEach((d) => ctx.stroke(new Path2D(d)));
+  }, S);
+  const glows = sign.glows.length ? inked((ctx) => { place(ctx); ctx.fillStyle = '#fff'; sign.glows.forEach((d) => ctx.fill(new Path2D(d))); }, S) : [];
+  if (lines.length < 20) return dust(n);
+  const r = rng(key === 'torches' ? 281 : key === 'key' ? 283 : 293);
+  const o = new Float32Array(n * 3);
+  const map = (x: number, y: number) => [((x - S / 2) / S) * 7.2, -((y - S / 2) / S) * 7.2 + 0.3];
+  const pick = (px: number[]) => { const j = Math.floor(r() * (px.length / 2)) * 2; return map(px[j] + r() * 2, px[j + 1] + r() * 2); };
+  for (let i = 0; i < n; i++) {
+    if (sign.sparks.length && seeds[i] < 0.07) { // a spark, born at a flame's tip
+      const [sx, sy] = sign.sparks[i % sign.sparks.length];
+      const [x, y] = map(sx * k + gauss(r) * 12, sy * k + gauss(r) * 10);
+      put(o, i, x, y, CZ + gauss(r) * 0.05);
+      continue;
+    }
+    const [x, y] = glows.length && r() < 0.16 ? pick(glows) : pick(lines);
+    put(o, i, x, y, CZ + gauss(r) * 0.05);
+  }
+  return o;
+}
+
 export async function nameForm(n: number, font: string) {
   try { await (document as any).fonts?.load(`300px ${font}`, 'Sarvakali'); } catch { /* fall back to whatever font is there */ }
   const W = 1800, H = 440;
@@ -793,6 +889,9 @@ export function buildForms(n: number, seeds: Float32Array): Record<FormKey, Floa
     pendulum: shuffled(pendulum(n), 263),
     book: shuffled(book(n), 269),
     path: shuffled(path(n), 271),
+    torches: hecateSign(n, seeds, 'torches'),
+    key: hecateSign(n, seeds, 'key'),
+    serpent: hecateSign(n, seeds, 'serpent'),
   };
 }
 
@@ -830,6 +929,7 @@ export async function buildFormsAsync(n: number, seeds: Float32Array, textFrom?:
     ['lotus', () => shuffleForm(lotus(n), 173)], ['chakras', () => shuffleForm(chakras(n), 179)], ['bowl', () => shuffleForm(bowl(n), 181)],
     ['halves', () => shuffleForm(halves(n), 233)], ['prism', () => shuffleForm(prism(n), 239)], ['figure', () => shuffleForm(figure(n), 241)], ['cards', () => shuffleForm(cards(n), 251)],
     ['mirror', () => shuffleForm(mirror(n), 257)], ['pendulum', () => shuffleForm(pendulum(n), 263)], ['book', () => shuffleForm(book(n), 269)], ['path', () => shuffleForm(path(n), 271)],
+    ['torches', () => hecateSign(n, seeds, 'torches')], ['key', () => hecateSign(n, seeds, 'key')], ['serpent', () => hecateSign(n, seeds, 'serpent')],
     ['name', () => (textFrom ? upsample(textFrom.name, n, 0.01, 61) : dust(n))],
     ['letters', () => (textFrom ? upsample(textFrom.letters, n, 0.008, 67) : dust(n))],
   ];

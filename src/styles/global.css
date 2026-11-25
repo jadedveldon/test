@@ -338,7 +338,7 @@ html[data-hero-variant="dawn"] .chapter-hero.is-on .hero-title { animation: dawn
 }
 
 /* --------------------------------------------------------- flame cursor */
-.cursor { position: fixed; inset: 0; z-index: 70; pointer-events: none; opacity: 0; transition: opacity 0.3s ease; }
+.cursor { position: fixed; inset: 0; z-index: 90; pointer-events: none; opacity: 0; transition: opacity 0.3s ease; } /* above the menu, search and page changes, which hide the arrow too */
 .cursor.is-visible { opacity: 1; }
 .cursor-flame, .cursor-dot { position: absolute; left: 0; top: 0; }
 .cursor-flame {
@@ -359,6 +359,10 @@ html[data-light="1"] .cursor-flame { mix-blend-mode: multiply; background: radia
 }
 html.x-cursor, html.x-cursor a, html.x-cursor button, html.x-cursor summary, html.x-cursor label { cursor: none; }
 html.x-cursor input, html.x-cursor textarea, html.x-cursor select { cursor: text; }
+/* a dialog (today's card, the device report) opens above everything, the drawn cursor included: give back the arrow */
+html.x-cursor:has(dialog[open]), html.x-cursor:has(dialog[open]) :is(label, summary) { cursor: auto; }
+html.x-cursor:has(dialog[open]) :is(a, button) { cursor: pointer; }
+html:has(dialog[open]) .cursor { opacity: 0; }
 html.x-cursor .btn:hover { transform: none; }
 /* while buttons lean toward the cursor, only colour and glow animate in CSS */
 html.x-cursor .btn { transition: box-shadow 0.35s ease, background 0.35s ease; }
@@ -1132,7 +1136,12 @@ html .mg .kicker, [data-chapter="magic"] .kicker { font: 500 0.78rem/1.2 var(--f
 .mg-presides:hover { box-shadow: inset 0 0 0 1px rgb(var(--acc)), 0 0 24px -6px rgb(var(--acc) / 0.6); }
 .mg-presides svg { width: 40px; height: 40px; fill: none; stroke: rgb(var(--acc)); stroke-width: 2.4; stroke-linecap: round; }
 .mg-presides .mp-ring { stroke-width: 1.2; opacity: 0.6; }
-.mg-presides .mp-light { fill: rgb(var(--acc)); stroke: none; filter: drop-shadow(0 0 4px rgb(var(--acc))); }
+/* Hecate's sign: three are drawn, the chosen one shows (the torches until one is chosen) */
+.hk-sign [data-sign] { display: none; }
+html:not([data-hecate]) .hk-sign [data-sign="torches"], html[data-hecate="torches"] .hk-sign [data-sign="torches"],
+html[data-hecate="key"] .hk-sign [data-sign="key"], html[data-hecate="serpent"] .hk-sign [data-sign="serpent"] { display: inline; }
+.hk-sign-line { fill: none; stroke: rgb(var(--acc)); stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.hk-sign-glow { fill: rgb(var(--acc) / 0.55); stroke: none; filter: drop-shadow(0 0 3px rgb(var(--acc))); }
 .mg-presides span { display: grid; font: 400 1.35rem/1.05 var(--f-mag); }
 .mg-presides small { font: 500 0.62rem/1.3 var(--f-cap); letter-spacing: 0.2em; text-transform: uppercase; color: rgb(var(--ink-soft)); }
 .mg-index { list-style: none; margin: 4px 0 0; padding: 14px 0 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 18px; width: 100%; max-width: 38rem; border-top: 1px solid rgb(var(--acc-2) / 0.45); }

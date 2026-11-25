@@ -42,6 +42,7 @@ import { initPath } from './path';
 import { sampleHeading } from './dust';
 import { FEST_LOOK, activeFestival, daysUntil, inDays, nextMoon, niceDate, type FestMode } from './festivals';
 import { initSearch, revealFound, closeSearch } from './search';
+import { setHecateSign } from './world/presets';
 import { initKeep, keepLine, keepList, onKeepChange, renderKeep } from './keep';
 import { closeMenu, initMenu } from './menu';
 import { initPwa } from './pwa';
@@ -53,7 +54,7 @@ gsap.registerPlugin(ScrollTrigger, SplitText);
 const html = document.documentElement;
 const LABELS: Record<string, string> = {
   loader: 'Intro', hero: 'Hero · living eye', heroName: 'Hero · name of light', dawn: 'Hero · dawn',
-  dawnRise: 'Hero · eye at dawn (rising)', dawnName: 'Hero · eye at dawn', connect: 'Connect',
+  dawnRise: 'Hero · eye at dawn (rising)', dawnName: 'Hero · eye at dawn', connect: 'Connect', connectHome: 'Home · Connect', findpath: 'Find your path',
   devotion: 'Devotion & the Unseen', magic: 'Witchcraft & Magic', healing: 'Healing & Inner Work',
   identity: 'Identity, Intimacy & the Body', divination: 'Divination & Insight', learning: 'Learning', close: 'Close',
 };
@@ -710,6 +711,7 @@ function onExpChange(k: keyof Exp, v: string) {
   if (k === 'cursor') applyCursor();
   if (k === 'sky') applySky();
   if (k === 'festival') { applyFestival(); applySky(); }
+  if (k === 'hecate') { applyHecate(); if (mainEl) world.setSequence(chapters.length ? chapterKeys() : (mainEl.dataset.sequence || 'hero').split(',')); }
 
 
   if (k === 'haptics') { setHaptics(v === 'on'); if (v === 'on') buzz(PATTERNS.choice); }
@@ -738,6 +740,12 @@ function onExpChange(k: keyof Exp, v: string) {
       }
     }
   }
+}
+
+/** Hecate's sign on Witchcraft & Magic: the worlds' form and the marks on the page */
+function applyHecate() {
+  setHecateSign(exp.hecate);
+  html.dataset.hecate = exp.hecate;
 }
 
 /* ----------------------------------------------------- connect page */
@@ -920,6 +928,7 @@ window.addEventListener('unhandledrejection', (e) => {
 
 function boot() {
   loadExp();
+  applyHecate();
   html.dataset.heroVariant = exp.hero;
   html.dataset.pageStyle = exp.page;
   setHaptics(exp.haptics === 'on');

@@ -4,7 +4,8 @@
  * One book with two kinds of page: bright parchment day pages (the grimoire)
  * and black-and-emerald night pages in gold (the alchemical sky). Between them
  * the night spreads in like ink. Hecate, one of Sarvakali's presiding deities,
- * opens the pillar at her crossroads; then a sigil, then the seven chapters
+ * opens the pillar with her sign (twin torches, her key or her serpent: see src/data/hecate-signs.ts); then a
+ * sigil, then the seven chapters
  * (the catalogue's seven categories).
  */
 import Base from '../../layouts/Base.astro';
@@ -14,6 +15,7 @@ import { pillars, categoryCount } from '../../data/site';
 import { CHAPTER_KEYS, CHAPTERS, COPY, HECATE, RITUS, SABBATS, SATURN, SIGIL_METHODS } from '../../data/magic';
 import { categoryAliases, gather } from '../../data/chapters';
 import Rich from '../../components/Rich.astro';
+import HecateMark from '../../components/HecateMark.astro';
 
 const index = pillars.findIndex((p) => p.slug === 'magic');
 const p = pillars[index];
@@ -33,13 +35,11 @@ const escape = (t: string) => t.replace(/[.*+?^$()|[\]\\{}]/g, '\\$&');
 const named = new RegExp(`(^|[^A-Za-z])${escape(hkName)}([^A-Za-z]|$)`);
 const hecateWork = devotion.categories.flatMap((c) => c.subs).flatMap((s) => s.items).filter((it) => named.test(it));
 
-// the three roads, drawn small beside her name
-const roads = [-90, 30, 150].map((d) => pos(d, 30).map((v) => v.toFixed(1)).join(' '));
 ---
 <Base title={`${p.name} · Sarvakali`} sequence="magG_hero" description={p.line}>
   <div class="mg" data-magic data-blend="edge">
 
-    <!-- night · the opening, at Hecate's crossroads -->
+    <!-- night · the opening, under Hecate's sign -->
     <section class="chapter mg-hero mg-night" data-chapter="magG_hero" data-mag-chapter="hero">
       <div class="chapter-inner mg-hero-grid">
         <div class="mg-hero-copy">
@@ -48,7 +48,7 @@ const roads = [-90, 30, 150].map((d) => pos(d, 30).map((v) => v.toFixed(1)).join
           <h1 class="display-l mg-title" data-hero data-split transition:name="pt-magic" data-pt>{p.name}</h1>
           <p class="lede" data-hero>{p.line}</p>
           <a class="mg-presides" href="#hecate" data-hero>
-            <svg viewBox="-40 -40 80 80" aria-hidden="true"><circle r="36" class="mp-ring" />{roads.map((r) => <path d={`M0 0 L${r}`} />)}<circle r="5" class="mp-light" /></svg>
+            <svg viewBox="-40 -40 80 80" aria-hidden="true"><circle r="36" class="mp-ring" /><HecateMark x={-27} y={-27} size={54} /></svg>
             <span><small>{COPY.presides.small}</small> {COPY.presides.name}</span>
           </a>
           <ol class="mg-index" data-hero aria-label="The chapters of this book">
@@ -90,7 +90,6 @@ const roads = [-90, 30, 150].map((d) => pos(d, 30).map((v) => v.toFixed(1)).join
         <div class="hk-supper" data-supper data-fade>
           <svg class="hk-moon" viewBox="-60 -60 120 120" aria-hidden="true">
             <circle r="44" class="hk-moon-disc" /><circle r="44" class="hk-moon-rim" /><circle r="54" class="hk-moon-halo" />
-            {[-90, 30, 150].map((d) => { const [x, y] = pos(d, 54); const [x2, y2] = pos(d, 44); return <line x1={x2.toFixed(1)} y1={y2.toFixed(1)} x2={x.toFixed(1)} y2={y.toFixed(1)} class="hk-moon-road" />; })}
           </svg>
           <div class="hk-supper-copy">
             <h3>{HECATE.supper.title}</h3>
@@ -233,7 +232,7 @@ const roads = [-90, 30, 150].map((d) => pos(d, 30).map((v) => v.toFixed(1)).join
       </section>
     ))}
 
-    <!-- night · the close, back at the crossroads -->
+    <!-- night · the close, under Hecate's sign again -->
     <section class="chapter mg-close mg-night" data-chapter="magG_close" data-mag-chapter="close">
       <div class="chapter-inner narrow center">
         <p class="kicker" data-fade>{COPY.close.kicker}</p>
