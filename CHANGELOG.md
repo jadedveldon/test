@@ -30,6 +30,8 @@ The rules for checking are in `CLAUDE.md`; the checks themselves are in `tools/q
   the chapter in view (it named the next chapter's form when a page sat exactly on a chapter).
 - **Checks written, not yet run** (at the owner's request the suites wait): `regressions.cjs` 22.
 - **Looked at:** each option on the homepage, Mind, Abundance and Find your path, desktop and phone.
+- **Pushed and published to the preview (version 19) without running the suites or the preview check**, at the
+  owner's request. They run next, when the owner says, and anything they find is fixed and logged here.
 
 ## 2026-11-25 · The cursor in the menu, Hecate's sign, a real galaxy
 
