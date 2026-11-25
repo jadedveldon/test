@@ -20,7 +20,7 @@ import {
 } from 'three';
 import { PRESETS, toNumeric, mixInto, dampInto, cloneNumeric, type Numeric } from './presets';
 import {
-  FLAMES, GAL, HALO_SECTORS, VORTEX_ARMS, MALA_BEADS, FORM_KEYS, buildForms, buildFormsAsync, lettersForm, makeDirs, makeSeeds, nameForm,
+  FLAMES, GAL, TORUS, HALO_SECTORS, VORTEX_ARMS, MALA_BEADS, FORM_KEYS, buildForms, buildFormsAsync, lettersForm, makeDirs, makeSeeds, nameForm,
   type FormKey,
 } from './forms';
 import type { Tier } from '../tiers';
@@ -253,7 +253,7 @@ uniform vec4 uW6; // rose, pentacle, astrolabe, moons
 uniform vec4 uW7; // chakras, bowl, halves, prism
 uniform vec4 uW8; // figure, cards, mirror, pendulum
 uniform vec4 uW9; // book, path, torches, key
-uniform vec4 uW10; // serpent, (spare), (spare), (spare)
+uniform vec4 uW10; // serpent, bloom, kolam, torus
 uniform float uAngMala;
 uniform float uAngFlame;
 uniform float uAngVortex;
@@ -274,6 +274,7 @@ varying float vA;
 varying float vSeed;
 varying vec2 vGal;
 const float CZ = -10.0;
+const float TR = ${TORUS.R.toFixed(3)}, TTILT = ${TORUS.tilt.toFixed(3)}, TCY = ${TORUS.cy.toFixed(3)};
 const float GA = ${GAL.A.toFixed(3)}, GB = ${GAL.B.toFixed(3)}, GC = ${GAL.C.toFixed(3)}, GD = ${GAL.D.toFixed(3)};
 vec2 rot(vec2 p, float a) { float c = cos(a), s = sin(a); return vec2(c * p.x - s * p.y, s * p.x + c * p.y); }
 void main() {
@@ -357,6 +358,23 @@ void main() {
   p.x += sin(uTime * 0.8 - p.y * 1.3) * 0.12 * sne * sne * uW10.x;
   vec2 scc = vec2(0.0, -1.5);
   p.xy = mix(p.xy, scc + (p.xy - scc) * (1.0 + 0.015 * sin(uTime * 0.7)), uW10.x * (1.0 - sne));
+  // the golden bloom breathes in a slow wave from its centre, turning a few degrees
+  vec2 gbc = vec2(0.0, 0.3);
+  float gbr = length(p.xy - gbc);
+  p.xy = mix(p.xy, gbc + rot(p.xy - gbc, sin(uTime * 0.12) * 0.1) * (1.0 + 0.03 * sin(uTime * 1.0 - gbr * 1.6)), uW10.y);
+  // the kolam: a ring of light crosses it from the centre (its brightness is set below)
+  float kring = uW10.z * pow(0.5 + 0.5 * sin(uTime * 1.1 - length(p.xy - vec2(0.0, 0.3)) * 2.2), 8.0);
+  // the energy field: its streams flow up through the centre and round over the outside
+  if (uW10.w > 0.001) {
+    float tc = cos(TTILT), ts = sin(TTILT);
+    vec3 tq = vec3(p.x, p.y - TCY, p.z - CZ);
+    vec3 tl = vec3(tq.x, tq.y * tc + tq.z * ts, -tq.y * ts + tq.z * tc);
+    float tth = atan(tl.z, tl.x), td = length(tl.xz) - TR;
+    float tph = atan(tl.y, td) - mod(uTime * 0.35, 6.2831853 / 6.0) * uW10.w, tro = length(vec2(td, tl.y));
+    float td2 = tro * cos(tph);
+    vec3 tl2 = vec3((TR + td2) * cos(tth), tro * sin(tph), (TR + td2) * sin(tth));
+    p = mix(p, vec3(tl2.x, TCY + tl2.y * tc - tl2.z * ts, CZ + tl2.y * ts + tl2.z * tc), uW10.w);
+  }
   // lotus: breathes slowly, the water rings a little more
   vec2 lc = vec2(0.0, -1.15);
   p.xy = mix(p.xy, lc + (p.xy - lc) * (1.0 + 0.025 * sin(uTime * 0.5)), uW4.w);
@@ -407,7 +425,8 @@ void main() {
   vA *= 1.0 + tf * 0.8;
   vA *= 1.0 - fl * smoothstep(0.5, 1.0, rise);
   // the galaxy's core is brighter and its stars a little larger; flames glow; sparks fade as they rise
-  gl_PointSize *= 1.0 + 0.3 * vGal.x;
+  gl_PointSize *= (1.0 + 0.3 * vGal.x) * (1.0 + 0.45 * kring);
+  vA *= (1.0 + 1.4 * kring) * (1.0 + 0.5 * uW10.y);
   vA *= (1.0 + 0.35 * vGal.x) * (1.0 + 0.35 * min(fh, 1.6) * uW9.z) * (1.0 - spark * smoothstep(0.35, 1.0, sk));
   vSeed = aSeed;
 }`;
@@ -857,9 +876,15 @@ export class World {
     this.position = Math.max(0, Math.min(this.sequence.length - 1, p));
   }
 
-  /** the light form being drawn (or being moved towards), for the checks */
+  /** the light form of the chapter in view (drawn, or being settled into), for the checks */
   get formKey(): string {
-    return this.toKey;
+    return this.seqForms[Math.round(this.position)] ?? this.toKey;
+  }
+
+  /** how far the form has settled into its chapter's shape (1 = whole), for the checks */
+  get formSettled(): number {
+    const m = Math.round(this.position) > Math.floor(this.fpos) ? this.fMix : 1 - this.fMix;
+    return Math.min(m, this.tE);
   }
 
   get chapterKey() {
@@ -1124,7 +1149,10 @@ export class World {
     const fi = Math.floor(this.fpos);
     const fj = Math.min(this.seqForms.length - 1, fi + 1);
     const ff = this.fpos - fi;
-    this.fMix = ff * ff * (3 - 2 * ff);
+    // the form holds its shape over the first and last 15% of the way between two chapters, so a chapter's
+    // heading (where links land, on a phone too) shows its form whole, not still dissolving out of the one before
+    const fh = Math.min(1, Math.max(0, (ff - 0.15) / 0.7));
+    this.fMix = fh * fh * (3 - 2 * fh);
     const kFrom = this.seqForms[Math.min(fi, this.seqForms.length - 1)];
     const kTo = this.seqForms[fj];
     if (this.formGeo && this.set) {
@@ -1218,7 +1246,7 @@ export class World {
       fu.uW7.value = [w[idx('chakras')], w[idx('bowl')], w[idx('halves')], w[idx('prism')]];
       fu.uW8.value = [w[idx('figure')], w[idx('cards')], w[idx('mirror')], w[idx('pendulum')]];
       fu.uW9.value = [w[idx('book')], w[idx('path')], w[idx('torches')], w[idx('key')]];
-      fu.uW10.value = [w[idx('serpent')], 0, 0, 0];
+      fu.uW10.value = [w[idx('serpent')], w[idx('bloom')], w[idx('kolam')], w[idx('torus')]];
       this.malaAng += (this.malaTarget - this.malaAng) * (1 - Math.exp(-dt * 7));
       fu.uAngMala.value = this.malaAng;
       fu.uAngFlame.value = this.angFlame;

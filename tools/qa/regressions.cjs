@@ -225,5 +225,12 @@ const ARGS = { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', 
     }
     ok('magic: Hecate\'s sign, not three roads, in the world and the badge', !shown.includes('MISMATCH'), shown.filter((x) => x !== 'MISMATCH').join(' · '));
     await ctx.close(); }
+  // 22 arriving at a chapter's heading (from the menu, search or a link) left its light form still 5% dissolved out of
+  //    the one before, which blurred fine line forms such as the kolam (the galaxy's fuzz had hidden it)
+  { const { ctx, p } = await fresh();
+    await p.goto(`${B}/pillars/healing?tier=full&cursor=off&ambient=kolam#mind-and-subconscious-work`); await p.waitForTimeout(5000);
+    const r = await p.evaluate(() => ({ form: window.sarvakali.world.formKey, settled: window.sarvakali.world.formSettled }));
+    ok('world: a chapter\'s form is whole at its heading', r.form === 'kolam' && r.settled > 0.99, `${r.form} settled ${r.settled.toFixed(3)}`);
+    await ctx.close(); }
   await b.close();
 })();

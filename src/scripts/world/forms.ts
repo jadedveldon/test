@@ -10,7 +10,7 @@ import { SIGNS, type HecateSign } from '../../data/hecate-signs';
 
 export const CZ = -10;
 
-export const FORM_KEYS = ['dust', 'halo', 'name', 'vortex', 'flames', 'sigils', 'water', 'silk', 'stars', 'letters', 'eye', 'horizon', 'mala', 'lamps', 'agni', 'yantra', 'temple', 'tree', 'rose', 'pentacle', 'astrolabe', 'moons', 'crossroads', 'lotus', 'chakras', 'bowl', 'halves', 'prism', 'figure', 'cards', 'mirror', 'pendulum', 'book', 'path', 'torches', 'key', 'serpent'] as const;
+export const FORM_KEYS = ['dust', 'halo', 'name', 'vortex', 'flames', 'sigils', 'water', 'silk', 'stars', 'letters', 'eye', 'horizon', 'mala', 'lamps', 'agni', 'yantra', 'temple', 'tree', 'rose', 'pentacle', 'astrolabe', 'moons', 'crossroads', 'lotus', 'chakras', 'bowl', 'halves', 'prism', 'figure', 'cards', 'mirror', 'pendulum', 'book', 'path', 'torches', 'key', 'serpent', 'bloom', 'kolam', 'torus'] as const;
 export type FormKey = (typeof FORM_KEYS)[number];
 
 export const FLAMES = 108;
@@ -775,6 +775,111 @@ function sampleCanvas(n: number, draw: (ctx: CanvasRenderingContext2D) => void, 
   return o;
 }
 
+/* ---------------------------------------------- alternatives to the galaxy, to compare */
+
+/**
+ * The golden bloom: seeds set by the golden angle, as in a sunflower's head, each a little brighter dot, growing
+ * outward, ringed by 21 petals (a Fibonacci number). The shader breathes it in a slow wave from the centre.
+ */
+function bloom(n: number) {
+  const r = rng(301); const o = new Float32Array(n * 3);
+  const SEEDS = 700, GOLD = Math.PI * (3 - Math.sqrt(5)), R = 2.8, P = 21, cy = 0.3;
+  for (let i = 0; i < n; i++) {
+    if (r() < 0.8) {
+      const k = Math.floor(r() * SEEDS), rad = R * Math.sqrt((k + 0.5) / SEEDS), a = k * GOLD;
+      const sr = 0.03 + 0.07 * (rad / R), da = r() * Math.PI * 2, dr = Math.pow(r(), 0.7) * sr;
+      put(o, i, Math.cos(a) * rad + Math.cos(da) * dr, cy + Math.sin(a) * rad + Math.sin(da) * dr, CZ + gauss(r) * 0.03 + (rad / R) * 0.25);
+    } else { // a petal's outline: two curved edges meeting at the tip
+      const p = Math.floor(r() * P), t = r(), side = r() < 0.5 ? -1 : 1;
+      const along = R * 1.04 + t * R * 0.5, half = (Math.PI / P) * 0.92 * Math.sin(Math.PI * Math.pow(t, 0.8)) * (1 - t * 0.15);
+      const a = (p * Math.PI * 2) / P + side * half;
+      put(o, i, Math.cos(a) * along + gauss(r) * 0.01, cy + Math.sin(a) * along + gauss(r) * 0.01, CZ + gauss(r) * 0.03 + 0.25);
+    }
+  }
+  return o;
+}
+
+/**
+ * A kolam: the threshold drawing of South India, a single line looping around a grid of dots (pulli). Drawn the
+ * way a "sikku" kolam is: the line runs diagonally between the dots and turns back at the edge, curling round the
+ * outer dots; with 7 × 6 dots (no common factor) it closes as one unbroken line. The shader sends a ring of light
+ * across it from the centre.
+ */
+function kolam(n: number) {
+  const r = rng(307); const o = new Float32Array(n * 3);
+  const M = 7, N = 6, S = 0.68;
+  // the line: start between two dots on the bottom edge, run diagonally, reflect at the edges, until it closes
+  const pts: [number, number][] = [];
+  let x = 0.5, y = 0, dx = 1, dy = 1;
+  for (let step = 0; step < 400; step++) {
+    pts.push([x, y]);
+    // run until the next edge
+    const tx = dx > 0 ? M - x : x, ty = dy > 0 ? N - y : y, t = Math.min(tx, ty);
+    x += dx * t; y += dy * t;
+    if (Math.abs(t - tx) < 1e-9) dx = -dx;
+    if (Math.abs(t - ty) < 1e-9) dy = -dy;
+    if (Math.abs(x - 0.5) < 1e-9 && Math.abs(y) < 1e-9 && dx === 1 && dy === 1) break;
+  }
+  // smooth each turn into a loop that curls round the dot beside it
+  const segs: Seg[] = [];
+  // set on its point, as a diamond, centred
+  const P = (u: number, v: number): [number, number] => { const a = (u - M / 2) * S, b = (v - N / 2) * S; return [(a - b) * 0.7071, 0.3 + (a + b) * 0.7071]; };
+  const R0 = 0.42;
+  for (let k = 0; k < pts.length; k++) {
+    const a = pts[k], b = pts[(k + 1) % pts.length];
+    const len = Math.hypot(b[0] - a[0], b[1] - a[1]), ux = (b[0] - a[0]) / len, uy = (b[1] - a[1]) / len;
+    const s0 = [a[0] + ux * R0, a[1] + uy * R0], s1 = [b[0] - ux * R0, b[1] - uy * R0];
+    // the run between the dots weaves a little, so the line curls round them as a hand-drawn kolam does
+    const runLen = Math.hypot(s1[0] - s0[0], s1[1] - s0[1]), steps = Math.max(2, Math.ceil(runLen * 12));
+    let last = P(s0[0], s0[1]);
+    for (let q = 1; q <= steps; q++) {
+      const t = q / steps, w = Math.sin((t * runLen * Math.PI * 2) / Math.SQRT2) * 0.09;
+      const cur = P(s0[0] + (s1[0] - s0[0]) * t - uy * w, s0[1] + (s1[1] - s0[1]) * t + ux * w);
+      segs.push([last[0], last[1], cur[0], cur[1]]);
+      last = cur;
+    }
+    // the turn at b: from s1 round the outside of the edge to the start of the next run
+    const c = pts[(k + 2) % pts.length], lc = Math.hypot(c[0] - b[0], c[1] - b[1]), vx = (c[0] - b[0]) / lc, vy = (c[1] - b[1]) / lc;
+    const e = [b[0] + vx * R0, b[1] + vy * R0];
+    const out = [b[0] - (b[0] <= 1e-9 ? 0.3 : b[0] >= M - 1e-9 ? -0.3 : 0), b[1] - (b[1] <= 1e-9 ? 0.3 : b[1] >= N - 1e-9 ? -0.3 : 0)];
+    let prev = P(s1[0], s1[1]);
+    for (let q = 1; q <= 10; q++) {
+      const t = q / 10, m = 1 - t;
+      const bx = m * m * s1[0] + 2 * m * t * out[0] + t * t * e[0], by = m * m * s1[1] + 2 * m * t * out[1] + t * t * e[1];
+      const cur = P(bx, by);
+      segs.push([prev[0], prev[1], cur[0], cur[1]]);
+      prev = cur;
+    }
+  }
+  const lineN = Math.floor(n * 0.84);
+  o.set(alongSegments(lineN, segs, r, 0.012));
+  for (let i = lineN; i < n; i++) { // the dots
+    const k = Math.floor(r() * M * N), u = (k % M) + 0.5, v = Math.floor(k / M) + 0.5, a = r() * Math.PI * 2, d = Math.sqrt(r()) * 0.06;
+    const [px, py] = P(u, v);
+    put(o, i, px + Math.cos(a) * d, py + Math.sin(a) * d, CZ + gauss(r) * 0.02);
+  }
+  return o;
+}
+
+/** the energy field's torus, and how it is tipped towards the viewer (the shader turns its streams) */
+export const TORUS = { R: 2.0, r: 1.15, tilt: 0.38, cy: 0.25 };
+/**
+ * An energy field: a torus of light whose streams flow up through the centre and round over the outside. The
+ * streams are dashed, so the flow can be seen; the shader moves them along.
+ */
+function torus(n: number) {
+  const r = rng(311); const o = new Float32Array(n * 3);
+  const { R, r: rr, tilt, cy } = TORUS, STREAMS = 28, c = Math.cos(tilt), s = Math.sin(tilt);
+  for (let i = 0; i < n; i++) {
+    const th = ((Math.floor(r() * STREAMS) + gauss(r) * 0.08) / STREAMS) * Math.PI * 2;
+    let ph = 0;
+    for (let tries = 0; tries < 8; tries++) { ph = r() * Math.PI * 2; if (r() < Math.pow(0.5 + 0.5 * Math.cos(ph * 6), 1.6)) break; } // dashes along each stream
+    const d = rr * Math.cos(ph), lx = (R + d) * Math.cos(th), ly = rr * Math.sin(ph), lz = (R + d) * Math.sin(th);
+    put(o, i, lx + gauss(r) * 0.01, cy + ly * c - lz * s, CZ + ly * s + lz * c);
+  }
+  return o;
+}
+
 /** the pixels a drawing covers, every other pixel, as a flat list of x, y */
 function inked(draw: (ctx: CanvasRenderingContext2D) => void, S: number) {
   const c = document.createElement('canvas');
@@ -892,6 +997,9 @@ export function buildForms(n: number, seeds: Float32Array): Record<FormKey, Floa
     torches: hecateSign(n, seeds, 'torches'),
     key: hecateSign(n, seeds, 'key'),
     serpent: hecateSign(n, seeds, 'serpent'),
+    bloom: shuffled(bloom(n), 317),
+    kolam: shuffled(kolam(n), 331),
+    torus: torus(n),
   };
 }
 
@@ -930,6 +1038,7 @@ export async function buildFormsAsync(n: number, seeds: Float32Array, textFrom?:
     ['halves', () => shuffleForm(halves(n), 233)], ['prism', () => shuffleForm(prism(n), 239)], ['figure', () => shuffleForm(figure(n), 241)], ['cards', () => shuffleForm(cards(n), 251)],
     ['mirror', () => shuffleForm(mirror(n), 257)], ['pendulum', () => shuffleForm(pendulum(n), 263)], ['book', () => shuffleForm(book(n), 269)], ['path', () => shuffleForm(path(n), 271)],
     ['torches', () => hecateSign(n, seeds, 'torches')], ['key', () => hecateSign(n, seeds, 'key')], ['serpent', () => hecateSign(n, seeds, 'serpent')],
+    ['bloom', () => shuffleForm(bloom(n), 317)], ['kolam', () => shuffleForm(kolam(n), 331)], ['torus', () => torus(n)],
     ['name', () => (textFrom ? upsample(textFrom.name, n, 0.01, 61) : dust(n))],
     ['letters', () => (textFrom ? upsample(textFrom.letters, n, 0.008, 67) : dust(n))],
   ];

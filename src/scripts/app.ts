@@ -42,7 +42,7 @@ import { initPath } from './path';
 import { sampleHeading } from './dust';
 import { FEST_LOOK, activeFestival, daysUntil, inDays, nextMoon, niceDate, type FestMode } from './festivals';
 import { initSearch, revealFound, closeSearch } from './search';
-import { setHecateSign } from './world/presets';
+import { setAmbientForm, setHecateSign } from './world/presets';
 import { initKeep, keepLine, keepList, onKeepChange, renderKeep } from './keep';
 import { closeMenu, initMenu } from './menu';
 import { initPwa } from './pwa';
@@ -711,7 +711,7 @@ function onExpChange(k: keyof Exp, v: string) {
   if (k === 'cursor') applyCursor();
   if (k === 'sky') applySky();
   if (k === 'festival') { applyFestival(); applySky(); }
-  if (k === 'hecate') { applyHecate(); if (mainEl) world.setSequence(chapters.length ? chapterKeys() : (mainEl.dataset.sequence || 'hero').split(',')); }
+  if (k === 'hecate' || k === 'ambient') { applyHecate(); if (mainEl) world.setSequence(chapters.length ? chapterKeys() : (mainEl.dataset.sequence || 'hero').split(',')); }
 
 
   if (k === 'haptics') { setHaptics(v === 'on'); if (v === 'on') buzz(PATTERNS.choice); }
@@ -742,10 +742,11 @@ function onExpChange(k: keyof Exp, v: string) {
   }
 }
 
-/** Hecate's sign on Witchcraft & Magic: the worlds' form and the marks on the page */
+/** Hecate's sign on Witchcraft & Magic (the worlds' form and the marks on the page), and what shows where the galaxy was */
 function applyHecate() {
   setHecateSign(exp.hecate);
   html.dataset.hecate = exp.hecate;
+  setAmbientForm(exp.ambient === 'galaxy' ? 'vortex' : exp.ambient);
 }
 
 /* ----------------------------------------------------- connect page */

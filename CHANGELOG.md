@@ -3,6 +3,34 @@
 Every change to the site, newest first: what changed, why, and how it was checked.
 The rules for checking are in `CLAUDE.md`; the checks themselves are in `tools/qa/`.
 
+## 2026-11-25 · Options instead of the galaxy
+
+- **Added: three forms to compare in the galaxy's places** (the homepage's Connect chapter, Connect, Find your path,
+  Abundance on Witchcraft & Magic, Mind on Healing). Chosen by `?ambient=kolam|bloom|torus|galaxy` or the prototype
+  panel's "Instead of the galaxy"; the kolam is shown unless another is chosen.
+  - **Kolam** (`kolam`): the threshold drawing of South India, a sikku kolam drawn as it is by hand: one line
+    running diagonally between a grid of dots, turning back at each edge in a small curl, set on its point as a
+    diamond. A ring of light travels out from the centre along it.
+  - **Golden bloom** (`bloom`): seeds set by the golden angle, as in a sunflower's head, inside a ring of petals;
+    it breathes slowly.
+  - **Energy field** (`torus`): a torus of light seen from the side, its streams flowing up through the centre and
+    round over the outside.
+  - **Galaxy** (`vortex`): the rebuilt galaxy, kept to compare.
+  - An aurora was tried and dropped: as points it read as haze, not curtains.
+  Each has its own size there (`AMBIENT_ZOOM` in `presets.ts`), and the kolam is quieter on phones, where it sits
+  behind the words (`AMBIENT_NARROW`).
+- **Fixed: a chapter's form was still blurred when you arrived at its heading** (from the menu, search or a link).
+  The form only finished changing when the chapter's middle reached the middle of the screen, so at its heading it
+  was still 5% dissolved out of the chapter before. The galaxy's fuzz hid this; the kolam's fine lines showed it as
+  a blur. A form now holds its shape over the first and last 15% of the way between two chapters, so it lands whole
+  at the heading and still changes smoothly in between. Found by looking at the kolam on Mind; measured before
+  (settled 0.955 at Mind's heading) and after (1.000). Check: `regressions.cjs` 22 (written, not yet run).
+- **Changed: Find your path's form** sat across the heading ("…begin?"); it now sits beside it, as on the homepage.
+- The world now reports how far its form has settled (`formSettled`) for checks, and `formKey` now names the form of
+  the chapter in view (it named the next chapter's form when a page sat exactly on a chapter).
+- **Checks written, not yet run** (at the owner's request the suites wait): `regressions.cjs` 22.
+- **Looked at:** each option on the homepage, Mind, Abundance and Find your path, desktop and phone.
+
 ## 2026-11-25 · The cursor in the menu, Hecate's sign, a real galaxy
 
 - **Fixed: the cursor vanished over the menu.** With the flame cursor on, the arrow is hidden and a drawn cursor

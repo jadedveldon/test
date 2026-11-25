@@ -58,10 +58,10 @@ export const PRESETS: Record<string, Preset> = {
     a: '#0c0706', b: '#3a1a12', c: '#c9773a', glow: '#ffcf8a',
     ink: '#f8eee3', inkSoft: '#cdb6a4', scale: 1.3, warp: 2.0, speed: 0.06, light: 0, motes: 0.4, form: 'vortex', shift: 5.2, zoom: 1.05, fade: 0.7,
   },
-  /* Find your path: the same galaxy, quieter, behind the answers */
+  /* Find your path: the same form, quieter, beside the question (clear of the heading) */
   findpath: {
     a: '#0c0706', b: '#3a1a12', c: '#c9773a', glow: '#ffcf8a',
-    ink: '#f8eee3', inkSoft: '#cdb6a4', scale: 1.3, warp: 2.0, speed: 0.06, light: 0, motes: 0.4, form: 'vortex', shift: 3.6, fade: 0.38, narrow: 0,
+    ink: '#f8eee3', inkSoft: '#cdb6a4', scale: 1.3, warp: 2.0, speed: 0.06, light: 0, motes: 0.4, form: 'vortex', shift: 5.2, zoom: 0.95, fade: 0.38, narrow: 0,
   },
   devotion: {
     a: '#07050f', b: '#2b0f2e', c: '#b8892f', glow: '#f2c66b',
@@ -498,4 +498,24 @@ export function cloneNumeric(n: Numeric): Numeric {
 const HECATE_WORLDS = ['magG_hero', 'magG_home', 'magG_hecate', 'magG_close'];
 export function setHecateSign(sign: FormKey) {
   HECATE_WORLDS.forEach((k) => { if (PRESETS[k]) PRESETS[k].form = sign; });
+}
+
+/**
+ * The places the galaxy used to be. Each option has its own size there (the galaxy was the widest). The prototype
+ * panel (or ?ambient=) chooses which one they show, to compare.
+ */
+const AMBIENT_WORLDS = ['connect', 'connectHome', 'findpath', 'magG_abundance', 'heal_mind'];
+const AMBIENT_ZOOM: Partial<Record<FormKey, number>> = { vortex: 1, kolam: 0.9, bloom: 0.8, torus: 0.85 };
+// on phones the form sits behind the words; the kolam's crisp lines and dots stand out more than the others, so it is quieter
+const AMBIENT_NARROW: Partial<Record<FormKey, number>> = { kolam: 0.6 };
+const base: Record<string, { zoom: number; narrow: number }> = {};
+export function setAmbientForm(form: FormKey) {
+  AMBIENT_WORLDS.forEach((k) => {
+    const p = PRESETS[k];
+    if (!p) return;
+    base[k] ??= { zoom: p.zoom ?? 1, narrow: p.narrow ?? 1 };
+    p.form = form;
+    p.zoom = base[k].zoom * (AMBIENT_ZOOM[form] ?? 1);
+    p.narrow = base[k].narrow * (AMBIENT_NARROW[form] ?? 1);
+  });
 }

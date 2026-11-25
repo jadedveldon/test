@@ -103,6 +103,7 @@ export class WorldHandle {
   get ultraBuildingNow() { return this.impl?.ultraBuildingNow ?? false; }
   get chapterKey() { return this.impl?.chapterKey ?? this.st.seq[Math.round(this.st.pos)] ?? ''; }
   get formKey() { return this.impl?.formKey ?? ''; }
+  get formSettled() { return this.impl?.formSettled ?? 0; }
   get blend(): [string, string, number] {
     if (this.impl) return this.impl.blend;
     const i = Math.floor(this.st.pos), j = Math.min(this.st.seq.length - 1, i + 1);
