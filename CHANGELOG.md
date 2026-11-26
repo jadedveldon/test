@@ -3,6 +3,26 @@
 Every change to the site, newest first: what changed, why, and how it was checked.
 The rules for checking are in `CLAUDE.md`; the checks themselves are in `tools/qa/`.
 
+## 2026-11-26 · A new opening: the Devi's face
+
+The owner chose a picture for the opening: the traditional face, with its third eye, crescent and bindi, winged
+eyes, sweeping brows, nose ring and lips. The picture sent was a stock image still carrying its watermark, so it is
+not used and was not traced. In its place is an original drawing of the same traditional face, in that bold, simple
+manner (`src/components/Loader.astro`).
+
+- **The drawing:** light on darkness, to suit the site. The lines are warm ivory, the crescent, bindi and lips
+  sindoor red, the nose ring gold; the right half mirrors the left.
+- **The choreography is unchanged** (`src/scripts/loader.ts`): darkness; brows and eyes appear and open; two
+  blinks; the crescent and bindi glow as light gathers; the third eye opens; the view flies into it and an
+  eye-shaped opening reveals the site.
+  - Nose, lips and nose ring fade in with the eyes.
+  - On phones the whole face is framed.
+- **Calm mode** (reduced motion): the face shows still for a moment, then the face fades first and the darkness
+  after, so it never lies over the homepage's own words.
+- **Removed:** the "Stand-in art" note.
+- **Checks:** walked in the preview, with frames taken at seven moments on desktop and phone, and in calm mode. The
+  intro ends and leaves the page: ERRORS none. The full suites were not run, at the owner's request.
+
 ## 2026-11-26 · A footer on every page; terms and refunds; search finds practices and articles
 
 Asked for by the owner. **The full test suites were not run**, at the owner's request.

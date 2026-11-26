@@ -1,18 +1,23 @@
 ---
 /**
- * STAND-IN intro. Abstract eyes only: the commissioned Kali painting (layers +
- * depth map) replaces this artwork. The choreography is the real thing:
- * darkness → eyes open → two blinks → third eye opens as light gathers →
- * fly into the third eye → an eye-shaped opening reveals the hero.
+ * The opening: the Devi's face, drawn for Sarvakali in the bold, simple manner of the traditional face (third eye,
+ * crescent and bindi, winged eyes, sweeping brows, nose ring and lips), as light on darkness. An original drawing;
+ * no stock artwork is used. The choreography: darkness, the brows and the eyes appear, the eyes open and blink
+ * twice, the crescent and bindi glow, light gathers and the third eye opens, then we fly into the third eye and an
+ * eye-shaped opening reveals the site (src/scripts/loader.ts).
  */
-// third eye (vertical almond) and the two eyes, in a 1600 × 1000 space
-const E3 = { x: 800, y: 430 };
-const third = `M${E3.x} ${E3.y - 70} Q${E3.x + 52} ${E3.y} ${E3.x} ${E3.y + 70} Q${E3.x - 52} ${E3.y} ${E3.x} ${E3.y - 70}Z`;
-const eye = (cx: number, cy: number) => `M${cx - 105} ${cy} Q${cx} ${cy - 68} ${cx + 105} ${cy} Q${cx} ${cy + 68} ${cx - 105} ${cy}Z`;
-const eyes = [
-  { id: 'L', cx: 640, cy: 595 },
-  { id: 'R', cx: 960, cy: 595 },
-];
+// everything in a 1600 × 1000 space; the right half is the left half mirrored about x = 800
+const E3 = { x: 800, y: 290 }; // the third eye
+const third = `M${E3.x} ${E3.y - 88} Q${E3.x + 50} ${E3.y - 8} ${E3.x} ${E3.y + 84} Q${E3.x - 50} ${E3.y - 8} ${E3.x} ${E3.y - 88}Z`;
+const M = 'matrix(-1 0 0 1 1600 0)'; // mirror
+
+// the left eye (the visitor's left): an almond with a long upswept wing at its outer corner
+const eyeOpen = 'M688 522 Q600 440 452 456 Q410 462 384 478 Q420 520 470 538 Q590 572 688 522Z'; // the white of the eye
+const liner = 'M700 528 Q612 426 452 444 Q392 452 322 404 Q356 452 380 482 Q428 466 456 462 Q596 448 690 520Z'; // upper lid and wing
+const lower = 'M690 520 Q600 566 476 540 Q430 530 392 494 Q436 546 480 556 Q600 584 694 526Z'; // the lower line
+const brow = 'M742 392 Q616 262 338 214 Q606 246 754 380Z';
+const iris = { x: 600, y: 492, r: 50 };
+
 // motes of light that gather into the third eye (deterministic scatter)
 let s = 7;
 const rand = () => ((s = (s * 16807) % 2147483647) / 2147483647);
@@ -20,6 +25,12 @@ const motes = Array.from({ length: 56 }, () => {
   const a = rand() * Math.PI * 2;
   const r = 180 + rand() * 520;
   return { x: E3.x + Math.cos(a) * r * 1.3, y: E3.y + Math.sin(a) * r * 0.8, r: 1.2 + rand() * 2.6 };
+});
+// the beads hanging from the nose ring, along its lower right
+const nath = { x: 900, y: 708, r: 100 };
+const beads = [18, 34, 50, 66].map((deg, i) => {
+  const a = (deg * Math.PI) / 180;
+  return { x: nath.x + Math.cos(a) * nath.r, y: nath.y + Math.sin(a) * nath.r, r: i % 2 ? 9 : 12 };
 });
 ---
 <div id="loader" class="loader" role="dialog" aria-label="Opening animation" aria-modal="false">
@@ -40,9 +51,11 @@ const motes = Array.from({ length: 56 }, () => {
         <stop offset="0.35" stop-color="#f3ad45" stop-opacity="0.55" />
         <stop offset="1" stop-color="#f3ad45" stop-opacity="0" />
       </radialGradient>
-      {eyes.map((e) => (
-        <clipPath id={`lc-${e.id}`}><path d={eye(e.cx, e.cy)} /></clipPath>
-      ))}
+      <radialGradient id="lg-sindoor" cx="50%" cy="50%" r="50%">
+        <stop offset="0" stop-color="#ff6a4f" stop-opacity="0.7" />
+        <stop offset="1" stop-color="#ff6a4f" stop-opacity="0" />
+      </radialGradient>
+      <clipPath id="lc-L"><path d={eyeOpen} /></clipPath>
       <clipPath id="lc-3"><path d={third} /></clipPath>
       <mask id="lm-hole" maskUnits="userSpaceOnUse" x="-4000" y="-4000" width="9600" height="9000">
         <rect x="-4000" y="-4000" width="9600" height="9000" fill="#fff" />
@@ -53,41 +66,61 @@ const motes = Array.from({ length: 56 }, () => {
     <g mask="url(#lm-hole)">
       <rect x="-4000" y="-4000" width="9600" height="9000" fill="#060304" />
       <g id="loader-face">
-        <circle id="loader-ember" cx="800" cy="520" r="560" fill="url(#lg-ember)" opacity="0" />
+        <circle id="loader-ember" cx="800" cy="500" r="600" fill="url(#lg-ember)" opacity="0" />
 
         <g id="loader-eyes" opacity="0">
-          <path d="M520 512 Q640 470 760 518" fill="none" stroke="#5a2018" stroke-width="3" stroke-linecap="round" opacity="0.6" />
-          <path d="M840 518 Q960 470 1080 512" fill="none" stroke="#5a2018" stroke-width="3" stroke-linecap="round" opacity="0.6" />
-          {eyes.map((e) => (
-            <g class="l-eye">
-              <path d={eye(e.cx, e.cy)} fill="#140607" />
-              <g clip-path={`url(#lc-${e.id})`}>
-                <g class="l-iris">
-                  <circle cx={e.cx} cy={e.cy} r="31" fill="url(#lg-iris)" />
-                  <circle cx={e.cx} cy={e.cy} r="10" fill="#080203" />
-                  <circle cx={e.cx - 9} cy={e.cy - 10} r="4" fill="#fff" opacity="0.75" />
+          {[null, M].map((t) => (
+            <g transform={t ?? undefined}>
+              <path d={brow} fill="#f1e3c8" />
+              <g class="l-eye">
+                <path d={eyeOpen} fill="#f6ecdc" />
+                <g clip-path="url(#lc-L)">
+                  <g class="l-iris">
+                    <circle cx={iris.x} cy={iris.y} r={iris.r} fill="#120506" />
+                    <circle cx={iris.x} cy={iris.y} r={iris.r - 8} fill="url(#lg-iris)" opacity="0.55" />
+                    <circle cx={iris.x} cy={iris.y} r="17" fill="#080203" />
+                    <circle cx={iris.x + 16} cy={iris.y - 14} r="9" fill="#fff" />
+                  </g>
+                  <g class="l-lid">
+                    <rect x="360" y="400" width="360" height="200" fill="#0d0405" />
+                  </g>
                 </g>
-                <g class="l-lid">
-                  <rect x={e.cx - 120} y={e.cy - 80} width="240" height="150" fill="#0d0405" />
-                  <path d={`M${e.cx - 110} ${e.cy + 68} Q${e.cx} ${e.cy + 40} ${e.cx + 110} ${e.cy + 68}`} fill="none" stroke="#c9584a" stroke-width="2" opacity="0.7" />
-                </g>
+                <path d={liner} fill="#f1e3c8" />
+                <path d={lower} fill="#f1e3c8" opacity="0.92" />
               </g>
-              <path d={eye(e.cx, e.cy)} fill="none" stroke="#b6483a" stroke-width="2.2" />
             </g>
           ))}
         </g>
 
+        <g id="loader-marks" opacity="0">
+          <circle cx="800" cy="440" r="70" fill="url(#lg-sindoor)" />
+          <path d="M732 366 Q800 452 868 366 Q800 420 732 366Z" fill="#e2463e" />
+          <circle cx="800" cy="452" r="21" fill="#e2463e" />
+        </g>
+
+        <g id="loader-lower" opacity="0">
+          <circle cx="772" cy="652" r="9" fill="#f1e3c8" />
+          <circle cx="828" cy="652" r="9" fill="#f1e3c8" />
+          <path d="M772 652 Q800 684 828 652" fill="none" stroke="#f1e3c8" stroke-width="7" stroke-linecap="round" />
+          <path d="M724 744 Q756 712 786 724 Q800 716 814 724 Q844 712 876 744 Q846 790 800 792 Q754 790 724 744Z" fill="#e2463e" />
+          <path d="M716 746 Q800 764 884 746" fill="none" stroke="#2a0c0a" stroke-width="7" stroke-linecap="round" />
+          <circle cx={nath.x} cy={nath.y} r={nath.r} fill="none" stroke="#e8b04f" stroke-width="6" />
+          {beads.map((b) => <circle cx={b.x} cy={b.y} r={b.r} fill="#e8b04f" />)}
+        </g>
+
         <g id="loader-third">
-          <circle id="loader-third-glow" cx={E3.x} cy={E3.y} r="190" fill="url(#lg-third)" opacity="0" />
-          <line id="loader-third-line" x1={E3.x} y1={E3.y - 62} x2={E3.x} y2={E3.y + 62} stroke="#f0b34a" stroke-width="2" stroke-linecap="round" opacity="0" />
+          <circle id="loader-third-glow" cx={E3.x} cy={E3.y} r="200" fill="url(#lg-third)" opacity="0" />
+          <line id="loader-third-line" x1={E3.x} y1={E3.y - 80} x2={E3.x} y2={E3.y + 76} stroke="#f0b34a" stroke-width="3" stroke-linecap="round" opacity="0" />
           <g id="loader-third-open">
-            <path d={third} fill="#1c0807" />
+            <path d={third} fill="#f6ecdc" />
             <g clip-path="url(#lc-3)">
-              <circle cx={E3.x} cy={E3.y} r="24" fill="url(#lg-iris)" />
-              <circle cx={E3.x} cy={E3.y} r="8" fill="#080203" />
-              <circle id="loader-third-core" cx={E3.x} cy={E3.y} r="80" fill="#fff1c9" opacity="0" />
+              <circle cx={E3.x} cy={E3.y + 4} r="26" fill="#120506" />
+              <circle cx={E3.x} cy={E3.y + 4} r="20" fill="url(#lg-iris)" opacity="0.6" />
+              <circle cx={E3.x} cy={E3.y + 4} r="9" fill="#080203" />
+              <circle cx={E3.x + 8} cy={E3.y - 4} r="5" fill="#fff" />
+              <circle id="loader-third-core" cx={E3.x} cy={E3.y} r="90" fill="#fff1c9" opacity="0" />
             </g>
-            <path d={third} fill="none" stroke="#f0b34a" stroke-width="2.4" />
+            <path d={third} fill="none" stroke="#f1e3c8" stroke-width="10" stroke-linejoin="round" />
           </g>
         </g>
 
@@ -98,6 +131,5 @@ const motes = Array.from({ length: 56 }, () => {
     </g>
   </svg>
 
-  <p class="loader-note">Stand-in art. The commissioned Kali painting replaces it.</p>
   <button type="button" class="loader-skip" id="loader-skip">Skip intro</button>
 </div>

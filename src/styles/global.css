@@ -190,10 +190,6 @@ html.js:not([data-tier="calm"]) [data-hero] { opacity: 0; }
 .loader { position: fixed; inset: 0; z-index: 50; }
 .loader-svg { width: 100%; height: 100%; display: block; }
 html[data-intro="seen"] .loader { display: none; }
-.loader-note {
-  position: absolute; left: 0; right: 0; bottom: calc(24px + env(safe-area-inset-bottom, 0px));
-  text-align: center; font-size: 0.74rem; letter-spacing: 0.06em; color: #8d7b70;
-}
 .loader-skip {
   position: absolute; right: var(--gutter-r); bottom: calc(16px + env(safe-area-inset-bottom, 0px));
   background: none; border: 1px solid rgb(246 236 226 / 0.3); color: #f6ece2; border-radius: 999px;
@@ -348,7 +344,6 @@ html[data-hud-closed] .hud { width: auto; }
   .pp-cat-head .btn { grid-column: 1; grid-row: auto; justify-self: start; }
   .pp-nav { grid-template-columns: minmax(0, 1fr); }
   .pp-nav a:last-child { text-align: left; }
-  .loader-note { bottom: calc(66px + env(safe-area-inset-bottom, 0px)); padding-inline: 20px; }
   .connect-form, .connect-done { padding: 20px; }
 }
 @media (prefers-reduced-motion: reduce) {

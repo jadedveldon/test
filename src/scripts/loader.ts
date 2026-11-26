@@ -11,7 +11,8 @@ type Options = {
   onDone: () => void;
 };
 
-const ORIGIN = '800 430'; // the third eye, in the SVG's 1600 × 1000 space
+const ORIGIN = '800 290'; // the third eye, in the SVG's 1600 × 1000 space
+const OPEN = -180; // how far the lids lift
 
 export function runLoader(el: HTMLElement, o: Options) {
   const q = <T extends Element = SVGElement>(s: string) => el.querySelector(s) as T;
@@ -20,6 +21,8 @@ export function runLoader(el: HTMLElement, o: Options) {
   const face = q('#loader-face');
   const ember = q('#loader-ember');
   const eyes = q('#loader-eyes');
+  const marks = q('#loader-marks');
+  const lower = q('#loader-lower');
   const lids = qa('.l-lid');
   const thirdWrap = q('#loader-third');
   const third = q('#loader-third-open');
@@ -28,13 +31,12 @@ export function runLoader(el: HTMLElement, o: Options) {
   const core = q('#loader-third-core');
   const motes = qa('#loader-motes circle');
   const hole = q('#loader-hole');
-  const note = q<HTMLElement>('.loader-note');
   const skip = q<HTMLButtonElement>('#loader-skip');
 
-  // tall phone screens: frame the face instead of cropping the outer eyes
+  // tall phone screens: frame the whole face (brows to nose ring) instead of cropping the wings of the eyes
   const svg = el.querySelector('svg');
   if (svg && innerWidth / innerHeight < 0.8) {
-    svg.setAttribute('viewBox', '380 80 840 1040');
+    svg.setAttribute('viewBox', '300 150 1000 700');
     svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
   }
 
@@ -48,12 +50,15 @@ export function runLoader(el: HTMLElement, o: Options) {
 
   // calm mode: a still image that fades away
   if (o.calm) {
-    gsap.set([ember, eyes], { opacity: 1 });
-    gsap.set(lids, { y: -150 });
+    gsap.set([ember, eyes, marks, lower], { opacity: 1 });
+    gsap.set(lids, { y: OPEN });
     gsap.set(third, { opacity: 1, scaleX: 1, svgOrigin: ORIGIN });
     gsap.set(thirdGlow, { opacity: 0.6 });
     o.onReveal();
-    gsap.to(el, { opacity: 0, duration: 0.6, delay: 1.0, ease: 'sine.inOut', onComplete: finish });
+    // the face goes first, then the darkness behind it, so the face never lies over the page's own words
+    gsap.timeline({ delay: 1.2, onComplete: finish })
+      .to(face, { opacity: 0, duration: 0.45, ease: 'sine.in' })
+      .to(el, { opacity: 0, duration: 0.45, ease: 'sine.inOut' });
     skip.addEventListener('click', finish, { once: true });
     return null;
   }
@@ -66,16 +71,19 @@ export function runLoader(el: HTMLElement, o: Options) {
   const tl = gsap.timeline({ onComplete: finish });
   tl.to(ember, { opacity: 1, duration: 1.1, ease: 'sine.out' }, 0)
     .to(eyes, { opacity: 1, duration: 0.7, ease: 'sine.out' }, 0.35)
-    .to(lids, { y: -150, duration: 0.6, ease: 'power2.out' }, 0.65)
+    .to(lids, { y: OPEN, duration: 0.6, ease: 'power2.out' }, 0.65)
+    .to(lower, { opacity: 1, duration: 0.8, ease: 'sine.out' }, 0.9)
     // two slow blinks
     .to(lids, { y: 0, duration: 0.11, ease: 'power2.in' }, 1.35)
-    .to(lids, { y: -150, duration: 0.22, ease: 'power2.out' }, 1.46)
+    .to(lids, { y: OPEN, duration: 0.22, ease: 'power2.out' }, 1.46)
     .to(lids, { y: 0, duration: 0.11, ease: 'power2.in' }, 1.8)
-    .to(lids, { y: -150, duration: 0.26, ease: 'power2.out' }, 1.91)
+    .to(lids, { y: OPEN, duration: 0.26, ease: 'power2.out' }, 1.91)
+    // the crescent and the bindi glow as the light begins to gather
+    .to(marks, { opacity: 1, duration: 0.5, ease: 'sine.out' }, 1.75)
     // light gathers and the third eye opens
     .to(thirdLine, { opacity: 1, duration: 0.3 }, 2.0)
     .to(motes, { opacity: 1, duration: 0.25, stagger: { each: 0.005, from: 'random' } }, 2.0)
-    .to(motes, { attr: { cx: 800, cy: 430 }, opacity: 0, duration: 0.8, ease: 'power3.in', stagger: { each: 0.004, from: 'random' } }, 2.1)
+    .to(motes, { attr: { cx: 800, cy: 290 }, opacity: 0, duration: 0.8, ease: 'power3.in', stagger: { each: 0.004, from: 'random' } }, 2.1)
     .to(thirdGlow, { opacity: 1, duration: 0.6 }, 2.35)
     .to(third, { opacity: 1, scaleX: 1, duration: 0.55, ease: 'back.out(1.7)' }, 2.62)
     .call(() => buzz(PATTERNS.eyeOpens), [], 2.62)
@@ -86,7 +94,7 @@ export function runLoader(el: HTMLElement, o: Options) {
       o.world?.impulse(3.5);
       o.world?.flash(0.7);
     }, [], 'zoom')
-    .to([note, skip], { opacity: 0, duration: 0.3 }, 'zoom')
+    .to(skip, { opacity: 0, duration: 0.3 }, 'zoom')
     .to(face, { scale: 9, duration: 1.0, ease: 'power3.in' }, 'zoom')
     .to(core, { opacity: 1, duration: 0.55, ease: 'power2.in' }, 'zoom+=0.3')
     // the eye-shaped opening grows and the hero is already inside it
@@ -94,8 +102,8 @@ export function runLoader(el: HTMLElement, o: Options) {
     .fromTo(hole, { scale: 1.1 }, { scale: 40, duration: 1.05, ease: 'power2.inOut', immediateRender: false }, 'zoom+=0.6');
 
   // depth: layers drift at different rates with the pointer
-  const ex = gsap.quickTo(eyes, 'x', { duration: 0.9, ease: 'power3' });
-  const ey = gsap.quickTo(eyes, 'y', { duration: 0.9, ease: 'power3' });
+  const ex = gsap.quickTo([eyes, marks, lower], 'x', { duration: 0.9, ease: 'power3' });
+  const ey = gsap.quickTo([eyes, marks, lower], 'y', { duration: 0.9, ease: 'power3' });
   const tx = gsap.quickTo(thirdWrap, 'x', { duration: 0.9, ease: 'power3' });
   const ty = gsap.quickTo(thirdWrap, 'y', { duration: 0.9, ease: 'power3' });
   const gx = gsap.quickTo(ember, 'x', { duration: 1.2, ease: 'power3' });

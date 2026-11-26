@@ -104,4 +104,4 @@ layers make the page behind inert (`src/scripts/inert.ts`).
 
 ## Next
 
-The real web address (link previews use the placeholder `sarvakali.example`), testing on real phones (Safari on iPhone especially), art direction per pillar, the commissioned Kali painting (layers + depth map), the Studio's accounts (password, Resend for email, Google for Meet links: `docs/studio.md`), the content editor's accounts (`docs/editor.md`), and an uptime service pointed at `/api/health` (`docs/observability.md`). The WhatsApp button is waiting for a decision.
+The real web address (link previews use the placeholder `sarvakali.example`), testing on real phones (Safari on iPhone especially), art direction per pillar, Sarvakali's own photograph for About, the Studio's accounts (password, Resend for email, Google for Meet links: `docs/studio.md`), the content editor's accounts (`docs/editor.md`), and an uptime service pointed at `/api/health` (`docs/observability.md`). The WhatsApp button is waiting for a decision.
