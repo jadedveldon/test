@@ -3,7 +3,8 @@
  * about, every conversation (past, now and to come, with how many times you have met), notes, invoices, emails
  * and the whole history; with a new conversation or an invoice one tap away. Their data can be exported or erased.
  */
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { ownerCall } from '../client';
 import type { Client } from '../core/types';
 import { rupees, totals } from '../core/money';
 import { safeTz } from '../core/time';
@@ -105,6 +106,7 @@ export function ClientPage({ id }: { id: string }) {
             <h1>{c.name}{c.archived ? <Badge tone="grey">Archived</Badge> : null}</h1>
             <p className="st-contact"><a href={`mailto:${c.email}`}>{c.email}</a>{c.phone ? <> · <a href={`tel:${c.phone.replace(/\s/g, '')}`}>{c.phone}</a></> : null}{c.tz ? <> · {c.tz.replace('_', ' ')}</> : null}{c.pronouns ? <> · {c.pronouns}</> : null}</p>
             {c.tags.length ? <p>{c.tags.map((t) => <Badge key={t} tone="grey">{t}</Badge>)}</p> : null}
+            <AccountLine email={c.email} />
           </div>
         </div>
         <div className="st-row st-row-wrap">
@@ -180,4 +182,17 @@ export function ClientPage({ id }: { id: string }) {
       ) : null}
     </div>
   );
+}
+
+/** whether the client has a visitor account (My space); their practice itself is never shown to the Studio */
+function AccountLine({ email }: { email: string }) {
+  const [has, setHas] = useState<boolean | null>(null);
+  useEffect(() => {
+    let live = true;
+    setHas(null);
+    ownerCall<{ has: boolean }>('accounts.has', { email }).then((r) => { if (live) setHas(!!r?.has); }, () => { if (live) setHas(null); });
+    return () => { live = false; };
+  }, [email]);
+  if (has === null) return null;
+  return <p className="st-hint" data-account={has ? 'yes' : 'no'}>{has ? 'Has an account: sees their conversations and invoices in My space.' : 'No account on the site.'}</p>;
 }

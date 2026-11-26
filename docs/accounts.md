@@ -52,7 +52,8 @@ sessions and invoices with Sarvakali in one place: **My space** (`/me`).
 - When the account's email is a client's in the Studio, My space lists their conversations and invoices, each with its
   own private link (the same `/booking?t=…` and `/invoice?t=…` pages the emails link to). Moving, cancelling, paying
   and "I have paid" happen there.
-- Sarvakali never sees anyone's practice: the Studio holds no practice data, and accounts hold no Studio data.
+- Sarvakali never sees anyone's practice: the Studio holds no practice data, and accounts hold no Studio data. A
+  client's page in the Studio says only whether they have an account.
 
 ## Download and delete
 

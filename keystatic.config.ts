@@ -497,11 +497,6 @@ const about = singleton({
     hero: fields.object({ kicker: line('Small heading'), title: must('Heading'), lede: para('Text') }, { label: 'The opening' }),
     portrait: fields.object({ caption: para('Caption under the portrait', LINKS), hint: line('Hint for looking into it') }, { label: 'The portrait (the photograph itself is placed in code)' }),
     quote: para('One line in Sarvakali’s own words', 'Set large, on its own. Leave empty to leave it out.'),
-    path: fields.object({
-      title: line('Heading'), intro: para('The story, in a few sentences', LINKS),
-      moments: fields.array(fields.object({ when: line('When'), what: line('What happened', LINKS) }), { label: 'Moments on the thread', itemLabel: (p) => `${p.fields.when.value} · ${p.fields.what.value}` }),
-    }, { label: 'The path' }),
-    lineage: fields.object({ title: line('Heading'), items: lines('Lines', 'Line', { description: LINKS }) }, { label: 'Lineage and training' }),
     promises: fields.object({
       title: line('Heading'),
       items: fields.array(fields.object({

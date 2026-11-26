@@ -50,6 +50,11 @@ export async function handleOwner(request: Request, cookies: Cookies) {
       const { db } = await transact(env, (d) => { d.google = { connected: false }; });
       return json({ state: slim(db) });
     }
+    // visitor accounts (src/me): only whether a client has one, never what is in it
+    if (action === 'accounts.has') {
+      const [{ hasAccount }, { hostMeEnv }] = await Promise.all([import('../../me/core/accounts'), import('../../me/server/host')]);
+      return json({ has: await hasAccount(await hostMeEnv(request.url), payload?.email) });
+    }
     if (action === 'state') {
       // reminders that have come due go out whenever the Studio is opened, as well as hourly
       try { await owner(env, 'runReminders'); } catch { /* never in the way of opening the Studio */ }

@@ -113,6 +113,7 @@ NOW += 16 * 60_000;
 ok('a link runs out after 15 minutes', await rejects(() => A.redeem(env, t2), 410));
 await A.startSignIn(env, 'someone@example.com', true);
 const s2 = await A.redeem(env, tokenOf(mails[2]));
+ok('the Studio can tell a client has an account (and nothing more)', (await A.hasAccount(env, 'SOMEONE@example.com')) && !(await A.hasAccount(env, 'nobody-here@example.com')));
 ok('signing in again finds the same account', !s2.created && s2.id === s1.id);
 ok('a made-up link is refused', await rejects(() => A.redeem(env, 'x'.repeat(30)), 410) && await rejects(() => A.redeem(env, '../../etc'), 400));
 
@@ -163,6 +164,7 @@ const exp = A.exportData(await A.account(env, s1.id, 2));
 ok('the download holds the account\'s events', exp.email === 'someone@example.com' && exp.events.length === 2);
 await A.deleteAccount(env, await A.account(env, s1.id, 2));
 ok('deleting the account leaves nothing of it', !kvData.has(`me-${s1.id}`) && ![...kvData.values()].some((v) => JSON.stringify(v).includes('someone@example.com')) && (await rejects(() => A.account(env, s1.id, 2), 401)));
+ok('… and the Studio no longer sees an account', !(await A.hasAccount(env, 'someone@example.com')));
 ok('… and a Studio client record stays with Sarvakali', db.clients.some((x) => x.email === 'someone@example.com'));
 const failing = { ...env, send: async () => 'saved' };
 ok('with email not set up, signing in says so rather than showing a link', await rejects(() => A.startSignIn(failing, 'a@example.com', true), 503));

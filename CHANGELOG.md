@@ -3,6 +3,18 @@
 Every change to the site, newest first: what changed, why, and how it was checked.
 The rules for checking are in `CLAUDE.md`; the checks themselves are in `tools/qa/`.
 
+## 2026-11-26 · About without the path and lineage; the Studio shows who has an account
+
+- **Removed from About**, at the owner's request: "The path" (the thread of moments: where it began, the first
+  teacher, how Kali came in) and "Lineage and training". They are gone from the page, its content file, the editor and
+  the stylesheet. The opening line no longer mentions where the path began.
+- **Added: "Has an account" on a client's page in the Studio** (the gap left by the accounts round). It says only
+  whether the client's address has a visitor account, never anything in it (`hasAccount` in `src/me/core/accounts.ts`,
+  the `accounts.has` action on the host and in the demo).
+- **Checks:** `tools/qa/me-core.mjs` gains two lines (the Studio sees an account, and no longer sees it after deletion);
+  all ok. Walked in the preview: a demo client shows "No account", then "Has an account" after signing in; About has no
+  trace of the removed sections; no errors. The full suites were not run, at the owner's request.
+
 ## 2026-11-26 · Visitor accounts: one practice record on every device, and My space
 
 The owner chose: accounts optional, sign-in by an email link, the journal shared but locked with the visitor's own

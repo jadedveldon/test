@@ -10,12 +10,10 @@ import Rich from '../components/Rich.astro';
 import { ICONS } from '../data/icons';
 import a from '../content/pages/about.json';
 
-const moments = a.path.moments.filter((m) => m.what.trim());
-const lineage = a.lineage.items.map((t) => t.trim()).filter(Boolean);
 const promises = a.promises.items.filter((p) => p.title.trim());
 const portrait = { img: '/depth/kali-163.jpg', depth: '/depth/kali-163-depth.png', w: 1100, h: 1755, alt: 'Kali, an unfinished study: Kalighat painting, Calcutta, nineteenth century' };
 ---
-<Base title="About · Sarvakali" sequence="about" description="About Sarvakali: the person and the path behind the institute.">
+<Base title="About · Sarvakali" sequence="about" description="About Sarvakali: the person behind the institute, and how the work is held.">
   <article class="about">
     <header class="about-hero">
       <div class="about-hero-copy">
@@ -45,19 +43,6 @@ const portrait = { img: '/depth/kali-163.jpg', depth: '/depth/kali-163-depth.png
       </blockquote>
     )}
 
-    <section class="about-two">
-      <div class="about-path" data-fade>
-        <h2 class="display-m">{a.path.title}</h2>
-        {a.path.intro.trim() && <p class="about-text"><Rich text={a.path.intro} /></p>}
-        <ol class="about-thread">
-          {moments.map((m) => <li><span class="about-when">{m.when}</span><span class="about-what"><Rich text={m.what} /></span></li>)}
-        </ol>
-      </div>
-      <div class="about-lineage" data-fade>
-        <h2 class="display-m">{a.lineage.title}</h2>
-        <ul class="about-list">{lineage.map((t) => <li><Rich text={t} /></li>)}</ul>
-      </div>
-    </section>
 
     <section class="about-promises">
       <h2 class="display-m" data-fade>{a.promises.title}</h2>

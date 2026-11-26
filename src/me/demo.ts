@@ -4,7 +4,7 @@
  * browser profile cannot share it, but signing out and back in, the journal lock and My space all work as they
  * will. Sign in with one of the Studio demo's made-up clients (asha.rao@example.com) to see a client's space.
  */
-import { MeError, account, act, redeem, startSignIn, type Kv, type MeEnv } from './core/accounts';
+import { MeError, account, act, hasAccount, redeem, startSignIn, type Kv, type MeEnv } from './core/accounts';
 import { demoDb } from '../studio/demo/demo';
 import { pageHref } from '../studio/client';
 import words from '../content/pages/me.json';
@@ -58,3 +58,6 @@ export async function demoMe(action: string, p: Record<string, unknown> = {}) {
     throw err;
   }
 }
+
+/** for the Studio demo's client page */
+export const demoHasAccount = (email: unknown) => hasAccount(env(), email);

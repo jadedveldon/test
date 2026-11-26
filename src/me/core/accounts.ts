@@ -113,6 +113,14 @@ export async function redeem(env: MeEnv, token: unknown) {
   return { id, gen: acc.gen, created };
 }
 
+/** for the Studio's client page: whether this address has an account (never anything in it) */
+export async function hasAccount(env: Pick<MeEnv, 'kv' | 'sha256'>, emailIn: unknown) {
+  const email = normEmail(emailIn);
+  if (!EMAIL.test(email)) return false;
+  const id = await env.kv.get<string>(`me-email-${await env.sha256(email)}`);
+  return !!id && !!(await env.kv.get<Account>(`me-${id}`));
+}
+
 /** the account behind a signed-in device, if its sign-in is still good */
 export async function account(env: MeEnv, id: string, gen: number) {
   const acc = await env.kv.get<Account>(`me-${id}`);
