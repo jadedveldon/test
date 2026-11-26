@@ -6,6 +6,7 @@
  * Forms are shuffled (or evenly interleaved) so that the first k points are
  * always a fair sample: lighter devices simply draw fewer points.
  */
+import { KALI_YANTRA, yantraLines } from '../../data/kali-yantra';
 import { KEY } from '../../data/hecate-key';
 
 export const CZ = -10;
@@ -358,32 +359,18 @@ const polySegs = (pts: number[][], closed = true): Seg[] => {
 const circleSegs = (r: number, steps = 72, cx = 0, cy = 0): Seg[] =>
   polySegs(Array.from({ length: steps }, (_, i) => [cx + Math.cos((i / steps) * Math.PI * 2) * r, cy + Math.sin((i / steps) * Math.PI * 2) * r]));
 
-/** the Kali yantra in light: bindu, five downward triangles, circles, eight petals, the gated square */
+/** the Kali yantra in light: the same drawing as the page's yantra (src/data/kali-yantra.ts), as points */
 function yantra(n: number) {
   const r = rng(59);
-  const segs: Seg[] = [];
-  [0.55, 0.85, 1.15, 1.45, 1.75].forEach((R) => {
-    segs.push(...polySegs([90, 210, 330].map((d) => [Math.cos(((d + 180) * Math.PI) / 180) * R, Math.sin(((d + 180) * Math.PI) / 180) * R])));
-  });
-  segs.push(...circleSegs(1.95), ...circleSegs(2.75), ...circleSegs(2.85));
-  for (let k = 0; k < 8; k++) {
-    const a = (k * Math.PI) / 4, w = Math.PI / 8;
-    const pts: number[][] = [];
-    for (let j = 0; j <= 12; j++) {
-      const t = -w + (2 * w * j) / 12, bulge = Math.cos((t / w) * (Math.PI / 2));
-      const R = 1.95 + 0.72 * bulge;
-      pts.push([Math.cos(a + t) * R, Math.sin(a + t) * R]);
-    }
-    segs.push(...polySegs(pts, false));
-  }
-  const s = 3.25, g = 0.45, d = 0.32;
-  segs.push(...polySegs([[-s, -s], [-g, -s], [-g, -s - d], [g, -s - d], [g, -s], [s, -s], [s, -g], [s + d, -g], [s + d, g], [s, g], [s, s], [g, s], [g, s + d], [-g, s + d], [-g, s], [-s, s], [-s, g], [-s - d, g], [-s - d, -g], [-s, -g]]));
-  const line = alongSegments(Math.floor(n * 0.94), segs, r, 0.018, 0.3);
+  const k = 3.57 / 310; // the drawing's ±310 to the world's size; y flipped (the drawing's y points down)
+  const segs: Seg[] = yantraLines().flatMap((l) => polySegs(l.pts.map(([x, y]) => [x * k, -y * k]), l.closed));
+  segs.push(...circleSegs(KALI_YANTRA.bindu.ring * k, 24));
+  const line = alongSegments(Math.floor(n * 0.95), segs, r, 0.014, 0.3);
   const o = new Float32Array(n * 3);
   o.set(line);
-  for (let i = Math.floor(n * 0.94); i < n; i++) { // the bindu
-    const a = r() * Math.PI * 2, rad = Math.pow(r(), 1.4) * 0.16;
-    put(o, i, Math.cos(a) * rad, 0.3 + Math.sin(a) * rad, CZ + gauss(r) * 0.05);
+  for (let i = Math.floor(n * 0.95); i < n; i++) { // the bindu
+    const a = r() * Math.PI * 2, rad = Math.pow(r(), 1.4) * 0.06;
+    put(o, i, Math.cos(a) * rad, 0.3 + Math.sin(a) * rad, CZ + gauss(r) * 0.03);
   }
   return o;
 }

@@ -11,6 +11,7 @@ import Base from '../../layouts/Base.astro';
 import { crumbWords as cw } from '../../config';
 import { words } from '../../config';
 import Yantra from '../../components/Yantra.astro';
+import { lotus, lineD } from '../../data/kali-yantra';
 import PillarSubs from '../../components/PillarSubs.astro';
 import { pillars, categoryCount } from '../../data/site';
 import { CHAPTER_KEYS, COPY, ELEMENTS, FAMILIES, GREEK, HINDU, HINDU_ALSO, LANDS, MAHAVIDYAS, MOVES, TANTRA } from '../../data/devotion';
@@ -67,9 +68,9 @@ const alias = (k: string) => (aliases[k] || []);
               <g class="yt-mala" aria-hidden="true">{Array.from({ length: 108 }, (_, i) => { const a = (i / 108) * Math.PI * 2 - Math.PI / 2; return <circle cx={(Math.cos(a) * 143).toFixed(1)} cy={(Math.sin(a) * 143).toFixed(1)} r={i === 0 ? 3.4 : 1.6} class={i === 0 ? 'yt-bead meru' : 'yt-bead'} />; })}</g>
               <g class="yt-rot" data-yt-rot>
                 <circle r="132" class="yt-line" />
-                <circle r="124" class="yt-line thin" />
-                {Array.from({ length: 16 }, (_, i) => <path class="yt-line" d="M0 -100 Q9 -112 0 -124 Q-9 -112 0 -100Z" transform={`rotate(${i * 22.5})`} />)}
+                {lotus(96, 132).map((l) => <path class="yt-line" d={lineD(l)} />)}
                 <circle r="96" class="yt-line" />
+                <circle r="90" class="yt-line thin" />
                 {[28, 44, 60, 76].map((r) => <path class="yt-line" d={triPath(r)} />)}
               </g>
               <g>{[36, 52, 68].map((r) => <path class="yt-line ghost" d={triPath(r)} transform="rotate(180)" />)}</g>

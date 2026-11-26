@@ -3,6 +3,25 @@
 Every change to the site, newest first: what changed, why, and how it was checked.
 The rules for checking are in `CLAUDE.md`; the checks themselves are in `tools/qa/`.
 
+## 2026-11-26 · The Kali yantra, redrawn in the owner's chosen style
+
+- **The owner chose a traditional Kali yantra to use.** The picture they sent is a stock image that still has its
+  watermark, so it is not copied or traced. Instead the yantra's traditional geometry is drawn afresh in the same
+  style:
+  - the bindu in its ring;
+  - five downward triangles and three circles;
+  - a lotus of eight pointed petals, each with an inner petal;
+  - the great circle;
+  - the square enclosure as a double line, with a T-shaped gate on each side.
+- **One drawing, used everywhere** (`src/data/kali-yantra.ts`):
+  - the yantra that draws itself as a pillar page is read (`Yantra.astro`);
+  - the world's yantra in light, on Devotion's chapters I and II and Learning's palm leaf (`forms.ts`);
+  - the lotus of the "turn the yantra" puzzle on Devotion. It replaces sixteen small leaves; the puzzle itself is
+    unchanged.
+- **Checks:** Devotion was looked at on desktop and phone, at the top, chapter I and the end. The yantra was also
+  drawn on its own and compared with the owner's picture. ERRORS none. The full suites were not run, at the owner's
+  request.
+
 ## 2026-11-26 · The third eye opened wider, and the homepage's eye made the same
 
 - **The third eye opens wider:** a fuller almond and a larger iris. The owner found it too nearly closed.
