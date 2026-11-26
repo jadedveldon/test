@@ -3,6 +3,68 @@
 Every change to the site, newest first: what changed, why, and how it was checked.
 The rules for checking are in `CLAUDE.md`; the checks themselves are in `tools/qa/`.
 
+## 2026-11-26 · Observability: the site's own visits, problems, logs and health; breadcrumbs
+
+The owner asked for visitor counts, logging, tracking, error handling, observability and traceability "in the highest
+capacity", and for breadcrumbs. They chose: everything built in and kept on the site's own host (no analytics or
+error-tracking company), counting visits and journeys without cookies or identity. **The full test suites were not
+run**, at the owner's request; the new checks below were run, against the dev server and the preview.
+
+- **Added: breadcrumbs** on every inner page (practice, days, the library, mantras, traditions, tools, articles,
+  pillars): "Home › Daily practice › Mantra library › Gayatri Mantra".
+  - Also given to search engines as schema.org `BreadcrumbList`.
+  - On phones only the step back shows, so the trail never wraps into the heading.
+  - The words are in Site settings.
+- **Added: the site's own counting** (`src/scripts/telemetry.ts`, `src/obs/`):
+  - pages opened, time in view, how far read, which site sent the visitor (name only), campaign tags, device,
+    browser, country, and page speed (LCP, CLS, INP, FCP, TTFB);
+  - steps that matter: 30 kinds, from a practice finished to a request sent or the help line tapped, marked with
+    `track()`.
+  - **Privacy:** no cookies, nothing kept in the browser for it. A visitor hash that changes daily (its secret is
+    deleted after two days); the address is never kept; robots left out; Sarvakali's own visits left out.
+  - **Do Not Track and Global Privacy Control** are honoured.
+- **Added: error capture with trails:**
+  - uncaught errors, failed promises, files that would not load, errors the site reports, and Studio pages that
+    break (an error boundary now keeps the rest of the Studio working);
+  - each one with the last 40 steps before it (pages, presses, requests with their references, console warnings);
+  - grouped, so the same error counts as one.
+- **Added: traceability.** Every request the host answers gets a reference (`x-request-id`) and its timing
+  (`server-timing`).
+  - Error messages visitors and clients see now end with "(Reference: …)".
+  - Unexpected failures are caught, logged with their stack and answered plainly (`src/middleware.ts`).
+- **Added: structured logging** (`src/obs/server/log.ts`): one JSON line per event, with the reference. API requests'
+  lines are kept 30 days and searchable. The Studio's, accounts' and Google's error logging moved onto it.
+- **Scrubbing everywhere** (`src/obs/core/clean.ts`): private links lose their token; emails, phone numbers, UPI IDs
+  and tokens are scrubbed from any text; private fields are replaced whole.
+- **Added: `/api/health`** (for an uptime service) and an **hourly round**
+  (`netlify/functions/obs-hourly.mts`):
+  - the day's numbers worked out; raw data let go after 30 days, totals after about a year;
+  - an **alert email** to Sarvakali when something new breaks, at most every three hours.
+- **Added: Insights in the Studio** (`src/studio/app/Insights.tsx`), with seven tabs: overview, journeys (with the
+  way to a conversation, from visit to paid), what people do, speed, problems (with trails, Mark fixed / Ignore),
+  logs by reference, and health.
+  - One hue for every chart, as each shows one series.
+  - Hover, focus and arrow keys on the daily chart, and a table view.
+  - The preview shows thirty days of clearly made-up history.
+- **Changed:**
+  - the care page explains how visits are counted and what an error report holds;
+  - CLAUDE.md asks new code to use `track()`, `reportError()` and `log`;
+  - `CallError` and `MeCallError` carry the reference.
+- **Fixed while building:**
+  - **The preview demo lost a visit** when the page closed while the made-up month was being built. It now saves
+    first.
+  - **Arriving again from another site or a campaign link** joined an earlier visit. It now starts a new one.
+  - **Insights could show numbers up to ten minutes old** even after refresh. Refresh now always works them out
+    again.
+- **Checks:**
+  - New `tools/qa/obs-core.mjs` (35 lines, all ok).
+  - New `tools/qa/obs.cjs`, all ok, ERRORS none, against the dev server (16 lines) and the preview (10 lines).
+  - `me-core.mjs` and `me.cjs` re-run, all ok.
+  - The static and the host (Netlify) builds both complete; the hourly function bundles.
+  - Two harness limits are listed in `tools/qa/README.md` (a test browser is a robot by name; a page left by the
+    harness drops its closing beacon).
+  - Looked at: Insights on desktop and phone (every tab); the breadcrumbs on desktop and phone.
+
 ## 2026-11-26 · About without the path and lineage; the Studio shows who has an account
 
 - **Removed from About**, at the owner's request: "The path" (the thread of moments: where it began, the first

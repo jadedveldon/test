@@ -270,6 +270,9 @@ const settings = singleton({
       allPillars: line('Back link'), ask: line('“Ask about this”'), previous: line('Previous pillar'), next: line('Next pillar'),
       care: line('Boundaries and care'), path: line('Find your path'),
     }, { label: 'Words on every pillar page' }),
+    crumbs: fields.object({
+      label: line('For screen readers: what the trail is'), home: line('Home'), practice: line('Daily practice'), library: line('Mantra library'), week: line('The seven days'), articles: line('Articles'),
+    }, { label: 'The trail at the top of inner pages (breadcrumbs)' }),
   },
 });
 

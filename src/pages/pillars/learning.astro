@@ -5,6 +5,7 @@
  * Find your class sits in the library; Your path opens the sky. The yantra drawing is in the project history.
  */
 import Base from '../../layouts/Base.astro';
+import { crumbWords as cw } from '../../config';
 import { words } from '../../config';
 import SubCards from '../../components/SubCards.astro';
 import { pillars, categoryCount } from '../../data/site';
@@ -26,7 +27,7 @@ const road = STATION_XY.slice(0, 9).map(([x, y]) => `${x} ${y}`).join(' L');
 const beforeSky = moves.filter((m) => m.room !== 'sky');
 const sky = moves.filter((m) => m.room === 'sky');
 ---
-<Base title={`${p.name} · Sarvakali`} sequence="lrn_hero" description={p.line}>
+<Base title={`${p.name} · Sarvakali`} sequence="lrn_hero" description={p.line} crumbs={[{ label: p.name }]}>
   <div class="pd pd-learning" data-learning data-blend="edge">
     <section class="chapter pd-hero ln-library" data-chapter="lrn_hero">
       <div class="chapter-inner pd-hero-grid">

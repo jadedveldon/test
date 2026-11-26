@@ -2,7 +2,7 @@
 import { ClientRouter } from 'astro:transitions';
 import Veil from '../components/Veil.astro';
 import { pillars } from '../data/site';
-import { analytics, site } from '../config';
+import { analytics, crumbWords, site } from '../config';
 import { MARK } from '../data/brand';
 import '../styles/global.css';
 import meWords from '../content/pages/me.json';
@@ -16,12 +16,15 @@ interface Props {
   sequence?: string;
   /** keep private tools out of search engines */
   noindex?: boolean;
+  /** the trail above an inner page (after Home, which is added): the last item is this page and has no href */
+  crumbs?: { label: string; href?: string }[];
 }
 const {
   title,
   description = 'Sarvakali: devotion, witchcraft, healing, identity, divination and learning.',
   sequence = 'hero',
   noindex = false,
+  crumbs = [],
 } = Astro.props;
 
 // link previews: each page has its own picture, made from the real page by tools/make-og.mjs
@@ -30,6 +33,12 @@ const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/?index$/, '').
 const ogName = path === '' ? 'home' : path.replace(/^\//, '').replace(/\//g, '-');
 const ogImage = new URL(`/og/${ogName}.jpg`, site.url).href;
 const pageUrl = new URL(path || '/', site.url).href;
+const trail = crumbs.length ? [{ label: crumbWords.home || 'Home', href: '/' }, ...crumbs.filter((c) => c.label?.trim())] : [];
+// the same trail for search engines (schema.org BreadcrumbList)
+const trailLd = trail.length ? JSON.stringify({
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: trail.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.label, item: new URL(c.href ?? (path || '/'), site.url).href })),
+}) : '';
 ---
 <!doctype html>
 <html lang="en" transition:animate="none">
@@ -80,6 +89,7 @@ const pageUrl = new URL(path || '/', site.url).href;
       })();
     </script>
     <ClientRouter fallback="animate" />
+    {trailLd && <script type="application/ld+json" set:html={trailLd} />}
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to the content</a>
@@ -176,6 +186,11 @@ const pageUrl = new URL(path || '/', site.url).href;
     <slot name="overlay" />
 
     <main id="main" data-sequence={sequence}>
+      {trail.length > 1 && (
+        <nav class="crumbs" aria-label={crumbWords.label || 'Breadcrumb'} data-crumbs>
+          <ol>{trail.map((c, i) => <li>{c.href && i < trail.length - 1 ? <a href={c.href}>{c.label}</a> : <span aria-current="page">{c.label}</span>}</li>)}</ol>
+        </nav>
+      )}
       <slot />
     </main>
 

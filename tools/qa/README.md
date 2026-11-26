@@ -45,6 +45,10 @@ node tools/qa/preview-check.cjs
 | `preview-check.cjs` | The shareable preview bundle served statically: the cover, its pictures and links, and each pillar's own code loading and responding |
 | `studio-core.mjs` | The Studio's rules in memory (no browser): every path a request, a booking and an invoice can take, time zones (London, India, New York in summer), saving twice at once, erasing a client, invoice dates in India, calendar files, UPI links (`node tools/qa/studio-core.mjs`) |
 | `studio.cjs` | The whole loop in a browser, as a visitor and as Sarvakali: keep services, ask about them, send (the list empties), follow it; confirm, offer a new time, accepted; an invoice made, sent, paid by the client's word and marked paid; every email in the outbox; every Studio page on a phone. Against the dev server (`npm run dev`, the real API, port 4400 by default with `QA_BASE`) or, with `QA_STUDIO=demo`, the preview bundle on port 8099 |
+| `me-core.mjs` | Visitor accounts in memory: merging two devices, deletions, clearing, old records, the journal lock, sign-in links once only and for 15 minutes, no journal text kept in the open, a client's own space only, the Studio seeing only whether there is an account, signing out everywhere, deleting (`node tools/qa/me-core.mjs`) |
+| `me.cjs` | Accounts in a browser: old records converted, sign-in by link, a second device, the journal lock, convergence, a client's sessions, download, sign out everywhere, delete. Dev server, or `QA_ME=demo` against the preview |
+| `obs-core.mjs` | Observability in memory: private things scrubbed (tokens in links, emails, phones, UPI IDs, private fields), robots, error grouping, a day worked out (visitors, visits, bounces, journeys, goals, speed, errors), days combined, logs by reference, letting old data go, alerts (`node tools/qa/obs-core.mjs`) |
+| `obs.cjs` | Observability in a browser: visits, campaign tags and goals counted; an error caught with its trail; nothing private kept; robots left out; references on every host answer leading to log lines; health; breadcrumbs; every Insights tab. Dev server, or `QA_OBS=demo` against the preview |
 
 ## Known false alarms
 
@@ -65,3 +69,8 @@ Each one has been looked at and is not a problem; add to this list only with a r
 
 Software 3D drawing in a test machine is much slower than a phone's graphics chip, so 3D frame rates and long
 tasks here are pessimistic. Only Chromium is covered; Safari and Firefox need a check on real devices.
+
+- `obs.cjs` and any walk that counts visits: a test browser's own name says "HeadlessChrome", so the site rightly
+  treats it as a robot and counts nothing; the checks give it an ordinary browser's name. And a page left because
+  the harness sent the browser to a new address (`page.goto`) drops the beacon it sends while closing (real
+  browsers deliver it), so the checks move between pages by the site's own links, as visitors do.

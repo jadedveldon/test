@@ -6,11 +6,12 @@
  * src/content/pages/traditions.json ("Across traditions") and week.json.
  */
 import Base from '../../layouts/Base.astro';
+import { crumbWords as cw } from '../../config';
 import { DAYS, DAY_HEX, DAY_GLYPH, dayPath, type DayKey } from '../../data/mantras';
 import t from '../../content/pages/traditions.json';
 const item = (s: string) => { const i = s.indexOf(': '); return i > 0 && i < 60 ? [s.slice(0, i), s.slice(i + 2)] : ['', s]; };
 ---
-<Base title="Across traditions · Daily practice · Sarvakali" sequence="traditions" description="The mantra library's wider devotional index across traditions, with no invented mantras.">
+<Base title="Across traditions · Daily practice · Sarvakali" sequence="traditions" description="The mantra library's wider devotional index across traditions, with no invented mantras." crumbs={[{ label: cw.practice, href: '/practice' }, { label: cw.library, href: '/practice/library' }, { label: t.title }]}>
   <div class="ptrad">
     <section class="chapter" data-chapter="traditions">
       <div class="chapter-inner narrow">

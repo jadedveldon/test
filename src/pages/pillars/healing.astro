@@ -9,6 +9,7 @@
  *   IV  Journaling: a prompt for today
  */
 import Base from '../../layouts/Base.astro';
+import { crumbWords as cw } from '../../config';
 import { words } from '../../config';
 import CareText from '../../components/CareText.astro';
 import SubCards from '../../components/SubCards.astro';
@@ -69,7 +70,7 @@ const pieces = polys.map((poly, i) => {
   };
 });
 ---
-<Base title={`${p.name} · Sarvakali`} sequence="heal_hero" description={p.line}>
+<Base title={`${p.name} · Sarvakali`} sequence="heal_hero" description={p.line} crumbs={[{ label: p.name }]}>
   <div class="hl" data-healing>
     <section class="chapter hl-hero" data-chapter="heal_hero" data-heal-chapter="hero">
       <div class="chapter-inner hl-hero-grid">

@@ -6,6 +6,7 @@
  * prompts to ponder. Readings are offered for reflection.
  */
 import Base from '../../layouts/Base.astro';
+import { crumbWords as cw } from '../../config';
 import { words } from '../../config';
 import SubCards from '../../components/SubCards.astro';
 import { pillars, categoryCount } from '../../data/site';
@@ -22,7 +23,7 @@ const moves = CHAPTERS.map((ch) => ({ ...ch, cat: gather(p, ch.key, ch.title, CH
 const aliases = categoryAliases(p, CHAPTER_KEYS, Object.fromEntries(moves.map((m) => [m.key, m.id])));
 const mr = COPY.mirror;
 ---
-<Base title={`${p.name} · Sarvakali`} sequence="div_hero" description={p.line}>
+<Base title={`${p.name} · Sarvakali`} sequence="div_hero" description={p.line} crumbs={[{ label: p.name }]}>
   <div class="pd pd-divination" data-divination>
     <section class="chapter pd-hero dv5-gilt" data-chapter="div_hero">
       <div class="chapter-inner pd-hero-grid">

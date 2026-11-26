@@ -11,6 +11,7 @@ import { isDev, secret } from '../../studio/server/env';
 import { limited } from '../../studio/server/stores';
 import { json } from '../../studio/server/runtime';
 import words from '../../content/pages/me.json';
+import { currentRef, log } from '../../obs/server/log';
 
 export const prerender = false;
 
@@ -51,7 +52,7 @@ export const POST: APIRoute = async ({ request, cookies, clientAddress }) => {
       if (e.status === 401) cookies.delete(COOKIE, { path: '/' });
       return json({ error: e.message, signedOut: e.status === 401 || undefined }, e.status);
     }
-    console.error('[me]', e);
-    return json({ error: words.errors.generic }, 500);
+    log.error('account action failed', {}, e);
+    return json({ error: words.errors.generic, ref: currentRef() }, 500);
   }
 };

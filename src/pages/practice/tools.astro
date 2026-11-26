@@ -5,6 +5,7 @@
  * practice page, which now leads with guided practices. Words: src/content/pages/practice.json.
  */
 import Base from '../../layouts/Base.astro';
+import { crumbWords as cw } from '../../config';
 import w from '../../content/pages/practice.json';
 import lib from '../../content/pages/library.json';
 import { DAYS, loadMantras, summary } from '../../data/mantras';
@@ -17,7 +18,7 @@ const weekData = {
 };
 const r = { mantra: 'ॐ नमः शिवाय', mantraNote: 'AUM Namah Shivaya' };
 ---
-<Base title="Tools for practice · Daily practice · Sarvakali" sequence="practice" description="The mala, the fire, the diya, the month’s lunar days, sacred days ahead and reminders.">
+<Base title="Tools for practice · Daily practice · Sarvakali" sequence="practice" description="The mala, the fire, the diya, the month’s lunar days, sacred days ahead and reminders." crumbs={[{ label: cw.practice, href: '/practice' }, { label: w.tools.title }]}>
   <div data-practice>
     <a hidden data-connect-href href="/connect" tabindex="-1" aria-hidden="true"></a>
     <script type="application/json" data-practice-words set:html={JSON.stringify(w)} />

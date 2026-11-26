@@ -1,5 +1,6 @@
 /** GET /api/studio/google/connect and /api/studio/google/callback: connecting Sarvakali's Google Calendar */
 import type { APIRoute } from 'astro';
+import { log } from '../../obs/server/log';
 import { transact } from '../core/runner';
 import { consentUrl, finishConnect, googleReady } from '../server/google';
 import { PRIVATE, hostEnv, signedIn, throughDoor } from '../server/runtime';
@@ -27,7 +28,7 @@ export const GET: APIRoute = async ({ request, cookies, params, url, redirect })
       await transact(await hostEnv(request.url), (d) => { d.google = { connected: true, email }; });
       return back('ok');
     } catch (e) {
-      console.error('[studio] google', e);
+      log.error('google connection failed', {}, e);
       return back('failed');
     }
   }

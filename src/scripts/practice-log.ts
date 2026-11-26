@@ -10,6 +10,7 @@
  * once, on first read, so nobody loses their history.
  */
 import { dayKey } from './festivals';
+import { track } from './track';
 import { derive, fromLegacy, merge, newId, streaks, type DayRec, type Derived, type PracticeEvent } from '../me/core/events';
 
 export type { DayRec };
@@ -66,11 +67,15 @@ export function record(): Derived {
   return d;
 }
 
+const GOALS: Partial<Record<PracticeEvent['t'], string>> = { session: 'practice-finish', japa: 'chant', rite: 'rite', fire: 'fire', diya: 'lamp', journal: 'journal', keep: 'keep-mantra', clear: 'record-cleared' };
+
 function add(...es: Omit<PracticeEvent, 'id' | 'at'>[]) {
   const s = readStore();
   const at = new Date().toISOString();
   for (const e of es) s.events.push({ ...e, id: newId(s.device), at });
   writeStore(s);
+  // counted too (what kind of step, and which practice or mantra; never a journal line)
+  for (const e of es) { const g = GOALS[e.t]; if (g) track(g, e.slug); }
   // something new to share, if the visitor has an account (src/scripts/me-sync.ts)
   document.dispatchEvent(new CustomEvent('sk:events'));
 }

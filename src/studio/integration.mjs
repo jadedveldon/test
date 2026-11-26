@@ -21,6 +21,9 @@ export default function studio({ mode }) {
         injectRoute({ pattern: '/api/public', entrypoint: at('./routes/public.ts'), prerender: false });
         // visitor accounts (src/me): sign-in by email link, keeping a visitor's practice the same on their devices
         injectRoute({ pattern: '/api/me', entrypoint: new URL('../me/routes/api.ts', import.meta.url), prerender: false });
+        // observability (src/obs): the site's own visitor counts and error reports, and a health check
+        injectRoute({ pattern: '/api/t', entrypoint: new URL('../obs/routes/collect.ts', import.meta.url), prerender: false });
+        injectRoute({ pattern: '/api/health', entrypoint: new URL('../obs/routes/health.ts', import.meta.url), prerender: false });
       },
     },
   };

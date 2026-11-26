@@ -6,6 +6,7 @@
  */
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import { crumbWords as cw } from '../../config';
 import { ACCENT, pillars } from '../../data/site';
 
 export async function getStaticPaths() {
@@ -22,7 +23,7 @@ const h2s = headings.filter((h) => h.depth === 2);
 const accent = ACCENT[pillar.slug];
 const date = post.data.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 ---
-<Base title={`${post.data.title} · Sarvakali`} sequence="reading" description={post.data.summary}>
+<Base title={`${post.data.title} · Sarvakali`} sequence="reading" description={post.data.summary} crumbs={[{ label: cw.articles, href: '/articles' }, { label: post.data.title }]}>
   <div class="ar-progress" data-ar-progress aria-hidden="true" style={`--acc-hex: ${accent}`}><span></span></div>
   <article class="page ar-article" data-article style={`--acc-hex: ${accent}`}>
     <header class="page-hero">

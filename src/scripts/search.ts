@@ -2,6 +2,7 @@ import gsap from 'gsap';
 import { setPageInert } from './inert';
 import { isKept } from './keep';
 import { sitePath } from '../studio/client';
+import { track } from './track';
 
 /**
  * Search across every service. Opens from the header, or with "/" or Ctrl+K.
@@ -52,6 +53,14 @@ function pillarHref(slug: string) {
   return (a?.getAttribute('href') || `/pillars/${slug}`).split('#')[0];
 }
 
+/** a search, counted once the visitor pauses typing: whether it found anything (what was searched is kept only
+ * when it matched the site's own words, so nothing personal typed into the box is ever sent) */
+let searchTimer = 0;
+function noteSearch(q: string, n: number) {
+  clearTimeout(searchTimer);
+  searchTimer = window.setTimeout(() => track('search', n ? q.trim().toLowerCase().slice(0, 30) : 'nothing found'), 1500);
+}
+
 function render(q: string) {
   const root = document.getElementById('search');
   if (!root || !index) return;
@@ -65,6 +74,7 @@ function render(q: string) {
     return;
   }
   status.textContent = hits.length ? `${hits.length === 60 ? '60+' : hits.length} found` : 'Nothing found. Try a shorter word, or ask Sarvakali directly.';
+  noteSearch(q, hits.length);
   // mantras from the library first (at most six), then services
   const ws = words(q);
   const mHits = ws.length ? (index.mantras ?? []).filter((m) => ws.every((w) => startsWord(m[4], w))).slice(0, 6) : [];

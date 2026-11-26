@@ -149,6 +149,7 @@ export async function demoOwner(action: string, payload?: Record<string, unknown
   await ensure();
   if (action === 'readiness') return { password: true, secret: true, door: true, email: false, mailFrom: '', google: true, dev: false, demo: true, googleAccount: { email: 'you@example.com', at: new Date().toISOString() } };
   if (action === 'google.disconnect') return { state: await owner(env(), 'state') };
+  if (action.startsWith('insights')) return (await import('../../obs/demo')).demoInsights(action, payload);
   if (action === 'accounts.has') return { has: await (await import('../../me/demo')).demoHasAccount(payload?.email) };
   if (action === 'demo.reset') {
     try { localStorage.removeItem(KEY); } catch { memory = null; }

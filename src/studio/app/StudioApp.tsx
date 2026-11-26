@@ -11,6 +11,8 @@ import { BookingPage, Requests } from './Bookings';
 import { ClientPage, Clients } from './Clients';
 import { InvoicePage, Invoices, NewInvoice } from './Invoices';
 import { Articles, Outbox, Sessions, Settings, Today } from './Views';
+import { Insights } from './Insights';
+import { Boundary } from './Boundary';
 import { StudioCtx, needsReply, toWrapUp, type Article, type Ctx, type Readiness } from './ui';
 
 function useRoute() {
@@ -32,6 +34,7 @@ const NAV = [
   { to: '/clients', label: 'Clients', icon: 'M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6 M16 11a3 3 0 1 0 0-6 M17.5 14c2 .6 3.5 2.6 3.5 5.5' },
   { to: '/invoices', label: 'Invoices', icon: 'M6 3h12v18l-3-2-3 2-3-2-3 2z M9 8h6 M9 12h6' },
   { to: '/articles', label: 'Articles', icon: 'M5 4h10l4 4v12H5z M14 4v5h5 M8 13h8 M8 17h6' },
+  { to: '/insights', label: 'Insights', icon: 'M4 20V10 M10 20V4 M16 20v-7 M22 20H2' },
   { to: '/outbox', label: 'Outbox', icon: 'M3 12l18-8-7 18-3-7z M11 15l10-11' },
   { to: '/settings', label: 'Settings', icon: 'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M19 12a7 7 0 0 0-.1-1.2l2-1.6-2-3.4-2.4 1a7 7 0 0 0-2-1.2L14 3h-4l-.5 2.6a7 7 0 0 0-2 1.2l-2.4-1-2 3.4 2 1.6A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.6 2 3.4 2.4-1a7 7 0 0 0 2 1.2L10 21h4l.5-2.6a7 7 0 0 0 2-1.2l2.4 1 2-3.4-2-1.6c.1-.4.1-.8.1-1.2z' },
 ];
@@ -118,6 +121,7 @@ export default function StudioApp({ mode, articles = [] }: { mode: StudioMode; a
   else if (section === 'articles') page = <Articles />;
   else if (section === 'outbox') page = <Outbox id={id} />;
   else if (section === 'settings') page = <Settings />;
+  else if (section === 'insights') page = <Insights tab={id ?? ''} />;
   else page = <Today />;
   void sub;
   const active = `/${section ?? ''}`;
@@ -143,7 +147,7 @@ export default function StudioApp({ mode, articles = [] }: { mode: StudioMode; a
             </a>
           ))}
         </nav>
-        <main className="st-main" id="studio-main">{page}</main>
+        <main className="st-main" id="studio-main"><Boundary key={active}>{page}</Boundary></main>
         <div className="st-toasts" role="status" aria-live="polite">
           {toasts.map((t) => <p key={t.id} className={`st-toast st-toast-${t.kind}`}>{t.text}</p>)}
         </div>

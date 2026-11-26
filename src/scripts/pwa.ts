@@ -3,6 +3,7 @@
  * app, with shortcuts to today's card and the daily practice. A small service
  * worker keeps the pages visited so far available without a connection.
  */
+import { track } from './track';
 type BIP = Event & { prompt: () => Promise<void>; userChoice: Promise<{ outcome: string }> };
 let deferred: BIP | null = null;
 const listeners = new Set<() => void>();
@@ -19,6 +20,7 @@ export async function promptInstall(): Promise<string> {
     await deferred.prompt();
     const { outcome } = await deferred.userChoice;
     deferred = null;
+    track(outcome === 'accepted' ? 'install' : 'install-declined');
     listeners.forEach((f) => f());
     return outcome === 'accepted' ? 'Added. Look for Sarvakali on your home screen.' : 'No problem. You can add it any time.';
   }

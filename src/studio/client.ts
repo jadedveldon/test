@@ -7,7 +7,8 @@ export type StudioMode = 'server' | 'demo' | 'off';
 export const MODE = (import.meta.env.PUBLIC_STUDIO || 'off') as StudioMode;
 
 export class CallError extends Error {
-  constructor(message: string, public status = 0) { super(message); }
+  /** the host's reference for this request, which leads to its log lines (src/obs) */
+  constructor(message: string, public status = 0, public ref?: string) { super(message); }
 }
 
 async function post(url: string, body: unknown) {
@@ -18,7 +19,11 @@ async function post(url: string, body: unknown) {
     throw new CallError('No connection. Please check your internet and try again.');
   }
   const j = await r.json().catch(() => ({}));
-  if (!r.ok) throw new CallError(j?.error || `Something went wrong (${r.status}).`, r.status);
+  if (!r.ok) {
+    // something unexpected on the host: the message carries its reference, so it can be traced
+    const ref = j?.ref || (r.status >= 500 ? r.headers.get('x-request-id') : null) || undefined;
+    throw new CallError(`${j?.error || `Something went wrong (${r.status}).`}${ref ? ` (Reference: ${ref})` : ''}`, r.status, ref);
+  }
   return j;
 }
 

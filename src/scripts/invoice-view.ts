@@ -9,6 +9,7 @@ import { publicCall, pageHref } from '../studio/client';
 import { rupees, upiLink } from '../studio/core/money';
 import type { PublicInvoice } from '../studio/core/ops';
 import { paperHtml } from '../studio/core/paper';
+import { track } from './track';
 
 const W = words.invoice;
 const esc = (s: string) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
@@ -58,6 +59,7 @@ export function initInvoiceView() {
     const btn = f.querySelector('button')!;
     btn.disabled = true;
     try {
+      track('invoice-paid-claim');
       inv = await publicCall<PublicInvoice>('invoice.claim', { token, reference: String(new FormData(f).get('reference') || '') });
       note = W.claimed;
       render();

@@ -2067,3 +2067,21 @@ html[data-light="1"] .ar-body > p:first-of-type::first-letter { color: color-mix
 [data-me-practice], [data-me-client], [data-me-journal] { display: grid; gap: 14px; min-width: 0; }
 [data-me-practice] > h3.kicker, [data-me-client] > h3.kicker { margin-top: 10px; }
 [data-me-practice] p, [data-me-client] p, [data-me-journal] p { margin: 0; }
+
+/* ---------------------------------------------------------------- the trail at the top of inner pages (breadcrumbs) */
+.crumbs { position: absolute; z-index: 4; top: calc(78px + env(safe-area-inset-top, 0px)); left: var(--gutter-l); right: var(--gutter-r); pointer-events: none; }
+.crumbs ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 2px 0; font: 500 0.78rem/1.4 var(--f-body); letter-spacing: 0.02em; color: rgb(var(--ink-soft)); }
+.crumbs li { display: inline-flex; align-items: center; min-width: 0; }
+.crumbs li + li::before { content: '›'; margin: 0 8px; opacity: 0.6; }
+.crumbs a { pointer-events: auto; color: rgb(var(--ink-soft)); text-decoration: none; padding: 6px 0; }
+.crumbs a:hover, .crumbs a:focus-visible { color: rgb(var(--ink)); text-decoration: underline; text-underline-offset: 3px; }
+.crumbs [aria-current] { color: rgb(var(--ink) / 0.85); max-width: 28ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* on phones the full trail would wrap into the heading: only the step back shows, on one line */
+@media (max-width: 640px) {
+  .crumbs { top: calc(66px + env(safe-area-inset-top, 0px)); }
+  .crumbs li { display: none; }
+  .crumbs li:nth-last-child(2) { display: inline-flex; max-width: 100%; }
+  .crumbs li:nth-last-child(2)::before { content: '‹'; margin: 0 7px 0 0; opacity: 0.8; }
+  .crumbs li:nth-last-child(2) a { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 8px 0; }
+}
+@media print { .crumbs { position: static; } }

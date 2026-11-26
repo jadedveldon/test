@@ -8,6 +8,7 @@
  *   shamanic work (the world tree).
  */
 import Base from '../../layouts/Base.astro';
+import { crumbWords as cw } from '../../config';
 import { words } from '../../config';
 import Yantra from '../../components/Yantra.astro';
 import PillarSubs from '../../components/PillarSubs.astro';
@@ -46,7 +47,7 @@ const triPath = (r: number) => { const t = tri(r); return `M${t[0]} L${t[1]} L${
 const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
 const alias = (k: string) => (aliases[k] || []);
 ---
-<Base title={`${p.name} · Sarvakali`} sequence="devC_hero" description={p.line}>
+<Base title={`${p.name} · Sarvakali`} sequence="devC_hero" description={p.line} crumbs={[{ label: p.name }]}>
   <Yantra />
   <div class="dv" data-devotion>
     <section class="chapter dv-hero" data-chapter="devC_hero" data-dev-chapter="hero">

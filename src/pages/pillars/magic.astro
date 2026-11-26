@@ -9,6 +9,7 @@
  * (the catalogue's seven categories).
  */
 import Base from '../../layouts/Base.astro';
+import { crumbWords as cw } from '../../config';
 import { words } from '../../config';
 import SubCards from '../../components/SubCards.astro';
 import { pillars, categoryCount } from '../../data/site';
@@ -36,7 +37,7 @@ const named = new RegExp(`(^|[^A-Za-z])${escape(hkName)}([^A-Za-z]|$)`);
 const hecateWork = devotion.categories.flatMap((c) => c.subs).flatMap((s) => s.items).filter((it) => named.test(it));
 
 ---
-<Base title={`${p.name} · Sarvakali`} sequence="magG_hero" description={p.line}>
+<Base title={`${p.name} · Sarvakali`} sequence="magG_hero" description={p.line} crumbs={[{ label: p.name }]}>
   <div class="mg" data-magic data-blend="edge">
 
     <!-- night · the opening, under Hecate's sign -->

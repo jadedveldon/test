@@ -9,6 +9,7 @@ import { exportKey, keyFrom, makeCheck, newSalt, passes } from '../me/core/crypt
 import { sitePath } from '../studio/client';
 import { readLog, readStore, record, resetJournalSync, stats, unmarkAll } from './practice-log';
 import { meLocal, setMeLocal, soon, status, syncNow, type MeLocal } from './me-sync';
+import { track } from './track';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Words = Record<string, any>;
@@ -57,6 +58,7 @@ function initForm(root: HTMLElement) {
     btn.textContent = btn.dataset.sending || label;
     try {
       const r = await meCall<{ status: string; link?: string }>('start', { email, consent });
+      track('signin-link');
       form.hidden = true;
       sent.hidden = false;
       sent.innerHTML = `<p>${esc(fill(W.signIn.sent, { email }))}</p>${r.link ? `<p class="hint">${esc(W.signIn.sentDemo)}</p><p><a class="btn btn-solid btn-sm" href="${esc(r.link)}" data-me-demo-link>${esc(W.signIn.openLink)}</a></p>` : ''}<p><button type="button" class="path-back" data-me-again>${esc(W.signIn.again)}</button></p>`;
@@ -94,7 +96,8 @@ async function signInWith(root: HTMLElement, token: string) {
   // the token leaves the address bar at once, so it is not kept in the history or shared by mistake
   try { history.replaceState(history.state, '', location.pathname); } catch { /* fine */ }
   try {
-    const r = await meCall<{ state: State }>('redeem', { t: token });
+    const r = await meCall<{ state: State; created?: boolean }>('redeem', { t: token });
+    track(r.created ? 'account-created' : 'signin');
     unmarkAll();
     setMeLocal({ email: r.state.email, cursor: 0, epoch: 0, journal: r.state.journal });
     last = r.state;
@@ -290,7 +293,7 @@ function initIn(root: HTMLElement) {
       }
       if (t.closest('[data-me-signout]')) { await meCall('signout'); await signedOut(root, A.signedOut); }
       if (t.closest('[data-me-signout-all]') && confirm(A.signOutAllConfirm)) { await meCall('signoutAll'); await meCall('signout').catch(() => {}); await signedOut(root, A.signedOut); }
-      if (t.closest('[data-me-delete]') && confirm(A.deleteConfirm)) { await meCall('delete'); await meCall('signout').catch(() => {}); unmarkAll(); await signedOut(root, A.deleted); }
+      if (t.closest('[data-me-delete]') && confirm(A.deleteConfirm)) { await meCall('delete'); track('account-deleted'); await meCall('signout').catch(() => {}); unmarkAll(); await signedOut(root, A.deleted); }
     } catch (err) {
       if (err instanceof MeCallError && err.signedOut) return signedOut(root, err.message);
       showError(root, (err as Error).message);

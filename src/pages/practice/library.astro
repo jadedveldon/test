@@ -5,6 +5,7 @@
  * library" in the content editor). Without scripts, every mantra is simply listed.
  */
 import Base from '../../layouts/Base.astro';
+import { crumbWords as cw } from '../../config';
 import MantraCard from '../../components/MantraCard.astro';
 import CareText from '../../components/CareText.astro';
 import { DAYS, DAY_HEX, DAY_GLYPH, deitiesOf, loadMantras, type DayKey } from '../../data/mantras';
@@ -15,7 +16,7 @@ const deities = deitiesOf(all);
 const themes = Object.entries(w.themes).filter(([k]) => all.some((m) => m.themes.includes(k)));
 const L = w.labels;
 ---
-<Base title="Mantra library · Daily practice · Sarvakali" sequence="library" description="A seven-day mantra library: mantras, prayers and verses with their text, pronunciation, meaning and use, arranged by the planetary days.">
+<Base title="Mantra library · Daily practice · Sarvakali" sequence="library" description="A seven-day mantra library: mantras, prayers and verses with their text, pronunciation, meaning and use, arranged by the planetary days." crumbs={[{ label: cw.practice, href: '/practice' }, { label: cw.library }]}>
   <div class="plib" data-library>
     <section class="chapter" data-chapter="library">
       <div class="chapter-inner">

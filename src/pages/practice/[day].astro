@@ -6,6 +6,7 @@
  * src/content/mantras ("Mantras"). The planetary text is symbolism for reflection, as the library says.
  */
 import Base from '../../layouts/Base.astro';
+import { crumbWords as cw } from '../../config';
 import MantraCard from '../../components/MantraCard.astro';
 import CareText from '../../components/CareText.astro';
 import { DAYS, DAY_KEYS, DAY_WORLD, DAY_HEX, DAY_GLYPH, dayOf, dayPath, groupsFor, loadMantras, loadPractices, practicePath, STEP_ICON, type DayKey } from '../../data/mantras';
@@ -27,7 +28,7 @@ const count = groups.reduce((n, g) => n + g.mantras.length, 0);
 const practice = (await loadPractices()).find((p) => p.kind === 'day' && p.key === key);
 const nameOf = (slug?: string | null) => all.find((m) => m.slug === slug)?.name;
 ---
-<Base title={`${d.name} · ${d.sanskrit} · Daily practice · Sarvakali`} sequence={world} description={`${d.name}, the day of ${d.planet}: ${d.question}`}>
+<Base title={`${d.name} · ${d.sanskrit} · Daily practice · Sarvakali`} sequence={world} description={`${d.name}, the day of ${d.planet}: ${d.question}`} crumbs={[{ label: cw.practice, href: '/practice' }, { label: d.name }]}>
   <div class="pday" data-practice-day data-day={key} style={`--day:${DAY_HEX[key]}`}>
     <section class="chapter" data-chapter={world}>
       <div class="chapter-inner">

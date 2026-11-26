@@ -9,6 +9,7 @@ import { buzz, PATTERNS } from './haptics';
 import { crackle, ring, tick } from './audio';
 import { addJournal, logMantra, logPractice, logSession, stats } from './practice-log';
 import type { WorldHandle as World } from './world/handle';
+import { track } from './track';
 
 export function startSession(world: World) {
   const root = document.querySelector<HTMLElement>('[data-session]');
@@ -164,6 +165,7 @@ export function startSession(world: World) {
   };
 
   on(begin, 'click', () => {
+    track('practice-start', slug);
     began = Date.now();
     intro.hidden = true;
     done.hidden = true;

@@ -7,7 +7,7 @@ import words from '../content/pages/me.json';
 
 export const ACCOUNTS = MODE !== 'off';
 
-export class MeCallError extends Error { constructor(message: string, public status = 0, public signedOut = false) { super(message); } }
+export class MeCallError extends Error { constructor(message: string, public status = 0, public signedOut = false, public ref?: string) { super(message); } }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function meCall<T = any>(action: string, payload: Record<string, unknown> = {}): Promise<T> {
@@ -23,6 +23,9 @@ export async function meCall<T = any>(action: string, payload: Record<string, un
     r = await fetch('/api/me', { method: 'POST', headers: { 'content-type': 'application/json' }, credentials: 'same-origin', body: JSON.stringify({ action, payload }) });
   } catch { throw new MeCallError(words.errors.offline, 0); }
   const j = await r.json().catch(() => ({}));
-  if (!r.ok) throw new MeCallError(j?.error || words.errors.generic, r.status, !!j?.signedOut || r.status === 401);
+  if (!r.ok) {
+    const ref = j?.ref || (r.status >= 500 ? r.headers.get('x-request-id') : null) || undefined;
+    throw new MeCallError(`${j?.error || words.errors.generic}${ref ? ` (Reference: ${ref})` : ''}`, r.status, !!j?.signedOut || r.status === 401, ref);
+  }
   return j as T;
 }

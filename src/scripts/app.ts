@@ -47,8 +47,10 @@ import { MODE as STUDIO, pageHref, publicCall } from '../studio/client';
 import { whenZ, zoneLabel, zonedToUtc, utcToLocalInput } from '../studio/core/time';
 import { closeMenu, initMenu } from './menu';
 import { initPwa } from './pwa';
+import { startTelemetry } from './telemetry';
 import { runDeviceTest } from './devicetest';
 import { loadHealingFont, loadMagicFonts, loadSettledFonts } from './fonts';
+import { track } from './track';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -816,6 +818,7 @@ function initConnect() {
     if (err) err.hidden = true;
     try {
       const r = await publicCall<{ token: string }>('request', { name: val('name'), email: val('email'), phone: val('phone'), topic: val('topic'), services, times, tz, website: val('website') });
+      track('request', services.length ? `${services.length} services` : 'no services');
       if (done) {
         const tl = done.querySelector<HTMLElement>('[data-done-times]');
         if (tl && times.length) { tl.hidden = false; tl.querySelector('ul')!.replaceChildren(...times.map((t) => Object.assign(document.createElement('li'), { textContent: whenZ(t, tz) }))); }
@@ -974,6 +977,8 @@ window.addEventListener('unhandledrejection', (e) => {
 });
 
 function boot() {
+  // first, so anything that goes wrong from here on is caught with its trail (src/scripts/telemetry.ts)
+  try { startTelemetry(); } catch { /* the site works without its counting */ }
   loadExp();
   html.dataset.heroVariant = exp.hero;
   html.dataset.pageStyle = exp.page;

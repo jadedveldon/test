@@ -74,5 +74,10 @@ const icon = `data:image/svg+xml,${encodeURIComponent(markSvg({ bg: BRAND.deep, 
         });
       </script>
     )}
+    <script>
+      // the Studio's own errors, with what led to them, go to Insights → Problems (its visits are never counted)
+      import { startTelemetry } from '../../scripts/telemetry';
+      try { startTelemetry(); } catch { /* the Studio works without it */ }
+    </script>
   </body>
 </html>

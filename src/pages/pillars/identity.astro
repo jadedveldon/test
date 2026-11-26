@@ -5,6 +5,7 @@
  * light breaks into every colour. Affirming, trauma-aware copy; nothing explicit; people choose what to share.
  */
 import Base from '../../layouts/Base.astro';
+import { crumbWords as cw } from '../../config';
 import { words } from '../../config';
 import CareText from '../../components/CareText.astro';
 import Rich from '../../components/Rich.astro';
@@ -22,7 +23,7 @@ const moves = CHAPTERS.map((ch) => ({ ...ch, cat: gather(p, ch.key, ch.title, CH
 const aliases = categoryAliases(p, CHAPTER_KEYS, Object.fromEntries(moves.map((m) => [m.key, m.id])));
 const c = COPY.comfort;
 ---
-<Base title={`${p.name} · Sarvakali`} sequence="id_hero" description={p.line}>
+<Base title={`${p.name} · Sarvakali`} sequence="id_hero" description={p.line} crumbs={[{ label: p.name }]}>
   <div class="pd pd-identity" data-identity>
     <section class="chapter pd-hero" data-chapter="id_hero">
       <div class="chapter-inner pd-hero-grid">

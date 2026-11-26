@@ -12,5 +12,13 @@
     "next": "Next pillar",
     "care": "Boundaries and care",
     "path": "Find your path"
+  },
+  "crumbs": {
+    "label": "You are here",
+    "home": "Home",
+    "practice": "Daily practice",
+    "library": "Mantra library",
+    "week": "The seven days",
+    "articles": "Articles"
   }
 }

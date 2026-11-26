@@ -10,6 +10,7 @@ import { googleCalendarLink, sessionIcs } from '../studio/core/ics';
 import type { PublicBooking } from '../studio/core/ops';
 import { whenZ, zoneLabel, zonedToUtc } from '../studio/core/time';
 import { buzz, PATTERNS } from './haptics';
+import { track } from './track';
 
 const W = words.booking;
 const esc = (s: string) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
@@ -105,7 +106,7 @@ export function initBooking() {
   body.addEventListener('click', (e) => {
     const t = e.target as HTMLElement;
     const a = t.closest<HTMLElement>('[data-accept]');
-    if (a) { act(() => publicCall('booking.accept', { token, start: a.dataset.accept }), W.done); return; }
+    if (a) { track('booking-accept'); act(() => publicCall('booking.accept', { token, start: a.dataset.accept }), W.done); return; }
     const m = t.closest<HTMLElement>('[data-act]');
     if (m) { mode = m.dataset.act as typeof mode; render(); body.querySelector<HTMLElement>('input, textarea')?.focus(); return; }
     if (t.closest('[data-back]')) { mode = 'view'; render(); return; }
@@ -125,8 +126,10 @@ export function initBooking() {
     const data = new FormData(f);
     if (f.matches('[data-suggest]')) {
       const times = ['t1', 't2', 't3'].map((k) => String(data.get(k) || '')).filter(Boolean).map((v) => zonedToUtc(v, tz)).filter(Boolean);
+      track('booking-suggest');
       act(() => publicCall('booking.suggest', { token, times, note: String(data.get('note') || ''), tz }), W.done);
     } else if (f.matches('[data-cancel-form]')) {
+      track('booking-cancel');
       act(() => publicCall('booking.cancel', { token, reason: String(data.get('reason') || '') }), W.done);
     }
   });

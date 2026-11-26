@@ -1,6 +1,7 @@
 import gsap from 'gsap';
 import { buzz, PATTERNS } from './haptics';
 import { store } from './tiers';
+import { track } from './track';
 
 /**
  * Keep a list. Visitors tap services that call to them; the list follows them
@@ -39,6 +40,7 @@ export function toggleKeep(t: string, p: string) {
   const i = list.findIndex((k) => k.t === t);
   if (i >= 0) list.splice(i, 1); else list.push({ t, p });
   save(list);
+  if (i < 0) track('keep', t);
   buzz(PATTERNS.choice);
   return i < 0;
 }

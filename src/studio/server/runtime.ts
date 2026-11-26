@@ -8,6 +8,7 @@ import { isDev, readiness, siteUrl } from './env';
 import { disconnect, googleAccount, googleCalendar, googleReady, noCalendar } from './google';
 import { serverMailer } from './mail';
 import { serverStore } from './stores';
+import { currentRef, log } from '../../obs/server/log';
 
 export async function hostEnv(requestUrl: string): Promise<Env> {
   const store = await serverStore();
@@ -19,10 +20,16 @@ export const PRIVATE = { 'X-Robots-Tag': 'noindex, nofollow', 'Cache-Control': '
 
 export const json = (data: unknown, status = 200) => new Response(JSON.stringify(data ?? null), { status, headers: { 'content-type': 'application/json; charset=utf-8', ...PRIVATE } });
 
+/** an action that could not be done: the reason for the person, and for anything unexpected a reference that leads
+ * to this request's log lines in the Studio's Insights (src/obs) */
 export function fail(e: unknown) {
-  if (e instanceof StudioError) return json({ error: e.message }, e.status);
-  console.error('[studio]', e);
-  return json({ error: 'Something went wrong. Please try again.' }, 500);
+  if (e instanceof StudioError) {
+    if (e.status >= 500) log.error('studio action failed', { status: e.status }, e);
+    else log.info('studio action refused', { status: e.status, reason: e.message });
+    return json({ error: e.message }, e.status);
+  }
+  log.error('studio action failed', {}, e);
+  return json({ error: 'Something went wrong. Please try again.', ref: currentRef() }, 500);
 }
 
 type Cookies = { get(name: string): { value: string } | undefined };
@@ -49,6 +56,12 @@ export async function handleOwner(request: Request, cookies: Cookies) {
       await disconnect();
       const { db } = await transact(env, (d) => { d.google = { connected: false }; });
       return json({ state: slim(db) });
+    }
+    // the site's own numbers, errors and logs (src/obs)
+    if (action.startsWith('insights')) {
+      const [{ insightsAction }, { obsEnv }] = await Promise.all([import('../../obs/core/insights'), import('../../obs/server/store')]);
+      if (action === 'insights.health') return json(await (await import('../../obs/routes/health')).healthReport(true));
+      return json(await insightsAction(await obsEnv(), action, payload ?? {}));
     }
     // visitor accounts (src/me): only whether a client has one, never what is in it
     if (action === 'accounts.has') {

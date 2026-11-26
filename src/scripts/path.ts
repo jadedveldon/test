@@ -4,6 +4,7 @@ import { ring } from './audio';
 import { isKept, keepList } from './keep';
 import { sitePath } from '../studio/client';
 import type { WorldHandle as World } from './world/handle';
+import { track } from './track';
 
 /**
  * Find your path: three questions point to one chapter of one pillar; the result gathers what the site already
@@ -124,6 +125,7 @@ export function initPath(world: World, done: () => void) {
     q.set('p', choice.pillar!); q.set('c', choice.cat!); q.set('b', begin);
     history.replaceState(history.state, '', `${location.pathname}?${q}`);
     if (animate) { world.impulse(1.5); }
+    track('path-result', choice.pillar);
     show(4, animate);
   }
 

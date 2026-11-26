@@ -28,3 +28,6 @@ export const analytics: { provider: Provider; id: string; src?: string } = {
 
 /** words shared by every pillar page */
 export const words = settings.words;
+
+/** the trail at the top of inner pages (breadcrumbs) */
+export const crumbWords = settings.crumbs;

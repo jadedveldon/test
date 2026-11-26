@@ -7,6 +7,7 @@
  * wording as supplied, never as a text to recite.
  */
 import Base from '../../../layouts/Base.astro';
+import { crumbWords as cw } from '../../../config';
 import MantraCard from '../../../components/MantraCard.astro';
 import CareText from '../../../components/CareText.astro';
 import Rich from '../../../components/Rich.astro';
@@ -32,7 +33,7 @@ const canChant = !!m.text && m.status !== 'verify';
 const usedIn = (await loadPractices()).filter((p) => p.steps.some((s) => s.mantra === m.slug));
 const sensitive = /grief|healing/.test(m.themes.join(' ')) || m.status === 'guidance';
 ---
-<Base title={`${m.name} · Mantra library · Sarvakali`} sequence={DAY_WORLD[day]} description={m.meaning.slice(0, 155)}>
+<Base title={`${m.name} · Mantra library · Sarvakali`} sequence={DAY_WORLD[day]} description={m.meaning.slice(0, 155)} crumbs={[{ label: cw.practice, href: '/practice' }, { label: cw.library, href: '/practice/library' }, { label: m.name }]}>
   <article class="pmantra" data-mantra-page data-slug={m.slug} data-name={m.name} style={`--day:${DAY_HEX[day]}`}>
     <section class="chapter" data-chapter={DAY_WORLD[day]}>
       <div class="chapter-inner">
