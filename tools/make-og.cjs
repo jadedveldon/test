@@ -102,6 +102,20 @@ const card = (bg, d) => `<!doctype html><html><head><meta charset="utf-8"><link 
       body > *:not(#world):not(#incense):not(#main) { visibility: hidden !important; }
       #main :is(h1, h2, h3, h4, p, a, button, ul, ol, dl, form, label, input, select, textarea, table, blockquote, figcaption, .kicker, [data-crumbs], .crumbs) { visibility: hidden !important; }
       #main [data-chapter]:not(:first-of-type) { visibility: hidden !important; }` });
+    // anything else on the page that holds words but no drawing (a care note, a box, a question) goes too
+    await p.evaluate(() => {
+      const art = 'svg, canvas, img, picture, video';
+      const walk = (el) => {
+        for (const c of el.children) {
+          if (getComputedStyle(c).visibility === 'hidden') continue;
+          if (c.matches(art)) continue;
+          if (c.querySelector(art)) walk(c);
+          else if (c.textContent.trim() || getComputedStyle(c).borderTopWidth !== '0px') c.style.setProperty('visibility', 'hidden', 'important');
+        }
+      };
+      const main = document.getElementById('main');
+      if (main) walk(main);
+    });
     await p.waitForTimeout(250);
     // the homepage's eye blinks: take the picture while it is open
     await p.evaluate(async () => {
