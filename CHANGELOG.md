@@ -3,6 +3,53 @@
 Every change to the site, newest first: what changed, why, and how it was checked.
 The rules for checking are in `CLAUDE.md`; the checks themselves are in `tools/qa/`.
 
+## 2026-11-26 · A footer on every page; terms and refunds; search finds practices and articles
+
+Asked for by the owner. **The full test suites were not run**, at the owner's request.
+
+- **Added: a footer on every page** (`src/components/SiteFooter.astro`, in `Base.astro`). It holds the name and a line,
+  four groups of links (Begin, Sarvakali, Care, the six pillars), the Tele-MANAS help line (tap to call) and "Back to
+  the top".
+  - It takes each page's own colours, so it belongs to dark worlds and light ones alike.
+  - Two columns on phones, four on wide screens.
+  - The words and links are in Site settings ("The foot of every page").
+  - It replaces the homepage's own footer, and with it the "working prototype" line.
+- **Added: Terms and refunds** (`/terms`, `src/content/pages/terms.json`, "Terms and refunds" in the content
+  editor), with a contents list beside the words on wide screens. It covers:
+  - who offers the work;
+  - what it is and is not: no promised outcomes, nothing offered as a remedy for disease, nothing harmful or
+    prohibited;
+  - age: 18 and over;
+  - booking, and paying by UPI only;
+  - moving or cancelling: free up to 24 hours before, one free move after;
+  - refunds, within 7 working days;
+  - respect, use of the site, responsibility, complaints (with the grievance contact and the National Consumer
+    Helpline), and the law.
+  - **Researched against:** the E-Commerce Rules 2020, the DPDP Act and Rules, the Drugs and Magic Remedies Act
+    1954, the Maharashtra and Karnataka anti-superstition laws, and the Consumer Protection Act 2019. The sources are
+    in the cover's fact-check table.
+  - **Still to fill or review:** the bracketed lines (legal name, address, grievance officer, city) are Sarvakali's,
+    and the page is marked as a draft for a lawyer to review. The care page now points to it for moving and
+    refunds, in place of its placeholder.
+- **Changed: search** finds guided practices and articles as well, shown before services (`search-index.json`,
+  `search.ts`); its labels say so.
+- **Fixed: same-page links did not move the page.** With smooth scrolling on, links to a place on the same page (a
+  page's contents, "Back to the top", and arriving at `/care#privacy`) changed the address but left the page where
+  it was. The site now scrolls there, below the header, and gives the place focus.
+  - Reproduced first, as regression 24 (failed before, passes after).
+- **Fixed: link previews pointed at missing pictures** on about 150 pages (every mantra, practice and day, the terms,
+  My space, the missing-page page). They now use their section's picture, or the homepage's.
+- **Changed (found by looking): one back link per page.** Pillar pages and articles had the new trail at the top
+  stacked above their own "← All pillars" or "← All articles". The trail now does that job ("The six pillars",
+  "Articles").
+  - The old "All pillars" words left Site settings.
+  - Regression 16 now checks the trail's words in their place. The check was right before; the design changed.
+- **Checks:**
+  - Regressions 16 and 24 run on their own: all ok.
+  - `/terms` added to the page lists of `audit`, `a11y`, `layout` and `keyboard`.
+  - An error sweep of 24 pages on desktop and phone: ERRORS none, nothing scrolls sideways.
+  - Looked at: the footer in six worlds on desktop and phone; Terms on both; search results.
+
 ## 2026-11-26 · Observability: the site's own visits, problems, logs and health; breadcrumbs
 
 The owner asked for visitor counts, logging, tracking, error handling, observability and traceability "in the highest

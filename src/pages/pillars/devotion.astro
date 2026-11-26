@@ -47,13 +47,12 @@ const triPath = (r: number) => { const t = tri(r); return `M${t[0]} L${t[1]} L${
 const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
 const alias = (k: string) => (aliases[k] || []);
 ---
-<Base title={`${p.name} · Sarvakali`} sequence="devC_hero" description={p.line} crumbs={[{ label: p.name }]}>
+<Base title={`${p.name} · Sarvakali`} sequence="devC_hero" description={p.line} crumbs={[{ label: cw.pillars, href: '/#paths' }, { label: p.name }]}>
   <Yantra />
   <div class="dv" data-devotion>
     <section class="chapter dv-hero" data-chapter="devC_hero" data-dev-chapter="hero">
       <div class="chapter-inner dv-hero-grid">
         <div class="dv-hero-copy">
-          <a class="back-link" href="/#paths">{words.allPillars}</a>
           <p class="kicker" data-hero>Pillar {index + 1} of {pillars.length} · {p.count} services</p>
           <h1 class="display-l dv-title" data-hero data-split transition:name="pt-devotion" data-pt>{p.name}</h1>
           <p class="lede" data-hero>{p.line}</p>

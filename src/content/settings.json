@@ -6,7 +6,6 @@
     "src": ""
   },
   "words": {
-    "allPillars": "← All pillars",
     "ask": "Ask about this",
     "previous": "Previous pillar",
     "next": "Next pillar",
@@ -19,6 +18,73 @@
     "practice": "Daily practice",
     "library": "Mantra library",
     "week": "The seven days",
-    "articles": "Articles"
+    "articles": "Articles",
+    "pillars": "The six pillars"
+  },
+  "footer": {
+    "line": "Devotion, magic, healing and insight, held in one place.",
+    "count": "{services} services across {pillars} pillars",
+    "groups": [
+      {
+        "title": "Begin",
+        "links": [
+          {
+            "label": "Find your path",
+            "href": "/path"
+          },
+          {
+            "label": "Daily practice",
+            "href": "/practice"
+          },
+          {
+            "label": "Mantra library",
+            "href": "/practice/library"
+          },
+          {
+            "label": "Articles",
+            "href": "/articles"
+          }
+        ]
+      },
+      {
+        "title": "Sarvakali",
+        "links": [
+          {
+            "label": "About",
+            "href": "/about"
+          },
+          {
+            "label": "Request a conversation",
+            "href": "/connect"
+          },
+          {
+            "label": "My space",
+            "href": "/me"
+          }
+        ]
+      },
+      {
+        "title": "Care",
+        "links": [
+          {
+            "label": "Boundaries and care",
+            "href": "/care"
+          },
+          {
+            "label": "Your privacy",
+            "href": "/care#privacy"
+          },
+          {
+            "label": "Terms and refunds",
+            "href": "/terms"
+          }
+        ]
+      }
+    ],
+    "pillars": "The six pillars",
+    "help": "Need someone to talk to now? Tele-MANAS is free, at any hour, in India: 14416.",
+    "top": "Back to the top",
+    "rights": "© {year} Sarvakali",
+    "label": "Site footer"
   }
 }

@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Loader from '../components/Loader.astro';
 import Steps from '../components/Steps.astro';
-import { pillars, totalServices } from '../data/site';
+import { pillars } from '../data/site';
 import kind from '../content/kind-words.json';
 import home from '../content/home.json';
 
@@ -146,9 +146,4 @@ const words = kind.words.filter((w) => w.text.trim());
     </div>
   </section>
 
-  <footer class="site-foot">
-    {h.footer.line && <p>{h.footer.line}</p>}
-    <p><a href="/path">Find your path</a> · <a href="/practice">Daily practice</a> · <a href="/articles">Articles</a> · <a href="/about">About</a> · <a href="/care">Boundaries and care</a></p>
-    <p>{totalServices.toLocaleString('en-IN')} services across {pillars.length} pillars.</p>
-  </footer>
 </Base>

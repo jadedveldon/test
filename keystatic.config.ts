@@ -267,12 +267,20 @@ const settings = singleton({
       src: line('Umami only: the script address (https://…)'),
     }, { label: 'Visitor counts (no cookies)' }),
     words: fields.object({
-      allPillars: line('Back link'), ask: line('“Ask about this”'), previous: line('Previous pillar'), next: line('Next pillar'),
+      ask: line('“Ask about this”'), previous: line('Previous pillar'), next: line('Next pillar'),
       care: line('Boundaries and care'), path: line('Find your path'),
     }, { label: 'Words on every pillar page' }),
     crumbs: fields.object({
-      label: line('For screen readers: what the trail is'), home: line('Home'), practice: line('Daily practice'), library: line('Mantra library'), week: line('The seven days'), articles: line('Articles'),
+      label: line('For screen readers: what the trail is'), home: line('Home'), practice: line('Daily practice'), library: line('Mantra library'), week: line('The seven days'), articles: line('Articles'), pillars: line('The six pillars'),
     }, { label: 'The trail at the top of inner pages (breadcrumbs)' }),
+    footer: fields.object({
+      line: para('The line under the name'), count: line('“{services} services across {pillars} pillars”'),
+      groups: fields.array(fields.object({
+        title: line('Heading'),
+        links: fields.array(fields.object({ label: line('Words'), href: line('Address (e.g. /practice)') }), { label: 'Links', itemLabel: (p) => p.fields.label.value || 'A link' }),
+      }), { label: 'Groups of links', itemLabel: (p) => p.fields.title.value || 'A group' }),
+      pillars: line('Heading over the six pillars'), help: para('Help line (Tele-MANAS, tap to call)'), top: line('“Back to the top”'), rights: line('“© {year} Sarvakali”'), label: line('For screen readers: what the footer is'),
+    }, { label: 'The foot of every page' }),
   },
 });
 
@@ -288,7 +296,6 @@ const home = singleton({
     pillars: fields.object({ explore: line('Explore button'), ask: line('Ask button'), card: line('Card button (Divination)') }, { label: 'The six pillars (their names and lines are in the Catalogue)' }),
     kind: fields.object({ kicker: line('Small heading'), title: must('Heading'), note: para('Note under the words (leave empty once the words are real)') }, { label: 'Kind words (the words themselves have their own page)' }),
     close: fields.object({ diya: line('Diya button'), kicker: line('Small heading'), title: must('Heading'), primary: line('Main button'), secondary: line('Second button'), practice: line('Link to Daily practice') }, { label: 'The close' }),
-    footer: fields.object({ line: para('Line at the foot of the page') }, { label: 'Footer' }),
   },
 });
 
@@ -489,6 +496,18 @@ const me = singleton({
   },
 });
 
+const terms = singleton({
+  label: 'Terms and refunds', path: 'src/content/pages/terms', format: { data: 'json' },
+  schema: {
+    kicker: line('Small heading'), title: must('Heading'), lede: para('Text'), updated: line('“Last updated”, with the date'),
+    draftNote: para('Draft note (empty it once a lawyer has reviewed the terms)'), care: para('Care line (Tele-MANAS, first on the page)'), contents: line('“On this page”'),
+    sections: fields.array(fields.object({
+      id: line('Address of this part (letters and dashes; leave as it is)'), title: must('Heading'),
+      paras: lines('Paragraphs', 'Paragraph', { description: LINKS }), points: lines('Points (a list under the paragraphs)', 'Point', { description: LINKS }),
+    }), { label: 'The parts, in order', itemLabel: (p) => p.fields.title.value || 'A part' }),
+  },
+});
+
 const notfound = singleton({
   label: 'Not found', path: 'src/content/pages/notfound', format: { data: 'json' },
   schema: { kicker: line('Small heading'), title: must('Heading'), lede: para('Text'), search: line('Search button'), path: line('Find your path'), home: line('Homepage'), pillars: line('Over the pillars'), more: line('Last line') },
@@ -646,7 +665,7 @@ export default config({
     brand: { name: 'Sarvakali' },
     navigation: {
       'The site': ['home', 'kind', 'festivals', 'cards', 'writings', 'settings'],
-      Pages: ['about', 'connect', 'booking', 'me', 'path', 'notfound'],
+      Pages: ['about', 'connect', 'booking', 'me', 'terms', 'path', 'notfound'],
       'Daily practice': ['practice', 'practices', 'mantras', 'week', 'library', 'traditions'],
       'Pillar pages': ['devotion', 'magic', 'healing', 'identity', 'divination', 'learning'],
       Catalogue: ['catDevotion', 'catMagic', 'catHealing', 'catIdentity', 'catDivination', 'catLearning'],
@@ -654,7 +673,7 @@ export default config({
   },
   collections: { writings, mantras, practices },
   singletons: {
-    home, kind, festivals, cards, settings, about, connect, booking, me, path, practice, notfound, week, library, traditions,
+    home, kind, festivals, cards, settings, about, connect, booking, me, terms, path, practice, notfound, week, library, traditions,
     devotion, magic, healing, identity, divination, learning,
     catDevotion: catalogue('devotion', 'Catalogue · Devotion & the Unseen', CH.devotion, false),
     catMagic: catalogue('magic', 'Catalogue · Witchcraft & Magic', CH.magic),

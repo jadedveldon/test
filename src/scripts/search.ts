@@ -5,11 +5,12 @@ import { sitePath } from '../studio/client';
 import { track } from './track';
 
 /**
- * Search across every service. Opens from the header, or with "/" or Ctrl+K.
+ * Search across every service, guided practice, mantra and article. Opens from the header, or with "/" or Ctrl+K.
  * As results appear, the world behind turns into the world of the pillar the
  * best match belongs to.
  */
-type Index = { pillars: { name: string; slug: string; preset: string }[]; items: [string, number, string, string, string][]; mantras?: [string, string, string, string, string][] };
+type Row5 = [string, string, string, string, string];
+type Index = { pillars: { name: string; slug: string; preset: string }[]; items: [string, number, string, string, string][]; mantras?: Row5[]; practices?: Row5[]; articles?: Row5[] };
 type Hooks = { preview: (preset: string) => void; restore: () => void };
 
 let index: Index | null = null;
@@ -69,34 +70,44 @@ function render(q: string) {
   const hits = find(q);
   list.innerHTML = '';
   if (!q.trim()) {
-    status.textContent = `Search all ${index.items.length.toLocaleString('en-IN')} services by a word: protection, love, tarot, reiki, ancestors…`;
+    status.textContent = `Search ${index.items.length.toLocaleString("en-IN")} services, ${index.practices?.length ?? 0} guided practices, ${index.mantras?.length ?? 0} mantras and every article: protection, grief, Kali, tarot, ancestors…`;
     restorePreview();
     return;
   }
   status.textContent = hits.length ? `${hits.length === 60 ? '60+' : hits.length} found` : 'Nothing found. Try a shorter word, or ask Sarvakali directly.';
-  noteSearch(q, hits.length);
-  // mantras from the library first (at most six), then services
+
+  // guided practices first (the way in), then mantras from the library, then articles, then services
   const ws = words(q);
-  const mHits = ws.length ? (index.mantras ?? []).filter((m) => ws.every((w) => startsWord(m[4], w))).slice(0, 6) : [];
-  if (mHits.length) {
+  const match = (rows: Row5[] | undefined, n: number) => (ws.length ? (rows ?? []).filter((m) => ws.every((w) => startsWord(m[4], w))).slice(0, n) : []);
+  const KIND: Record<string, string> = { deity: 'Guided practice · with a deity', feeling: 'Guided practice · for how you feel', day: 'Guided practice · for the day' };
+  const group = (title: string, rows: { href: string; name: string; sub: string }[]) => {
+    if (!rows.length) return;
     const h = document.createElement('li');
     h.className = 'sr-head';
-    h.textContent = 'Mantra library';
+    h.textContent = title;
     list.appendChild(h);
-    for (const [name, slug, deity, day] of mHits) {
+    for (const r of rows) {
       const li = document.createElement('li');
       li.className = 'sr-row';
       const a = document.createElement('a');
       a.className = 'sr-item';
-      a.href = sitePath(`/practice/mantras/${slug}`);
+      a.href = r.href;
       a.innerHTML = '<b></b><small></small>';
-      a.querySelector('b')!.textContent = name;
-      a.querySelector('small')!.textContent = `${deity ? `${deity} · ` : ''}${day.charAt(0).toUpperCase()}${day.slice(1)}`;
+      a.querySelector('b')!.textContent = r.name;
+      a.querySelector('small')!.textContent = r.sub;
       li.append(a);
       list.appendChild(li);
     }
-  }
-  if (mHits.length && !hits.length) status.textContent = `${mHits.length} found`;
+  };
+  const pHits = match(index.practices, 4);
+  const mHits = match(index.mantras, 6);
+  const aHits = match(index.articles, 3);
+  group('Guided practices', pHits.map(([name, slug, kind, line]) => ({ href: sitePath(`/practice/with/${slug}`), name, sub: KIND[kind] ?? line })));
+  group('Mantra library', mHits.map(([name, slug, deity, day]) => ({ href: sitePath(`/practice/mantras/${slug}`), name, sub: `${deity ? `${deity} · ` : ''}${day.charAt(0).toUpperCase()}${day.slice(1)}` })));
+  group('Articles', aHits.map(([name, slug, pillar, summary]) => ({ href: sitePath(`/articles/${slug}`), name, sub: pillar || summary.slice(0, 80) })));
+  const others = pHits.length + mHits.length + aHits.length;
+  if (others && !hits.length) status.textContent = `${others} found`;
+  noteSearch(q, hits.length + others);
   let lastPillar = -1;
   for (const { i } of hits) {
     const [t, pi, cat, sub] = index.items[i];

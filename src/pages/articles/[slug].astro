@@ -27,7 +27,6 @@ const date = post.data.date.toLocaleDateString('en-GB', { day: 'numeric', month:
   <div class="ar-progress" data-ar-progress aria-hidden="true" style={`--acc-hex: ${accent}`}><span></span></div>
   <article class="page ar-article" data-article style={`--acc-hex: ${accent}`}>
     <header class="page-hero">
-      <a class="back-link" href="/articles">← All articles</a>
       <p class="kicker" data-hero><a href={`/pillars/${pillar.slug}`} class="ar-pillar">{pillar.name}</a> · {post.data.minutes} min read</p>
       <h1 class="display-l" data-hero data-split transition:name={`wt-${post.id}`} data-pt>{post.data.title}</h1>
       <p class="lede" data-hero>{post.data.summary}</p>

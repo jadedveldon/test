@@ -27,12 +27,11 @@ const road = STATION_XY.slice(0, 9).map(([x, y]) => `${x} ${y}`).join(' L');
 const beforeSky = moves.filter((m) => m.room !== 'sky');
 const sky = moves.filter((m) => m.room === 'sky');
 ---
-<Base title={`${p.name} · Sarvakali`} sequence="lrn_hero" description={p.line} crumbs={[{ label: p.name }]}>
+<Base title={`${p.name} · Sarvakali`} sequence="lrn_hero" description={p.line} crumbs={[{ label: cw.pillars, href: '/#paths' }, { label: p.name }]}>
   <div class="pd pd-learning" data-learning data-blend="edge">
     <section class="chapter pd-hero ln-library" data-chapter="lrn_hero">
       <div class="chapter-inner pd-hero-grid">
         <div class="pd-hero-copy">
-          <a class="back-link" href="/#paths">{words.allPillars}</a>
           <p class="kicker" data-hero>Pillar {index + 1} of {pillars.length} · {p.count} classes and services</p>
           <h1 class="display-l pd-title" data-hero data-split transition:name="pt-learning" data-pt>{p.name}</h1>
           <p class="lede" data-hero>{p.line}</p>

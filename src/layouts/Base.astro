@@ -1,4 +1,5 @@
 ---
+import { existsSync } from 'node:fs';
 import { ClientRouter } from 'astro:transitions';
 import Veil from '../components/Veil.astro';
 import { pillars } from '../data/site';
@@ -6,6 +7,7 @@ import { analytics, crumbWords, site } from '../config';
 import { MARK } from '../data/brand';
 import '../styles/global.css';
 import meWords from '../content/pages/me.json';
+import SiteFooter from '../components/SiteFooter.astro';
 // visitor accounts exist wherever the Studio does (the host, development, the preview's demo)
 const ACCOUNTS = (import.meta.env.PUBLIC_STUDIO || 'off') !== 'off';
 
@@ -31,7 +33,10 @@ const {
 // (pages are built as files, so the homepage arrives as /index)
 const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/?index$/, '').replace(/\/$/, '');
 const ogName = path === '' ? 'home' : path.replace(/^\//, '').replace(/\//g, '-');
-const ogImage = new URL(`/og/${ogName}.jpg`, site.url).href;
+// pages without a picture of their own (each mantra, practice and day) share their section's, then the homepage's
+const ogFile = (n: string) => existsSync(`${process.cwd()}/public/og/${n}.jpg`);
+const ogUse = [ogName, ogName.split('-').slice(0, 2).join('-'), ogName.split('-')[0], 'home'].find(ogFile) ?? 'home';
+const ogImage = new URL(`/og/${ogUse}.jpg`, site.url).href;
 const pageUrl = new URL(path || '/', site.url).href;
 const trail = crumbs.length ? [{ label: crumbWords.home || 'Home', href: '/' }, ...crumbs.filter((c) => c.label?.trim())] : [];
 // the same trail for search engines (schema.org BreadcrumbList)
@@ -102,7 +107,7 @@ const trailLd = trail.length ? JSON.stringify({
     <header class="site-header">
       <a class="wordmark" href="/" transition:name="sk-wordmark" data-pt><svg class="wordmark-mark" viewBox="0 0 64 64" aria-hidden="true"><path class="wm-moon" d={MARK.moon} /><path class="wm-flame" d={MARK.flame} /></svg>Sarvakali</a>
       <nav class="site-nav" aria-label="Main">
-        <button type="button" class="icon-btn" data-search-open aria-label="Search all services (shortcut: /)" aria-controls="search">
+        <button type="button" class="icon-btn" data-search-open aria-label="Search the site (shortcut: /)" aria-controls="search">
           <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
         </button>
         <div class="sky" data-sky>
@@ -155,12 +160,12 @@ const trailLd = trail.length ? JSON.stringify({
       </div>
     </nav>
 
-    <div id="search" class="search" role="dialog" aria-modal="true" aria-label="Search all services" hidden>
+    <div id="search" class="search" role="dialog" aria-modal="true" aria-label="Search the site" hidden>
       <div class="search-panel">
         <div class="search-bar">
           <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-          <label class="sr-only" for="search-input">Search all services</label>
-          <input id="search-input" type="search" placeholder="Search: protection, love, tarot, reiki…" autocomplete="off" spellcheck="false" />
+          <label class="sr-only" for="search-input">Search services, practices, mantras and articles</label>
+          <input id="search-input" type="search" placeholder="Search: protection, grief, Kali, tarot…" autocomplete="off" spellcheck="false" />
           <button type="button" class="search-close" data-search-close aria-label="Close search">Esc</button>
         </div>
         <p class="search-status" data-search-status aria-live="polite"></p>
@@ -193,6 +198,7 @@ const trailLd = trail.length ? JSON.stringify({
       )}
       <slot />
     </main>
+    <SiteFooter />
 
     <Veil />
 

@@ -1,0 +1,45 @@
+---
+/**
+ * The foot of every page (Base.astro): the name and a line, the ways in, the six pillars, care and the terms, the
+ * help line, and the way back up. Its colours are the page's own (the chapter's world sets --ink, --glow and the
+ * background), so it belongs to whichever page it closes, dark or light. Words: src/content/settings.json, "The foot
+ * of every page" in Site settings.
+ */
+import { MARK } from '../data/brand';
+import { pillars, totalServices } from '../data/site';
+import CareText from './CareText.astro';
+import settings from '../content/settings.json';
+
+const f = settings.footer;
+const accounts = (import.meta.env.PUBLIC_STUDIO || 'off') !== 'off';
+const groups = f.groups
+  .map((g) => ({ title: g.title, links: g.links.filter((l) => l.label.trim() && l.href.trim() && (accounts || !/^\/me\b/.test(l.href))) }))
+  .filter((g) => g.links.length);
+const count = f.count.replace('{services}', totalServices.toLocaleString('en-IN')).replace('{pillars}', String(pillars.length));
+const rights = f.rights.replace('{year}', String(new Date().getFullYear()));
+---
+<footer class="site-foot" aria-label={f.label || 'Site footer'} data-site-foot>
+  <div class="sf-inner">
+    <div class="sf-brand">
+      <a class="sf-name" href="/"><svg class="sf-mark" viewBox="0 0 64 64" aria-hidden="true"><path class="wm-moon" d={MARK.moon} /><path class="wm-flame" d={MARK.flame} /></svg>Sarvakali</a>
+      {f.line.trim() && <p class="sf-line">{f.line}</p>}
+      {f.count.trim() && <p class="sf-count">{count}</p>}
+    </div>
+    <nav class="sf-cols" aria-label={f.label || 'Site footer'}>
+      {groups.map((g) => (
+        <div class="sf-col">
+          {g.title.trim() && <p class="sf-title">{g.title}</p>}
+          <ul>{g.links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
+        </div>
+      ))}
+      <div class="sf-col sf-pillars">
+        {f.pillars.trim() && <p class="sf-title">{f.pillars}</p>}
+        <ul>{pillars.map((p) => <li><a href={`/pillars/${p.slug}`}>{p.name}</a></li>)}</ul>
+      </div>
+    </nav>
+    <div class="sf-base">
+      {f.help.trim() && <p class="sf-help"><CareText text={f.help} /></p>}
+      <p class="sf-end"><span>{rights}</span><a href="#main" class="sf-top" data-to-top>{f.top} <span aria-hidden="true">↑</span></a></p>
+    </div>
+  </div>
+</footer>

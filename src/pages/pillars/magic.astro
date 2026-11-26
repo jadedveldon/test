@@ -37,14 +37,13 @@ const named = new RegExp(`(^|[^A-Za-z])${escape(hkName)}([^A-Za-z]|$)`);
 const hecateWork = devotion.categories.flatMap((c) => c.subs).flatMap((s) => s.items).filter((it) => named.test(it));
 
 ---
-<Base title={`${p.name} · Sarvakali`} sequence="magG_hero" description={p.line} crumbs={[{ label: p.name }]}>
+<Base title={`${p.name} · Sarvakali`} sequence="magG_hero" description={p.line} crumbs={[{ label: cw.pillars, href: '/#paths' }, { label: p.name }]}>
   <div class="mg" data-magic data-blend="edge">
 
     <!-- night · the opening, under Hecate's sign -->
     <section class="chapter mg-hero mg-night" data-chapter="magG_hero" data-mag-chapter="hero">
       <div class="chapter-inner mg-hero-grid">
         <div class="mg-hero-copy">
-          <a class="back-link" href="/#paths">{words.allPillars}</a>
           <p class="kicker" data-hero>Pillar {index + 1} of {pillars.length} · {p.count} services</p>
           <h1 class="display-l mg-title" data-hero data-split transition:name="pt-magic" data-pt>{p.name}</h1>
           <p class="lede" data-hero>{p.line}</p>

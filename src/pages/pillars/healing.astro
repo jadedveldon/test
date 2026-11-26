@@ -70,12 +70,11 @@ const pieces = polys.map((poly, i) => {
   };
 });
 ---
-<Base title={`${p.name} · Sarvakali`} sequence="heal_hero" description={p.line} crumbs={[{ label: p.name }]}>
+<Base title={`${p.name} · Sarvakali`} sequence="heal_hero" description={p.line} crumbs={[{ label: cw.pillars, href: '/#paths' }, { label: p.name }]}>
   <div class="hl" data-healing>
     <section class="chapter hl-hero" data-chapter="heal_hero" data-heal-chapter="hero">
       <div class="chapter-inner hl-hero-grid">
         <div class="hl-hero-copy">
-          <a class="back-link" href="/#paths">{words.allPillars}</a>
           <p class="kicker" data-hero>Pillar {index + 1} of {pillars.length} · {p.count} services</p>
           <h1 class="display-l hl-title" data-hero data-split transition:name="pt-healing" data-pt>{p.name}</h1>
           <p class="lede" data-hero>{p.line}</p>

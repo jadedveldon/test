@@ -976,6 +976,19 @@ window.addEventListener('unhandledrejection', (e) => {
   if (/transition was (aborted|skipped)/i.test(msg)) e.preventDefault();
 });
 
+/** a place on the page, or its top, brought into view (below the fixed header) and given focus */
+function goToPlace(el: HTMLElement | null, immediate = false) {
+  const head = document.querySelector('.site-header')?.getBoundingClientRect().bottom ?? 80;
+  // where the place rests, not where its fade-in has it now (offsets ignore the reveal's transform)
+  let rest = 0;
+  for (let n: HTMLElement | null = el; n; n = n.offsetParent as HTMLElement | null) rest += n.offsetTop;
+  const y = el ? Math.max(0, rest - head - 28) : 0;
+  if (lenis) lenis.scrollTo(y, { immediate });
+  else scrollTo({ top: y, behavior: immediate ? 'auto' : 'smooth' });
+  const target = el ?? document.getElementById('main');
+  if (target) { if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1'); target.focus({ preventScroll: true }); }
+}
+
 function boot() {
   // first, so anything that goes wrong from here on is caught with its trail (src/scripts/telemetry.ts)
   try { startTelemetry(); } catch { /* the site works without its counting */ }
@@ -1098,6 +1111,21 @@ function boot() {
   document.addEventListener('astro:page-load', markScrolled);
   initTransitions(world, () => tier === 'calm');
   initCard(world);
+  // a link to a place on this same page (a page's contents, "Back to the top"): the smooth scroller moves there,
+  // below the header, and the place takes focus for keyboard and screen-reader users
+  document.addEventListener('click', (e) => {
+    const a = (e.target as Element)?.closest?.('a[href*="#"]') as HTMLAnchorElement | null;
+    if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || a.target === '_blank') return;
+    const url = new URL(a.href, location.href);
+    if (url.pathname !== location.pathname || url.search !== location.search || !url.hash) return;
+    const id = decodeURIComponent(url.hash.slice(1));
+    const el = id === 'main' || id === 'top' ? null : document.getElementById(id);
+    if (id !== 'main' && id !== 'top' && !el) return;
+    e.preventDefault();
+    e.stopPropagation();
+    goToPlace(el);
+    try { history.replaceState(history.state, '', url.hash === '#main' ? location.pathname + location.search : url.hash); } catch { /* fine */ }
+  }, true);
   // visitor accounts: the header's way to My space, and keeping a signed-in visitor's devices the same
   if (STUDIO !== 'off') {
     import('./me-sync').then((m) => {
@@ -1134,6 +1162,12 @@ function boot() {
     applySky();
   });
   document.addEventListener('astro:page-load', initPage);
+  // arriving at a place on a page (/care#privacy): once the page has settled, it sits below the header
+  document.addEventListener('astro:page-load', () => {
+    const id = decodeURIComponent(location.hash.slice(1));
+    const el = id ? document.getElementById(id) : null;
+    if (el) setTimeout(() => goToPlace(el, true), 350);
+  });
 
   hudInit();
   initPage();

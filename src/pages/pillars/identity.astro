@@ -23,12 +23,11 @@ const moves = CHAPTERS.map((ch) => ({ ...ch, cat: gather(p, ch.key, ch.title, CH
 const aliases = categoryAliases(p, CHAPTER_KEYS, Object.fromEntries(moves.map((m) => [m.key, m.id])));
 const c = COPY.comfort;
 ---
-<Base title={`${p.name} · Sarvakali`} sequence="id_hero" description={p.line} crumbs={[{ label: p.name }]}>
+<Base title={`${p.name} · Sarvakali`} sequence="id_hero" description={p.line} crumbs={[{ label: cw.pillars, href: '/#paths' }, { label: p.name }]}>
   <div class="pd pd-identity" data-identity>
     <section class="chapter pd-hero" data-chapter="id_hero">
       <div class="chapter-inner pd-hero-grid">
         <div class="pd-hero-copy">
-          <a class="back-link" href="/#paths">{words.allPillars}</a>
           <p class="kicker" data-hero>Pillar {index + 1} of {pillars.length} · {p.count} services</p>
           <h1 class="display-l pd-title" data-hero data-split transition:name="pt-identity" data-pt>{p.name}</h1>
           <p class="lede" data-hero>{p.line}</p>

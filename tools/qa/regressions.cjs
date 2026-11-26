@@ -126,7 +126,9 @@ const ARGS = { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', 
     await ctx.close(); }
   // 16 moving the words into the content files once dropped the shared words (back link, previous and next pillar) from Devotion
   { const { ctx, p } = await fresh();
-    const words = require('../../src/content/settings.json').words;
+    const settings = require('../../src/content/settings.json');
+    // the back link became the trail at the top in 2026-11 ("The six pillars", from the breadcrumb words)
+    const words = { ...settings.words, allPillars: settings.crumbs.pillars };
     const missing = [];
     for (const pl of ['devotion', 'magic', 'healing', 'identity', 'divination', 'learning']) {
       const h = await (await p.request.get(`${B}/pillars/${pl}`)).text();
@@ -262,6 +264,20 @@ const ARGS = { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', 
     ok('studio: the DRAFT stamp leaves the invoice\'s letterhead clear', inv.stampClear, JSON.stringify(inv));
     ok('studio: the Discount and Tax boxes line up', inv.boxes, JSON.stringify(inv));
     ok('studio: no errors on the way', p.errs.length === 0, p.errs.join(' | '));
+    await ctx.close(); }
+  // 24 found while adding the terms page (2026-11-26): with smooth scrolling on, a link to a place on the same page
+  //    (the terms' contents, the footer's "Back to the top") changed the address but left the page where it was
+  { const { ctx, p } = await fresh();
+    await p.goto(`${B}/terms?tier=full&cursor=off`); await p.waitForTimeout(3000);
+    await p.click('.terms-toc a[href="#refunds"]'); await p.waitForTimeout(2200);
+    const top = await p.evaluate(() => Math.round(document.getElementById('refunds').getBoundingClientRect().top));
+    ok('anchors: a contents link brings its part into view, below the header', top >= 70 + 12 && top < 260, `top ${top}`);
+    await p.keyboard.press('End'); await p.waitForTimeout(2000);
+    const yEnd = await p.evaluate(() => Math.round(scrollY));
+    await p.evaluate(() => document.querySelector('[data-to-top]').click()); await p.waitForTimeout(2500);
+    const y = await p.evaluate(() => Math.round(scrollY));
+    ok('anchors: "Back to the top" goes back to the top from the foot of the page', y < 40 && yEnd > 1500, `from ${yEnd} to ${y}`);
+    ok('anchors: no errors on the way', p.errs.length === 0, p.errs.join(' | '));
     await ctx.close(); }
   await b.close();
 })();
