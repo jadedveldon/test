@@ -7,10 +7,12 @@
  * eyes open and blink twice, the crescent and bindi glow, light gathers and the third eye opens within its rays, then
  * we fly into the third eye and an eye-shaped opening reveals the site (src/scripts/loader.ts).
  */
+import ThirdEye from './ThirdEye.astro';
+import { thirdPath } from '../data/third-eye';
+
 // everything in a 1600 × 1000 space; the right half is the left half mirrored about x = 800
 const E3 = { x: 800, y: 300 }; // the third eye
-const third = `M800 182 C834 232 848 306 800 418 C752 306 766 232 800 182Z`;
-const frame = `M800 148 C852 214 872 312 800 452 C728 312 748 214 800 148Z`;
+const third = thirdPath(E3.x, E3.y);
 const M = 'matrix(-1 0 0 1 1600 0)'; // mirror
 
 // the left eye (the visitor's left): a lean almond with a long upswept wing at its outer corner
@@ -20,7 +22,6 @@ const lower = 'M712 528 Q640 572 560 548 Q526 538 506 508 Q534 552 566 560 Q650 
 const brow = 'M772 420 Q664 300 428 258 Q652 288 784 406Z';
 const cheek = 'M478 352 C456 470 486 610 566 756 C626 866 722 930 800 936';
 const iris = { x: 640, y: 508, r: 34 };
-const ti = { x: 800, y: 316, r: 31 }; // the third eye's iris
 
 // motes of light that gather into the third eye (deterministic scatter)
 let s = 7;
@@ -29,17 +30,6 @@ const motes = Array.from({ length: 56 }, () => {
   const a = rand() * Math.PI * 2;
   const r = 180 + rand() * 520;
   return { x: E3.x + Math.cos(a) * r * 1.3, y: E3.y + Math.sin(a) * r * 0.8, r: 1.2 + rand() * 2.6 };
-});
-// the rays around the third eye, and the fine lines of its iris
-const rays = Array.from({ length: 36 }, (_, i) => {
-  const a = (i / 36) * Math.PI * 2;
-  const long = i % 2 === 0;
-  const r1 = 150, r2 = long ? 214 : 188;
-  return { x1: E3.x + Math.cos(a) * r1 * 0.72, y1: E3.y + Math.sin(a) * r1, x2: E3.x + Math.cos(a) * r2 * 0.72, y2: E3.y + Math.sin(a) * r2, long };
-});
-const striae = Array.from({ length: 18 }, (_, i) => {
-  const a = (i / 18) * Math.PI * 2;
-  return { x1: ti.x + Math.cos(a) * 13, y1: ti.y + Math.sin(a) * 13, x2: ti.x + Math.cos(a) * (ti.r - 3), y2: ti.y + Math.sin(a) * (ti.r - 3) };
 });
 // the nose ring hangs from the right nostril; its beads along its lower right
 const nath = { x: 878, y: 786, r: 92 };
@@ -61,16 +51,6 @@ const beads = [12, 28, 44, 60].map((deg, i) => {
         <stop offset="0.45" stop-color="#e2622f" />
         <stop offset="1" stop-color="#3b0907" />
       </radialGradient>
-      <radialGradient id="lg-iris3" cx="50%" cy="50%" r="50%">
-        <stop offset="0" stop-color="#fff2c4" />
-        <stop offset="0.35" stop-color="#f4b84a" />
-        <stop offset="0.7" stop-color="#c8461f" />
-        <stop offset="1" stop-color="#4a0b08" />
-      </radialGradient>
-      <linearGradient id="lg-sclera3" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#fff8e8" />
-        <stop offset="1" stop-color="#f0dcbc" />
-      </linearGradient>
       <radialGradient id="lg-third" cx="50%" cy="50%" r="50%">
         <stop offset="0" stop-color="#fff4cf" stop-opacity="0.95" />
         <stop offset="0.35" stop-color="#f3ad45" stop-opacity="0.55" />
@@ -81,7 +61,6 @@ const beads = [12, 28, 44, 60].map((deg, i) => {
         <stop offset="1" stop-color="#ff6a4f" stop-opacity="0" />
       </radialGradient>
       <clipPath id="lc-L"><path d={eyeOpen} /></clipPath>
-      <clipPath id="lc-3"><path d={third} /></clipPath>
       <mask id="lm-hole" maskUnits="userSpaceOnUse" x="-4000" y="-4000" width="9600" height="9000">
         <rect x="-4000" y="-4000" width="9600" height="9000" fill="#fff" />
         <path id="loader-hole" d={third} fill="#000" />
@@ -141,29 +120,9 @@ const beads = [12, 28, 44, 60].map((deg, i) => {
 
         <g id="loader-third">
           <circle id="loader-third-glow" cx={E3.x} cy={E3.y} r="230" fill="url(#lg-third)" opacity="0" />
-          <g id="loader-rays" opacity="0">
-            {rays.map((r) => <line x1={r.x1} y1={r.y1} x2={r.x2} y2={r.y2} stroke="#f0c46a" stroke-width={r.long ? 3 : 2} stroke-linecap="round" opacity={r.long ? 0.75 : 0.45} />)}
-          </g>
-          <line id="loader-third-line" x1={E3.x} y1="190" x2={E3.x} y2="410" stroke="#f0b34a" stroke-width="3" stroke-linecap="round" opacity="0" />
-          <g id="loader-third-open">
-            <!-- a gold frame, flame-shaped, with a dot at each tip -->
-            <path d={frame} fill="none" stroke="#e8b04f" stroke-width="2.5" />
-            <circle cx="800" cy="134" r="6" fill="#e8b04f" />
-            <circle cx="800" cy="466" r="5" fill="#e8b04f" />
-            <!-- the eye: ivory, its iris gold to crimson with fine lines, a dark rim, the pupil and two lights -->
-            <path d={third} fill="url(#lg-sclera3)" />
-            <g clip-path="url(#lc-3)">
-              <circle cx={ti.x} cy={ti.y} r={ti.r + 3} fill="#2a0806" />
-              <circle cx={ti.x} cy={ti.y} r={ti.r} fill="url(#lg-iris3)" />
-              {striae.map((l) => <line x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} stroke="#7a1d10" stroke-width="1.2" opacity="0.45" />)}
-              <circle cx={ti.x} cy={ti.y} r="11" fill="#0a0203" />
-              <circle cx={ti.x + 9} cy={ti.y - 10} r="6" fill="#fff" />
-              <circle cx={ti.x - 9} cy={ti.y + 11} r="2.5" fill="#fff" opacity="0.8" />
-              <circle id="loader-third-core" cx={E3.x} cy={E3.y} r="110" fill="#fff1c9" opacity="0" />
-            </g>
-            <!-- the kohl line, heavier at the sides, with flicks at the tips -->
-            <path d={third} fill="none" stroke="#f1e3c8" stroke-width="11" stroke-linejoin="round" />
-            <path d="M800 182 L800 160 M800 418 L800 436" stroke="#f1e3c8" stroke-width="6" stroke-linecap="round" />
+          <line id="loader-third-line" x1={E3.x} y1={E3.y - 112} x2={E3.x} y2={E3.y + 112} stroke="#f0b34a" stroke-width="3" stroke-linecap="round" opacity="0" />
+          <g id="loader-third-all">
+            <ThirdEye cx={E3.x} cy={E3.y} prefix="loader-third" raysOpacity={0} core />
           </g>
         </g>
 

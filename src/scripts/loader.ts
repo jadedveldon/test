@@ -28,7 +28,8 @@ export function runLoader(el: HTMLElement, o: Options) {
   const third = q('#loader-third-open');
   const thirdLine = q('#loader-third-line');
   const thirdGlow = q('#loader-third-glow');
-  const rays = q('#loader-rays');
+  const rays = q('#loader-third-rays');
+  const frame = q('#loader-third-frame');
   const core = q('#loader-third-core');
   const motes = qa('#loader-motes circle');
   const hole = q('#loader-hole');
@@ -56,6 +57,7 @@ export function runLoader(el: HTMLElement, o: Options) {
     gsap.set(third, { opacity: 1, scaleX: 1, svgOrigin: ORIGIN });
     gsap.set(thirdGlow, { opacity: 0.6 });
     gsap.set(rays, { opacity: 0.8 });
+    gsap.set(frame, { opacity: 1 });
     gsap.set(hole, { scale: 0, svgOrigin: ORIGIN }); // the opening stays shut: the face is shown whole
     o.onReveal();
     // the face goes first, then the darkness behind it, so the face never lies over the page's own words
@@ -68,6 +70,7 @@ export function runLoader(el: HTMLElement, o: Options) {
 
   gsap.set(lids, { y: 0 });
   gsap.set(third, { opacity: 0, scaleX: 0.04, svgOrigin: ORIGIN });
+  gsap.set(frame, { opacity: 0 });
   gsap.set(face, { scale: 1, svgOrigin: ORIGIN });
   gsap.set(hole, { scale: 0, svgOrigin: ORIGIN });
 
@@ -91,6 +94,7 @@ export function runLoader(el: HTMLElement, o: Options) {
     // a ring of rays gathers round the third eye and turns as it opens
     .fromTo(rays, { opacity: 0, scale: 0.82, rotation: -12, svgOrigin: ORIGIN }, { opacity: 1, scale: 1, rotation: 0, svgOrigin: ORIGIN, duration: 0.9, ease: 'power2.out' }, 2.3)
     .to(third, { opacity: 1, scaleX: 1, duration: 0.55, ease: 'back.out(1.7)' }, 2.62)
+    .fromTo(frame, { opacity: 0, scale: 0.9, svgOrigin: ORIGIN }, { opacity: 1, scale: 1, svgOrigin: ORIGIN, duration: 0.6, ease: 'power2.out' }, 2.55)
     .call(() => buzz(PATTERNS.eyeOpens), [], 2.62)
     .to(thirdLine, { opacity: 0, duration: 0.2 }, 2.7)
     // fly into the third eye

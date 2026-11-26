@@ -254,8 +254,8 @@ export function startHeroEye() {
     const r = wrap.getBoundingClientRect();
     const dx = (e.clientX - (r.left + r.width / 2)) / (innerWidth / 2);
     const dy = (e.clientY - (r.top + r.height / 2)) / (innerHeight / 2);
-    ix(Math.max(-1, Math.min(1, dx)) * 9);
-    iy(Math.max(-1, Math.min(1, dy)) * 52);
+    ix(Math.max(-1, Math.min(1, dx)) * 14);
+    iy(Math.max(-1, Math.min(1, dy)) * 46);
   };
   window.addEventListener('pointermove', onMove, { passive: true });
   let call: gsap.core.Tween | null = null;

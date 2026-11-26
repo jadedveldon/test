@@ -352,7 +352,7 @@ html[data-hud-closed] .hud { width: auto; }
 }
 
 /* ------------------------------------------------------ hero variants */
-.hero-eye { display: none; width: clamp(64px, 7.5vw, 112px); margin-bottom: -4px; filter: drop-shadow(0 0 24px rgb(240 179 74 / 0.35)); }
+.hero-eye { display: none; width: clamp(92px, 10vw, 150px); margin-bottom: -10px; filter: drop-shadow(0 0 24px rgb(240 179 74 / 0.35)); }
 .hero-eye svg { display: block; width: 100%; height: auto; overflow: visible; }
 html[data-hero-variant="eye"] .hero-eye { display: block; }
 /* name of light: see round 3 below (the title is hidden only while the points of light draw it) */

@@ -3,6 +3,23 @@
 Every change to the site, newest first: what changed, why, and how it was checked.
 The rules for checking are in `CLAUDE.md`; the checks themselves are in `tools/qa/`.
 
+## 2026-11-26 · The third eye opened wider, and the homepage's eye made the same
+
+- **The third eye opens wider:** a fuller almond and a larger iris. The owner found it too nearly closed.
+- **One third eye, used twice.** Its drawing is now shared (`src/data/third-eye.ts`,
+  `src/components/ThirdEye.astro`) by the opening and by the homepage's eye that follows the cursor, so the two are
+  always the same.
+  - The homepage eye has the frame, rays, ivory eye and gold-to-crimson iris; it still blinks, and its iris follows
+    the cursor.
+  - It is a little larger, to carry the detail.
+- **In the opening,** the gold frame now appears as the third eye opens (it had been drawn from the start).
+- **Looked for an existing third eye to use, freely licensed. None fitted:**
+  - the one free third-eye icon found, game-icons.net's (CC BY 3.0), is a tribal-style mask;
+  - the other results were stock images, or licences that could not be confirmed.
+  - So the site keeps its own drawing.
+- **Checks:** the opening walked on desktop and phone and in calm mode; the homepage eye followed the cursor to two
+  corners; ERRORS none. The full suites were not run, at the owner's request.
+
 ## 2026-11-26 · The opening's face: leaner, more human, the lips and the third eye redrawn
 
 The owner asked for a leaner, longer, more human face, better lips, and a much stronger third eye

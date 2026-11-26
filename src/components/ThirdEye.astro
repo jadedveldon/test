@@ -1,0 +1,54 @@
+---
+/**
+ * The third eye (src/data/third-eye.ts), as SVG to place inside an <svg>: its rays, a gold frame with a dot at each
+ * tip, and the eye (ivory, an iris gold to crimson with fine lines, a dark rim, the pupil and two lights, a heavy kohl
+ * line). Ids start with `prefix`: `${prefix}-rays`, `${prefix}-open` (the eye, which blinks), `${prefix}-iris` (which
+ * can follow the cursor) and, with `core`, `${prefix}-core` (the light the opening flies into).
+ */
+import { framePath, irisOf, rays, striae, thirdPath } from '../data/third-eye';
+
+interface Props { cx: number; cy: number; prefix: string; withRays?: boolean; raysOpacity?: number; core?: boolean }
+const { cx, cy, prefix, withRays = true, raysOpacity = 1, core = false } = Astro.props;
+const eye = thirdPath(cx, cy);
+const frame = framePath(cx, cy);
+const ti = irisOf(cx, cy);
+---
+<defs>
+  <radialGradient id={`${prefix}-irisg`} cx="50%" cy="50%" r="50%">
+    <stop offset="0" stop-color="#fff2c4" />
+    <stop offset="0.35" stop-color="#f4b84a" />
+    <stop offset="0.7" stop-color="#c8461f" />
+    <stop offset="1" stop-color="#4a0b08" />
+  </radialGradient>
+  <linearGradient id={`${prefix}-sclera`} x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#fff8e8" />
+    <stop offset="1" stop-color="#f0dcbc" />
+  </linearGradient>
+  <clipPath id={`${prefix}-clip`}><path d={eye} /></clipPath>
+</defs>
+{withRays && (
+  <g id={`${prefix}-rays`} opacity={raysOpacity}>
+    {rays(cx, cy).map((r) => <line x1={r.x1} y1={r.y1} x2={r.x2} y2={r.y2} stroke="#f0c46a" stroke-width={r.long ? 3 : 2} stroke-linecap="round" opacity={r.long ? 0.75 : 0.45} />)}
+  </g>
+)}
+<g id={`${prefix}-frame`}>
+  <path d={frame} fill="none" stroke="#e8b04f" stroke-width="2.5" />
+  <circle cx={cx} cy={cy - 166} r="6" fill="#e8b04f" />
+  <circle cx={cx} cy={cy + 166} r="5" fill="#e8b04f" />
+</g>
+<g id={`${prefix}-open`}>
+  <path d={eye} fill={`url(#${prefix}-sclera)`} />
+  <g clip-path={`url(#${prefix}-clip)`}>
+    <g id={`${prefix}-iris`}>
+      <circle cx={ti.x} cy={ti.y} r={ti.r + 3} fill="#2a0806" />
+      <circle cx={ti.x} cy={ti.y} r={ti.r} fill={`url(#${prefix}-irisg)`} />
+      {striae(ti.x, ti.y, ti.r).map((l) => <line x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} stroke="#7a1d10" stroke-width="1.2" opacity="0.45" />)}
+      <circle cx={ti.x} cy={ti.y} r="12" fill="#0a0203" />
+      <circle cx={ti.x + 10} cy={ti.y - 11} r="6.5" fill="#fff" />
+      <circle cx={ti.x - 10} cy={ti.y + 12} r="2.6" fill="#fff" opacity="0.8" />
+    </g>
+    {core && <circle id={`${prefix}-core`} cx={cx} cy={cy} r="120" fill="#fff1c9" opacity="0" />}
+  </g>
+  <path d={eye} fill="none" stroke="#f1e3c8" stroke-width="11" stroke-linejoin="round" />
+  <path d={`M${cx} ${cy - 118} L${cx} ${cy - 140} M${cx} ${cy + 118} L${cx} ${cy + 136}`} stroke="#f1e3c8" stroke-width="6" stroke-linecap="round" />
+</g>
