@@ -32,7 +32,7 @@ const lines = (t: string) => t.split('\n');
     <section class="chapter" data-chapter={p.world}>
       <div class="chapter-inner narrow">
         <div class="ps-intro" data-session-intro>
-          <p class="kicker" data-hero><a href="/practice">{w.kicker}</a> · {kindLabel}</p>
+          <p class="kicker" data-hero>{kindLabel}</p>
           {p.sanskrit ? <p class="ps-sk" data-hero lang={p.sanskrit.match(/[஀-௿]/) ? 'ta' : 'sa'}>{p.sanskrit}</p> : null}
           <h1 class="display-l" data-hero data-split>{p.title}</h1>
           <p class="lede" data-hero>{p.line}</p>

@@ -11,7 +11,8 @@ npm install
 npm run dev          # local development at http://localhost:4321
 npm run build        # static site in dist/ (any static host)
 npm run preview:artifact   # dist/ + a copy with relative links in preview-artifact/site
-node tools/make-previews.cjs     # app icons + link-preview pictures (needs the site served and Playwright)
+node tools/make-previews.cjs     # app icons (needs the site served and Playwright)
+node tools/make-og.cjs           # a link-preview card for every page (needs the site served and Playwright)
 ```
 
 Add `?tier=ultra|full|lighter|still|calm` to any URL to force a quality level, and `?intro=1` to replay the intro.
@@ -67,7 +68,7 @@ leaves it out). `docs/studio.md` explains the whole loop, the setup (password, e
 | Brand | `src/data/brand.ts`, `tools/make-brand.mjs`, `public/brand/` | The mark (a crescent holding a flame that is also the third eye) for the wordmark, favicon, app icons and emails. |
 | Install, offline | `public/manifest.webmanifest`, `public/sw.js`, `src/scripts/pwa.ts` | Add to home screen, shortcuts, visited pages work offline. |
 | Device test | `src/scripts/devicetest.ts` | "Test this device" in the panel: smoothness per quality level and a copyable report. |
-| Link previews | `tools/make-previews.cjs`, `public/og/` | A preview picture per page, taken from the real page. |
+| Link previews | `tools/make-og.cjs`, `public/og/` | A designed card for every page: its own world, with its title large enough to read in a chat. Run again after changing words or design. |
 | Content editor | `keystatic.config.ts`, `src/content/`, `src/editor/` | Keystatic at `/keystatic`: every settled page's words, the catalogue, articles, festivals, cards, emails, settings. Behind a secret door (`/door/<word>`) and the Studio's sign-in on the host. |
 
 ## Designing the pillars

@@ -3,6 +3,30 @@
 Every change to the site, newest first: what changed, why, and how it was checked.
 The rules for checking are in `CLAUDE.md`; the checks themselves are in `tools/qa/`.
 
+## 2026-11-26 · Link previews redrawn as cards for every page; the practice pages stop repeating the trail
+
+- **Link previews (the picture a chat shows when a page is shared) are now designed cards, one for every page.**
+  - **Before:** 18 old screenshots, made before most of the redesigns (the old About, "All pillars" links), with
+    words too small to read in a chat. Every other page used its section's picture.
+  - **Now:** a card per page, made by `tools/make-og.cjs` from the page itself. It shows:
+    - the page's own world (colours, form of light, hero drawing), with its words and controls hidden;
+    - over it, the mark and name, the line above the title, the title in large type, and the page's description;
+    - on a mantra's card, its first line in Devanagari as well.
+  - On light pages (Identity, the articles) the card's small lines take the page's softer ink, so they stay readable.
+  - Private pages (a booking, an invoice, My space, the Studio) get no card of their own and fall back to the
+    homepage's.
+  - `tools/make-previews.cjs` now makes only the app icons. The README says when to run each.
+  - The cards point at the site's address once the real domain is set (unchanged).
+- **Fixed: the practice pages said where you are twice.**
+  - **What was wrong:** the line above the title began with links to the pages above ("Daily practice · The library ·
+    …"). That was the page's way back before the trail at the top existed. On phones it sat right under the trail's
+    "‹ Daily practice", saying the same thing twice.
+  - **Now:** the line keeps only what is its own ("The mantra library", "Kept on Monday", "With a deity"). The trail
+    does the rest.
+  - The mantra pages' unused "back" words left the content file and the editor.
+  - Reproduced first, as regression 25: it failed on all six kinds of practice page, and passes after the fix.
+- **Checks:** regression 25 on its own; every card looked at. The full suites were not run, at the owner's request.
+
 ## 2026-11-26 · The Kali yantra, redrawn in the owner's chosen style
 
 - **The owner chose a traditional Kali yantra to use.** The picture they sent is a stock image that still has its

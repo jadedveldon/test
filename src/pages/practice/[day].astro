@@ -35,7 +35,7 @@ const nameOf = (slug?: string | null) => all.find((m) => m.slug === slug)?.name;
         <nav class="week-strip" aria-label="The seven days" data-hero>
           {DAYS.map((x) => <a href={dayPath(x.key)} aria-current={x.key === key ? 'page' : undefined} style={`--dc:${DAY_HEX[x.key as DayKey]}`} data-week-day={x.key}><span class="ws-glyph" aria-hidden="true">{DAY_GLYPH[x.key as DayKey]}</span><span class="ws-name">{x.name.slice(0, 3)}</span></a>)}
         </nav>
-        <p class="kicker" data-hero><a href="/practice">Daily practice</a> · <span data-today-badge hidden>Today · </span>{d.planet} · {d.planetSanskrit}</p>
+        <p class="kicker" data-hero><span data-today-badge hidden>Today · </span>{d.planet} · {d.planetSanskrit}</p>
         <h1 class="display-l" data-hero data-split>{d.name}</h1>
         <p class="pday-sk" data-hero lang="sa-Latn">{d.sanskrit} <span class="pday-glyph" aria-hidden="true">{DAY_GLYPH[key]}</span></p>
         <blockquote class="pday-question" data-hero><p class="kicker">A question for the day</p><p>{d.question}</p></blockquote>

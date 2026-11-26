@@ -1,5 +1,5 @@
-// Makes the app icons and the link-preview pictures (Open Graph) from the real
-// site. Run with the site served locally (npm run build && npx astro preview):
+// Makes the app icons. (The link-preview pictures are made by tools/make-og.cjs.)
+// Run with the site served locally (npm run build && npx astro preview):
 //   node tools/make-previews.cjs [http://127.0.0.1:4321]
 // Needs Playwright with Chromium installed.
 const { chromium } = require('playwright');
@@ -24,15 +24,6 @@ const ICON = (pad) => `<!doctype html><html><body style="margin:0;background:#06
   </g>
 </svg></body></html>`;
 
-const PAGES = [
-  ['home', '/'], ['path', '/path'], ['practice', '/practice'], ['writings', '/writings'], ['about', '/about'], ['care', '/care'],
-  ['connect', '/connect'], ['depth', '/depth'], ['invoice', '/invoice'],
-  ['pillars-devotion', '/pillars/devotion'], ['pillars-magic', '/pillars/magic'], ['pillars-healing', '/pillars/healing'],
-  ['pillars-identity', '/pillars/identity'], ['pillars-divination', '/pillars/divination'], ['pillars-learning', '/pillars/learning'],
-  ['writings-who-is-kali', '/writings/who-is-kali'], ['writings-the-thirty-moons', '/writings/the-thirty-moons'],
-  ['writings-what-happens-in-a-reading', '/writings/what-happens-in-a-reading'],
-];
-
 (async () => {
   const b = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
   // icons
@@ -47,17 +38,6 @@ const PAGES = [
       fs.writeFileSync(path.join(pub, 'icons', `${name}.png`), await ip.locator('svg').screenshot());
       await ip.setViewportSize({ width: 512, height: 512 });
     }
-  }
-  // link previews, from the real pages
-  fs.mkdirSync(path.join(pub, 'og'), { recursive: true });
-  const p = await b.newPage({ viewport: { width: 1200, height: 630 } });
-  await p.goto(base + '/', { waitUntil: 'domcontentloaded' });
-  await p.evaluate(() => { sessionStorage.clear(); sessionStorage.setItem('sk-intro-seen', '1'); sessionStorage.setItem('sk-hud', 'closed'); });
-  for (const [name, url] of PAGES) {
-    await p.goto(`${base}${url}?og=1&tier=full&cursor=off&festival=none&sky=night`, { waitUntil: 'domcontentloaded' });
-    await p.waitForTimeout(name === 'home' ? 6500 : 3800);
-    await p.screenshot({ path: path.join(pub, 'og', `${name}.jpg`), type: 'jpeg', quality: 78 });
-    console.log('preview', name);
   }
   await b.close();
 })();

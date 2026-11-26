@@ -279,5 +279,22 @@ const ARGS = { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', 
     ok('anchors: "Back to the top" goes back to the top from the foot of the page', y < 40 && yEnd > 1500, `from ${yEnd} to ${y}`);
     ok('anchors: no errors on the way', p.errs.length === 0, p.errs.join(' | '));
     await ctx.close(); }
+  // 25 found in the design gap audit (2026-11-26): on the practice pages the line above the title still began with
+  //    links to the pages above ("Daily practice · The library · …"), left from before the trail at the top existed;
+  //    on phones it sat straight under the trail's "‹ Daily practice", saying it twice
+  { const { ctx, p } = await fresh({ viewport: { width: 390, height: 844 } });
+    for (const path of ['/practice/library', '/practice/traditions', '/practice/tools', '/practice/monday', '/practice/with/kali', '/practice/mantras/gayatri']) {
+      await p.goto(`${B}${path}?tier=calm&cursor=off`); await p.waitForTimeout(900);
+      const d = await p.evaluate(() => {
+        const up = [...document.querySelectorAll('[data-crumbs] a')].map((a) => ({ href: a.getAttribute('href'), label: a.textContent.trim().toLowerCase() }));
+        const k = document.querySelector('.kicker[data-hero]');
+        const links = [...(k?.querySelectorAll('a') ?? [])].map((a) => a.getAttribute('href'));
+        const text = (k?.textContent ?? '').trim().toLowerCase();
+        return { kicker: text, repeats: up.filter((c) => links.includes(c.href) || text.startsWith(c.label)).map((c) => c.label) };
+      });
+      ok(`trail: the line above the title does not repeat the trail (${path})`, d.repeats.length === 0, JSON.stringify(d));
+    }
+    ok('trail: no errors on the way', p.errs.length === 0, p.errs.join(' | '));
+    await ctx.close(); }
   await b.close();
 })();

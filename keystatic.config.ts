@@ -642,7 +642,7 @@ const library = singleton({
       text: line('Sanskrit'), iast: line('Transliteration'), pronunciation: line('Pronunciation'), meaning: line('Meaning'), parts: line('Line by line'), purpose: line('Purpose'), supports: line('Supports'), when: line('When'), note: line('Note'), source: line('Source'), supplied: line('As supplied'),
       listen: line('Listen'), noAudio: line('No recording yet'), show: line('Show'), bigger: line('Larger text'), copy: line('Copy'), copied: line('Copied'), keep: line('Keep'), kept: line('Kept'),
       chant: line('Chant: heading'), chantLede: para('Chant: text'), counts: fields.array(fields.integer({ label: 'Count' }), { label: 'Counts offered' }), once: line('Once'), times: line('“{n} times”'), next: line('Next repetition'), doneChant: line('Complete'), again: line('Again'),
-      days: line('Kept on'), more: line('“More for {deity}”'), open: line('Open'), back: line('Back to library'), dayLink: line('“All of {day}’s mantras”'),
+      days: line('Kept on'), more: line('“More for {deity}”'), open: line('Open'), dayLink: line('“All of {day}’s mantras”'),
     }, { label: 'A mantra’s page' }),
     care: para('Care note', 'Tele-MANAS 14416 becomes a tap-to-call link by itself.'),
   },

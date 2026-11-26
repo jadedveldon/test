@@ -37,7 +37,7 @@ const sensitive = /grief|healing/.test(m.themes.join(' ')) || m.status === 'guid
   <article class="pmantra" data-mantra-page data-slug={m.slug} data-name={m.name} style={`--day:${DAY_HEX[day]}`}>
     <section class="chapter" data-chapter={DAY_WORLD[day]}>
       <div class="chapter-inner">
-        <p class="kicker" data-hero><a href="/practice/library">{W.back}</a> · {W.days} {m.days.map((d, i) => <>{i ? ', ' : ''}<a href={dayPath(d)}>{dayOf(d).name}</a></>)}</p>
+        <p class="kicker" data-hero>{W.days} {m.days.map((d, i) => <>{i ? ', ' : ''}<a href={dayPath(d)}>{dayOf(d).name}</a></>)}</p>
         <h1 class="display-l" data-hero data-split>{m.name}</h1>
         {m.intention ? <p class="lede" data-hero>{m.intention}</p> : null}
         <p class="pm-label" data-hero><span class={`mc-badge mc-badge-${m.status}`}>{label[0]}</span> <span class="hint">{label[1]}</span></p>

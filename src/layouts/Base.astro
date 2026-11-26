@@ -29,7 +29,7 @@ const {
   crumbs = [],
 } = Astro.props;
 
-// link previews: each page has its own picture, made from the real page by tools/make-og.mjs
+// link previews: each page has its own picture, made from the real page by tools/make-og.cjs
 // (pages are built as files, so the homepage arrives as /index)
 const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/?index$/, '').replace(/\/$/, '');
 const ogName = path === '' ? 'home' : path.replace(/^\//, '').replace(/\//g, '-');
