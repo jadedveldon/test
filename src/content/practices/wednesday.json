@@ -1,0 +1,73 @@
+{
+  "kind": "day",
+  "key": "wednesday",
+  "title": "Wednesday’s practice",
+  "sanskrit": "",
+  "line": "With Ganesha: about ten minutes.",
+  "intro": "Wednesday is Mercury’s day: for learning, speaking carefully, clearing confusion. Its practice is with Ganesha.",
+  "minutes": 10,
+  "world": "dayWednesday",
+  "care": false,
+  "offering": "",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Sit comfortably, with your back upright and soft. Follow the circle: in as it grows, out as it settles. Never strain.",
+      "count": 4,
+      "pattern": "even",
+      "mantra": null,
+      "prompt": null
+    },
+    {
+      "type": "light",
+      "title": "Light the lamp",
+      "text": "Light a real diya if you have one, or this one. Let the flame be the centre of your attention for a moment.",
+      "mantra": null,
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "read",
+      "title": "The opening prayer",
+      "text": "Read it once, slowly; the meaning is beneath it.",
+      "mantra": "vakratunda",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "The day’s question",
+      "text": "Sit with it for a moment. You may write a line, or simply hold it.",
+      "prompt": "What do I need to understand more clearly, and what do I need to communicate more honestly?",
+      "mantra": null,
+      "count": null,
+      "pattern": null
+    },
+    {
+      "type": "chant",
+      "title": "The day’s mantra",
+      "text": "Repeat it as many times as feels true. One careful repetition is enough; 11, 27 or 108 if you have time.",
+      "mantra": "aum-gam-ganapataye-namah",
+      "count": 27,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "close",
+      "title": "Close",
+      "text": "Read the closing prayer once, slowly. Then sit for one more breath before you return to your day.",
+      "mantra": "lokah-samastah",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "Choose one learning intention. Recite a Ganesha or Saraswati verse before study or communication.",
+  "next": [],
+  "ask": "",
+  "drafted": true,
+  "order": 27
+}

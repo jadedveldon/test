@@ -81,6 +81,13 @@ const ok = (n, v, extra = '') => console.log(`${v ? 'ok  ' : 'FAIL'} ${n}${extra
   await p.focus('[data-chant-tap]'); await p.keyboard.press('Enter'); await p.waitForTimeout(200);
   const chantN = await p.evaluate(() => document.querySelector('[data-chant-n]')?.textContent);
   ok('mantra library: search filters by keyboard; the chant counter counts from the keyboard', libShown > 0 && libShown < 20 && chantN === '1', `${libShown} shown; count ${chantN}`);
+  // 5c. a guided practice by keyboard: begin, move through every step, finish
+  await go('/practice/with/gratitude');
+  await p.focus('[data-session-begin]'); await p.keyboard.press('Enter'); await p.waitForTimeout(600);
+  const gSteps = await p.locator('[data-step]').count();
+  for (let i = 0; i < gSteps; i++) { await p.focus(`[data-step="${i}"] [data-next]`); await p.keyboard.press('Enter'); await p.waitForTimeout(400); }
+  const gDone = await p.evaluate(() => !document.querySelector('[data-session-done]').hidden);
+  ok('guided practice: begun, followed and finished from the keyboard', gDone, `${gSteps} steps`);
   // 6. signature moments by keyboard
   await go('/pillars/healing');
   await p.focus('[data-breath-toggle]'); await p.keyboard.press('Enter'); await p.waitForTimeout(2500);

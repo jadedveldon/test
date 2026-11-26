@@ -1,0 +1,76 @@
+{
+  "kind": "deity",
+  "key": "Lakshmi",
+  "title": "Welcome Lakshmi",
+  "sanskrit": "लक्ष्मी",
+  "line": "For abundance, gratitude and a sense of enough.",
+  "intro": "Lakshmi is abundance in every sense: wealth, beauty, grace, the feeling that there is enough. She is welcomed where there is gratitude and care for what one already has.",
+  "minutes": 10,
+  "world": "dayFriday",
+  "care": false,
+  "offering": "A lamp, a lotus, a clean and welcoming space.",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Sit comfortably, with your back upright and soft. Follow the circle: in as it grows, out as it settles. Never strain.",
+      "count": 4,
+      "pattern": "even",
+      "mantra": null,
+      "prompt": null
+    },
+    {
+      "type": "light",
+      "title": "Light the lamp",
+      "text": "Light a lamp for her; Lakshmi is welcomed with light.",
+      "mantra": null,
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "read",
+      "title": "Salute her",
+      "text": "The opening verse of the Mahalakshmi Ashtakam.",
+      "mantra": "namastestu-mahamaye",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "chant",
+      "title": "Her mantra",
+      "text": "Repeat AUM Shreem Mahalakshmyai Namah.",
+      "mantra": "aum-shreem-mahalakshmyai",
+      "count": 27,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "What is already here",
+      "text": "",
+      "prompt": "What three things do I already have, that I am grateful for?",
+      "mantra": null,
+      "count": null,
+      "pattern": null
+    },
+    {
+      "type": "close",
+      "title": "Close",
+      "text": "Read the closing prayer once, slowly. Then sit for one more breath before you return to your day.",
+      "mantra": "purnamadah",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "Fridays and Diwali are especially hers.",
+  "next": [
+    "gratitude",
+    "devi"
+  ],
+  "ask": "",
+  "drafted": true,
+  "order": 6
+}

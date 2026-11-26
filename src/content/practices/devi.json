@@ -1,0 +1,86 @@
+{
+  "kind": "deity",
+  "key": "Devi",
+  "title": "Honour the Goddess",
+  "sanskrit": "देवी",
+  "line": "For being held, for seeing the sacred in everything.",
+  "intro": "The Goddess, Devi, is the power that lives in all beings: consciousness, peace, compassion, even sleep and hunger. This practice honours her in her many forms, and in you.",
+  "minutes": 12,
+  "world": "dayFriday",
+  "care": false,
+  "offering": "Flowers, a lamp, a kind act done in her name.",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Sit comfortably, with your back upright and soft. Follow the circle: in as it grows, out as it settles. Never strain.",
+      "count": 4,
+      "pattern": "even",
+      "mantra": null,
+      "prompt": null
+    },
+    {
+      "type": "light",
+      "title": "Light the lamp",
+      "text": "Light a real diya if you have one, or this one. Let the flame be the centre of your attention for a moment.",
+      "mantra": null,
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "read",
+      "title": "Take refuge",
+      "text": "One of the most loved verses to the Goddess: she is auspiciousness itself, and a refuge.",
+      "mantra": "sarva-mangala",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "read",
+      "title": "See her in all beings",
+      "text": "Read the refrain, and then as many of her forms as you like, slowly: the Goddess who is consciousness, peace, compassion, mother, in all beings.",
+      "mantra": "ya-devi",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "chant",
+      "title": "Repeat the verse",
+      "text": "Repeat it as many times as feels true.",
+      "mantra": "sarva-mangala",
+      "count": 11,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "Where is she today?",
+      "text": "",
+      "prompt": "Where did I see her today: in whom, or in what?",
+      "mantra": null,
+      "count": null,
+      "pattern": null
+    },
+    {
+      "type": "close",
+      "title": "Close",
+      "text": "Read the closing prayer once, slowly. Then sit for one more breath before you return to your day.",
+      "mantra": "purnamadah",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "Fridays and the nine nights of Navratri are especially hers.",
+  "next": [
+    "lakshmi",
+    "saraswati",
+    "kali"
+  ],
+  "ask": "",
+  "drafted": true,
+  "order": 3
+}

@@ -1,0 +1,73 @@
+{
+  "kind": "day",
+  "key": "monday",
+  "title": "Monday’s practice",
+  "sanskrit": "",
+  "line": "With Shiva: about ten minutes.",
+  "intro": "Monday is the Moon’s day: for listening inward, feelings, rest. Its practice is with Shiva, stillness itself.",
+  "minutes": 10,
+  "world": "dayMonday",
+  "care": false,
+  "offering": "",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Sit comfortably, with your back upright and soft. Follow the circle: in as it grows, out as it settles. Never strain.",
+      "count": 4,
+      "pattern": "even",
+      "mantra": null,
+      "prompt": null
+    },
+    {
+      "type": "light",
+      "title": "Light the lamp",
+      "text": "Light a real diya if you have one, or this one. Let the flame be the centre of your attention for a moment.",
+      "mantra": null,
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "read",
+      "title": "The opening prayer",
+      "text": "Read it once, slowly; the meaning is beneath it.",
+      "mantra": "guru-brahma",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "The day’s question",
+      "text": "Sit with it for a moment. You may write a line, or simply hold it.",
+      "prompt": "What am I feeling, what do I need, and how can I care for myself without abandoning my own emotions?",
+      "mantra": null,
+      "count": null,
+      "pattern": null
+    },
+    {
+      "type": "chant",
+      "title": "The day’s mantra",
+      "text": "Repeat it as many times as feels true. One careful repetition is enough; 11, 27 or 108 if you have time.",
+      "mantra": "aum-namah-shivaya",
+      "count": 27,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "close",
+      "title": "Close",
+      "text": "Read the closing prayer once, slowly. Then sit for one more breath before you return to your day.",
+      "mantra": "sarve-shaam",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "Begin with a few quiet breaths. Choose a Shiva or grief-reflection verse. Close with Sarve Shaam.",
+  "next": [],
+  "ask": "",
+  "drafted": true,
+  "order": 25
+}

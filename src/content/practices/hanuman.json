@@ -1,0 +1,85 @@
+{
+  "kind": "deity",
+  "key": "Hanuman",
+  "title": "Call on Hanuman",
+  "sanskrit": "हनुमान्",
+  "line": "For strength, steadiness and courage in a hard task.",
+  "intro": "Hanuman is devotion made strong: swift as the mind, master of himself, and utterly loyal. People turn to him before a challenge, in fear, or when strength is needed for the sake of someone else.",
+  "minutes": 10,
+  "world": "dayTuesday",
+  "care": false,
+  "offering": "A lamp, sindoor, or a promise kept.",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Sit comfortably, with your back upright and soft. Follow the circle: in as it grows, out as it settles. Never strain.",
+      "count": 4,
+      "pattern": "even",
+      "mantra": null,
+      "prompt": null
+    },
+    {
+      "type": "light",
+      "title": "Light the lamp",
+      "text": "Light a real diya if you have one, or this one. Let the flame be the centre of your attention for a moment.",
+      "mantra": null,
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "read",
+      "title": "Take refuge in him",
+      "text": "This verse describes him: swift as the mind and the wind, master of the senses, wisest of the wise.",
+      "mantra": "manojavam",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "chant",
+      "title": "His name",
+      "text": "Repeat AUM Sri Hanumate Namaha with steady attention.",
+      "mantra": "aum-sri-hanumate-namah",
+      "count": 27,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "read",
+      "title": "What his remembrance gives",
+      "text": "Read this once: by remembering him, one seeks strength, courage, fearlessness, health and clear speech.",
+      "mantra": "buddhir-balam",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "Your task",
+      "text": "",
+      "prompt": "What is the hard thing in front of me, and what would steady strength look like in it?",
+      "mantra": null,
+      "count": null,
+      "pattern": null
+    },
+    {
+      "type": "close",
+      "title": "Close",
+      "text": "Read the closing prayer once, slowly. Then sit for one more breath before you return to your day.",
+      "mantra": "sarve-bhavantu",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "Tuesdays and Saturdays are traditionally his.",
+  "next": [
+    "courage",
+    "fear"
+  ],
+  "ask": "",
+  "drafted": true,
+  "order": 4
+}

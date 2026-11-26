@@ -1,0 +1,67 @@
+{
+  "kind": "feeling",
+  "key": "Self-worth",
+  "title": "When you doubt your worth",
+  "sanskrit": "",
+  "line": "For self-doubt, shame, or feeling not enough.",
+  "intro": "Many people carry a quiet voice that says they are not enough. This practice answers it with an old teaching (you can be your own friend) and with the Goddess who is grace and sovereignty.",
+  "minutes": 8,
+  "world": "dayFriday",
+  "care": true,
+  "offering": "",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Sit comfortably, with your back upright and soft. Follow the circle: in as it grows, out as it settles. Never strain.",
+      "count": 4,
+      "pattern": "even",
+      "mantra": null,
+      "prompt": null
+    },
+    {
+      "type": "read",
+      "title": "Be your own friend",
+      "text": "Lift yourself by your own effort; do not bring yourself down. The self can be its own friend.",
+      "mantra": "gita-6-5",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "chant",
+      "title": "Her grace",
+      "text": "Repeat AUM Lalitayai Namah, to the Goddess of grace and dignity.",
+      "mantra": "aum-lalitayai",
+      "count": 11,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "Something true",
+      "text": "",
+      "prompt": "One thing I did well, or one way I was kind, recently.",
+      "mantra": null,
+      "count": null,
+      "pattern": null
+    },
+    {
+      "type": "close",
+      "title": "Close",
+      "text": "This verse says the whole remains whole. So do you.",
+      "mantra": "purnamadah",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "Come back to this when the voice is loud. If it never quiets, it is worth talking to someone.",
+  "next": [
+    "lakshmi",
+    "devi"
+  ],
+  "ask": "",
+  "drafted": true,
+  "order": 19
+}

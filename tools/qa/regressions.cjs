@@ -97,9 +97,9 @@ const ARGS = { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', 
     const chips = await p.evaluate(() => [...document.querySelectorAll('[data-connect-kept-list] li > span')].map((x) => x.textContent));
     ok('connect: Book shows the kept list, not an old topic', !!first && second !== first && chips.length > 0, `"${first}" → "${second}" · list: ${chips.join('; ')}`);
     await ctx.close(); }
-  // 7 + 14 fire twice on Calm, and leaving mid-burn on Full
+  // 7 + 14 fire twice on Calm, and leaving mid-burn on Full (the fire is on the tools page since 2026-11-26)
   { const { ctx, p } = await fresh();
-    await p.goto(`${B}/practice?tier=calm&cursor=off`); await p.waitForTimeout(2500);
+    await p.goto(`${B}/practice/tools?tier=calm&cursor=off`); await p.waitForTimeout(2500);
     await p.evaluate(() => document.querySelector('[data-fire]').scrollIntoView());
     await p.fill('[data-fire] textarea', 'fear'); await p.click('[data-fire] button[type="submit"]'); await p.waitForTimeout(3200);
     await p.click('[data-fire-again]');
@@ -109,7 +109,7 @@ const ARGS = { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', 
     ok('fire: second offering starts clear and in place', blur < 0.5 && ty < 2, JSON.stringify(st));
     await ctx.close(); }
   { const { ctx, p } = await fresh();
-    await p.goto(`${B}/practice?tier=full&cursor=off`); await p.waitForTimeout(4000);
+    await p.goto(`${B}/practice/tools?tier=full&cursor=off`); await p.waitForTimeout(4000);
     await p.evaluate(() => document.querySelector('[data-fire]').scrollIntoView());
     await p.fill('[data-fire] textarea', 'my worry'); await p.click('[data-fire] button[type="submit"]'); await p.waitForTimeout(800);
     await p.evaluate(() => document.querySelector('a.wordmark').click()); await p.waitForTimeout(5000);

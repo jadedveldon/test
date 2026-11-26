@@ -1,0 +1,67 @@
+{
+  "kind": "deity",
+  "key": "Surya",
+  "title": "Greet the Sun",
+  "sanskrit": "सूर्य",
+  "line": "In the morning, for energy, clarity and purpose.",
+  "intro": "Surya, the Sun, is the visible source of life and light. Greeting the sun in the morning is one of the oldest practices there is. Do this facing the morning light if you can.",
+  "minutes": 8,
+  "world": "daySunday",
+  "care": false,
+  "offering": "Water poured towards the sun, a moment of gratitude for light.",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Stand or sit facing the morning light if you can. Breathe in as the circle grows, out as it settles.",
+      "count": 3,
+      "pattern": "even",
+      "mantra": null,
+      "prompt": null
+    },
+    {
+      "type": "read",
+      "title": "The Gayatri",
+      "text": "The most revered Vedic prayer, to the light of Savitr: may that light guide our understanding.",
+      "mantra": "gayatri",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "chant",
+      "title": "Salute the Sun",
+      "text": "Repeat AUM Suryaya Namah.",
+      "mantra": "aum-suryaya-namah",
+      "count": 12,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "Your purpose today",
+      "text": "",
+      "prompt": "What do I want to give my energy to today?",
+      "mantra": null,
+      "count": null,
+      "pattern": null
+    },
+    {
+      "type": "close",
+      "title": "Close",
+      "text": "Read the closing prayer once, slowly. Then sit for one more breath before you return to your day.",
+      "mantra": "sarve-shaam",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "Sundays, and sunrise on any day.",
+  "next": [
+    "decision",
+    "courage"
+  ],
+  "ask": "",
+  "drafted": true,
+  "order": 10
+}

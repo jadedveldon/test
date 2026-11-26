@@ -140,7 +140,7 @@ const visibleH1 = (p) => p.evaluate(() => { const h = document.querySelector('h1
     await p.evaluate(() => document.querySelector('[data-mend-all]').click()); await p.waitForTimeout(2500);
     ok('rapid clicks: breath guide and kintsugi', p.errs.length === 0, p.errs.join(' | '));
     p.errs.length = 0;
-    await p.goto(`${B}/practice?tier=full&cursor=off`); await p.waitForTimeout(3000);
+    await p.goto(`${B}/practice/tools?tier=full&cursor=off`); await p.waitForTimeout(3000);
     await p.evaluate(() => { for (let i = 0; i < 230; i++) document.querySelector('[data-mala-tap]').click(); });
     await p.waitForTimeout(500);
     const mala = await p.evaluate(() => ({ c: document.querySelector('[data-mala-count]').textContent, r: document.querySelector('[data-mala-rounds]')?.textContent }));

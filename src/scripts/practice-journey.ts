@@ -12,7 +12,7 @@ import { moonIcon, tithiAt } from './sky';
 import type { WorldHandle as World } from './world/handle';
 import { sitePath } from '../studio/client';
 
-import { addJournal, logMantra, logPractice, myMantras, readLog, stats, toggleMine, writeLog } from './practice-log';
+import { addJournal, logMantra, logPractice, myMantras, readLog, sessionsDone, stats, toggleMine, writeLog } from './practice-log';
 export { logPractice, readLog, stats } from './practice-log';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -23,7 +23,7 @@ const esc = (s: string) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&
 
 type DayInfo = { key: string; name: string; sanskrit: string; planet: string; planetSanskrit: string; question: string; intention: string; themes: string[]; opening: string; closing: string; practice: string };
 type MantraInfo = { slug: string; name: string; days: string[]; deity: string; status: string; text: string; iast: string; read: string; meaning: string; intention: string };
-type Week = { days: DayInfo[]; mantras: MantraInfo[]; badges: Record<string, string> };
+type Week = { days: DayInfo[]; mantras: MantraInfo[]; badges: Record<string, string>; practices?: { slug: string; title: string; kind: string }[] };
 let week: Week = { days: [], mantras: [], badges: {} };
 const KEYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 
@@ -73,6 +73,8 @@ function renderToday(w: Words) {
   set('[data-today-question]', d.question);
   document.querySelectorAll<HTMLAnchorElement>('[data-today-link]').forEach((a) => { a.href = href(`/practice/${d.key}`); a.textContent = (a.dataset.template || '{day}').replace('{day}', d.name); });
   document.querySelectorAll<HTMLElement>('[data-today-hide]').forEach((el) => { el.hidden = false; });
+  // the daily practice page features today's practice only (without scripts, all seven are shown)
+  document.querySelectorAll<HTMLElement>('[data-day-feature]').forEach((el) => { el.hidden = el.dataset.dayFeature !== d.key; });
   document.querySelectorAll<HTMLElement>('[data-week-day]').forEach((a) => {
     const is = a.dataset.weekDay === d.key;
     a.classList.toggle('is-today', is);
@@ -101,6 +103,23 @@ function renderMine(w: Words) {
   root.innerHTML = list.length
     ? `<ul class="tm-list">${list.map((m) => `<li><a href="${esc(href(`/practice/mantras/${m.slug}`))}"><b>${esc(m.name)}</b><span>${esc(m.intention || m.meaning.slice(0, 80))}</span></a>${l.mantras[m.slug] ? `<span class="hint">${esc(w.mine.chanted.replace('{n}', String(l.mantras[m.slug])))}</span>` : ''}<button type="button" class="path-back" data-unkeep="${esc(m.slug)}">${esc(w.mine.remove)}</button></li>`).join('')}</ul>`
     : `<p class="hint">${esc(w.mine.empty)}</p>`;
+}
+
+/** the guided practices the visitor has done: a list, and a mark on each card */
+function renderDone(w: Words) {
+  const done = sessionsDone();
+  document.querySelectorAll<HTMLElement>('[data-practice-card]').forEach((a) => {
+    const n = done[a.dataset.practiceCard!]?.n ?? 0;
+    const em = a.querySelector<HTMLElement>('[data-done-badge]');
+    if (em) { em.hidden = !n; em.textContent = n ? `· ${String(w.hub?.done || 'Done {n}×').replace('{n}', String(n))}` : ''; }
+  });
+  const root = document.querySelector<HTMLElement>('[data-done-list]');
+  if (!root) return;
+  const rows = Object.entries(done).sort((a, b) => b[1].last.localeCompare(a[1].last));
+  const title = (slug: string) => week.practices?.find((p) => p.slug === slug)?.title ?? slug;
+  root.innerHTML = rows.length
+    ? `<ul class="tm-list">${rows.map(([slug, r]) => `<li><a href="${esc(href(`/practice/with/${slug}`))}"><b>${esc(title(slug))}</b><span>${esc(new Date(r.last).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }))}</span></a><span class="hint">${esc((root.dataset.times || '{n}×').replace('{n}', String(r.n)))}</span></li>`).join('')}</ul>`
+    : `<p class="hint">${esc(root.dataset.none || '')}</p>`;
 }
 
 /* ---------------------------------------------------------------- the daily rite */
@@ -431,6 +450,7 @@ export function initJourney(world: World) {
   renderToday(w);
   renderTodayMantras(w);
   renderMine(w);
+  renderDone(w);
   initMalaChoice(w);
   initRite(world, w);
   initMonth(w);
@@ -440,7 +460,7 @@ export function initJourney(world: World) {
   const diya = document.querySelector('[data-diya-light]');
   const onDiya = () => logPractice({ diya: 1 });
   diya?.addEventListener('click', onDiya);
-  const onMine = () => renderMine(w);
+  const onMine = () => { renderMine(w); renderDone(w); };
   document.addEventListener('sk:my-mantras', onMine);
   document.addEventListener('sk:practice-log', onMine);
   const mineRoot = document.querySelector('[data-mine]');

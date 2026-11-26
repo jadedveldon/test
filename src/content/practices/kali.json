@@ -1,0 +1,86 @@
+{
+  "kind": "deity",
+  "key": "Kali",
+  "title": "Come before Kali",
+  "sanskrit": "काली",
+  "line": "For courage, for protection, for meeting what frightens you.",
+  "intro": "Kali is the Mother in her most fearless form: the one who takes back what binds you, and who is not afraid of the dark. She is fierce, and her fierceness is protective. This practice is an honest meeting with her.",
+  "minutes": 12,
+  "world": "dayTuesday",
+  "care": false,
+  "offering": "A lamp, red hibiscus, or a moment of honesty.",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Sit comfortably, with your back upright and soft. Follow the circle: in as it grows, out as it settles. Never strain.",
+      "count": 5,
+      "pattern": "even",
+      "mantra": null,
+      "prompt": null
+    },
+    {
+      "type": "light",
+      "title": "Light the lamp",
+      "text": "Light a lamp for her: a real diya if you have one, or this one. Kali is often worshipped at night, by lamplight.",
+      "mantra": null,
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "read",
+      "title": "Call her by her names",
+      "text": "This verse calls her victorious, auspicious, Kali, Bhadrakali, Durga, forgiveness, the sustaining mother. Read it once, slowly; the meaning is beneath.",
+      "mantra": "jayanti-mangala-kali",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "chant",
+      "title": "Repeat her names",
+      "text": "Repeat the verse, or only its first line, as many times as you wish.",
+      "mantra": "jayanti-mangala-kali",
+      "count": 11,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "Meet your fear",
+      "text": "Name it, even silently. You do not have to do anything with it yet.",
+      "prompt": "What am I afraid of, that I could look at today with her beside me?",
+      "mantra": null,
+      "count": null,
+      "pattern": null
+    },
+    {
+      "type": "offer",
+      "title": "Give it to her fire",
+      "text": "If there is something you are ready to release, write it and offer it to the fire.",
+      "mantra": null,
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "close",
+      "title": "Close",
+      "text": "Read the closing prayer once, slowly. Then sit for one more breath before you return to your day.",
+      "mantra": "sarve-shaam",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "Kali’s own mantras, with their seed syllables, are traditionally learned from a teacher. If you would like to go deeper with her, ask Sarvakali.",
+  "next": [
+    "fear",
+    "courage",
+    "karuppaswamy"
+  ],
+  "ask": "Going deeper with Kali",
+  "drafted": true,
+  "order": 2
+}

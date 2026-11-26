@@ -1,0 +1,67 @@
+{
+  "kind": "feeling",
+  "key": "Courage",
+  "title": "When you need courage",
+  "sanskrit": "",
+  "line": "Before a hard conversation, an examination, an interview, a first time.",
+  "intro": "Courage is not the absence of fear; it is moving with it. This practice calls on Hanuman, for whom no task was too great.",
+  "minutes": 8,
+  "world": "dayTuesday",
+  "care": false,
+  "offering": "",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Sit comfortably, with your back upright and soft. Follow the circle: in as it grows, out as it settles. Never strain.",
+      "count": 4,
+      "pattern": "even",
+      "mantra": null,
+      "prompt": null
+    },
+    {
+      "type": "read",
+      "title": "Swift as the mind",
+      "text": "I take refuge in Hanuman, swift as the mind, master of himself.",
+      "mantra": "manojavam",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "chant",
+      "title": "What his remembrance gives",
+      "text": "Repeat this verse: strength, courage, fearlessness and clear speech come from remembering him.",
+      "mantra": "buddhir-balam",
+      "count": 3,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "The hard thing",
+      "text": "",
+      "prompt": "What exactly am I about to do, and what is the first sentence or the first step?",
+      "mantra": null,
+      "count": null,
+      "pattern": null
+    },
+    {
+      "type": "close",
+      "title": "Close",
+      "text": "Read the closing prayer once, slowly. Then sit for one more breath before you return to your day.",
+      "mantra": "sarve-bhavantu",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "Go well. Come back afterwards and give thanks, however it went.",
+  "next": [
+    "hanuman",
+    "fear"
+  ],
+  "ask": "",
+  "drafted": true,
+  "order": 22
+}

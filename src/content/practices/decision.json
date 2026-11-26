@@ -1,0 +1,67 @@
+{
+  "kind": "feeling",
+  "key": "A decision",
+  "title": "When you need clarity",
+  "sanskrit": "",
+  "line": "For a decision, confusion, or a crossroads.",
+  "intro": "Before a decision, this tradition asks for light on the mind: the Gayatri, the oldest prayer for understanding, and a few minutes of honest looking.",
+  "minutes": 10,
+  "world": "daySunday",
+  "care": false,
+  "offering": "",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Sit comfortably, with your back upright and soft. Follow the circle: in as it grows, out as it settles. Never strain.",
+      "count": 4,
+      "pattern": "even",
+      "mantra": null,
+      "prompt": null
+    },
+    {
+      "type": "read",
+      "title": "Lead me to the light",
+      "text": "From untruth to truth, from darkness to light.",
+      "mantra": "asato-ma",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "chant",
+      "title": "The Gayatri",
+      "text": "Repeat the Gayatri slowly: may that light guide our understanding.",
+      "mantra": "gayatri",
+      "count": 3,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "The choice",
+      "text": "",
+      "prompt": "What are my choices? If I were not afraid, which would I choose, and why?",
+      "mantra": null,
+      "count": null,
+      "pattern": null
+    },
+    {
+      "type": "close",
+      "title": "Close",
+      "text": "Read the closing prayer once, slowly. Then sit for one more breath before you return to your day.",
+      "mantra": "sarve-shaam",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "Sleep on it if you can. Clarity often comes after the practice, not during it.",
+  "next": [
+    "surya",
+    "saraswati"
+  ],
+  "ask": "",
+  "drafted": true,
+  "order": 21
+}

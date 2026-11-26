@@ -1,0 +1,73 @@
+{
+  "kind": "day",
+  "key": "tuesday",
+  "title": "Tuesday’s practice",
+  "sanskrit": "",
+  "line": "With Hanuman: about ten minutes.",
+  "intro": "Tuesday is Mars’s day: for courage with discernment, boundaries, hard tasks. Its practice is with Hanuman.",
+  "minutes": 10,
+  "world": "dayTuesday",
+  "care": false,
+  "offering": "",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Sit comfortably, with your back upright and soft. Follow the circle: in as it grows, out as it settles. Never strain.",
+      "count": 4,
+      "pattern": "even",
+      "mantra": null,
+      "prompt": null
+    },
+    {
+      "type": "light",
+      "title": "Light the lamp",
+      "text": "Light a real diya if you have one, or this one. Let the flame be the centre of your attention for a moment.",
+      "mantra": null,
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "read",
+      "title": "The opening prayer",
+      "text": "Read it once, slowly; the meaning is beneath it.",
+      "mantra": "agyana-timirandhasya",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "The day’s question",
+      "text": "Sit with it for a moment. You may write a line, or simply hold it.",
+      "prompt": "Where do I need courage, and how can I use my strength without harming myself or others?",
+      "mantra": null,
+      "count": null,
+      "pattern": null
+    },
+    {
+      "type": "chant",
+      "title": "The day’s mantra",
+      "text": "Repeat it as many times as feels true. One careful repetition is enough; 11, 27 or 108 if you have time.",
+      "mantra": "aum-sri-hanumate-namah",
+      "count": 27,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "close",
+      "title": "Close",
+      "text": "Read the closing prayer once, slowly. Then sit for one more breath before you return to your day.",
+      "mantra": "sarve-bhavantu",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "Name one boundary or difficult task. Choose a Hanuman prayer, or the Karuppaswamy Shivaputra formula if it is part of your practice.",
+  "next": [],
+  "ask": "",
+  "drafted": true,
+  "order": 26
+}

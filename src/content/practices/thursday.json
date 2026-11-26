@@ -1,0 +1,73 @@
+{
+  "kind": "day",
+  "key": "thursday",
+  "title": "Thursday’s practice",
+  "sanskrit": "",
+  "line": "With the teacher and Vishnu: about ten minutes.",
+  "intro": "Thursday is Jupiter’s day: for wisdom, teachers and meaning. Its practice honours the teacher and Vishnu.",
+  "minutes": 10,
+  "world": "dayThursday",
+  "care": false,
+  "offering": "",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Sit comfortably, with your back upright and soft. Follow the circle: in as it grows, out as it settles. Never strain.",
+      "count": 4,
+      "pattern": "even",
+      "mantra": null,
+      "prompt": null
+    },
+    {
+      "type": "light",
+      "title": "Light the lamp",
+      "text": "Light a real diya if you have one, or this one. Let the flame be the centre of your attention for a moment.",
+      "mantra": null,
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "read",
+      "title": "The opening prayer",
+      "text": "Read it once, slowly; the meaning is beneath it.",
+      "mantra": "gurave-sarva-lokanam",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "The day’s question",
+      "text": "Sit with it for a moment. You may write a line, or simply hold it.",
+      "prompt": "What do I believe, why do I believe it, and how can I turn what I know into wise action?",
+      "mantra": null,
+      "count": null,
+      "pattern": null
+    },
+    {
+      "type": "chant",
+      "title": "The day’s mantra",
+      "text": "Repeat it as many times as feels true. One careful repetition is enough; 11, 27 or 108 if you have time.",
+      "mantra": "aum-namo-narayanaya",
+      "count": 27,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "close",
+      "title": "Close",
+      "text": "Read the closing prayer once, slowly. Then sit for one more breath before you return to your day.",
+      "mantra": "saha-navavatu",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "Reflect on one belief, teacher or lesson. Choose a Guru, Vishnu or Hayagriva prayer.",
+  "next": [],
+  "ask": "",
+  "drafted": true,
+  "order": 28
+}

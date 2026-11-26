@@ -657,6 +657,7 @@ function initPage() {
   initConnect();
   const calm = tier === 'calm';
   pageModule('[data-practice]', () => import('./practice'), (m) => { m.initPractice(world); return m.stopPractice; });
+  pageModule('[data-session]', () => import('./session'), (m) => m.startSession(world));
   pageModule('[data-mc], [data-mantra-page], [data-library], [data-practice-day]', () => import('./mantra'), (m) => m.initMantras(world));
   pageModule('[data-invoice-view]', () => import('./invoice-view'), (m) => { m.initInvoiceView(); });
   pageModule('[data-booking]', () => import('./booking'), (m) => { m.initBooking(); });

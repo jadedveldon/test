@@ -385,27 +385,30 @@ const path = singleton({
 });
 
 const practice = singleton({
-  label: 'Daily practice', path: 'src/content/pages/practice', format: { data: 'json' },
+  label: 'Daily practice: the page', path: 'src/content/pages/practice', format: { data: 'json' },
   schema: {
-    kicker: line('Small heading'), title: must('Heading'), lede: para('Text'), begin: line('Begin button'), card: line('Card button'), choose: line('“Or choose one practice”'),
+    kicker: line('Small heading'), title: must('Heading'), lede: para('Text'), card: line('Card button'),
+    doors: fields.array(fields.object({ key: fields.select({ label: 'Leads to', options: [{ value: 'today', label: 'Today’s practice' }, { value: 'deities', label: 'The deities' }, { value: 'feelings', label: 'The feelings' }], defaultValue: 'today' }), title: line('Title'), text: para('Text') }), { label: 'The three ways in', itemLabel: (p) => p.fields.title.value, validation: { length: { min: 3, max: 3 } } }),
+    hub: fields.object({
+      todayKicker: line('Today: small heading'), otherDay: line('“Or another day”'),
+      deitiesKicker: line('Deities: small heading'), deitiesTitle: line('Deities: heading'), deitiesLede: para('Deities: text'),
+      feelingsKicker: line('Feelings: small heading'), feelingsTitle: line('Feelings: heading'), feelingsLede: para('Feelings: text'),
+      yoursKicker: line('Yours: small heading'), yoursTitle: line('Yours: heading'), doneTitle: line('Practices done'), doneNone: para('None yet'), doneTimes: line('“{n}×”'),
+      deeperKicker: line('Going deeper: small heading'), deeperTitle: line('Going deeper: heading'),
+      deeper: fields.array(fields.object({ title: line('Title'), text: para('Text'), href: line('Address') }), { label: 'Going deeper', itemLabel: (p) => p.fields.title.value }),
+      minutes: line('“About {n} minutes”'), done: line('“Done {n}×”'),
+    }, { label: 'The page’s sections' }),
+    session: fields.object({
+      withDeity: line('“With a deity”'), forFeeling: line('“For how you feel”'), plan: line('“What you will do · about {n} minutes”'), offering: line('Offering'), begin: line('Begin'), ask: line('Ask Sarvakali'), drafted: line('Drafted note'),
+      steps: line('Steps'), breatheIn: line('Breathe in'), breatheOut: line('Breathe out'), light: line('Light the lamp'), lit: line('The lamp is lit'), lineByLine: line('Line by line'),
+      howMany: line('How many times'), once: line('Once'), bead: line('Next repetition'), reflectHint: line('Reflection hint'), keepJournal: line('Keep in journal'),
+      offerLabel: line('Offering field'), offer: line('Offer button'), next: line('Next'), back: line('Back'), finish: line('Finish'),
+      doneTitle: line('Done: heading'), nextTime: line('Next time'), minutes: line('“About {n} minutes”'), home: line('Back'), again: line('Again'), streak: line('“{n} days in a row”'), first: para('First day'),
+    }, { label: 'A guided practice: its words' }),
+    tools: fields.object({ kicker: line('Small heading'), title: line('Heading'), lede: para('Text') }, { label: 'Tools for practice' }),
     today: fields.object({ day: line('Today'), question: line('Over the day’s question'), dayMantras: line('“{day}’s mantras”'), library: line('Library button'), moon: line('Moon'), next: line('Next sacred night'), you: line('Your practice'), none: line('Not yet today'), done: line('Practised today'), streak: line('“{n} days in a row”'), first: line('First day') }, { label: 'The today strip' }),
-    week: fields.object({ kicker: line('Small heading'), title: line('Heading'), lede: para('Text'), today: line('“Today” tag') }, { label: 'The seven days' }),
-    todayList: fields.object({ kicker: line('Small heading'), title: line('Heading'), lede: para('Text'), also: line('“Also kept on {day}”'), all: line('“All of {day}’s mantras”') }, { label: 'Today’s mantras' }),
     mine: fields.object({ kicker: line('Small heading'), title: line('Heading'), lede: para('Text'), empty: para('When empty'), chanted: line('“chanted {n} times”'), remove: line('Remove') }, { label: 'My mantras' }),
-    library: fields.object({ kicker: line('Small heading'), title: line('Heading'), lede: para('Text'), button: line('Button'), traditions: line('Traditions button') }, { label: 'The library, on this page' }),
     malaChoose: line('The mala: “The mantra”'), malaOpen: line('The mala: link to its page'),
-    rite: fields.object({
-      kicker: line('Small heading'), title: line('Heading'), lede: para('Text'),
-      lengths: fields.array(fields.object({ minutes: fields.integer({ label: 'Minutes' }), label: line('Label'), breaths: fields.integer({ label: 'Breaths' }), beads: fields.integer({ label: 'Beads to count' }) }), { label: 'The three lengths', itemLabel: (p) => p.fields.label.value, validation: { length: { min: 3, max: 3 } } }),
-      forDay: line('“{day}’s rite”'), start: line('Begin'), next: line('Next'), back: line('Back'), skip: line('Skip'),
-      steps: fields.array(fields.object({ name: line('Short name'), title: line('Title'), text: para('Guidance') }), { label: 'The six steps', description: 'Arrive, light, the opening prayer, intention, the main mantra, close.', itemLabel: (p) => p.fields.title.value, validation: { length: { min: 6, max: 6 } } }),
-      question: line('Over the day’s question'), choose: line('Choose the main mantra'), mine: line('“one of mine”'), howMany: line('How many times'), once: line('Once'), counts: fields.array(fields.integer({ label: 'Count' }), { label: 'Counts offered' }),
-      breatheIn: line('Breathe in'), breatheOut: line('Breathe out'), arrived: line('“I have arrived”'), light: line('Light the lamp'), lit: line('The lamp is lit'),
-      intentionLabel: line('Intention field'), intentionExamples: lines('Suggested intentions', 'Intention'), keepJournal: line('Keep in the journal'),
-      mantra: line('The mala’s mantra before one is chosen (Devanagari)'), mantraNote: line('Under it'), bead: line('Next bead'), endRound: line('End the round'),
-      offerLabel: line('Offering field'), offer: line('Offer button'), close: line('Close button'), closing: para('Closing words'),
-      doneTitle: line('When done: heading'), doneText: para('When done: text'), reflection: line('Journal line'), save: line('Save'), saved: line('Saved'), again: line('Practise again'),
-    }, { label: 'The daily rite' }),
     log: fields.object({ kicker: line('Small heading'), title: line('Heading'), lede: para('Text'), days: line('Days practised'), streak: line('Days in a row'), longest: line('Longest run'), japa: line('Mantras counted'), journal: line('Journal'), empty: para('When empty'), export: line('Download'), clear: line('Clear'), clearConfirm: para('Clear: are you sure?'), delete: line('Delete') }, { label: 'Your practice' }),
     month: fields.object({ kicker: line('Small heading'), title: line('Heading'), lede: para('Text'), prev: line('Month before'), nextMonth: line('Month after'), amavasya: line('Amavasya'), purnima: line('Purnima'), ekadashi: line('Ekadashi'), ashtami: line('Ashtami') }, { label: 'The month’s moons' }),
     days: fields.object({ kicker: line('Small heading'), title: line('Heading'), lede: para('Text'), amavasyaNote: line('Amavasya'), amavasyaDo: para('Amavasya: a suggestion'), purnimaNote: line('Purnima'), purnimaDo: para('Purnima: a suggestion'), addCalendar: line('Add to calendar'), ask: line('Ask about a ritual') }, { label: 'Sacred days ahead' }),
@@ -523,6 +526,37 @@ const mantras = collection({
   },
 });
 
+const WORLD_OPTIONS = [['practice', 'Night sky'], ['care', 'Still water (gentle)'], ['lampsNight', 'Lamps at night'], ['agni', 'Fire'], ['mala', 'The mala'], ['library', 'Garland of letters'], ['dayMonday', 'Monday · the Moon'], ['dayTuesday', 'Tuesday · Mars'], ['dayWednesday', 'Wednesday · Mercury'], ['dayThursday', 'Thursday · Jupiter'], ['dayFriday', 'Friday · Venus'], ['daySaturday', 'Saturday · Saturn'], ['daySunday', 'Sunday · the Sun']].map(([value, label]) => ({ value, label }));
+
+const practices = collection({
+  label: 'Guided practices', slugField: 'title', path: 'src/content/practices/*', format: { data: 'json' }, columns: ['title', 'kind'],
+  schema: {
+    title: fields.slug({ name: { label: 'Title', validation: { isRequired: true } }, slug: { label: 'Address', description: 'The end of its address, e.g. grief or kali.' } }),
+    kind: fields.select({ label: 'Kind', description: 'Where it is offered: with a deity, for a feeling, or as a day’s practice.', options: [{ value: 'deity', label: 'A deity' }, { value: 'feeling', label: 'A feeling' }, { value: 'day', label: 'A day of the week' }], defaultValue: 'deity' }),
+    key: line('Deity, feeling or day', 'e.g. Shiva, Grief and loss, monday (a day in lower case).'),
+    sanskrit: line('Name in its own script (optional)', 'e.g. शिव'),
+    line: line('One line: who it is for'),
+    intro: para('Introduction'),
+    minutes: fields.integer({ label: 'About how many minutes', defaultValue: 10 }),
+    world: fields.select({ label: 'Its world (colours and light)', options: WORLD_OPTIONS, defaultValue: 'practice' }),
+    care: fields.checkbox({ label: 'Show the care note first', description: 'For practices that touch the mind, the body or loss.', defaultValue: false }),
+    offering: line('What one might offer (optional)'),
+    steps: fields.array(fields.object({
+      type: fields.select({ label: 'Step', options: [['breathe', 'Breathe'], ['light', 'Light the lamp'], ['read', 'Read a mantra (with its meaning)'], ['chant', 'Chant a mantra (counted)'], ['reflect', 'Reflect on a question'], ['offer', 'Offer to the fire'], ['close', 'Close with a prayer']].map(([value, label]) => ({ value, label })), defaultValue: 'breathe' }),
+      title: line('Heading'), text: para('Guidance'),
+      mantra: fields.relationship({ label: 'Mantra (for read, chant and close)', collection: 'mantras' }),
+      count: fields.integer({ label: 'Breaths, or repetitions offered first', defaultValue: 11 }),
+      prompt: para('Question (for reflect)'),
+      pattern: fields.select({ label: 'Breath (for breathe)', options: [{ value: 'even', label: 'Even' }, { value: 'long', label: 'A longer out-breath' }], defaultValue: 'even' }),
+    }), { label: 'Steps', itemLabel: (p) => `${p.fields.type.value}: ${p.fields.title.value}`, validation: { length: { min: 1, max: 10 } } }),
+    after: para('Closing words', '14416 becomes a tap-to-call link by itself.'),
+    next: fields.array(fields.relationship({ label: 'Practice', collection: 'practices' }), { label: 'Suggested next', validation: { length: { max: 3 } } }),
+    ask: line('Ask Sarvakali about (optional)', 'A topic for Connect, e.g. “Going deeper with Kali”.'),
+    drafted: fields.checkbox({ label: 'Draft for Sarvakali', defaultValue: true }),
+    order: fields.integer({ label: 'Order', defaultValue: 500 }),
+  },
+});
+
 const week = singleton({
   label: 'The seven days', path: 'src/content/pages/week', format: { data: 'json' },
   schema: {
@@ -578,12 +612,12 @@ export default config({
     navigation: {
       'The site': ['home', 'kind', 'festivals', 'cards', 'writings', 'settings'],
       Pages: ['about', 'connect', 'booking', 'path', 'notfound'],
-      'Daily practice': ['practice', 'mantras', 'week', 'library', 'traditions'],
+      'Daily practice': ['practice', 'practices', 'mantras', 'week', 'library', 'traditions'],
       'Pillar pages': ['devotion', 'magic', 'healing', 'identity', 'divination', 'learning'],
       Catalogue: ['catDevotion', 'catMagic', 'catHealing', 'catIdentity', 'catDivination', 'catLearning'],
     },
   },
-  collections: { writings, mantras },
+  collections: { writings, mantras, practices },
   singletons: {
     home, kind, festivals, cards, settings, about, connect, booking, path, practice, notfound, week, library, traditions,
     devotion, magic, healing, identity, divination, learning,

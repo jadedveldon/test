@@ -1,0 +1,124 @@
+---
+/**
+ * A guided practice (/practice/with/<name>): one short, curated session for a deity, a feeling or a day. First what
+ * it is and what you will do (its steps, how long, a care note where it touches the mind or loss), then the steps
+ * one at a time (src/scripts/session.ts): breathe, light the lamp, read a verse with its meaning, chant a mantra
+ * counted, reflect on one question, offer to the fire, close. Then what to carry, and where to go next. Without
+ * scripts every step is simply shown in order. Words: src/content/practices ("Guided practices").
+ */
+import Base from '../../../layouts/Base.astro';
+import CareText from '../../../components/CareText.astro';
+import Rich from '../../../components/Rich.astro';
+import { loadMantras, loadPractices, mantraPath, practicePath, STEP_ICON, dayOf } from '../../../data/mantras';
+import lib from '../../../content/pages/library.json';
+import w from '../../../content/pages/practice.json';
+
+export async function getStaticPaths() {
+  return (await loadPractices()).map((p) => ({ params: { slug: p.slug } }));
+}
+const all = await loadPractices();
+const p = all.find((x) => x.slug === Astro.params.slug)!;
+const mantras = await loadMantras();
+const M = (slug?: string | null) => (slug ? mantras.find((m) => m.slug === slug) : undefined);
+const next = p.next.map((s) => all.find((x) => x.slug === s)).filter(Boolean) as typeof all;
+const S = w.session;
+const kindLabel = p.kind === 'deity' ? S.withDeity : p.kind === 'feeling' ? S.forFeeling : dayOf(p.key).name;
+const lines = (t: string) => t.split('\n');
+---
+<Base title={`${p.title} · Daily practice · Sarvakali`} sequence={p.world} description={`${p.line} A guided practice of about ${p.minutes} minutes.`}>
+  <div class="psess" data-session data-slug={p.slug} data-minutes={p.minutes}>
+    <script type="application/json" data-session-words set:html={JSON.stringify(S)} />
+    <section class="chapter" data-chapter={p.world}>
+      <div class="chapter-inner narrow">
+        <div class="ps-intro" data-session-intro>
+          <p class="kicker" data-hero><a href="/practice">{w.kicker}</a> · {kindLabel}</p>
+          {p.sanskrit ? <p class="ps-sk" data-hero lang={p.sanskrit.match(/[஀-௿]/) ? 'ta' : 'sa'}>{p.sanskrit}</p> : null}
+          <h1 class="display-l" data-hero data-split>{p.title}</h1>
+          <p class="lede" data-hero>{p.line}</p>
+          {p.care ? <div class="pday-care" data-hero><CareText text={lib.care} /></div> : null}
+          <p data-hero>{p.intro}</p>
+          <div class="ps-plan" data-hero>
+            <p class="kicker">{S.plan.replace('{n}', String(p.minutes))}</p>
+            <ol class="ps-outline">{p.steps.map((s) => <li><span class="ps-ico" aria-hidden="true">{STEP_ICON[s.type]}</span><span>{s.title}{(s.type === 'read' || s.type === 'chant' || s.type === 'close') && M(s.mantra) ? <small>{M(s.mantra)!.name}</small> : null}</span></li>)}</ol>
+            {p.offering ? <p class="hint"><b>{S.offering}</b> {p.offering}</p> : null}
+          </div>
+          <div class="cta-row" data-hero>
+            <button type="button" class="btn btn-solid" data-session-begin hidden>{S.begin}</button>
+            {p.ask ? <a class="btn btn-ghost" href={`/connect?topic=${encodeURIComponent(p.ask)}`}>{S.ask}</a> : null}
+          </div>
+          {p.drafted ? <p class="mc-drafted">{S.drafted}</p> : null}
+        </div>
+
+        <div class="ps-run rite" data-session-run>
+          <ol class="rite-steps ps-dots" aria-label={S.steps} data-session-dots hidden style={`grid-template-columns: repeat(${p.steps.length}, 1fr)`}>
+            {p.steps.map((s) => <li><span>{s.title}</span></li>)}
+          </ol>
+          {p.steps.map((s, i) => {
+            const m = M(s.mantra);
+            return (
+              <section class="ps-step" data-step={i} data-type={s.type} data-count={s.count ?? ''} data-pattern={s.pattern ?? 'even'} data-mantra={m?.slug ?? ''} aria-labelledby={`ps-h-${i}`}>
+                <p class="kicker">{i + 1} / {p.steps.length}</p>
+                <h2 class="display-m" id={`ps-h-${i}`}>{s.title}</h2>
+                {s.text ? <p>{s.text}</p> : null}
+                {s.type === 'breathe' ? (
+                  <><div class="rite-breath" aria-hidden="true"><span class="rb-circle"></span><span class="rb-word" data-rb-word>{S.breatheIn}</span></div><p class="hint" data-rb-count></p></>
+                ) : null}
+                {s.type === 'light' ? (
+                  <button type="button" class="rite-lamp" data-lamp aria-pressed="false"><svg viewBox="0 0 160 130" aria-hidden="true"><g class="rl-flame"><path d="M80 70 C70 58 72 44 80 26 C88 44 90 58 80 70 Z" fill="#ffc35a" /><path d="M80 68 C76 62 77 55 80 47 C83 55 84 62 80 68 Z" fill="#fffaf0" /></g><path d="M80 70 L80 76" stroke="#2a120a" stroke-width="2.4" stroke-linecap="round" /><path d="M22 78 Q80 74 132 72 L142 66 Q140 80 128 86 Q80 122 32 92 Q22 86 22 78 Z" fill="#8a3a1c" /></svg><span data-lamp-label>{S.light}</span></button>
+                ) : null}
+                {m ? (
+                  <div class="rite-mantra">
+                    <p class="rm-name"><a href={mantraPath(m.slug)}>{m.name}</a>{m.status === 'guidance' ? <> <span class="mc-badge mc-badge-guidance">{lib.labels.guidance}</span></> : null}</p>
+                    {m.text ? <p class="mc-deva" lang="sa">{lines(m.text).map((l) => <span>{l}</span>)}</p> : null}
+                    {m.iastText ? <p class="mc-iast" lang="sa-Latn">{lines(m.iastText).map((l) => <span>{l}</span>)}</p> : null}
+                    {m.readText ? <p class="mc-read">{m.readText}</p> : null}
+                    {m.meaning ? <p class="mc-meaning">{m.meaning}</p> : null}
+                    {s.type === 'read' && m.parts.length ? (
+                      <details class="mc-more"><summary>{S.lineByLine}</summary><ol class="pm-parts">{m.parts.map(([l, mm]) => <li>{/^\d+$/.test(l) ? null : <span class="pm-part-line" lang="sa">{l}</span>}<span>{mm}</span></li>)}</ol></details>
+                    ) : null}
+                  </div>
+                ) : null}
+                {s.type === 'chant' && m && m.status !== 'guidance' ? (
+                  <div class="ps-chant">
+                    <div class="rite-lengths" role="radiogroup" aria-label={S.howMany}>
+                      {[...new Set([1, s.count ?? 11, 11, 27, 108])].sort((a, b) => a - b).map((n) => <button type="button" role="radio" aria-checked={n === (s.count ?? 11) ? 'true' : 'false'} data-count={n}>{n === 1 ? S.once : n}</button>)}
+                    </div>
+                    <button type="button" class="rite-japa" data-japa aria-label={S.bead}><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" class="rj-track" /><circle cx="60" cy="60" r="52" class="rj-fill" pathLength="1" style="stroke-dasharray:1;stroke-dashoffset:1" /></svg><b data-japa-n>0</b><small data-japa-of>/ {s.count ?? 11}</small></button>
+                  </div>
+                ) : null}
+                {s.type === 'reflect' ? (
+                  <div class="ps-reflect">
+                    <blockquote class="pday-question"><p>{s.prompt}</p></blockquote>
+                    <label class="sr-only" for={`ps-r-${i}`}>{s.prompt}</label>
+                    <textarea id={`ps-r-${i}`} rows="3" maxlength="500" placeholder={S.reflectHint} data-reflect></textarea>
+                    <label class="rite-check"><input type="checkbox" data-reflect-keep /> {S.keepJournal}</label>
+                  </div>
+                ) : null}
+                {s.type === 'offer' ? (
+                  <><form class="rite-offer" data-offer><label class="sr-only" for={`ps-o-${i}`}>{S.offerLabel}</label><textarea id={`ps-o-${i}`} rows="2" maxlength="90" placeholder={S.offerLabel}></textarea><button type="submit" class="btn btn-ghost">{S.offer}</button></form><p class="rite-words" data-offer-words hidden></p></>
+                ) : null}
+                <div class="cta-row ps-nav" data-step-nav hidden>
+                  <button type="button" class="btn btn-solid" data-next>{i === p.steps.length - 1 ? S.finish : S.next}</button>
+                  {i > 0 ? <button type="button" class="path-back" data-back>← {S.back}</button> : null}
+                </div>
+              </section>
+            );
+          })}
+        </div>
+
+        <div class="ps-done rite" data-session-done hidden tabindex="-1">
+          <p class="rite-done-mark" aria-hidden="true">✓</p>
+          <h2 class="display-m">{S.doneTitle}</h2>
+          <p data-done-streak></p>
+          <p><Rich text={p.after} /></p>
+          {next.length ? (
+            <div class="ps-next"><p class="kicker">{S.nextTime}</p>
+              <ul class="pr-cards pr-cards-sm">{next.map((n) => <li><a href={practicePath(n.slug)} class="pr-card"><b>{n.title}</b><span>{n.line}</span><small>{S.minutes.replace('{n}', String(n.minutes))}</small></a></li>)}</ul>
+            </div>
+          ) : null}
+          <div class="cta-row"><a class="btn btn-ghost btn-sm" href="/practice">{S.home}</a>{p.ask ? <a class="btn btn-ghost btn-sm" href={`/connect?topic=${encodeURIComponent(p.ask)}`}>{S.ask}</a> : null}<button type="button" class="btn btn-ghost btn-sm" data-session-again>{S.again}</button></div>
+        </div>
+      </div>
+    </section>
+  </div>
+</Base>

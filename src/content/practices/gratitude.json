@@ -1,0 +1,67 @@
+{
+  "kind": "feeling",
+  "key": "Gratitude and joy",
+  "title": "When you are grateful",
+  "sanskrit": "",
+  "line": "For good days, answered prayers, and simple thanks.",
+  "intro": "Joy and gratitude deserve a practice too. This one is short and bright: a morning verse, an offering, and a moment to say thank you.",
+  "minutes": 6,
+  "world": "dayFriday",
+  "care": false,
+  "offering": "",
+  "steps": [
+    {
+      "type": "light",
+      "title": "Light the lamp",
+      "text": "Light a real diya if you have one, or this one. Let the flame be the centre of your attention for a moment.",
+      "mantra": null,
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "read",
+      "title": "Look at your hands",
+      "text": "Look at your open hands as you read: Lakshmi, Saraswati and Govinda dwell in them.",
+      "mantra": "karagre-vasate",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "read",
+      "title": "A simple offering",
+      "text": "Whatever is offered with love, a leaf, a flower, water, is received.",
+      "mantra": "gita-9-26",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "Thank you",
+      "text": "",
+      "prompt": "What am I thankful for today?",
+      "mantra": null,
+      "count": null,
+      "pattern": null
+    },
+    {
+      "type": "close",
+      "title": "Close",
+      "text": "Read the closing prayer once, slowly. Then sit for one more breath before you return to your day.",
+      "mantra": "purnamadah",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "Share the good news with someone. Joy grows when it is shared.",
+  "next": [
+    "lakshmi",
+    "surya"
+  ],
+  "ask": "",
+  "drafted": true,
+  "order": 24
+}

@@ -1,0 +1,76 @@
+{
+  "kind": "deity",
+  "key": "Shiva",
+  "title": "Sit with Shiva",
+  "sanskrit": "शिव",
+  "line": "For stillness, for beginning again, for letting what is finished end.",
+  "intro": "Shiva is stillness itself: the one who sits unmoved while everything changes, and who ends what needs to end so something new can begin. This practice is a few minutes of sitting with that stillness.",
+  "minutes": 10,
+  "world": "dayMonday",
+  "care": false,
+  "offering": "Water, a bilva leaf, or simply your attention.",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Sit comfortably, with your back upright and soft. Follow the circle: in as it grows, out as it settles. Never strain.",
+      "count": 5,
+      "pattern": "even",
+      "mantra": null,
+      "prompt": null
+    },
+    {
+      "type": "light",
+      "title": "Light the lamp",
+      "text": "Light a real diya if you have one, or this one. Let the flame be the centre of your attention for a moment.",
+      "mantra": null,
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "read",
+      "title": "Invoke him",
+      "text": "Read this verse once, slowly. It sees Shiva as pure as camphor, compassionate, dwelling in the lotus of the heart with Bhavani.",
+      "mantra": "karpura-gauram",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "chant",
+      "title": "The five syllables",
+      "text": "Repeat AUM Namah Shivaya, gently, as many times as feels true. Let each repetition land in the stillness after it.",
+      "mantra": "aum-namah-shivaya",
+      "count": 27,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "Be still",
+      "text": "Sit for a moment with this question. You may write a line, or simply let it rest.",
+      "prompt": "What could I let be still today, instead of fixing it?",
+      "mantra": null,
+      "count": null,
+      "pattern": null
+    },
+    {
+      "type": "close",
+      "title": "Close",
+      "text": "Read the closing prayer once, slowly. Then sit for one more breath before you return to your day.",
+      "mantra": "sarve-shaam",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "Shiva is honoured especially on Mondays, and on Mahashivaratri. Coming back to these five syllables each day, even a few times, is a practice in itself.",
+  "next": [
+    "guilt",
+    "grief"
+  ],
+  "ask": "A practice with Shiva",
+  "drafted": true,
+  "order": 1
+}

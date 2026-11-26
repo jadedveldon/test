@@ -1,0 +1,76 @@
+{
+  "kind": "feeling",
+  "key": "Grief and loss",
+  "title": "When you are grieving",
+  "sanskrit": "",
+  "line": "For loss of any kind: a person, a relationship, a life you expected.",
+  "intro": "Grief is love with nowhere to go. This practice does not try to make it smaller. It gives it a few quiet minutes, a lamp, and words that have held grieving people for thousands of years.",
+  "minutes": 12,
+  "world": "care",
+  "care": true,
+  "offering": "",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Breathe slowly, and let the out-breath be a little longer than the in-breath. There is no right way to feel.",
+      "count": 5,
+      "pattern": "long",
+      "mantra": null,
+      "prompt": null
+    },
+    {
+      "type": "light",
+      "title": "Light the lamp",
+      "text": "Light a lamp for the one you have lost, or for what you have lost.",
+      "mantra": null,
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "read",
+      "title": "Words for the deepest self",
+      "text": "Krishna’s words on the self that is not born and does not die. Read them slowly. They are a perspective to hold, never an instruction to stop grieving.",
+      "mantra": "gita-2-20",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "chant",
+      "title": "Something to hold on to",
+      "text": "Repeat AUM Namah Shivaya softly, or simply breathe with it.",
+      "mantra": "aum-namah-shivaya",
+      "count": 11,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "Remember",
+      "text": "You may write it here, kept only on this device, or simply hold it.",
+      "prompt": "A memory I want to keep, or something I wish I could say.",
+      "mantra": null,
+      "count": null,
+      "pattern": null
+    },
+    {
+      "type": "close",
+      "title": "Close",
+      "text": "Read the closing prayer once, slowly. Then sit for one more breath before you return to your day.",
+      "mantra": "sarve-shaam",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "Grief comes in waves; come back whenever you need. If it feels too heavy to carry, please talk to someone: in India, Tele-MANAS is free on 14416, day and night.",
+  "next": [
+    "shiva",
+    "lonely"
+  ],
+  "ask": "Support in grief",
+  "drafted": true,
+  "order": 13
+}

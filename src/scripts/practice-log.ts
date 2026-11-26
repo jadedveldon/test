@@ -84,3 +84,19 @@ export function toggleMine(slug: string): boolean {
   document.dispatchEvent(new CustomEvent('sk:my-mantras'));
   return !has;
 }
+
+/* ---------------------------------------------------------------- guided practices done */
+
+const DONE = 'sk-practice-done';
+type Done = Record<string, { n: number; last: string }>;
+let doneMemory: Done = {};
+export function sessionsDone(): Done {
+  try { const v = JSON.parse(localStorage.getItem(DONE) || '{}'); return v && typeof v === 'object' ? v : {}; } catch { return doneMemory; }
+}
+/** a guided practice completed: how often, and when last */
+export function logSession(slug: string) {
+  const d = sessionsDone();
+  d[slug] = { n: (d[slug]?.n ?? 0) + 1, last: new Date().toISOString() };
+  try { localStorage.setItem(DONE, JSON.stringify(d)); } catch { doneMemory = d; }
+  document.dispatchEvent(new CustomEvent('sk:practice-log'));
+}

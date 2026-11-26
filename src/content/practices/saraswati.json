@@ -1,0 +1,67 @@
+{
+  "kind": "deity",
+  "key": "Saraswati",
+  "title": "Learn with Saraswati",
+  "sanskrit": "सरस्वती",
+  "line": "Before study, writing, music or any creative work.",
+  "intro": "Saraswati is knowledge, speech and the arts: the flowing river of learning. She is honoured before study and creative work, by students, writers and musicians alike.",
+  "minutes": 8,
+  "world": "dayWednesday",
+  "care": false,
+  "offering": "A white flower, your books or instrument, an hour of real attention.",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Sit comfortably, with your back upright and soft. Follow the circle: in as it grows, out as it settles. Never strain.",
+      "count": 3,
+      "pattern": "even",
+      "mantra": null,
+      "prompt": null
+    },
+    {
+      "type": "read",
+      "title": "See her",
+      "text": "This verse describes her: white as jasmine and the moon, holding the veena, seated on a white lotus.",
+      "mantra": "ya-kundendu",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "chant",
+      "title": "Before you begin",
+      "text": "Repeat this prayer before you begin your work: I begin my learning; may it come to fruition.",
+      "mantra": "saraswati-namastubhyam",
+      "count": 3,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "Your work today",
+      "text": "",
+      "prompt": "What do I want to learn, make or say today?",
+      "mantra": null,
+      "count": null,
+      "pattern": null
+    },
+    {
+      "type": "close",
+      "title": "Close",
+      "text": "Read the closing prayer once, slowly. Then sit for one more breath before you return to your day.",
+      "mantra": "saha-navavatu",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "She is especially honoured on Vasant Panchami.",
+  "next": [
+    "ganesha",
+    "decision"
+  ],
+  "ask": "",
+  "drafted": true,
+  "order": 7
+}

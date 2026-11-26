@@ -1,0 +1,67 @@
+{
+  "kind": "deity",
+  "key": "Karuppaswamy",
+  "title": "Approach Karuppaswamy",
+  "sanskrit": "கருப்பசாமி",
+  "line": "The guardian: for protection and fearlessness.",
+  "intro": "Karuppaswamy is a guardian deity of Tamil villages and families, often worshipped at the edge of the village, fierce and protective. Shrines and families keep their own names and ways; Vettai Karuppar is one of his forms. This practice is a respectful approach, not a ritual from any one shrine.",
+  "minutes": 10,
+  "world": "dayTuesday",
+  "care": false,
+  "offering": "A lamp, and his name, said with respect.",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Sit comfortably, with your back upright and soft. Follow the circle: in as it grows, out as it settles. Never strain.",
+      "count": 4,
+      "pattern": "even",
+      "mantra": null,
+      "prompt": null
+    },
+    {
+      "type": "light",
+      "title": "Light the lamp",
+      "text": "Light a lamp, as is done at his shrines.",
+      "mantra": null,
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "read",
+      "title": "The Shivaputra formula",
+      "text": "A published moola mantra naming him as the son of Shiva, fierce yet compassionate. Read its meaning. Recite it only if it is part of your own practice, or with guidance; otherwise, hold his name in your heart.",
+      "mantra": "karuppaswamy",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "What you ask protection for",
+      "text": "",
+      "prompt": "What, or whom, am I asking him to guard?",
+      "mantra": null,
+      "count": null,
+      "pattern": null
+    },
+    {
+      "type": "close",
+      "title": "Close",
+      "text": "Read the closing prayer once, slowly. Then sit for one more breath before you return to your day.",
+      "mantra": "sarve-bhavantu",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "If Karuppaswamy is your family deity or you would like to begin a practice with him, ask Sarvakali.",
+  "next": [
+    "kali",
+    "courage"
+  ],
+  "ask": "A practice with Karuppaswamy",
+  "drafted": true,
+  "order": 12
+}

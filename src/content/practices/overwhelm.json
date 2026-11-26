@@ -1,0 +1,67 @@
+{
+  "kind": "feeling",
+  "key": "Overwhelm",
+  "title": "When it is all too much",
+  "sanskrit": "",
+  "line": "For overwhelm, exhaustion, and needing calm.",
+  "intro": "When everything is too much, the first thing is to slow down. This practice is mostly breath, with Vishnu, who rests at the centre of everything, untroubled.",
+  "minutes": 8,
+  "world": "dayThursday",
+  "care": true,
+  "offering": "",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Just breathe. In as the circle grows, out as it settles. Nothing else is needed for now.",
+      "count": 8,
+      "pattern": "long",
+      "mantra": null,
+      "prompt": null
+    },
+    {
+      "type": "read",
+      "title": "Peace",
+      "text": "Vishnu, the very form of peace, resting on the serpent of time.",
+      "mantra": "shantakaram",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "chant",
+      "title": "Rest",
+      "text": "Repeat AUM Namo Narayanaya, slowly.",
+      "mantra": "aum-namo-narayanaya",
+      "count": 11,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "One thing",
+      "text": "",
+      "prompt": "What is the one thing that matters most today? What can wait?",
+      "mantra": null,
+      "count": null,
+      "pattern": null
+    },
+    {
+      "type": "close",
+      "title": "Close",
+      "text": "Read the closing prayer once, slowly. Then sit for one more breath before you return to your day.",
+      "mantra": "purnamadah",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "Rest is part of practice. If overwhelm does not lift, please talk to someone; Tele-MANAS is free on 14416.",
+  "next": [
+    "vishnu",
+    "fear"
+  ],
+  "ask": "",
+  "drafted": true,
+  "order": 20
+}

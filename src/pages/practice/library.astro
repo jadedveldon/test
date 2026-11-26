@@ -22,6 +22,7 @@ const L = w.labels;
         <p class="kicker" data-hero><a href="/practice">Daily practice</a> · {w.kicker}</p>
         <h1 class="display-l" data-hero data-split>{w.title}</h1>
         <p class="lede" data-hero>{w.lede}</p>
+        <p class="plib-start" data-hero>Looking for where to begin? <a href="/practice">Choose a guided practice</a>: for today, with a deity, or for how you feel.</p>
         <nav class="week-strip" aria-label="The seven days" data-hero>
           {DAYS.map((x) => <a href={`/practice/${x.key}`} style={`--dc:${DAY_HEX[x.key as DayKey]}`}><span class="ws-glyph" aria-hidden="true">{DAY_GLYPH[x.key as DayKey]}</span><span class="ws-name">{x.name}</span><span class="ws-planet">{x.planet}</span></a>)}
         </nav>

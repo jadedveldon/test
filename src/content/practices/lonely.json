@@ -1,0 +1,67 @@
+{
+  "kind": "feeling",
+  "key": "Loneliness",
+  "title": "When you feel alone",
+  "sanskrit": "",
+  "line": "For loneliness, or feeling unseen.",
+  "intro": "Loneliness is painful, and very common. This practice remembers the sources of support you have, seen and unseen, and sends goodwill outward, which is one way of feeling connected again.",
+  "minutes": 8,
+  "world": "dayFriday",
+  "care": true,
+  "offering": "",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Sit comfortably, with your back upright and soft. Follow the circle: in as it grows, out as it settles. Never strain.",
+      "count": 4,
+      "pattern": "even",
+      "mantra": null,
+      "prompt": null
+    },
+    {
+      "type": "read",
+      "title": "You are everything to me",
+      "text": "A prayer of belonging: you are my mother and father, my friend and companion.",
+      "mantra": "tvameva",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "Who is there",
+      "text": "",
+      "prompt": "Who, even one person, could I reach out to this week?",
+      "mantra": null,
+      "count": null,
+      "pattern": null
+    },
+    {
+      "type": "read",
+      "title": "Any offering is received",
+      "text": "Whatever is offered with love, a leaf, a flower, water, is received.",
+      "mantra": "gita-9-26",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "close",
+      "title": "Close",
+      "text": "Send this wish out to everyone, everywhere: may all beings be happy and free.",
+      "mantra": "lokah-samastah",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "If you feel alone most of the time, please reach out: to a friend, a counsellor, or Tele-MANAS on 14416.",
+  "next": [
+    "devi",
+    "grief"
+  ],
+  "ask": "",
+  "drafted": true,
+  "order": 18
+}

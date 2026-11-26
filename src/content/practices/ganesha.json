@@ -1,0 +1,76 @@
+{
+  "kind": "deity",
+  "key": "Ganesha",
+  "title": "Begin with Ganesha",
+  "sanskrit": "गणेश",
+  "line": "For new beginnings, and for what stands in the way.",
+  "intro": "Ganesha is honoured first, before anything else begins. He is the remover of obstacles, and also the one who places them where we need to slow down. This practice is for a beginning, or a block.",
+  "minutes": 8,
+  "world": "dayWednesday",
+  "care": false,
+  "offering": "A sweet, durva grass, or a first step taken.",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Sit comfortably, with your back upright and soft. Follow the circle: in as it grows, out as it settles. Never strain.",
+      "count": 3,
+      "pattern": "even",
+      "mantra": null,
+      "prompt": null
+    },
+    {
+      "type": "light",
+      "title": "Light the lamp",
+      "text": "Light a real diya if you have one, or this one. Let the flame be the centre of your attention for a moment.",
+      "mantra": null,
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "read",
+      "title": "Ask for a clear way",
+      "text": "The most recited Ganesha verse: may all my work be free of obstacles, always.",
+      "mantra": "vakratunda",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "chant",
+      "title": "His mantra",
+      "text": "Repeat AUM Gam Ganapataye Namaha.",
+      "mantra": "aum-gam-ganapataye-namah",
+      "count": 27,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "The obstacle",
+      "text": "",
+      "prompt": "What is in my way, and is it asking me to stop, or to find another way round?",
+      "mantra": null,
+      "count": null,
+      "pattern": null
+    },
+    {
+      "type": "close",
+      "title": "Close",
+      "text": "Read the closing prayer once, slowly. Then sit for one more breath before you return to your day.",
+      "mantra": "lokah-samastah",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "Wednesdays, and the start of anything new, belong to him.",
+  "next": [
+    "stuck",
+    "saraswati"
+  ],
+  "ask": "",
+  "drafted": true,
+  "order": 5
+}

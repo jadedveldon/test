@@ -74,3 +74,13 @@ export type MantraSummary = ReturnType<typeof summary>[number];
 
 /** deities in the order they first appear in the week */
 export const deitiesOf = (all: Mantra[]) => [...new Set(all.map((m) => m.deity).filter(Boolean))];
+
+/* ---------------------------------------------------------------- guided practices (src/content/practices) */
+
+export type Practice = CollectionEntry<'practices'>['data'] & { slug: string };
+export async function loadPractices(): Promise<Practice[]> {
+  return (await getCollection('practices')).map((e) => ({ ...e.data, slug: e.id })).sort((a, b) => a.order - b.order || a.title.localeCompare(b.title));
+}
+export const practicePath = (slug: string) => `/practice/with/${slug}`;
+/** each kind of step, as the practice's outline names it */
+export const STEP_ICON: Record<string, string> = { breathe: '◌', light: '✧', read: '❦', chant: '◉', reflect: '✎', offer: '❂', close: '✦' };

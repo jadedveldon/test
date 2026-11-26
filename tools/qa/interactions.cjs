@@ -58,8 +58,8 @@ const W = Number(process.env.W || 1440), H = Number(process.env.H || 855);
   await p.screenshot({ path: `${OUT}/${tag}card.jpg`, type: 'jpeg', quality: 60 });
   await p.keyboard.press('Escape');
   await p.waitForTimeout(600);
-  // practice: mala, fire, diya
-  await go('/practice');
+  // practice: mala, fire, diya (on the tools page since 2026-11-26)
+  await go('/practice/tools');
   await p.evaluate(() => document.querySelector('[data-mala-tap]').scrollIntoView({ block: 'center' }));
   for (let i = 0; i < 3; i++) await p.click('[data-mala-tap]');
   ok('mala counts beads', await p.evaluate(() => document.querySelector('[data-mala-count]').textContent));

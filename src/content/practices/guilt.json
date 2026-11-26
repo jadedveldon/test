@@ -1,0 +1,76 @@
+{
+  "kind": "feeling",
+  "key": "Guilt and forgiveness",
+  "title": "When you need forgiveness",
+  "sanskrit": "",
+  "line": "For guilt, regret, or forgiving yourself.",
+  "intro": "Guilt can be honest, and it can also be a trap. This practice is for owning what you did, asking forgiveness, and then setting the weight down.",
+  "minutes": 10,
+  "world": "dayMonday",
+  "care": true,
+  "offering": "",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Sit comfortably, with your back upright and soft. Follow the circle: in as it grows, out as it settles. Never strain.",
+      "count": 4,
+      "pattern": "even",
+      "mantra": null,
+      "prompt": null
+    },
+    {
+      "type": "light",
+      "title": "Light the lamp",
+      "text": "Light a real diya if you have one, or this one. Let the flame be the centre of your attention for a moment.",
+      "mantra": null,
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "read",
+      "title": "Ask forgiveness",
+      "text": "A prayer to Shiva for forgiveness of everything done by hand, foot, word, sight or thought, knowingly or not.",
+      "mantra": "karacharana-kritam",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "Own it",
+      "text": "",
+      "prompt": "What do I regret? Is there anything I can still put right?",
+      "mantra": null,
+      "count": null,
+      "pattern": null
+    },
+    {
+      "type": "offer",
+      "title": "Set it down",
+      "text": "Write what you have carried long enough, and offer it to the fire. Forgiving yourself is part of the practice.",
+      "mantra": null,
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "close",
+      "title": "Close",
+      "text": "Read the closing prayer once, slowly. Then sit for one more breath before you return to your day.",
+      "mantra": "sarve-shaam",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "If there is a person to make amends with, that can be the next step. Guilt that never lifts is worth talking about with someone.",
+  "next": [
+    "shiva",
+    "anger"
+  ],
+  "ask": "",
+  "drafted": true,
+  "order": 16
+}

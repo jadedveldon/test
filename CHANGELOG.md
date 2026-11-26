@@ -3,6 +3,42 @@
 Every change to the site, newest first: what changed, why, and how it was checked.
 The rules for checking are in `CLAUDE.md`; the checks themselves are in `tools/qa/`.
 
+## 2026-11-26 · Daily practice made curated: guided practices for a deity, a feeling, or the day
+
+The owner's review of the library round: it handed visitors everything at once ("today you can do this") instead
+of leading them. Daily practice now asks what brings you here, and answers with one short guided practice made for
+that need; the library is still there, behind it, for those who want to go deeper. **The test suites were not run**,
+at the owner's request; everything below was walked through in the preview and looked at on desktop and phone.
+
+- **Added: 31 guided practices** (`src/content/practices`, "Guided practices" in the content editor, where they can be
+  added, edited and removed): **twelve with a deity** (Shiva, Kali, the Goddess, Hanuman, Ganesha, Lakshmi,
+  Saraswati, Vishnu and Krishna, Rama, Surya, the Teacher, Karuppaswamy), **twelve for a feeling** (grief, fear and
+  anxiety, anger, guilt and forgiveness, feeling stuck, loneliness, self-worth, overwhelm, a decision, courage,
+  illness and healing, gratitude), and **one for each day**. Each has a short introduction, who it is for, how long
+  it takes, what one might offer, and four to seven steps chosen from: breathe (an even or a longer out-breath),
+  light the lamp, read a verse (with its meaning, line by line where there is one), chant a mantra (counted, with a
+  number suggested), reflect on one question (a line can go to the journal), offer to the fire, and close with a
+  prayer. Practices that touch loss, fear, illness or the mind open with the care note and close with help. Each
+  ends with what to carry, two or three practices for next time, and, where it fits, a way to ask Sarvakali (Kali’s
+  and Karuppaswamy’s deeper practice are left to her). Every word is a draft for Sarvakali and marked so.
+- **Added: the guided practice page** (`/practice/with/<name>`, `src/scripts/session.ts`): what it is and what you
+  will do first, then one step at a time, then a finish that marks the day in your own record. Without scripts the
+  steps simply follow one another.
+- **Changed: Daily practice** (`/practice`) opens with **"What brings you here today?"** and three ways in: today’s
+  practice (only today’s is shown, with its question; other days one tap away), the deities, and the feelings (the
+  care note first). Then your practice (the record, the practices you have done and how often, your kept mantras),
+  and, last, "for when you want more": the library, the seven days, the tools, across traditions.
+- **Moved: the tools** (the mala, the fire, the diya and sacred days, the moon calendar, reminders) to their own
+  page, `/practice/tools`, unchanged. The six-step rite on the old page is replaced by the day practices.
+- **Changed: each day’s page** leads with its one practice and its outline; "About the day" and all its mantras are
+  folded away beneath. A mantra’s page lists the practices that use it; the library points beginners to them.
+- **Found by looking, fixed:** a list of cards sized itself by its widest possible width and pushed the page (and a
+  finished practice) sideways; the reflection box showed the browser’s plain grey field.
+- **Checks written, not run:** the practice and tools pages are in the page lists of `audit.cjs`, `a11y.cjs` and
+  `layout.cjs`; `keyboard.cjs` 5c begins, follows and finishes a practice by keyboard. Retargeted, with the reason (the tools moved, unchanged):
+  `interactions.cjs` (mala, fire, diya), `regressions.cjs` 7 and 14 (the fire) and `robust.cjs` (230 mala taps) now
+  open `/practice/tools`.
+
 ## 2026-11-26 · Daily practice rebuilt around the seven-day mantra library
 
 From Sarvakali's two documents, combined as the owner asked: the raw weekday list ("Mantras daily") and the

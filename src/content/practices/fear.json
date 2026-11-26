@@ -1,0 +1,67 @@
+{
+  "kind": "feeling",
+  "key": "Fear and anxiety",
+  "title": "When you are afraid or anxious",
+  "sanskrit": "",
+  "line": "For worry, dread, a racing mind.",
+  "intro": "Fear narrows everything. A longer out-breath tells the body it is safe enough, and an old prayer for courage reminds the mind that it is not alone.",
+  "minutes": 10,
+  "world": "care",
+  "care": true,
+  "offering": "",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Breathe in for four, and out for six: a longer out-breath calms the body. If counting is too much, simply follow the circle.",
+      "count": 6,
+      "pattern": "long",
+      "mantra": null,
+      "prompt": null
+    },
+    {
+      "type": "read",
+      "title": "A prayer against fear",
+      "text": "The great prayer to Shiva for release from fear: as a ripe fruit falls freely from its stem, may I be freed.",
+      "mantra": "maha-mrityunjaya",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "chant",
+      "title": "Call on strength",
+      "text": "Repeat AUM Sri Hanumate Namaha, Hanuman’s name, steadily.",
+      "mantra": "aum-sri-hanumate-namah",
+      "count": 11,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "What is in my hands",
+      "text": "",
+      "prompt": "What is one thing within my control today, however small?",
+      "mantra": null,
+      "count": null,
+      "pattern": null
+    },
+    {
+      "type": "close",
+      "title": "Close",
+      "text": "Read the closing prayer once, slowly. Then sit for one more breath before you return to your day.",
+      "mantra": "sarve-bhavantu",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "If anxiety is with you most days, you deserve more than a practice: please talk to a doctor or counsellor. Tele-MANAS is free on 14416.",
+  "next": [
+    "hanuman",
+    "courage"
+  ],
+  "ask": "Support with fear and anxiety",
+  "drafted": true,
+  "order": 14
+}

@@ -10,7 +10,7 @@ import Base from '../../../layouts/Base.astro';
 import MantraCard from '../../../components/MantraCard.astro';
 import CareText from '../../../components/CareText.astro';
 import Rich from '../../../components/Rich.astro';
-import { DAY_HEX, DAY_WORLD, dayOf, dayPath, loadMantras, mantraPath, type DayKey } from '../../../data/mantras';
+import { DAY_HEX, DAY_WORLD, dayOf, dayPath, loadMantras, loadPractices, mantraPath, practicePath, type DayKey } from '../../../data/mantras';
 import w from '../../../content/pages/library.json';
 
 export async function getStaticPaths() {
@@ -29,6 +29,7 @@ const next = sameDay[(at + 1) % sameDay.length];
 const related = all.filter((x) => x.slug !== m.slug && x.deity && x.deity === m.deity && x.deity !== 'Universal').slice(0, 3);
 const label = m.status === 'open' ? [L.open, L.openText] : m.status === 'guidance' ? [L.guidance, L.guidanceText] : m.status === 'variant' ? [L.variant, L.variantText] : [L.verify, L.verifyText];
 const canChant = !!m.text && m.status !== 'verify';
+const usedIn = (await loadPractices()).filter((p) => p.steps.some((s) => s.mantra === m.slug));
 const sensitive = /grief|healing/.test(m.themes.join(' ')) || m.status === 'guidance';
 ---
 <Base title={`${m.name} · Mantra library · Sarvakali`} sequence={DAY_WORLD[day]} description={m.meaning.slice(0, 155)}>
@@ -107,6 +108,10 @@ const sensitive = /grief|healing/.test(m.themes.join(' ')) || m.status === 'guid
 
     <section class="chapter" data-chapter={DAY_WORLD[day]}>
       <div class="chapter-inner">
+        {usedIn.length ? (
+          <><h2 class="kicker">Guided practices that use it</h2>
+          <ul class="pr-cards pr-cards-sm">{usedIn.map((p) => <li><a class="pr-card" href={practicePath(p.slug)}><b>{p.title}</b><span>{p.line}</span></a></li>)}</ul></>
+        ) : null}
         {related.length ? (
           <><h2 class="kicker">{W.more.replace('{deity}', m.deity)}</h2>
           <div class="mc-grid">{related.map((r) => <MantraCard m={r} />)}</div></>

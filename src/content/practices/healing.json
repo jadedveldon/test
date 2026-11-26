@@ -1,0 +1,76 @@
+{
+  "kind": "feeling",
+  "key": "Illness and healing",
+  "title": "When you or someone you love is unwell",
+  "sanskrit": "",
+  "line": "A prayer for healing, alongside medical care.",
+  "intro": "When someone is unwell, there is often little we can do but care and pray. This practice offers prayers for healing, for yourself or for someone you love. It is never a replacement for medical care: please keep seeing doctors and taking the treatment you have been given.",
+  "minutes": 10,
+  "world": "care",
+  "care": true,
+  "offering": "",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Sit comfortably, with your back upright and soft. Follow the circle: in as it grows, out as it settles. Never strain.",
+      "count": 4,
+      "pattern": "even",
+      "mantra": null,
+      "prompt": null
+    },
+    {
+      "type": "light",
+      "title": "Light the lamp",
+      "text": "Light a lamp for the one who is unwell.",
+      "mantra": null,
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "read",
+      "title": "The healer",
+      "text": "A prayer to Dhanvantari, the physician of the gods, holding the nectar of immortality.",
+      "mantra": "dhanvantari",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "chant",
+      "title": "The great prayer",
+      "text": "Repeat the Maha Mrityunjaya mantra, slowly, holding them in mind.",
+      "mantra": "maha-mrityunjaya",
+      "count": 11,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "Your care",
+      "text": "",
+      "prompt": "What can I do today, practically, to care for them, or for myself?",
+      "mantra": null,
+      "count": null,
+      "pattern": null
+    },
+    {
+      "type": "close",
+      "title": "Close",
+      "text": "Close with the prayer for everyone’s health: may all be free from illness.",
+      "mantra": "sarve-bhavantu",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "Prayer and medicine belong together. If you are caring for someone, care for yourself too.",
+  "next": [
+    "grief",
+    "fear"
+  ],
+  "ask": "A prayer for someone unwell",
+  "drafted": true,
+  "order": 23
+}

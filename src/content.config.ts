@@ -55,4 +55,40 @@ const mantras = defineCollection({
   }),
 });
 
-export const collections = { writings, mantras };
+/**
+ * Guided practices: one short, curated session each, for a deity, a feeling or a day of the week, built in steps
+ * from the mantra library (src/content/practices, "Guided practices" in the content editor). The words are drafts
+ * for Sarvakali. A step is one of: breathe, light (the lamp), read (a mantra, with its meaning), chant (a mantra,
+ * counted), reflect (a question, with an optional journal line), offer (to the fire), close (a closing prayer).
+ */
+const practices = defineCollection({
+  loader: glob({ pattern: '**/*.json', base: './src/content/practices' }),
+  schema: z.object({
+    kind: z.enum(['deity', 'feeling', 'day']),
+    key: z.string(),
+    title: z.string(),
+    sanskrit: z.string().default(''),
+    line: z.string().default(''),
+    intro: z.string().default(''),
+    minutes: z.number().default(10),
+    world: z.string().default('practice'),
+    care: z.boolean().default(false),
+    offering: z.string().default(''),
+    steps: z.array(z.object({
+      type: z.enum(['breathe', 'light', 'read', 'chant', 'reflect', 'offer', 'close']),
+      title: z.string().default(''),
+      text: z.string().default(''),
+      mantra: z.string().nullish(),
+      count: z.number().nullish(),
+      prompt: z.string().nullish(),
+      pattern: z.string().nullish(),
+    })).min(1),
+    after: z.string().default(''),
+    next: z.array(z.string()).default([]),
+    ask: z.string().default(''),
+    drafted: z.boolean().default(true),
+    order: z.number().default(999),
+  }),
+});
+
+export const collections = { writings, mantras, practices };

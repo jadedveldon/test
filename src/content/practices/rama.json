@@ -1,0 +1,67 @@
+{
+  "kind": "deity",
+  "key": "Rama",
+  "title": "Remember Rama",
+  "sanskrit": "राम",
+  "line": "For steadiness, integrity and comfort in hard times.",
+  "intro": "Rama is the one who keeps his word and does what is right even when it costs him. His name alone is said to be enough: “Rama nama” has carried people through every kind of difficulty.",
+  "minutes": 8,
+  "world": "dayTuesday",
+  "care": false,
+  "offering": "A lamp, a kept promise.",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Sit comfortably, with your back upright and soft. Follow the circle: in as it grows, out as it settles. Never strain.",
+      "count": 3,
+      "pattern": "even",
+      "mantra": null,
+      "prompt": null
+    },
+    {
+      "type": "read",
+      "title": "He who removes misfortune",
+      "text": "A verse from the Rama Raksha Stotram: I bow again and again to Rama, who removes misfortune.",
+      "mantra": "apadam",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "chant",
+      "title": "His name",
+      "text": "Repeat the verse, or only “Rama”, as many times as feels true.",
+      "mantra": "shree-rama-rama",
+      "count": 11,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "Your word",
+      "text": "",
+      "prompt": "Where do I need to keep my word, or stand by what is right?",
+      "mantra": null,
+      "count": null,
+      "pattern": null
+    },
+    {
+      "type": "close",
+      "title": "Close",
+      "text": "Read the closing prayer once, slowly. Then sit for one more breath before you return to your day.",
+      "mantra": "sarve-bhavantu",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "Ram Navami is his day of birth.",
+  "next": [
+    "hanuman",
+    "vishnu"
+  ],
+  "ask": "",
+  "drafted": true,
+  "order": 9
+}

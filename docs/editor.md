@@ -41,7 +41,8 @@ password on. Behind the door the editor still needs the Studio's sign-in, so kno
 | Connect | Every word of the page and the form; the four steps are the homepage's How it works |
 | Bookings and emails | The client's booking and invoice pages, and every email a client is sent (received, confirmed, times offered, reminders, invoices, receipts) |
 | Find your path | The three questions, each answer, the hints, and the result's words |
-| Daily practice | Today, the seven days, today’s mantras, the daily rite (its lengths, six steps and their guidance), my mantras, the lunar month, your practice, the sacred days, reminders |
+| Daily practice: the page | The first question and its three ways in, the page’s sections, the words of a guided practice, the tools page, your practice, the lunar month, the sacred days, reminders |
+| Guided practices | The curated practices: one per deity, per feeling and per day. Each has an introduction, who it is for, a care note if needed, and its steps (breathe, light the lamp, read a mantra, chant a mantra, reflect, offer to the fire, close), each step with its guidance and its mantra |
 | Mantras | The mantra library: add, edit, delete. Each mantra’s days, group, deity, intentions, label, Devanagari, meaning, line by line meanings, purpose, when to use it, notes, source, a recording |
 | The seven days | Each day’s planet, character, intention, question, themes, notes under groups, other traditions, a gentle practice, and the opening and closing prayers of its rite |
 | Mantra library | How to use the library, what the labels mean, the filters, a mantra page’s words, the care note |
@@ -56,6 +57,9 @@ seven chakras) the editor keeps that number.
 
 Small things to know:
 
+- **A guided practice** is built from steps, each chosen from a list, and its mantras are chosen from the
+  library. A practice can have up to ten steps; four to seven is usually right. Mantras to learn with guidance
+  show with their label and are never counted in a practice.
 - **A mantra’s transliteration and pronunciation** are made from its Devanagari, so correcting the Devanagari
   corrects both. Fill the “Transliteration” or “Pronunciation” fields only to override them.
 - **A mantra’s label:** “Being checked” holds its text back from the site (only the name, meaning and the wording as

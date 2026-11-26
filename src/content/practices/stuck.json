@@ -1,0 +1,67 @@
+{
+  "kind": "feeling",
+  "key": "Feeling stuck",
+  "title": "When you feel stuck",
+  "sanskrit": "",
+  "line": "For blocks, delays, or a beginning you keep putting off.",
+  "intro": "When nothing moves, this tradition turns to Ganesha, the remover of obstacles. This practice asks for a clear way, and for one small first step.",
+  "minutes": 8,
+  "world": "dayWednesday",
+  "care": false,
+  "offering": "",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Sit comfortably, with your back upright and soft. Follow the circle: in as it grows, out as it settles. Never strain.",
+      "count": 3,
+      "pattern": "even",
+      "mantra": null,
+      "prompt": null
+    },
+    {
+      "type": "read",
+      "title": "Ask for a clear way",
+      "text": "May all my work be free of obstacles, always.",
+      "mantra": "vakratunda",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "chant",
+      "title": "Repeat",
+      "text": "Repeat AUM Gam Ganapataye Namaha.",
+      "mantra": "aum-gam-ganapataye-namah",
+      "count": 27,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "One small step",
+      "text": "",
+      "prompt": "What is one small step I could take today, even five minutes’ worth?",
+      "mantra": null,
+      "count": null,
+      "pattern": null
+    },
+    {
+      "type": "close",
+      "title": "Close",
+      "text": "Read the closing prayer once, slowly. Then sit for one more breath before you return to your day.",
+      "mantra": "lokah-samastah",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "Begin the step today, however small. Come back tomorrow.",
+  "next": [
+    "ganesha",
+    "decision"
+  ],
+  "ask": "",
+  "drafted": true,
+  "order": 17
+}

@@ -1,0 +1,76 @@
+{
+  "kind": "deity",
+  "key": "Vishnu",
+  "title": "Rest in Vishnu and Krishna",
+  "sanskrit": "विष्णु",
+  "line": "For peace, steadiness and trust.",
+  "intro": "Vishnu sustains: he rests on the serpent of time, serene, holding the world together. As Krishna he is the friend and teacher of the Gita. This practice is for coming to rest, and remembering that you are held.",
+  "minutes": 12,
+  "world": "dayThursday",
+  "care": false,
+  "offering": "Tulsi, water, an act done without wanting credit.",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Sit comfortably, with your back upright and soft. Follow the circle: in as it grows, out as it settles. Never strain.",
+      "count": 5,
+      "pattern": "long",
+      "mantra": null,
+      "prompt": null
+    },
+    {
+      "type": "read",
+      "title": "His peace",
+      "text": "Read this verse slowly: Vishnu, serene, resting on the serpent, who removes the fear of worldly life.",
+      "mantra": "shantakaram",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "chant",
+      "title": "His mantra",
+      "text": "Repeat AUM Namo Bhagavate Vasudevaya.",
+      "mantra": "aum-namo-bhagavate-vasudevaya",
+      "count": 27,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "read",
+      "title": "A teaching to carry",
+      "text": "Krishna’s teaching on acting fully, without being ruled by the outcome.",
+      "mantra": "gita-2-47",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "What I can let go of",
+      "text": "",
+      "prompt": "What outcome am I holding too tightly?",
+      "mantra": null,
+      "count": null,
+      "pattern": null
+    },
+    {
+      "type": "close",
+      "title": "Close",
+      "text": "Offer the day as this verse does: whatever I do, I offer to Narayana.",
+      "mantra": "kayena-vacha",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "Thursdays and Ekadashi days are traditionally his.",
+  "next": [
+    "overwhelm",
+    "rama"
+  ],
+  "ask": "",
+  "drafted": true,
+  "order": 8
+}

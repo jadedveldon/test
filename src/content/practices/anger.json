@@ -1,0 +1,76 @@
+{
+  "kind": "feeling",
+  "key": "Anger",
+  "title": "When you are angry",
+  "sanskrit": "",
+  "line": "For anger that needs somewhere to go.",
+  "intro": "Anger often protects something that matters. This practice does not ask you to drop it, only to cool it enough to see what it is guarding, and to give the rest to the fire.",
+  "minutes": 10,
+  "world": "dayTuesday",
+  "care": false,
+  "offering": "",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Breathe out slowly, longer than you breathe in. Let your shoulders drop on each out-breath.",
+      "count": 5,
+      "pattern": "long",
+      "mantra": null,
+      "prompt": null
+    },
+    {
+      "type": "read",
+      "title": "You can be your own friend",
+      "text": "Krishna’s words: lift yourself by your own effort; the self can be its own friend, or its own enemy.",
+      "mantra": "gita-6-5",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "What it protects",
+      "text": "",
+      "prompt": "What is my anger protecting? What boundary needs saying?",
+      "mantra": null,
+      "count": null,
+      "pattern": null
+    },
+    {
+      "type": "offer",
+      "title": "Burn the rest",
+      "text": "Write what you do not want to carry any more, and offer it to the fire.",
+      "mantra": null,
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "chant",
+      "title": "Cool down",
+      "text": "Read or repeat this verse to compassionate Shiva once more, slowly.",
+      "mantra": "karpura-gauram",
+      "count": 3,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "close",
+      "title": "Close",
+      "text": "Read the closing prayer once, slowly. Then sit for one more breath before you return to your day.",
+      "mantra": "sarve-bhavantu",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "Anger that will not settle, or that frightens you or others, is worth talking about with someone you trust.",
+  "next": [
+    "hanuman",
+    "guilt"
+  ],
+  "ask": "",
+  "drafted": true,
+  "order": 15
+}
