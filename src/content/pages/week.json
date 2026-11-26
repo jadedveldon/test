@@ -1,0 +1,256 @@
+{
+  "days": [
+    {
+      "key": "monday",
+      "name": "Monday",
+      "sanskrit": "Somavara",
+      "planet": "The Moon",
+      "planetSanskrit": "Chandra / Soma",
+      "character": [
+        "Monday is the Moon’s day in the traditional planetary-week system. Western astrological symbolism links the Moon with feelings, instincts, memory, home, family, nourishment and the need for security. This is symbolic language for reflection, not a forecast or a claim that lunar forces make everyone feel the same way.",
+        "In Jyotisha, Chandra is associated with manas (the mind), responsiveness, emotional experience and nourishment. The Moon’s placement in an individual’s birth chart is interpreted through sign, house, aspects and strength; the weekday alone does not describe a person’s whole emotional nature."
+      ],
+      "intention": "Use Monday to listen to what is happening inside rather than rushing to fix it. The day is suited to gentleness, emotional honesty, grief work, rest and practices that help a person feel held and grounded.",
+      "question": "What am I feeling, what do I need, and how can I care for myself without abandoning my own emotions?",
+      "themes": [
+        "Emotional awareness and regulation",
+        "Grief, remembrance and acceptance",
+        "Rest, nourishment and belonging",
+        "Compassion, forgiveness and inner security",
+        "Memory, intuition and reflective practice"
+      ],
+      "groupNotes": [],
+      "others": {
+        "title": "Monday: other pantheons and lunar associations",
+        "text": "These figures may be explored in a Monday meditation because of lunar, night, water, maternal or reflective themes. Their placement here is thematic, not a claim that their own traditions prescribe Monday worship.",
+        "items": [
+          "Greek: Selene is the personification of the Moon. Artemis has lunar associations in later traditions, but is not simply another name for Selene. Use historically attested hymns or prayers rather than inventing a Greek mantra.",
+          "Greek: Hecate is associated with thresholds, crossroads and night; lunar associations are especially prominent in later traditions. The Orphic Hymn to Hecate is an attested hymn, not a mantra.",
+          "Japanese: Tsukuyomi is a kami associated with the Moon. Shinto norito are formal prayers; do not relabel them as mantras.",
+          "Chinese: Chang’e is a central lunar figure. Traditional stories, poetry and festival observances are more appropriate than an invented mantra.",
+          "Chinese: Mazu is a protective sea goddess. Use established Mazu devotional prayers and titles from the tradition; no universal Sanskrit-style mantra is asserted here.",
+          "Turkic: Ak Ana and Umai Ana belong to distinct strands of Turkic myth and devotional culture. Do not fabricate ancient formulas where the oral tradition is not securely documented.",
+          "Zulu: Mbaba Mwana Waresa is associated with rain, fertility and agriculture. Include documented praise or prayer forms only when their source and community context can be identified."
+        ]
+      },
+      "practice": "Begin with a few quiet breaths. Choose a Shiva or grief-reflection verse. Close with Sarve Shaam.",
+      "opening": "guru-brahma",
+      "closing": "sarve-shaam"
+    },
+    {
+      "key": "tuesday",
+      "name": "Tuesday",
+      "sanskrit": "Mangalavara",
+      "planet": "Mars",
+      "planetSanskrit": "Mangala",
+      "character": [
+        "Tuesday is associated with Mars in Western planetary-day astrology. Mars symbolises action, drive, assertion, conflict, courage, desire and the capacity to defend boundaries. It can represent constructive initiative as well as impulsiveness or unnecessary confrontation.",
+        "In Jyotisha, Mangala is associated with energy, courage, initiative, competition, land, siblings and the capacity to act. Its symbolism is not simply aggression: it can also represent disciplined effort and the strength to protect what matters."
+      ],
+      "intention": "Use Tuesday for courage with discernment. The intention is not to become harsh or constantly combative, but to act clearly, protect boundaries, face difficult tasks and direct anger into constructive action.",
+      "question": "Where do I need courage, and how can I use my strength without harming myself or others?",
+      "themes": [
+        "Courage and decisive action",
+        "Protection and personal boundaries",
+        "Working with anger without being ruled by it",
+        "Strength, stamina and determination",
+        "Facing fear and taking responsibility"
+      ],
+      "groupNotes": [
+        {
+          "group": "Karuppaswamy and Vettai Karuppar",
+          "text": "The published Karuppaswamy moola mantra contains the name Śivaputrāya, “to the son of Shiva”. It is a published devotional formula, but local Karuppar shrines and family traditions can preserve different names, forms and recitation practices. For Vettai Karuppar specifically, keep the name Vettai Karuppar in your own devotional intention: no separate, reliably attested public mantra uniquely designated for every Vettai Karuppar tradition has been found, and it is more honest to use the published Shivaputra formula as a Karuppaswamy mantra than to invent a separate “ancient” one."
+        }
+      ],
+      "others": {
+        "title": "Other Tuesday pantheon connections",
+        "text": "",
+        "items": [
+          "Hindu traditions: Durga, Chandika, Chamunda, Narasimha, Bhairava, Veerabhadra and Hanuman have protective or fierce forms. The names and forms vary by text, region and lineage.",
+          "Greek: Ares is associated with war and conflict; Athena with strategic courage and disciplined wisdom. Traditional hymns are appropriate, not fabricated mantras.",
+          "Norse: Tyr is associated with courage, law and sacrifice; Thor with protection and strength. Use attested prayers or clearly labelled modern invocations, not invented ancient formulas.",
+          "Japanese: Hachiman is a deity of war and protection in Japanese traditions. Do not assign an unverified mantra; use documented devotional prayers where available.",
+          "Karuppar traditions: Karuppaswamy, Vettai Karuppar and related guardian forms should be identified with their local names and shrine traditions, not collapsed into a generic deity."
+        ]
+      },
+      "practice": "Name one boundary or difficult task. Choose a Hanuman prayer, or the Karuppaswamy Shivaputra formula if it is part of your practice.",
+      "opening": "agyana-timirandhasya",
+      "closing": "sarve-bhavantu"
+    },
+    {
+      "key": "wednesday",
+      "name": "Wednesday",
+      "sanskrit": "Budhavara",
+      "planet": "Mercury",
+      "planetSanskrit": "Budha",
+      "character": [
+        "Wednesday is Mercury’s day in Western planetary astrology. Mercury symbolises language, learning, analysis, exchange, commerce, writing, travel and the ability to connect ideas. Its reflective challenge is to communicate clearly without becoming scattered or overly analytical.",
+        "In Jyotisha, Budha is associated with intellect, speech, calculation, education, trade and adaptability. Wednesday is commonly connected with Ganesha and, in some devotional settings, Vishnu or Krishna. Regional practice varies."
+      ],
+      "intention": "Use Wednesday for learning, speaking carefully, asking better questions and organising information. It is a good symbolic day for study, writing, teaching, communication and clearing confusion.",
+      "question": "What do I need to understand more clearly, and what do I need to communicate more honestly?",
+      "themes": [
+        "Learning and intellectual clarity",
+        "Communication and truthful speech",
+        "Writing, study, trade and practical problem-solving",
+        "Adaptability and curiosity",
+        "Listening and discernment"
+      ],
+      "groupNotes": [],
+      "others": {
+        "title": "Other Wednesday pantheon connections",
+        "text": "",
+        "items": [
+          "Japanese: Benzaiten is associated with eloquence, music, learning and the arts, with a complex history linking her to Saraswati. Use documented Japanese Buddhist or shrine prayers; do not simply copy a Sanskrit Saraswati mantra and label it Japanese.",
+          "Japanese: Iwanaga-hime is a kami associated in myth with permanence and longevity. No universally recognised public mantra is established here.",
+          "Buddhist: Manjushri is associated with wisdom. The mantra commonly used in Tibetan Buddhist contexts is “AUM A RA PA TSA NA DHIH”; it is a Buddhist mantra, not a Hindu prayer. Some traditions have specific instructions for its practice.",
+          "Chinese: Nüwa is associated with creation and restoration. No universal public mantra is asserted.",
+          "Queer and gender-diverse sacred figures: Ardhanarishvara expresses the union of Shiva and Shakti in one form; Mohini is a feminine form of Vishnu; Ila and Shikhandi have distinct narrative contexts. Their stories can support reflection on gender, embodiment and transformation, but no mantra is invented where none is documented."
+        ]
+      },
+      "practice": "Choose one learning intention. Recite a Ganesha or Saraswati verse before study or communication.",
+      "opening": "vakratunda",
+      "closing": "lokah-samastah"
+    },
+    {
+      "key": "thursday",
+      "name": "Thursday",
+      "sanskrit": "Guruvara / Brihaspativara",
+      "planet": "Jupiter",
+      "planetSanskrit": "Guru / Brihaspati",
+      "character": [
+        "Thursday is Jupiter’s day in Western planetary astrology. Jupiter symbolises growth, meaning, ethics, generosity, teaching, faith, philosophy and the search for a larger perspective. Its excess can be overconfidence or promising more than one can sustain.",
+        "In Jyotisha, Guru or Brihaspati is associated with wisdom, teachers, learning, counsel, expansion, children and dharma. Thursday is often linked with Vishnu, Brihaspati, Dattatreya and the Guru principle, although devotional customs vary."
+      ],
+      "intention": "Use Thursday for learning from experience, seeking wise counsel, teaching responsibly and reconnecting with a meaningful direction. Growth is most useful when paired with humility and discernment.",
+      "question": "What do I believe, why do I believe it, and how can I turn what I know into wise action?",
+      "themes": [
+        "Wisdom and discernment",
+        "Teaching, mentorship and learning",
+        "Meaning, ethics and long-term growth",
+        "Hope, generosity and perspective",
+        "Spiritual study and reflection"
+      ],
+      "groupNotes": [],
+      "others": {
+        "title": "Other Thursday pantheon connections",
+        "text": "",
+        "items": [
+          "Greek: Zeus is the classical planetary counterpart associated with Jupiter; Athena is associated with wisdom and strategy. Use attested hymns, such as the relevant Homeric or Orphic hymns, rather than fabricated mantras.",
+          "Norse: Thor is associated with thunder and protection and was historically compared with Jupiter in weekday naming. Odin is associated with wisdom, poetry and knowledge, but is not simply a Norse version of Jupiter.",
+          "Buddhist: Shakyamuni Buddha, Ratnasambhava, Yeshe Tsogyal, Machig Labdrön and other Vajrayana figures belong to distinct Buddhist traditions. Use mantras and dharanis only with their proper lineage and context; empowerment or instruction may be required for some practices.",
+          "Hayagriva appears in both Hindu and Buddhist traditions, but the forms, liturgies and mantras are not interchangeable. Keep their sources separate."
+        ]
+      },
+      "practice": "Reflect on one belief, teacher or lesson. Choose a Guru, Vishnu or Hayagriva prayer.",
+      "opening": "gurave-sarva-lokanam",
+      "closing": "saha-navavatu"
+    },
+    {
+      "key": "friday",
+      "name": "Friday",
+      "sanskrit": "Shukravara",
+      "planet": "Venus",
+      "planetSanskrit": "Shukra",
+      "character": [
+        "Friday is Venus’s day in Western planetary astrology. Venus symbolises attraction, affection, relationship, pleasure, aesthetics, art, harmony, values and the capacity to appreciate. Its shadow can be people-pleasing, overindulgence or tying self-worth to approval.",
+        "In Jyotisha, Shukra is associated with beauty, enjoyment, relationships, artistic refinement, comforts and material prosperity. Friday is commonly associated with Lakshmi and forms of Devi, although customs differ by region and lineage."
+      ],
+      "intention": "Use Friday to practise appreciation, creativity, relational care and healthy receiving. Prosperity here includes material resources, but also the ability to recognise value, beauty and support without losing discernment.",
+      "question": "What do I value, what do I genuinely enjoy, and where can I receive or offer love with healthy boundaries?",
+      "themes": [
+        "Love and relationships",
+        "Beauty, art, music and creativity",
+        "Self-worth and receiving care",
+        "Prosperity, resources and enjoyment",
+        "Harmony, diplomacy and pleasure with balance"
+      ],
+      "groupNotes": [],
+      "others": {
+        "title": "Friday and other pantheons",
+        "text": "",
+        "items": [
+          "Greek: Aphrodite is associated with love, beauty and attraction. The Homeric Hymn to Aphrodite is an attested hymn; it is not a mantra. Psyche is a mythic figure whose story explores the soul, trials and transformation.",
+          "Mesopotamian: Inanna/Ishtar has associations with love, power, fertility and war. Use historically grounded hymns and prayers, not modern invented “ancient mantras”.",
+          "Greek and Anatolian: Cybele/Magna Mater are historically connected but not identical in every cultic setting. Use tradition-specific hymns and titles.",
+          "Greek: Persephone is associated with seasonal change, the underworld and return; Hestia with the hearth; Gaia with the Earth; Flora and Pomona with flowering and fruitfulness.",
+          "Jewish and later esoteric traditions: Lilith and the Mesopotamian Lilitu are related in later reception but should not be collapsed into one simple identity. There is no universally established ancient public mantra for Lilith.",
+          "Queer and gender-diverse sacred figures: Hermaphroditus is a figure in Greek myth; Ardhanarishvara is a Hindu form expressing Shiva-Shakti unity; Mohini is Vishnu’s feminine form. Their traditions and histories should remain distinct."
+        ]
+      },
+      "practice": "Name something you value and something you appreciate. Choose a Lakshmi, Lalita or Manasa Devi practice.",
+      "opening": "guru-brahma",
+      "closing": "purnamadah"
+    },
+    {
+      "key": "saturday",
+      "name": "Saturday",
+      "sanskrit": "Shanivara",
+      "planet": "Saturn",
+      "planetSanskrit": "Shani",
+      "character": [
+        "Saturday is Saturn’s day in Western planetary astrology. Saturn symbolises time, structure, limits, responsibility, endurance, maturity and consequences. Its constructive side is patience and sustained effort; its difficult side can be fear, rigidity or discouragement.",
+        "In Jyotisha, Shani is associated with discipline, labour, karma, delay, endurance, humility and accountability. Saturday practices often include Shani, Hanuman and protective forms, with strong regional variation."
+      ],
+      "intention": "Use Saturday to review what needs consistency, where boundaries are needed and what responsibilities can no longer be avoided. Saturn’s lesson is not punishment; it is maturity through honest engagement with reality.",
+      "question": "What needs patient work, what boundary must I honour, and what responsibility can I take without punishing myself?",
+      "themes": [
+        "Discipline and consistency",
+        "Patience, endurance and long-term effort",
+        "Boundaries and accountability",
+        "Working with fear, delay and frustration",
+        "Simplicity, humility and responsibility"
+      ],
+      "groupNotes": [],
+      "others": {
+        "title": "Saturday: fierce, protective and Buddhist traditions",
+        "text": "These figures are included because their traditions contain themes of time, discipline, protection or fierce transformation. They are not all “Saturn deities”, and their mantras are not interchangeable.",
+        "items": [
+          "Hindu: Kala Bhairava, Mahakala, Veerabhadra, Aghora Shiva, Dhumavati, Bagalamukhi, Chinnamasta and the other Mahavidyas. Each has distinct liturgical and tantric contexts. Bija-rich mantras should not be treated as universally unrestricted.",
+          "Buddhist: Vajrayogini, Vajravarahi, Kurukulla, Vajrakilaya, Yamantaka, Mahakala Panjarnata, Hevajra, Rahula, Pehar Gyalpo, Machig Labdrön and Yeshe Tsogyal belong to distinct Vajrayana lineages. Many mantras require empowerment, oral transmission or practice instructions; a generic internet formula is no substitute for lineage guidance.",
+          "Karuppaswamy and Vettai Karuppar: the Shivaputra moola mantra is given under Tuesday for its protective and courageous focus. It can also be revisited on Saturday as a personal guardian practice, without claiming the weekday is prescribed by all Karuppar traditions.",
+          "Greek: Hecate has underworld and threshold associations; the Orphic Hymn to Hecate is an attested hymn. It is not a Sanskrit mantra.",
+          "Norse: Odin is associated with wisdom, sacrifice and knowledge; Thor with protection. Use historically grounded prayers or clearly labelled modern devotional forms."
+        ]
+      },
+      "practice": "Review a responsibility without self-punishment. Choose a Shani, Guru or universal peace prayer.",
+      "opening": "agyana-timirandhasya",
+      "closing": "lokah-samastah"
+    },
+    {
+      "key": "sunday",
+      "name": "Sunday",
+      "sanskrit": "Ravivara",
+      "planet": "The Sun",
+      "planetSanskrit": "Surya / Ravi / Aditya",
+      "character": [
+        "Sunday is the Sun’s day in Western planetary astrology. The Sun symbolises vitality, identity, purpose, visibility, confidence, leadership and creative life-force. It can also invite reflection on ego, recognition and the difference between healthy confidence and domination.",
+        "In Jyotisha, Surya is associated with vitality, authority, selfhood, leadership, father figures and clarity. Sunday is a natural day for solar prayers and reflection on purpose, although the Sun may be honoured on any day."
+      ],
+      "intention": "Use Sunday to reconnect with direction and vitality. The intention is not to prove yourself to everyone, but to remember what matters, take responsibility for your choices and express your abilities with integrity.",
+      "question": "What gives my life direction, and how can I express my strength with humility and purpose?",
+      "themes": [
+        "Vitality and life direction",
+        "Confidence and self-expression",
+        "Leadership and responsible visibility",
+        "Purpose, courage and clarity",
+        "Gratitude for life and energy"
+      ],
+      "groupNotes": [],
+      "others": {
+        "title": "Sunday: other pantheon connections",
+        "text": "",
+        "items": [
+          "Greek and Roman: Helios and Sol are solar figures. The Orphic Hymn to Helios is an attested hymn; it is not a mantra.",
+          "Norse and Germanic: Sól/Sunna is a solar figure. Use culturally grounded prayers or clearly labelled modern invocations; do not invent a historical mantra.",
+          "Iranian: Mithra is associated with covenant, light and watchfulness in ancient Iranian traditions. Keep Avestan material distinct from Sanskrit mantra practice.",
+          "Turkic: Ülgen is a creator figure in some Turkic traditions. Avoid assigning a generic solar mantra without a reliable community source.",
+          "Sunday can also include reflection on Krishna, Vishnu, Shiva or other deities from the client list. The planetary day does not restrict devotion to one figure."
+        ]
+      },
+      "practice": "Reconnect with purpose. Choose a solar prayer, or a Gita verse on compassion, responsibility or inner direction.",
+      "opening": "gayatri",
+      "closing": "sarve-shaam"
+    }
+  ]
+}

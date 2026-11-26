@@ -41,7 +41,11 @@ password on. Behind the door the editor still needs the Studio's sign-in, so kno
 | Connect | Every word of the page and the form; the four steps are the homepage's How it works |
 | Bookings and emails | The client's booking and invoice pages, and every email a client is sent (received, confirmed, times offered, reminders, invoices, receipts) |
 | Find your path | The three questions, each answer, the hints, and the result's words |
-| Daily practice | Today, the daily rite (its lengths, five steps and their guidance, the mantra), the lunar month, your practice, the sacred days, reminders |
+| Daily practice | Today, the seven days, today’s mantras, the daily rite (its lengths, six steps and their guidance), my mantras, the lunar month, your practice, the sacred days, reminders |
+| Mantras | The mantra library: add, edit, delete. Each mantra’s days, group, deity, intentions, label, Devanagari, meaning, line by line meanings, purpose, when to use it, notes, source, a recording |
+| The seven days | Each day’s planet, character, intention, question, themes, notes under groups, other traditions, a gentle practice, and the opening and closing prayers of its rite |
+| Mantra library | How to use the library, what the labels mean, the filters, a mantra page’s words, the care note |
+| Across traditions | The wider devotional index |
 | Page not found | The 404 page's words and the ways back |
 | Pillar pages (six) | Every heading and paragraph, care notes, and the signature moments' words and lists (prompts, breathing steps, chakras, the comfort note, the class finder, the path of study, the Mahavidyas, the Greek gods, the sabbats and ritus, the sigil methods...) |
 | Catalogue (six) | Every category, subcategory and service; which chapter of the page each subcategory sits in; its icon |
@@ -51,6 +55,13 @@ timings and places on a map. Where the design needs a fixed number (ten Mahavidy
 seven chakras) the editor keeps that number.
 
 Small things to know:
+
+- **A mantra’s transliteration and pronunciation** are made from its Devanagari, so correcting the Devanagari
+  corrects both. Fill the “Transliteration” or “Pronunciation” fields only to override them.
+- **A mantra’s label:** “Being checked” holds its text back from the site (only the name, meaning and the wording as
+  supplied show) until the label is changed. “Learn with guidance” shows the text with a note to learn it from a
+  teacher. Untick “Notes drafted for Sarvakali” once its purpose and use are approved.
+- **A mantra’s days:** the first day ticked is its own day; on the others it appears under “Also kept on …”.
 
 - **Links in a paragraph:** write `[the words](/address)` or `[the words](https://…)`.
 - **The helpline:** 14416 always becomes a tap-to-call link by itself.

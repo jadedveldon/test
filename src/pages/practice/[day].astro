@@ -1,0 +1,109 @@
+---
+/**
+ * One day of the seven-day mantra library (/practice/monday … /practice/sunday): the day and its planet, its
+ * character, intention, question and themes, a gentle practice, its mantras in their groups, and the other
+ * traditions' connections. Words: src/content/pages/week.json ("The seven days" in the content editor); mantras:
+ * src/content/mantras ("Mantras"). The planetary text is symbolism for reflection, as the library says.
+ */
+import Base from '../../layouts/Base.astro';
+import MantraCard from '../../components/MantraCard.astro';
+import CareText from '../../components/CareText.astro';
+import { DAYS, DAY_KEYS, DAY_WORLD, DAY_HEX, DAY_GLYPH, dayOf, dayPath, groupsFor, loadMantras, type DayKey } from '../../data/mantras';
+import lib from '../../content/pages/library.json';
+
+export function getStaticPaths() {
+  return DAY_KEYS.map((day) => ({ params: { day } }));
+}
+const key = Astro.params.day as DayKey;
+const d = dayOf(key);
+const all = await loadMantras();
+const groups = groupsFor(all, key);
+const world = DAY_WORLD[key];
+const i = DAY_KEYS.indexOf(key);
+const prev = dayOf(DAY_KEYS[(i + 6) % 7]);
+const next = dayOf(DAY_KEYS[(i + 1) % 7]);
+const noteFor = (g: string) => d.groupNotes?.find((n) => n.group === g)?.text;
+const count = groups.reduce((n, g) => n + g.mantras.length, 0);
+---
+<Base title={`${d.name} · ${d.sanskrit} · Daily practice · Sarvakali`} sequence={world} description={`${d.name}, the day of ${d.planet}: ${d.question}`}>
+  <div class="pday" data-practice-day data-day={key} style={`--day:${DAY_HEX[key]}`}>
+    <section class="chapter" data-chapter={world}>
+      <div class="chapter-inner">
+        <nav class="week-strip" aria-label="The seven days" data-hero>
+          {DAYS.map((x) => <a href={dayPath(x.key)} aria-current={x.key === key ? 'page' : undefined} style={`--dc:${DAY_HEX[x.key as DayKey]}`} data-week-day={x.key}><span class="ws-glyph" aria-hidden="true">{DAY_GLYPH[x.key as DayKey]}</span><span class="ws-name">{x.name.slice(0, 3)}</span></a>)}
+        </nav>
+        <p class="kicker" data-hero><a href="/practice">Daily practice</a> · <span data-today-badge hidden>Today · </span>{d.planet} · {d.planetSanskrit}</p>
+        <h1 class="display-l" data-hero data-split>{d.name}</h1>
+        <p class="pday-sk" data-hero lang="sa-Latn">{d.sanskrit} <span class="pday-glyph" aria-hidden="true">{DAY_GLYPH[key]}</span></p>
+        <blockquote class="pday-question" data-hero><p class="kicker">A question for the day</p><p>{d.question}</p></blockquote>
+        <div class="cta-row" data-hero>
+          <a class="btn btn-solid" href={`/practice?day=${key}#rite`}>Begin {d.name}’s practice</a>
+          <a class="btn btn-ghost" href="#mantras">{count} mantras and verses</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" data-chapter={world}>
+      <div class="chapter-inner pday-about">
+        <div class="pday-care" data-fade><CareText text={lib.care} /></div>
+        <div class="pday-cols">
+          <div data-fade>
+            <h2 class="display-m">The planetary character of the day</h2>
+            {d.character.map((p) => <p>{p}</p>)}
+            <h2 class="display-m">The day’s spiritual intention</h2>
+            <p>{d.intention}</p>
+          </div>
+          <aside data-fade>
+            <h2 class="kicker">Themes and areas for reflection</h2>
+            <ul class="pday-themes">{d.themes.map((t) => <li>{t}</li>)}</ul>
+            <div class="pday-rhythm">
+              <h2 class="kicker">A gentle practice for {d.name}</h2>
+              <p>{d.practice}</p>
+              <p class="hint">{lib.rhythm.text}</p>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" data-chapter={world} id="mantras">
+      <div class="chapter-inner">
+        <p class="kicker" data-fade>{d.name}’s mantras</p>
+        <h2 class="display-l" data-split>Mantras, prayers and verses</h2>
+        <div class="mc-controls" data-mc-controls data-fade>
+          <span class="hint">Show:</span>
+          <label><input type="checkbox" checked data-show-script="deva" /> Devanagari</label>
+          <label><input type="checkbox" checked data-show-script="iast" /> Transliteration</label>
+          <label><input type="checkbox" checked data-show-script="read" /> Pronunciation</label>
+        </div>
+        {groups.map((g) => (
+          <div class="mc-group">
+            <h3 class="display-m mc-group-title">{g.name}</h3>
+            {noteFor(g.name) ? <p class="mc-group-note">{noteFor(g.name)}</p> : null}
+            <div class="mc-grid">{g.mantras.map((m) => <MantraCard m={m} headingLevel="h4" />)}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    {d.others?.items?.length ? (
+      <section class="chapter" data-chapter="traditions">
+        <div class="chapter-inner narrow">
+          <p class="kicker" data-fade>Across traditions</p>
+          <h2 class="display-m" data-fade>{d.others.title}</h2>
+          {d.others.text ? <p class="lede" data-fade>{d.others.text}</p> : null}
+          <ul class="pday-others" data-fade>{d.others.items.map((t) => { const [h, ...rest] = t.split(': '); return <li>{rest.length ? <><b>{h}:</b> {rest.join(': ')}</> : t}</li>; })}</ul>
+          <p data-fade><a class="btn btn-ghost btn-sm" href="/practice/traditions">The wider index, across traditions →</a></p>
+        </div>
+      </section>
+    ) : null}
+
+    <section class="chapter" data-chapter="close">
+      <div class="chapter-inner pday-next">
+        <a class="pday-step" href={dayPath(prev.key)} style={`--dc:${DAY_HEX[prev.key as DayKey]}`}><span class="hint">← The day before</span><span class="display-m">{prev.name}</span><span class="hint">{prev.planet}</span></a>
+        <a class="pday-step pday-lib" href="/practice/library"><span class="hint">Every mantra</span><span class="display-m">The library</span><span class="hint">by day, deity or intention</span></a>
+        <a class="pday-step" href={dayPath(next.key)} style={`--dc:${DAY_HEX[next.key as DayKey]}`}><span class="hint">The day after →</span><span class="display-m">{next.name}</span><span class="hint">{next.planet}</span></a>
+      </div>
+    </section>
+  </div>
+</Base>

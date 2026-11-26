@@ -1,0 +1,122 @@
+---
+/**
+ * One mantra (/practice/mantras/<name>): its text large, in Devanagari, transliteration and readable
+ * pronunciation (each can be hidden; the text can be made larger), a recording when Sarvakali adds one, its
+ * meaning line by line, its purpose and use, its label and source, and a counter to chant it (src/scripts/mantra.ts),
+ * which marks the day in the visitor's own practice record. A mantra being checked shows its meaning and the
+ * wording as supplied, never as a text to recite.
+ */
+import Base from '../../../layouts/Base.astro';
+import MantraCard from '../../../components/MantraCard.astro';
+import CareText from '../../../components/CareText.astro';
+import Rich from '../../../components/Rich.astro';
+import { DAY_HEX, DAY_WORLD, dayOf, dayPath, loadMantras, mantraPath, type DayKey } from '../../../data/mantras';
+import w from '../../../content/pages/library.json';
+
+export async function getStaticPaths() {
+  const all = await loadMantras();
+  return all.map((m) => ({ params: { slug: m.slug } }));
+}
+const all = await loadMantras();
+const m = all.find((x) => x.slug === Astro.params.slug)!;
+const W = w.mantra;
+const L = w.labels;
+const day = m.days[0] as DayKey;
+const sameDay = all.filter((x) => x.days[0] === day);
+const at = sameDay.indexOf(m);
+const prev = sameDay[(at - 1 + sameDay.length) % sameDay.length];
+const next = sameDay[(at + 1) % sameDay.length];
+const related = all.filter((x) => x.slug !== m.slug && x.deity && x.deity === m.deity && x.deity !== 'Universal').slice(0, 3);
+const label = m.status === 'open' ? [L.open, L.openText] : m.status === 'guidance' ? [L.guidance, L.guidanceText] : m.status === 'variant' ? [L.variant, L.variantText] : [L.verify, L.verifyText];
+const canChant = !!m.text && m.status !== 'verify';
+const sensitive = /grief|healing/.test(m.themes.join(' ')) || m.status === 'guidance';
+---
+<Base title={`${m.name} · Mantra library · Sarvakali`} sequence={DAY_WORLD[day]} description={m.meaning.slice(0, 155)}>
+  <article class="pmantra" data-mantra-page data-slug={m.slug} data-name={m.name} style={`--day:${DAY_HEX[day]}`}>
+    <section class="chapter" data-chapter={DAY_WORLD[day]}>
+      <div class="chapter-inner">
+        <p class="kicker" data-hero><a href="/practice/library">{W.back}</a> · {W.days} {m.days.map((d, i) => <>{i ? ', ' : ''}<a href={dayPath(d)}>{dayOf(d).name}</a></>)}</p>
+        <h1 class="display-l" data-hero data-split>{m.name}</h1>
+        {m.intention ? <p class="lede" data-hero>{m.intention}</p> : null}
+        <p class="pm-label" data-hero><span class={`mc-badge mc-badge-${m.status}`}>{label[0]}</span> <span class="hint">{label[1]}</span></p>
+        {sensitive ? <div class="pday-care" data-hero><CareText text={w.care} /></div> : null}
+
+        {m.text ? (
+          <div class="pm-text" data-hero data-pm-text>
+            <div class="mc-controls" data-mc-controls>
+              <span class="hint">{W.show}:</span>
+              <label><input type="checkbox" checked data-show-script="deva" /> Devanagari</label>
+              <label><input type="checkbox" checked data-show-script="iast" /> {W.iast}</label>
+              <label><input type="checkbox" checked data-show-script="read" /> {W.pronunciation}</label>
+              <button type="button" class="path-back" data-pm-bigger aria-pressed="false">{W.bigger}</button>
+              <button type="button" class="path-back" data-pm-copy data-copied={W.copied}>{W.copy}</button>
+              <button type="button" class="path-back" data-keep-mantra={m.slug} aria-pressed="false" data-kept-label={W.kept} data-keep-label={W.keep}>{W.keep}</button>
+            </div>
+            <p class="pm-deva" lang="sa" data-script="deva">{m.text.split('\n').map((l) => <span>{l}</span>)}</p>
+            {m.iastText ? <><h2 class="kicker" data-script="iast">{W.iast}</h2><p class="pm-iast" lang="sa-Latn" data-script="iast">{m.iastText.split('\n').map((l) => <span>{l}</span>)}</p></> : null}
+            {m.readText ? <><h2 class="kicker" data-script="read">{W.pronunciation}</h2><p class="pm-read" data-script="read">{m.readText.split('; ').map((l) => <span>{l}</span>)}</p></> : null}
+            <div class="pm-audio">
+              {m.audio ? <><h2 class="kicker">{W.listen}</h2><audio controls preload="none" src={m.audio}></audio></> : <p class="hint">{W.noAudio}</p>}
+            </div>
+          </div>
+        ) : null}
+      </div>
+    </section>
+
+    <section class="chapter" data-chapter={DAY_WORLD[day]}>
+      <div class="chapter-inner pm-cols">
+        <div data-fade>
+          {m.meaning ? <><h2 class="display-m">{W.meaning}</h2><p class="pm-meaning">{m.meaning}</p></> : null}
+          {m.parts.length ? (
+            <><h2 class="kicker">{W.parts}</h2>
+            <ol class="pm-parts">{m.parts.map(([line, meaning]) => <li>{/^\d+$/.test(line) ? null : <span class="pm-part-line" lang="sa">{line}</span>}<span>{meaning}</span></li>)}</ol></>
+          ) : null}
+          {m.supplied ? (
+            <div class="pm-supplied"><h2 class="kicker">{W.supplied}</h2><p>{m.supplied.split('\n').map((l) => <span>{l}</span>)}</p>{m.status === 'verify' ? <p class="hint">{L.verifyText}</p> : null}</div>
+          ) : null}
+        </div>
+        <aside data-fade>
+          <dl class="pm-facts">
+            {m.purpose ? <><dt>{W.purpose}</dt><dd>{m.purpose}</dd></> : null}
+            {m.supports ? <><dt>{W.supports}</dt><dd>{m.supports}</dd></> : null}
+            {m.when ? <><dt>{W.when}</dt><dd>{m.when}</dd></> : null}
+            {m.note ? <><dt>{W.note}</dt><dd><Rich text={m.note} /></dd></> : null}
+            {m.source ? <><dt>{W.source}</dt><dd>{m.source}</dd></> : null}
+          </dl>
+          {m.drafted ? <p class="mc-drafted">{L.drafted}: {L.draftedText}</p> : null}
+        </aside>
+      </div>
+    </section>
+
+    {canChant ? (
+      <section class="chapter" data-chapter="mala" id="chant">
+        <div class="chapter-inner narrow pm-chant" data-chant data-name={m.name}>
+          <p class="kicker" data-fade>{W.chant}</p>
+          <h2 class="display-m" data-fade>{m.name}</h2>
+          <p data-fade>{W.chantLede}</p>
+          <div class="rite-lengths" role="radiogroup" aria-label="How many times" data-fade>
+            {W.counts.map((n, i) => <button type="button" role="radio" aria-checked={i === 0 ? 'true' : 'false'} data-chant-count={n}>{n === 1 ? W.once : W.times.replace('{n}', String(n))}</button>)}
+          </div>
+          <button type="button" class="rite-japa pm-japa" data-chant-tap aria-label={W.next}><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" class="rj-track" /><circle cx="60" cy="60" r="52" class="rj-fill" pathLength="1" style="stroke-dasharray:1;stroke-dashoffset:1" /></svg><b data-chant-n>0</b><small data-chant-of>/ 1</small></button>
+          <p class="pm-chant-line" lang="sa" aria-hidden="true">{m.text.split('\n')[0]}</p>
+          <p class="hint" data-chant-done hidden aria-live="polite">{W.doneChant} <a href="/practice#yours">Your practice →</a></p>
+          <button type="button" class="btn btn-ghost btn-sm" data-chant-again hidden>{W.again}</button>
+        </div>
+      </section>
+    ) : null}
+
+    <section class="chapter" data-chapter={DAY_WORLD[day]}>
+      <div class="chapter-inner">
+        {related.length ? (
+          <><h2 class="kicker">{W.more.replace('{deity}', m.deity)}</h2>
+          <div class="mc-grid">{related.map((r) => <MantraCard m={r} />)}</div></>
+        ) : null}
+        <nav class="pday-next" aria-label="More on this day">
+          <a class="pday-step" href={mantraPath(prev.slug)}><span class="hint">← Before it on {dayOf(day).name}</span><span class="display-s">{prev.name}</span></a>
+          <a class="pday-step pday-lib" href={dayPath(day)}><span class="hint">{W.dayLink.replace('{day}', dayOf(day).name)}</span><span class="display-s">{dayOf(day).name}</span></a>
+          <a class="pday-step" href={mantraPath(next.slug)}><span class="hint">After it →</span><span class="display-s">{next.name}</span></a>
+        </nav>
+      </div>
+    </section>
+  </article>
+</Base>

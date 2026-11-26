@@ -1,30 +1,82 @@
 {
   "kicker": "Daily practice",
   "title": "A practice for today",
-  "lede": "A few quiet minutes, guided step by step, or one small practice on its own. Everything you do here stays on this device: nothing is sent anywhere.",
+  "lede": "Each day of the week has its planet, its question and its mantras. Begin with a few quiet minutes, guided step by step, or open the day’s mantras and chant one. Everything you do here stays on this device: nothing is sent anywhere.",
   "begin": "Begin today’s practice",
   "card": "Draw today’s card",
   "choose": "Or choose one practice",
-  "today": { "moon": "Tonight’s moon", "next": "Next sacred night", "you": "Your practice", "none": "Not yet today", "done": "Practised today", "streak": "{n} days in a row", "first": "Your first day" },
+  "today": {
+    "moon": "Tonight’s moon",
+    "next": "Next sacred night",
+    "you": "Your practice",
+    "none": "Not yet today",
+    "done": "Practised today",
+    "streak": "{n} days in a row",
+    "first": "Your first day",
+    "day": "Today",
+    "question": "A question for the day",
+    "dayMantras": "{day}’s mantras",
+    "library": "The mantra library"
+  },
   "rite": {
     "kicker": "The daily rite",
-    "title": "Five quiet steps",
-    "lede": "Choose how long you have. Each step waits for you; skip any you like.",
+    "title": "Six quiet steps",
+    "lede": "Choose how long you have. The day’s opening prayer, a main mantra of your choosing, and a closing prayer. Each step waits for you; skip any you like.",
     "lengths": [
-      { "minutes": 5, "label": "About 5 minutes", "breaths": 3, "beads": 27 },
-      { "minutes": 10, "label": "About 10 minutes", "breaths": 5, "beads": 54 },
-      { "minutes": 20, "label": "About 20 minutes", "breaths": 8, "beads": 108 }
+      {
+        "minutes": 5,
+        "label": "About 5 minutes",
+        "breaths": 3,
+        "beads": 11
+      },
+      {
+        "minutes": 10,
+        "label": "About 10 minutes",
+        "breaths": 5,
+        "beads": 27
+      },
+      {
+        "minutes": 20,
+        "label": "About 20 minutes",
+        "breaths": 8,
+        "beads": 108
+      }
     ],
     "start": "Begin",
     "next": "Next",
     "back": "Back",
     "skip": "Skip this step",
     "steps": [
-      { "name": "Arrive", "title": "Arrive", "text": "Sit comfortably. Follow the circle: in as it grows, out as it settles. Breathe gently and never strain." },
-      { "name": "Light", "title": "Light the lamp", "text": "Light a real diya if you have one, or this one. Let its flame be the centre of your attention for a moment." },
-      { "name": "Intend", "title": "Set an intention", "text": "What do you bring today? A word is enough. You may also bring nothing at all." },
-      { "name": "Japa", "title": "Count the mantra", "text": "Repeat the mantra once for each bead: tap the bead, the button, or press space. The round ends by itself." },
-      { "name": "Offer", "title": "Offer, and close", "text": "Is there something you are ready to set down? Write it and offer it to the fire, or simply close." }
+      {
+        "name": "Arrive",
+        "title": "Arrive",
+        "text": "Sit comfortably. Follow the circle: in as it grows, out as it settles. Breathe gently and never strain."
+      },
+      {
+        "name": "Light",
+        "title": "Light the lamp",
+        "text": "Light a real diya if you have one, or this one. Let its flame be the centre of your attention for a moment."
+      },
+      {
+        "name": "Open",
+        "title": "The opening prayer",
+        "text": "Begin with the day’s opening prayer. Read it once, slowly, aloud or silently; the meaning is beneath it."
+      },
+      {
+        "name": "Intend",
+        "title": "Set an intention",
+        "text": "Sit with the day’s question for a moment. Then name what you bring today: a word is enough. You may also bring nothing at all."
+      },
+      {
+        "name": "Chant",
+        "title": "The main mantra",
+        "text": "Choose one of today’s mantras, or one of your own. Repeat it as many times as feels true: tap the circle, the button, or press space. One careful recitation is enough."
+      },
+      {
+        "name": "Close",
+        "title": "Close",
+        "text": "Close with a prayer for everyone. If something is ready to be set down, write it and offer it to the fire."
+      }
     ],
     "breatheIn": "Breathe in",
     "breatheOut": "Breathe out",
@@ -32,12 +84,19 @@
     "light": "Light the lamp",
     "lit": "The lamp is lit",
     "intentionLabel": "My intention",
-    "intentionExamples": ["Strength", "Clarity", "Letting go", "Protection for someone I love", "Gratitude", "Courage"],
+    "intentionExamples": [
+      "Strength",
+      "Clarity",
+      "Letting go",
+      "Protection for someone I love",
+      "Gratitude",
+      "Courage"
+    ],
     "keepJournal": "Keep this in my practice journal (on this device only)",
     "mantra": "ॐ क्रीं कालिकायै नमः",
     "mantraNote": "Om Krīm Kālikāyai Namaḥ · the mantra is chosen with Sarvakali",
     "bead": "Next bead",
-    "endRound": "End the round here",
+    "endRound": "That is enough for today",
     "offerLabel": "What would you like to let go of?",
     "offer": "Offer it to the fire",
     "close": "Close the practice",
@@ -47,7 +106,20 @@
     "reflection": "A line for your journal (optional, kept on this device)",
     "save": "Save to my journal",
     "saved": "Saved to your journal.",
-    "again": "Practise again"
+    "again": "Practise again",
+    "forDay": "{day}’s rite",
+    "question": "A question for the day",
+    "choose": "Today’s main mantra:",
+    "mine": "one of mine",
+    "howMany": "How many times",
+    "once": "Once",
+    "counts": [
+      1,
+      11,
+      27,
+      54,
+      108
+    ]
   },
   "log": {
     "kicker": "Your practice",
@@ -92,5 +164,35 @@
     "time": "At",
     "add": "Add a daily reminder to my calendar",
     "addedNote": "Saved. Open the file to add a daily reminder to your calendar."
-  }
+  },
+  "week": {
+    "kicker": "The seven days",
+    "title": "A week of planetary days",
+    "lede": "The library follows the seven planetary weekdays, as the Western and Indian weekday systems share them. The planets are symbolism for reflection, not a forecast: any mantra may be practised on any day.",
+    "today": "Today"
+  },
+  "todayList": {
+    "kicker": "Today’s mantras",
+    "title": "For today",
+    "lede": "The day’s own mantras, prayers and verses. Open one to read it slowly, hear how it sounds, and chant it.",
+    "also": "Also kept on {day}",
+    "all": "All of {day}’s mantras, with their meanings"
+  },
+  "mine": {
+    "kicker": "My mantras",
+    "title": "The ones you keep",
+    "lede": "Tap ✦ on any mantra to keep it here, with how often you have chanted it. Kept on this device only.",
+    "empty": "None yet. Tap ✦ on any mantra in the library to keep it here.",
+    "chanted": "chanted {n} times",
+    "remove": "Remove"
+  },
+  "library": {
+    "kicker": "The mantra library",
+    "title": "Mantras, prayers and verses for every day",
+    "lede": "Each with its Sanskrit, a transliteration, a readable pronunciation, its meaning in simple English, and when and how it can be used. Search by day, deity or intention.",
+    "button": "Open the library",
+    "traditions": "Across traditions"
+  },
+  "malaOpen": "its page",
+  "malaChoose": "The mantra"
 }

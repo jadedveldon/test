@@ -166,6 +166,46 @@ export const PRESETS: Record<string, Preset> = {
     a: '#010102', b: '#0a0a14', c: '#3a3a55', glow: '#fff2d0',
     ink: '#f2f0ee', inkSoft: '#b8b6c0', scale: 1.3, warp: 1.6, speed: 0.03, light: 0, motes: 0.3, form: 'halo', shift: 0,
   },
+  /* the seven planetary days of the mantra library (src/pages/practice), each in its planet's colours and light:
+     the Moon's phases, Mars's fire, Mercury's letters, Jupiter's lamps, Venus's lotus, Saturn's astrolabe, the Sun's halo */
+  dayMonday: {
+    a: '#03050d', b: '#18203c', c: '#9fb2e0', glow: '#eef2ff',
+    ink: '#eef1ff', inkSoft: '#aab3cf', scale: 1.6, warp: 2.0, speed: 0.04, light: 0, motes: 0.6, form: 'moons', shift: 4.4, zoom: 0.7, fade: 0.55, narrow: 0.3,
+  },
+  dayTuesday: {
+    a: '#0a0202', b: '#3a0a08', c: '#d2452a', glow: '#ffb08a',
+    ink: '#fbeee6', inkSoft: '#d9b2a4', scale: 1.5, warp: 2.6, speed: 0.07, light: 0, motes: 0.55, form: 'agni', shift: 4.4, zoom: 0.72, fade: 0.55, narrow: 0.3,
+  },
+  dayWednesday: {
+    a: '#020a07', b: '#0c3024', c: '#3fb784', glow: '#c8ffe4',
+    ink: '#ecfbf4', inkSoft: '#a6cdbb', scale: 1.4, warp: 2.0, speed: 0.05, light: 0, motes: 0.5, form: 'letters', shift: 4.4, zoom: 0.7, fade: 0.5, narrow: 0.3,
+  },
+  dayThursday: {
+    a: '#0a0702', b: '#352606', c: '#e0aa30', glow: '#ffe6a0',
+    ink: '#fbf3e2', inkSoft: '#d6c3a0', scale: 1.4, warp: 1.9, speed: 0.04, light: 0, motes: 0.45, form: 'lamps', shift: 4.4, zoom: 0.72, fade: 0.55, narrow: 0.3,
+  },
+  dayFriday: {
+    a: '#0c0408', b: '#3a1230', c: '#e07aa8', glow: '#ffd6ea',
+    ink: '#fdeff5', inkSoft: '#dcb4c6', scale: 1.4, warp: 2.1, speed: 0.05, light: 0, motes: 0.55, form: 'lotus', shift: 4.4, zoom: 0.72, fade: 0.55, narrow: 0.3,
+  },
+  daySaturday: {
+    a: '#03030a', b: '#141434', c: '#5f5fb0', glow: '#d8d8ff',
+    ink: '#efeffc', inkSoft: '#afafd0', scale: 1.7, warp: 1.6, speed: 0.03, light: 0, motes: 0.4, form: 'astrolabe', shift: 4.4, zoom: 0.7, fade: 0.5, narrow: 0.3,
+  },
+  daySunday: {
+    a: '#0c0602', b: '#451c06', c: '#f0902a', glow: '#ffe2a0',
+    ink: '#fff4e6', inkSoft: '#e0c2a0', scale: 1.5, warp: 2.3, speed: 0.06, light: 0, motes: 0.6, form: 'halo', shift: 4.4, zoom: 0.7, fade: 0.55, narrow: 0.3,
+  },
+  /* the mantra library: the garland of letters on a dusk of saffron and violet */
+  library: {
+    a: '#06040a', b: '#22132c', c: '#b07a3a', glow: '#f6d8a0',
+    ink: '#f7efe6', inkSoft: '#cbb8a6', scale: 1.4, warp: 2.0, speed: 0.04, light: 0, motes: 0.45, form: 'letters', shift: 3.6, zoom: 0.75, fade: 0.45, narrow: 0,
+  },
+  /* across traditions: one night sky over many peoples */
+  traditions: {
+    a: '#02040c', b: '#101a3a', c: '#7f8fd0', glow: '#e4e8ff',
+    ink: '#eef0ff', inkSoft: '#a9b0d0', scale: 2.0, warp: 2.4, speed: 0.04, light: 0, motes: 0.9, form: 'stars', shift: 0, fade: 0.5, narrow: 0.3,
+  },
   /* ---------------- Pillar 1, Devotion & the Unseen · direction C, Cosmic mother */
   // the opening: soft drifting dust; the yantra and its mala are drawn on the page itself
   devC_hero: {

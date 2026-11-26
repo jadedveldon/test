@@ -5,7 +5,7 @@ const OUT = require('path').join(process.env.QA_OUT || 'qa-output', 'layout');
 require('fs').mkdirSync(OUT, { recursive: true });
 const B = (process.env.QA_BASE || 'http://127.0.0.1:4321');
 const SIZES = (process.env.SIZES || '320x568,360x740,768x1024,1024x768,844x390,1920x1080,2560x1440').split(',').map((s) => s.split('x').map(Number));
-const PAGES = (process.env.PAGES || '/,/pillars/devotion,/pillars/magic,/pillars/healing,/pillars/identity,/pillars/divination,/pillars/learning,/practice,/connect,/invoice,/booking,/studio,/404,/articles,/path,/articles/who-is-kali').split(',');
+const PAGES = (process.env.PAGES || '/,/pillars/devotion,/pillars/magic,/pillars/healing,/pillars/identity,/pillars/divination,/pillars/learning,/practice,/practice/library,/practice/monday,/practice/mantras/karpura-gauram,/practice/traditions,/connect,/invoice,/booking,/studio,/404,/articles,/path,/articles/who-is-kali').split(',');
 const MODES = (process.env.MODES || 'plain,text200,spacing').split(',');
 (async () => {
   const b = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });

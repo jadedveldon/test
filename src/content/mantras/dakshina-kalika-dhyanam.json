@@ -1,0 +1,50 @@
+{
+  "name": "Dakshina Kalika Dhyanam",
+  "days": [
+    "thursday"
+  ],
+  "group": "The Goddess",
+  "deity": "Kali",
+  "themes": [
+    "devotion",
+    "protection"
+  ],
+  "intention": "",
+  "text": "",
+  "meaning": "Six lines describing Kali’s form for meditation: her fierce face and loose hair; her four hands with sword, severed head, blessing and protection; seated with Mahakala, smiling; shining with ornaments; taking the Dakshina form to bless her devotees; removing every obstacle.",
+  "purpose": "A dhyana: a description to hold in the mind while meditating, not a single short mantra.",
+  "supports": "",
+  "when": "",
+  "note": "The Sanskrit in the client list needs checking against a published dhyana before it is printed as a fixed text. The six meanings are given below.",
+  "source": "",
+  "status": "verify",
+  "drafted": false,
+  "supplied": "Om Karala Vadanam Ghoram, Mukta Keshaam Chaturbhujam\nKhargam Mundam Cha Varam Cha, Abhayam Cha Dadhatim Kareem\nMahakal Samaaseenam, Smita Mukti Ruvaam Mukheem\nPeet Asrig Digdha Sarvaangeem, Divyabharan Bhushitaam\nDakshinaam Dakshina Rupam, Bhaktanugrah Kaarineem\nSarva Vighna Haram Devim, Kaleem Vande Shivapriyam",
+  "parts": [
+    {
+      "line": "1",
+      "meaning": "I pray to Goddess Kali, who has a fierce face and wild flowing hair. She has four hands."
+    },
+    {
+      "line": "2",
+      "meaning": "In her hands she holds a sword and a severed head, and gives blessings and protection to her devotees."
+    },
+    {
+      "line": "3",
+      "meaning": "She sits beside Lord Shiva, smiling kindly, showing the way to freedom and peace."
+    },
+    {
+      "line": "4",
+      "meaning": "Her body shines brightly, covered with divine ornaments and energy."
+    },
+    {
+      "line": "5",
+      "meaning": "She takes the form of Dakshina Kali to bless and take care of her devotees."
+    },
+    {
+      "line": "6",
+      "meaning": "I bow to Goddess Kali, who loves Shiva and helps remove all difficulties and protects us."
+    }
+  ],
+  "order": 69
+}

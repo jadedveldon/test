@@ -1,0 +1,50 @@
+{
+  "name": "AUM Saha Navavatu",
+  "days": [
+    "thursday"
+  ],
+  "group": "Morning prayers",
+  "deity": "Universal",
+  "themes": [
+    "peace",
+    "learning"
+  ],
+  "intention": "",
+  "text": "ॐ सह नाववतु ।\nसह नौ भुनक्तु ।\nसह वीर्यं करवावहै ।\nतेजस्वि नावधीतमस्तु मा विद्विषावहै ।\nॐ शान्तिः शान्तिः शान्तिः ॥",
+  "meaning": "May we, teacher and student, be protected together, nourished together; may we work together with energy; may our learning be filled with brilliance; may we not have discord with each other. Peace, peace, peace.",
+  "purpose": "A peace invocation for shared learning and protection.",
+  "supports": "Learning with others; harmony; respect between teacher and student.",
+  "when": "Before a class or study together.",
+  "note": "",
+  "source": "Peace invocation of the Taittiriya and Katha Upanishads",
+  "status": "open",
+  "drafted": true,
+  "supplied": "",
+  "parts": [
+    {
+      "line": "सह नाववतु",
+      "meaning": "May we (teacher and student) be protected together."
+    },
+    {
+      "line": "सह नौ भुनक्तु",
+      "meaning": "May we be nourished together."
+    },
+    {
+      "line": "सह वीर्यं करवावहै",
+      "meaning": "May we work together with great energy."
+    },
+    {
+      "line": "तेजस्वि नावधीतमस्तु",
+      "meaning": "May our learning be filled with brilliance."
+    },
+    {
+      "line": "मा विद्विषावहै",
+      "meaning": "May we not have discord with each other."
+    },
+    {
+      "line": "ॐ शान्तिः शान्तिः शान्तिः",
+      "meaning": "Peace, peace, peace: in the body, the mind and all around."
+    }
+  ],
+  "order": 72
+}

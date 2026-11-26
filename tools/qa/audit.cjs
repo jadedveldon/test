@@ -3,7 +3,7 @@
 const { chromium } = require('playwright');
 const OUT = require('path').join(process.env.QA_OUT || 'qa-output', 'audit');
 require('fs').mkdirSync(OUT, { recursive: true });
-const PAGES = ['/', '/about', '/care', '/connect', '/path', '/practice', '/articles', '/articles/who-is-kali', '/articles/the-thirty-moons', '/articles/what-happens-in-a-reading', '/invoice', '/booking', '/studio', '/404',
+const PAGES = ['/', '/about', '/care', '/connect', '/path', '/practice', '/practice/library', '/practice/monday', '/practice/thursday', '/practice/traditions', '/practice/mantras/karpura-gauram', '/practice/mantras/bhutanatha', '/articles', '/articles/who-is-kali', '/articles/the-thirty-moons', '/articles/what-happens-in-a-reading', '/invoice', '/booking', '/studio', '/404',
   '/pillars/devotion', '/pillars/magic', '/pillars/healing', '/pillars/identity', '/pillars/divination', '/pillars/learning'];
 const VIEWS = (process.env.VIEWS || 'desk,phone').split(',');
 (async () => {

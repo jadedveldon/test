@@ -73,6 +73,14 @@ const ok = (n, v, extra = '') => console.log(`${v ? 'ok  ' : 'FAIL'} ${n}${extra
   await p.keyboard.press('Escape'); await p.waitForTimeout(700);
   const cardBack = await p.evaluate(() => !!document.activeElement?.closest('[data-card-open]') || document.activeElement?.matches('[data-card-open]'));
   ok('card: focus in the dialog, stays there, returns on Escape', f?.inDialog && inDlg.every(Boolean) && cardBack, `${f?.label}; back ${cardBack}`);
+  // 5b. the mantra library (2026-11-26): a filter by keyboard, and the chant counter counts from the keyboard
+  await go('/practice/library');
+  await p.focus('[data-f-q]'); await p.keyboard.type('hanuman'); await p.waitForTimeout(400);
+  const libShown = await p.evaluate(() => [...document.querySelectorAll('.plib-grid [data-mc]')].filter((c) => !c.hidden).length);
+  await go('/practice/mantras/aum-sri-hanumate-namah');
+  await p.focus('[data-chant-tap]'); await p.keyboard.press('Enter'); await p.waitForTimeout(200);
+  const chantN = await p.evaluate(() => document.querySelector('[data-chant-n]')?.textContent);
+  ok('mantra library: search filters by keyboard; the chant counter counts from the keyboard', libShown > 0 && libShown < 20 && chantN === '1', `${libShown} shown; count ${chantN}`);
   // 6. signature moments by keyboard
   await go('/pillars/healing');
   await p.focus('[data-breath-toggle]'); await p.keyboard.press('Enter'); await p.waitForTimeout(2500);

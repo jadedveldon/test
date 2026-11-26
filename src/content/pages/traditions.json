@@ -1,0 +1,94 @@
+{
+  "kicker": "Across traditions",
+  "title": "A wider devotional index",
+  "lede": "The figures below are part of the wider devotional and mythological scope of this library. They should not all be forced into the seven planetary days. A pantheon’s own prayer, hymn, norito, chant, dharani or invocation should be kept in its own language and context.",
+  "sections": [
+    {
+      "title": "African and Indigenous traditions",
+      "items": [
+        "Mbaba Mwana Waresa (Zulu): associated with rain, fertility and agriculture. Use documented praise and prayer traditions where the community source is clear. No invented Sanskrit mantra is supplied.",
+        "Ieyekhsit Khotun / Ieyekhsit: a Sakha/Yakut spirit or deity name whose spelling and description vary in transliteration. Sarvakali’s spelling is kept, and community and scholarly sources are to be checked before any fixed identity or prayer is assigned.",
+        "Umai Ana and Ak Ana: Turkic cultural and mythological figures with maternal, protective or creation associations in different accounts. Do not assume one pan-Turkic liturgy or universal mantra.",
+        "Veles: a Slavic deity associated in different contexts with cattle, wealth, the underworld, magic and poetry. Historical sources and modern reconstructionist practices must be distinguished.",
+        "Indigenous traditions are not one unified religion. Where oral prayer is community-held or not reliably published, this library says so rather than extract or fabricate it."
+      ]
+    },
+    {
+      "title": "Japanese and East Asian traditions",
+      "items": [
+        "Benzaiten: a Japanese Buddhist and syncretic goddess associated with eloquence, music, learning and good fortune. Her history connects with Saraswati, but Japanese prayers and Sanskrit mantras should not be conflated.",
+        "Iwanaga-hime: a kami associated with permanence and longevity in Japanese mythology. No universally established public mantra is assigned.",
+        "Mazu: a Chinese sea goddess; use established Mazu temple prayers, titles and devotional forms.",
+        "Nüwa: a Chinese creator and restorer figure; use historically grounded stories and ritual materials rather than inventing a mantra.",
+        "Tsukuyomi and Chang’e: lunar figures from Japanese and Chinese traditions respectively; no universal public mantra is assigned."
+      ]
+    },
+    {
+      "title": "Queer and gender-diverse sacred figures",
+      "items": [
+        "Ardhanarishvara: Shiva and Shakti expressed in one integrated form. The commonly used “AUM Ardhanarishvaraya Namah” is a simple Sanskrit nama-style devotional salutation, not a claim of one exclusive ancient mantra.",
+        "Mohini: the feminine form of Vishnu in Hindu narratives. Use source-specific prayers where available; do not assume every tradition has a separate fixed mantra.",
+        "Aravan: a figure with an important place in Koovagam and Tamil transgender devotional traditions. Preserve community-specific songs and prayers; no Sanskrit mantra is invented.",
+        "Bahuchara Mata: a goddess especially significant in some hijra communities and regional devotional settings. Use her established regional prayers and temple traditions.",
+        "Ila: a figure whose gender changes across narrative traditions. Treat the textual variants carefully.",
+        "Shikhandi: a gender-diverse figure in the Mahabharata narrative; a character with a story, not automatically a deity with an established mantra.",
+        "Brihannala: Arjuna’s period of living in a feminine role in the Mahabharata. This is a narrative identity, not a separate deity requiring a mantra.",
+        "Harihara: the combined form of Shiva and Vishnu. A simple nama-style salutation may be used devotionally, but should be labelled as such."
+      ]
+    }
+  ],
+  "altar": {
+    "title": "Further names in the wider altar index",
+    "text": "These names may be kept in a separate pantheon catalogue and given a weekday only when there is a genuine traditional or thematic reason:",
+    "names": [
+      "Vajrayogini",
+      "Vajrakilaya",
+      "Shakyamuni Buddha",
+      "Ratnasambhava",
+      "Dainichi Nyorai",
+      "Hevajra",
+      "Vajravarahi",
+      "Kurukulla",
+      "Yamantaka",
+      "Mahakala Panjarnata",
+      "Rahula",
+      "Pehar Gyalpo",
+      "Machig Labdrön",
+      "Yeshe Tsogyal",
+      "Hayagriva",
+      "Chinnamasta",
+      "Dhumavati",
+      "Bagalamukhi",
+      "Lalita Tripura Sundari",
+      "Pratyangira",
+      "Varahi",
+      "Kali",
+      "Tara",
+      "Shiva",
+      "Narasimha",
+      "Krishna",
+      "Hecate",
+      "Lilith",
+      "Persephone",
+      "Athena",
+      "Aphrodite",
+      "Gaia",
+      "Nyx",
+      "Hestia",
+      "Odin",
+      "Loki",
+      "Flora",
+      "Pomona",
+      "Psyche",
+      "Ishtar/Inanna",
+      "Cybele/Magna Mater",
+      "Hermaphroditus",
+      "Sunna",
+      "Mithra",
+      "Ülgen"
+    ],
+    "note": "Some names refer to deities, some to enlightened beings or lineage figures, some to mythic characters, and some to titles or forms. Their natures are not interchangeable. This index is a research and devotional catalogue, not a claim that every figure has a public mantra."
+  },
+  "byDay": "Each day’s own connections",
+  "ask": "Ask Sarvakali about a practice"
+}

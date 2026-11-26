@@ -1,37 +1,91 @@
 ---
 /**
- * Daily practice: today (the lunar day, the next sacred night, the visitor's own streak), the daily rite (five
- * guided steps: arrive, light, intend, japa, offer; 5, 10 or 20 minutes), the practices one by one (the mala, the
- * fire, the diya), the visitor's own record and journal, the month's lunar days, the sacred days ahead with what to
- * do on each, and reminders. Everything a visitor does here stays on their device. Words:
- * src/content/pages/practice.json ("Daily practice" in the content editor); the rite's guidance, the suggestions
- * for sacred nights and the mantra are drafts for Sarvakali to approve.
+ * Daily practice, the hub of the seven-day mantra library: today (the weekday, its planet and question, the lunar
+ * day, the next sacred night, the visitor's own streak), the seven days, today's mantras, the daily rite (six guided
+ * steps: arrive, light, the day's opening prayer, intention, a main mantra, the closing prayer), the library, the
+ * practices one by one (the mala, the fire, the diya), the visitor's own mantras, record and journal, the month's
+ * lunar days, the sacred days ahead, and reminders. Everything a visitor does here stays on their device. Words:
+ * src/content/pages/practice.json ("Daily practice" in the content editor); the days: week.json; the mantras:
+ * src/content/mantras. The rite's guidance and the suggestions for sacred nights are drafts for Sarvakali.
  */
 import Base from '../layouts/Base.astro';
+import CareText from '../components/CareText.astro';
 import w from '../content/pages/practice.json';
+import lib from '../content/pages/library.json';
+import { DAYS, DAY_HEX, DAY_GLYPH, dayPath, loadMantras, summary, type DayKey } from '../data/mantras';
 const r = w.rite;
+const all = await loadMantras();
+// what the page's script needs: the seven days, and each mantra in short (src/scripts/practice-journey.ts)
+const weekData = {
+  days: DAYS.map((d) => ({ key: d.key, name: d.name, sanskrit: d.sanskrit, planet: d.planet, planetSanskrit: d.planetSanskrit, question: d.question, intention: d.intention, themes: d.themes, opening: d.opening, closing: d.closing, practice: d.practice })),
+  mantras: summary(all),
+  badges: { guidance: lib.labels.guidance, variant: lib.labels.variant, verify: lib.labels.verify },
+};
 ---
 <Base title="Daily practice · Sarvakali" sequence="practice" description="A daily practice with Sarvakali: a guided rite, the mala, the fire, the diya, the lunar days and the sacred nights ahead.">
   <div data-practice>
     <a hidden data-connect-href href="/connect" tabindex="-1" aria-hidden="true"></a>
     <script type="application/json" data-practice-words set:html={JSON.stringify(w)} />
+    <script type="application/json" data-practice-week set:html={JSON.stringify(weekData)} />
 
     <!-- today -->
     <section class="chapter" data-chapter="practice">
       <div class="chapter-inner narrow">
-        <p class="kicker" data-hero>{w.kicker}</p>
+        <p class="kicker" data-hero>{w.kicker}<span data-today-hide hidden> · <span data-today-day></span> · <span data-today-sk lang="sa-Latn"></span></span></p>
         <h1 class="display-l" data-hero data-split>{w.title}</h1>
         <p class="lede" data-hero>{w.lede}</p>
+        <blockquote class="pday-question" data-hero data-today-hide hidden><p class="kicker">{w.today.question}</p><p data-today-question></p></blockquote>
         <dl class="today" data-today data-hero>
+          <div data-today-hide hidden><dt>{w.today.day}</dt><dd data-today-planet></dd></div>
           <div><dt>{w.today.moon}</dt><dd><span data-today-moon-icon></span><span data-today-moon>…</span></dd></div>
           <div><dt>{w.today.next}</dt><dd data-today-next>…</dd></div>
           <div><dt>{w.today.you}</dt><dd data-today-you>{w.today.none}</dd></div>
         </dl>
         <div class="cta-row" data-hero>
           <a class="btn btn-solid" href="#rite" data-rite-begin>{w.begin}</a>
+          <a class="btn btn-ghost" href="#today-mantras" data-today-link data-template={w.today.dayMantras}>{w.todayList.kicker}</a>
+          <a class="btn btn-ghost" href="/practice/library">{w.today.library}</a>
           <button type="button" class="btn btn-ghost" data-card-open>{w.card}</button>
         </div>
-        <p class="practice-jump" data-hero>{w.choose}: <a href="#mala">the mala</a> · <a href="#fire">the fire</a> · <a href="#days">the diya and sacred days</a> · <a href="#moons">the month’s moons</a> · <a href="#yours">your practice</a></p>
+        <p class="practice-jump" data-hero>{w.choose}: <a href="#week">the seven days</a> · <a href="#today-mantras">today’s mantras</a> · <a href="/practice/library">the library</a> · <a href="#mala">the mala</a> · <a href="#fire">the fire</a> · <a href="#days">the diya and sacred days</a> · <a href="#moons">the month’s moons</a> · <a href="#yours">your practice</a></p>
+      </div>
+    </section>
+
+    <!-- the seven days -->
+    <section class="chapter" data-chapter="practice" id="week">
+      <div class="chapter-inner">
+        <p class="kicker" data-fade>{w.week.kicker}</p>
+        <h2 class="display-l" data-split>{w.week.title}</h2>
+        <p class="lede" data-fade>{w.week.lede}</p>
+        <ul class="week-cards" data-fade>
+          {DAYS.map((d) => (
+            <li style={`--dc:${DAY_HEX[d.key as DayKey]}`}>
+              <a href={dayPath(d.key)} data-week-day={d.key}>
+                <span class="wc-glyph" aria-hidden="true">{DAY_GLYPH[d.key as DayKey]}</span>
+                <span class="wc-name">{d.name} <span class="wc-today" data-week-today hidden>{w.week.today}</span></span>
+                <span class="wc-sk" lang="sa-Latn">{d.sanskrit}</span>
+                <span class="wc-planet">{d.planet}</span>
+                <span class="wc-theme">{d.themes.slice(0, 2).join(' · ')}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- today's mantras -->
+    <section class="chapter" data-chapter="library" id="today-mantras">
+      <div class="chapter-inner practice-two-col">
+        <div>
+          <p class="kicker" data-fade>{w.todayList.kicker}</p>
+          <h2 class="display-l" data-split>{w.todayList.title}</h2>
+          <p class="lede" data-fade>{w.todayList.lede}</p>
+          <div class="pday-care" data-fade><CareText text={lib.care} /></div>
+          <p class="cta-row" data-fade><a class="btn btn-solid" href="/practice/library" data-today-link data-template={w.todayList.all}>{w.library.button}</a></p>
+        </div>
+        <div class="tm" data-today-mantras data-fade>
+          <ul class="tm-list">{DAYS.map((d) => <li><a href={dayPath(d.key)}><b>{d.name}</b><span>{d.planet}</span></a></li>)}</ul>
+        </div>
       </div>
     </section>
 
@@ -39,7 +93,7 @@ const r = w.rite;
     <section class="chapter" data-chapter="lampsNight" id="rite">
       <div class="chapter-inner narrow">
         <div class="rite" data-rite>
-          <p class="kicker">{r.kicker}</p>
+          <p class="kicker">{r.kicker} · <span data-rite-day></span></p>
           <h2 class="display-l" data-split>{r.title}</h2>
           <div class="rite-start" data-rite-start>
             <p class="lede">{r.lede}</p>
@@ -81,7 +135,8 @@ const r = w.rite;
           <p class="kicker" data-fade>One round</p>
           <h2 class="display-l" data-split data-dust>Count a round on the mala</h2>
           <p class="lede" data-fade>A mala has 108 beads. Repeat the mantra once for each bead: tap the button, the beads, or press space. The world turns one bead with you.</p>
-          <p class="mantra" data-fade lang="sa"><span>{r.mantra}</span><small lang="en">{r.mantraNote}</small></p>
+          <label class="rite-choose" data-fade hidden>{w.malaChoose} <select data-mala-choose></select></label>
+          <p class="mantra" data-fade lang="sa" data-mala-mantra><span>{r.mantra}</span><small lang="en">{r.mantraNote}</small></p>
           <div class="cta-row" data-fade>
             <button type="button" class="btn btn-solid" data-mala-tap>Next bead</button>
             <button type="button" class="btn btn-ghost" data-mala-reset>Start the round again</button>
@@ -164,7 +219,24 @@ const r = w.rite;
         <p class="kicker" data-fade>{w.log.kicker}</p>
         <h2 class="display-l" data-split>{w.log.title}</h2>
         <p class="lede" data-fade>{w.log.lede}</p>
-        <div class="plog" data-log data-fade></div>
+        <div class="practice-two-col">
+          <div class="plog" data-log data-fade></div>
+          <div class="mine" data-fade>
+            <h3 class="display-s">{w.mine.title}</h3>
+            <p class="hint">{w.mine.lede}</p>
+            <div data-mine></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- the library -->
+    <section class="chapter" data-chapter="library" id="library">
+      <div class="chapter-inner narrow">
+        <p class="kicker" data-fade>{w.library.kicker}</p>
+        <h2 class="display-l" data-split>{w.library.title}</h2>
+        <p class="lede" data-fade>{w.library.lede}</p>
+        <p class="cta-row" data-fade><a class="btn btn-solid" href="/practice/library">{w.library.button}</a><a class="btn btn-ghost" href="/practice/traditions">{w.library.traditions}</a></p>
       </div>
     </section>
 

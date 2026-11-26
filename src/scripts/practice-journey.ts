@@ -10,65 +10,42 @@ import { crackle, ring, tick } from './audio';
 import { daysUntil, download, inDays, moonEvents, niceDate, upcomingFestivals, FESTIVALS, dayKey } from './festivals';
 import { moonIcon, tithiAt } from './sky';
 import type { WorldHandle as World } from './world/handle';
+import { sitePath } from '../studio/client';
 
-/* ---------------------------------------------------------------- the record */
-
-type DayRec = { rite?: number; japa?: number; fire?: number; diya?: number; minutes?: number };
-type Log = { days: Record<string, DayRec>; journal: { at: string; text: string; kind: 'intention' | 'reflection' }[] };
-const KEY = 'sk-practice-log';
-let memory: Log | null = null;
-
-export function readLog(): Log {
-  try {
-    const v = JSON.parse(localStorage.getItem(KEY) || 'null');
-    if (v && typeof v === 'object' && v.days) return { days: v.days, journal: Array.isArray(v.journal) ? v.journal : [] };
-  } catch { if (memory) return memory; }
-  return memory ?? { days: {}, journal: [] };
-}
-function writeLog(l: Log) {
-  try { localStorage.setItem(KEY, JSON.stringify(l)); } catch { memory = l; }
-  document.dispatchEvent(new CustomEvent('sk:practice-log'));
-}
-/** add to today's record (any of the practices calls this) */
-export function logPractice(add: DayRec) {
-  const l = readLog();
-  const k = dayKey(new Date());
-  const d = (l.days[k] ??= {});
-  for (const [key, v] of Object.entries(add) as [keyof DayRec, number][]) d[key] = (d[key] ?? 0) + v;
-  writeLog(l);
-}
-function addJournal(text: string, kind: 'intention' | 'reflection') {
-  const t = text.trim().slice(0, 500);
-  if (!t) return;
-  const l = readLog();
-  l.journal.unshift({ at: new Date().toISOString(), text: t, kind });
-  l.journal = l.journal.slice(0, 365);
-  writeLog(l);
-}
-
-/** days practised, the run up to today (or yesterday), the longest run */
-export function stats(l = readLog()) {
-  const keys = Object.keys(l.days).filter((k) => Object.values(l.days[k]).some((v) => (v ?? 0) > 0)).sort();
-  const set = new Set(keys);
-  const day = (n: number) => { const d = new Date(); d.setDate(d.getDate() - n); return dayKey(d); };
-  let streak = 0;
-  const start = set.has(day(0)) ? 0 : 1;
-  for (let i = start; set.has(day(i)); i++) streak++;
-  let longest = 0, run = 0, prev: Date | null = null;
-  for (const k of keys) {
-    const [y, m, dd] = k.split('-').map(Number);
-    const d = new Date(y, m - 1, dd);
-    run = prev && Math.round((d.getTime() - prev.getTime()) / 864e5) === 1 ? run + 1 : 1;
-    longest = Math.max(longest, run);
-    prev = d;
-  }
-  const japa = Object.values(l.days).reduce((a, d) => a + (d.japa ?? 0), 0);
-  return { days: keys.length, streak, longest, japa, today: set.has(day(0)) };
-}
+import { addJournal, logMantra, logPractice, myMantras, readLog, stats, toggleMine, writeLog } from './practice-log';
+export { logPractice, readLog, stats } from './practice-log';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Words = Record<string, any>;
 const esc = (s: string) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
+
+/* ---------------------------------------------------------------- the week and its mantras */
+
+type DayInfo = { key: string; name: string; sanskrit: string; planet: string; planetSanskrit: string; question: string; intention: string; themes: string[]; opening: string; closing: string; practice: string };
+type MantraInfo = { slug: string; name: string; days: string[]; deity: string; status: string; text: string; iast: string; read: string; meaning: string; intention: string };
+type Week = { days: DayInfo[]; mantras: MantraInfo[]; badges: Record<string, string> };
+let week: Week = { days: [], mantras: [], badges: {} };
+const KEYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+
+/** today's day of the week on the visitor's own calendar, or the day a day page asked for (?day=tuesday) */
+function todayKey() {
+  const asked = new URLSearchParams(location.search).get('day');
+  return asked && KEYS.includes(asked) ? asked : KEYS[new Date().getDay()];
+}
+const dayInfo = (k = todayKey()) => week.days.find((d) => d.key === k) ?? week.days[0];
+const mantra = (slug: string) => week.mantras.find((m) => m.slug === slug);
+/** a day's own mantras that anyone may recite (those to learn with guidance, or being checked, are left out of the rite) */
+const reciteable = (k: string) => week.mantras.filter((m) => m.days.includes(k) && m.text && (m.status === 'open' || m.status === 'variant'));
+const href = (p: string) => sitePath(p);
+const lines = (t: string) => t.split('\n').map((l) => `<span>${esc(l)}</span>`).join('');
+
+/** a mantra shown in the rite: Devanagari, transliteration and meaning, with a link to its page */
+function mantraBlock(m: MantraInfo | undefined) {
+  if (!m) return '';
+  return `<div class="rite-mantra"><p class="rm-name"><a href="${esc(href(`/practice/mantras/${m.slug}`))}">${esc(m.name)}</a></p>
+    <p class="mc-deva" lang="sa">${lines(m.text)}</p>${m.iast ? `<p class="mc-iast" lang="sa-Latn">${lines(m.iast)}</p>` : ''}
+    ${m.meaning ? `<p class="mc-meaning">${esc(m.meaning)}</p>` : ''}</div>`;
+}
 
 /* ---------------------------------------------------------------- today */
 
@@ -86,6 +63,44 @@ function renderToday(w: Words) {
   root.querySelector('[data-today-next]')!.textContent = next ? `${next.name}, ${inDays(daysUntil(next.at, now))}` : '—';
   const s = stats();
   root.querySelector('[data-today-you]')!.textContent = s.today ? `${w.today.done}${s.streak > 1 ? ` · ${w.today.streak.replace('{n}', String(s.streak))}` : ''}` : s.days ? `${w.today.none}${s.streak ? ` · ${w.today.streak.replace('{n}', String(s.streak))}` : ''}` : w.today.first;
+  // the day itself
+  const d = dayInfo();
+  if (!d) return;
+  const set = (sel: string, v: string) => { const el = document.querySelector(sel); if (el) el.textContent = v; };
+  set('[data-today-day]', d.name);
+  set('[data-today-sk]', d.sanskrit);
+  set('[data-today-planet]', `${d.planet} · ${d.planetSanskrit}`);
+  set('[data-today-question]', d.question);
+  document.querySelectorAll<HTMLAnchorElement>('[data-today-link]').forEach((a) => { a.href = href(`/practice/${d.key}`); a.textContent = (a.dataset.template || '{day}').replace('{day}', d.name); });
+  document.querySelectorAll<HTMLElement>('[data-today-hide]').forEach((el) => { el.hidden = false; });
+  document.querySelectorAll<HTMLElement>('[data-week-day]').forEach((a) => {
+    const is = a.dataset.weekDay === d.key;
+    a.classList.toggle('is-today', is);
+    const tag = a.querySelector<HTMLElement>('[data-week-today]');
+    if (tag) tag.hidden = !is;
+  });
+}
+
+/** today's mantras, as a short list leading to each mantra's page */
+function renderTodayMantras(w: Words) {
+  const root = document.querySelector<HTMLElement>('[data-today-mantras]');
+  if (!root) return;
+  const d = dayInfo();
+  const own = week.mantras.filter((m) => m.days[0] === d.key);
+  const also = week.mantras.filter((m) => m.days[0] !== d.key && m.days.includes(d.key));
+  const item = (m: MantraInfo) => `<li><a href="${esc(href(`/practice/mantras/${m.slug}`))}"><b>${esc(m.name)}</b>${m.intention ? `<span>${esc(m.intention)}</span>` : ''}</a>${m.status !== 'open' && week.badges[m.status] ? `<span class="mc-badge mc-badge-${m.status}">${esc(week.badges[m.status])}</span>` : ''}</li>`;
+  root.innerHTML = `<ul class="tm-list">${own.map(item).join('')}</ul>${also.length ? `<p class="kicker">${esc(w.todayList.also.replace('{day}', d.name))}</p><ul class="tm-list">${also.map(item).join('')}</ul>` : ''}`;
+}
+
+/** the visitor's kept mantras */
+function renderMine(w: Words) {
+  const root = document.querySelector<HTMLElement>('[data-mine]');
+  if (!root) return;
+  const l = readLog();
+  const list = myMantras().map(mantra).filter(Boolean) as MantraInfo[];
+  root.innerHTML = list.length
+    ? `<ul class="tm-list">${list.map((m) => `<li><a href="${esc(href(`/practice/mantras/${m.slug}`))}"><b>${esc(m.name)}</b><span>${esc(m.intention || m.meaning.slice(0, 80))}</span></a>${l.mantras[m.slug] ? `<span class="hint">${esc(w.mine.chanted.replace('{n}', String(l.mantras[m.slug])))}</span>` : ''}<button type="button" class="path-back" data-unkeep="${esc(m.slug)}">${esc(w.mine.remove)}</button></li>`).join('')}</ul>`
+    : `<p class="hint">${esc(w.mine.empty)}</p>`;
 }
 
 /* ---------------------------------------------------------------- the daily rite */
@@ -105,35 +120,44 @@ function initRite(world: World, w: Words) {
   const panel = root.querySelector<HTMLElement>('[data-rite-panel]')!;
   const done = root.querySelector<HTMLElement>('[data-rite-done]')!;
   const dots = Array.from(root.querySelectorAll<HTMLElement>('[data-rite-dot]'));
+  const LAST = r.steps.length - 1;
   let length = 1;
   let step = 0;
   let began = 0;
-  let beads = 0;
-  let japaCount = 0;
+  let chosen = '';
+  let count = 0;
+  let target = 0;
+
+  // the day in the rite's heading
+  const d = dayInfo();
+  const forDay = root.querySelector<HTMLElement>('[data-rite-day]');
+  if (forDay && d) forDay.textContent = r.forDay.replace('{day}', d.name);
 
   root.querySelectorAll<HTMLButtonElement>('[data-rite-length]').forEach((b) => b.addEventListener('click', () => {
     length = Number(b.dataset.riteLength);
     root.querySelectorAll('[data-rite-length]').forEach((x) => x.setAttribute('aria-checked', String(x === b)));
   }));
 
-  const next = () => { clearRite(); if (step < 4) { step++; show(); } else finish(); };
+  // repetitions counted in the chant step still count when the visitor moves on before the round is complete
+  const next = () => { clearRite(); if (step === 4 && count) { logMantra(chosen, count); count = 0; } if (step < LAST) { step++; show(); } else finish(); };
   const show = () => {
     clearRite();
-    dots.forEach((d, i) => { d.classList.toggle('is-done', i < step); d.toggleAttribute('aria-current', i === step); });
+    const day = dayInfo();
+    dots.forEach((x, i) => { x.classList.toggle('is-done', i < step); x.toggleAttribute('aria-current', i === step); });
     const s = r.steps[step];
-    const head = `<p class="kicker">${step + 1} / 5</p><h3 class="display-m">${esc(s.title)}</h3><p>${esc(s.text)}</p>`;
+    const head = `<p class="kicker">${step + 1} / ${r.steps.length}</p><h3 class="display-m">${esc(s.title)}</h3><p>${esc(s.text)}</p>`;
     const L = r.lengths[length];
     if (step === 0) {
       panel.innerHTML = `${head}<div class="rite-breath" aria-hidden="true"><span class="rb-circle"></span><span class="rb-word" data-rb-word>${esc(r.breatheIn)}</span></div><p class="hint" data-rb-count></p><div class="cta-row"><button type="button" class="btn btn-solid" data-rite-next>${esc(r.arrived)}</button></div>`;
       const circle = panel.querySelector<HTMLElement>('.rb-circle')!;
       const word = panel.querySelector<HTMLElement>('[data-rb-word]')!;
-      const count = panel.querySelector<HTMLElement>('[data-rb-count]')!;
+      const counter = panel.querySelector<HTMLElement>('[data-rb-count]')!;
       const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
       let n = 0;
       const breathe = () => {
-        if (n >= L.breaths) { count.textContent = ''; word.textContent = '·'; return; }
+        if (n >= L.breaths) { counter.textContent = ''; word.textContent = '·'; return; }
         n++;
-        count.textContent = `${n} / ${L.breaths}`;
+        counter.textContent = `${n} / ${L.breaths}`;
         word.textContent = r.breatheIn;
         riteTl = gsap.timeline({ onComplete: breathe })
           .to(circle, { scale: reduce ? 1 : 1.55, opacity: 1, duration: 4, ease: 'sine.inOut' })
@@ -153,39 +177,67 @@ function initRite(world: World, w: Words) {
         riteTimers.push(window.setTimeout(next, 2600));
       });
     } else if (step === 2) {
-      panel.innerHTML = `${head}<label class="sr-only" for="rite-intention">${esc(r.intentionLabel)}</label><textarea id="rite-intention" rows="2" maxlength="200" placeholder="${esc(r.intentionLabel)}"></textarea>
-        <ul class="rite-ideas">${r.intentionExamples.map((x: string) => `<li><button type="button" class="chip-keep" data-idea>${esc(x)}</button></li>`).join('')}</ul>
+      // the opening prayer of the day
+      const m = mantra(day.opening) ?? reciteable(day.key)[0];
+      panel.innerHTML = `${head}${mantraBlock(m)}<div class="cta-row"><button type="button" class="btn btn-solid" data-rite-next>${esc(r.next)}</button></div>`;
+    } else if (step === 3) {
+      // the day's question, and the visitor's intention
+      panel.innerHTML = `${head}<blockquote class="pday-question"><p class="kicker">${esc(r.question)}</p><p>${esc(day.question)}</p></blockquote>
+        <label class="sr-only" for="rite-intention">${esc(r.intentionLabel)}</label><textarea id="rite-intention" rows="2" maxlength="200" placeholder="${esc(r.intentionLabel)}"></textarea>
+        <ul class="rite-ideas">${(day.themes.length ? day.themes : r.intentionExamples).map((x: string) => `<li><button type="button" class="chip-keep" data-idea>${esc(x)}</button></li>`).join('')}</ul>
         <label class="rite-check"><input type="checkbox" data-rite-keep /> ${esc(r.keepJournal)}</label>
         <div class="cta-row"><button type="button" class="btn btn-solid" data-rite-next>${esc(r.next)}</button></div>`;
       const ta = panel.querySelector<HTMLTextAreaElement>('textarea')!;
       panel.querySelectorAll<HTMLButtonElement>('[data-idea]').forEach((b) => b.addEventListener('click', () => { ta.value = b.textContent || ''; ta.focus(); }));
       panel.querySelector('[data-rite-next]')!.addEventListener('click', () => { if (panel.querySelector<HTMLInputElement>('[data-rite-keep]')!.checked) addJournal(ta.value, 'intention'); }, { capture: true });
-    } else if (step === 3) {
-      beads = L.beads; japaCount = 0;
-      panel.innerHTML = `${head}<p class="mantra" lang="sa"><span>${esc(r.mantra)}</span><small lang="en">${esc(r.mantraNote)}</small></p>
-        <button type="button" class="rite-japa" data-japa aria-label="${esc(r.bead)}"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" class="rj-track"/><circle cx="60" cy="60" r="52" class="rj-fill" pathLength="1" style="stroke-dasharray:1;stroke-dashoffset:1"/></svg><b data-japa-n>0</b><small>/ ${beads}</small></button>
+    } else if (step === 4) {
+      // the main mantra: one of the day's, or one of the visitor's own; then as many repetitions as feel true
+      const mine = myMantras().map(mantra).filter((m): m is MantraInfo => !!m && !!m.text && m.status !== 'verify' && m.status !== 'guidance');
+      const options = [...reciteable(day.key).filter((m) => m.slug !== day.opening && m.slug !== day.closing), ...mine.filter((m) => !m.days.includes(day.key))];
+      if (!chosen || !options.some((m) => m.slug === chosen)) chosen = options[0]?.slug ?? '';
+      target = L.beads; count = 0;
+      const counts: number[] = r.counts;
+      panel.innerHTML = `${head}<label class="rite-choose">${esc(r.choose)} <select data-rite-choose>${options.map((m) => `<option value="${esc(m.slug)}"${m.slug === chosen ? ' selected' : ''}>${esc(m.name)}${m.days.includes(day.key) ? '' : ` (${esc(r.mine)})`}</option>`).join('')}</select></label>
+        <div data-rite-mantra>${mantraBlock(mantra(chosen))}</div>
+        <div class="rite-lengths" role="radiogroup" aria-label="${esc(r.howMany)}">${counts.map((n) => `<button type="button" role="radio" aria-checked="${n === target}" data-rite-count="${n}">${n === 1 ? esc(r.once) : n}</button>`).join('')}</div>
+        <button type="button" class="rite-japa" data-japa aria-label="${esc(r.bead)}"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" class="rj-track"/><circle cx="60" cy="60" r="52" class="rj-fill" pathLength="1" style="stroke-dasharray:1;stroke-dashoffset:1"/></svg><b data-japa-n>0</b><small data-japa-of>/ ${target}</small></button>
         <div class="cta-row"><button type="button" class="btn btn-ghost btn-sm" data-japa-end>${esc(r.endRound)}</button></div>`;
       const btn = panel.querySelector<HTMLButtonElement>('[data-japa]')!;
       const fill = panel.querySelector<SVGCircleElement>('.rj-fill')!;
       const num = panel.querySelector<HTMLElement>('[data-japa-n]')!;
-      const count = () => {
-        if (japaCount >= beads) return;
-        japaCount++;
-        num.textContent = String(japaCount);
-        fill.style.strokeDashoffset = String(1 - japaCount / beads);
-        world.setMalaCount(japaCount);
-        tick(japaCount === beads); buzz([5]);
-        if (japaCount === beads) { logPractice({ japa: beads }); world.flash(0.7); riteTimers.push(window.setTimeout(next, 1400)); }
+      const of = panel.querySelector<HTMLElement>('[data-japa-of]')!;
+      const draw = () => { num.textContent = String(count); of.textContent = `/ ${target}`; fill.style.strokeDashoffset = String(1 - count / target); };
+      panel.querySelector<HTMLSelectElement>('[data-rite-choose]')?.addEventListener('change', (e) => {
+        if (count) { logMantra(chosen, count); count = 0; }
+        chosen = (e.target as HTMLSelectElement).value;
+        panel.querySelector('[data-rite-mantra]')!.innerHTML = mantraBlock(mantra(chosen));
+        draw();
+      });
+      panel.querySelectorAll<HTMLButtonElement>('[data-rite-count]').forEach((b) => b.addEventListener('click', () => {
+        target = Number(b.dataset.riteCount);
+        panel.querySelectorAll('[data-rite-count]').forEach((x) => x.setAttribute('aria-checked', String(x === b)));
+        count = Math.min(count, target); draw();
+      }));
+      const tap = () => {
+        if (count >= target) return;
+        count++;
+        draw();
+        world.setMalaCount(count);
+        tick(count === target); buzz([5]);
+        if (count === target) { logMantra(chosen, count); count = 0; world.flash(0.7); riteTimers.push(window.setTimeout(next, 1400)); }
       };
-      btn.addEventListener('click', count);
-      panel.querySelector('[data-japa-end]')!.addEventListener('click', () => { if (japaCount) logPractice({ japa: japaCount }); next(); });
+      btn.addEventListener('click', tap);
+      panel.querySelector('[data-japa-end]')!.addEventListener('click', next);
       // the space bar counts, while this step is open
-      const key = (e: KeyboardEvent) => { if (e.key === ' ' && !(e.target as HTMLElement)?.closest('input, textarea, button:not([data-japa])')) { e.preventDefault(); count(); } };
+      const key = (e: KeyboardEvent) => { if (e.key === ' ' && !(e.target as HTMLElement)?.closest('input, textarea, select, button:not([data-japa])')) { e.preventDefault(); tap(); } };
       document.addEventListener('keydown', key);
       riteOff.push(() => document.removeEventListener('keydown', key));
+      draw();
       btn.focus();
     } else {
-      panel.innerHTML = `${head}<form class="rite-offer" data-rite-offer><label class="sr-only" for="rite-offer">${esc(r.offerLabel)}</label><textarea id="rite-offer" rows="2" maxlength="90" placeholder="${esc(r.offerLabel)}"></textarea><button type="submit" class="btn btn-ghost">${esc(r.offer)}</button></form>
+      // closing: the day's closing prayer, something to set down if there is, and a closing intention
+      const m = mantra(day.closing);
+      panel.innerHTML = `${head}${mantraBlock(m)}<form class="rite-offer" data-rite-offer><label class="sr-only" for="rite-offer">${esc(r.offerLabel)}</label><textarea id="rite-offer" rows="2" maxlength="90" placeholder="${esc(r.offerLabel)}"></textarea><button type="submit" class="btn btn-ghost">${esc(r.offer)}</button></form>
         <p class="rite-words" data-rite-words hidden></p>
         <p class="rite-closing">${esc(r.closing)}</p>
         <div class="cta-row"><button type="button" class="btn btn-solid" data-rite-next>${esc(r.close)}</button></div>`;
@@ -228,6 +280,7 @@ function initRite(world: World, w: Words) {
   root.querySelector('[data-rite-back]')!.addEventListener('click', () => { if (step > 0) { step--; show(); } else { clearRite(); run.hidden = true; start.hidden = false; } });
   root.querySelector('[data-rite-skip]')!.addEventListener('click', next);
   root.querySelector('[data-rite-again]')!.addEventListener('click', () => { done.hidden = true; start.hidden = false; });
+
   root.querySelector<HTMLFormElement>('[data-rite-reflect]')!.addEventListener('submit', (e) => {
     e.preventDefault();
     const ta = (e.target as HTMLFormElement).querySelector('textarea')!;
@@ -236,6 +289,28 @@ function initRite(world: World, w: Words) {
     ta.value = '';
     root.querySelector<HTMLElement>('[data-rite-saved]')!.hidden = false;
   });
+}
+
+/* ---------------------------------------------------------------- the mala's mantra */
+
+/** the mala counts any mantra: today's first, or one the visitor chooses from today's and their own */
+function initMalaChoice(w: Words) {
+  const sel = document.querySelector<HTMLSelectElement>('[data-mala-choose]');
+  const shown = document.querySelector<HTMLElement>('[data-mala-mantra]');
+  if (!sel || !shown) return;
+  const day = dayInfo();
+  const mine = myMantras().map(mantra).filter((m): m is MantraInfo => !!m && !!m.text && m.status !== 'verify');
+  const options = [...reciteable(day.key), ...mine.filter((m) => !m.days.includes(day.key))];
+  if (!options.length) return;
+  sel.innerHTML = options.map((m) => `<option value="${esc(m.slug)}">${esc(m.name)}</option>`).join('');
+  sel.closest('[hidden]')?.removeAttribute('hidden');
+  const draw = () => {
+    const m = mantra(sel.value);
+    if (!m) return;
+    shown.innerHTML = `<span>${esc(m.text.split('\n')[0])}</span><small lang="en">${esc(m.iast.split('\n')[0] || m.name)} · <a href="${esc(href(`/practice/mantras/${m.slug}`))}">${esc(w.malaOpen)}</a></small>`;
+  };
+  sel.addEventListener('change', draw);
+  draw();
 }
 
 /* ---------------------------------------------------------------- the month's lunar days */
@@ -322,7 +397,7 @@ function initLog(w: Words) {
       const l = readLog();
       download('my-practice-journal.txt', l.journal.map((j) => `${new Date(j.at).toLocaleString('en-GB')} (${j.kind})\n${j.text}\n`).join('\n'), 'text/plain');
     }
-    if (t.closest('[data-log-clear]') && confirm(L.clearConfirm)) writeLog({ days: {}, journal: [] });
+    if (t.closest('[data-log-clear]') && confirm(L.clearConfirm)) writeLog({ days: {}, journal: [], mantras: {} });
   });
   const redraw = () => { renderLog(w); renderToday(w); };
   document.addEventListener('sk:practice-log', redraw);
@@ -352,7 +427,11 @@ export function initJourney(world: World) {
   const data = document.querySelector('[data-practice-words]');
   if (!data) return () => {};
   const w = JSON.parse(data.textContent || '{}') as Words;
+  try { week = JSON.parse(document.querySelector('[data-practice-week]')?.textContent || 'null') ?? week; } catch { /* the page still works without the week */ }
   renderToday(w);
+  renderTodayMantras(w);
+  renderMine(w);
+  initMalaChoice(w);
   initRite(world, w);
   initMonth(w);
   const stopLog = initLog(w);
@@ -361,5 +440,14 @@ export function initJourney(world: World) {
   const diya = document.querySelector('[data-diya-light]');
   const onDiya = () => logPractice({ diya: 1 });
   diya?.addEventListener('click', onDiya);
-  return () => { clearRite(); stopLog(); diya?.removeEventListener('click', onDiya); };
+  const onMine = () => renderMine(w);
+  document.addEventListener('sk:my-mantras', onMine);
+  document.addEventListener('sk:practice-log', onMine);
+  const mineRoot = document.querySelector('[data-mine]');
+  const onUnkeep = (e: Event) => { const b = (e.target as HTMLElement).closest<HTMLElement>('[data-unkeep]'); if (b) toggleMine(b.dataset.unkeep!); };
+  mineRoot?.addEventListener('click', onUnkeep);
+  return () => {
+    clearRite(); stopLog(); diya?.removeEventListener('click', onDiya);
+    document.removeEventListener('sk:my-mantras', onMine); document.removeEventListener('sk:practice-log', onMine); mineRoot?.removeEventListener('click', onUnkeep);
+  };
 }

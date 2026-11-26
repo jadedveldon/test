@@ -3,6 +3,69 @@
 Every change to the site, newest first: what changed, why, and how it was checked.
 The rules for checking are in `CLAUDE.md`; the checks themselves are in `tools/qa/`.
 
+## 2026-11-26 · Daily practice rebuilt around the seven-day mantra library
+
+From Sarvakali's two documents, combined as the owner asked: the raw weekday list ("Mantras daily") and the
+structured, carefully labelled library built from it ("The Seven-Day Mantra Library"). Where they differ, the
+library's wording leads and the list fills in what it lacks. **The test suites were not run**, at the owner's
+request; everything below was built, walked through in the preview and looked at on desktop and phone.
+
+- **Added: the mantra library, 113 mantras, prayers and verses**, one editable file each (`src/content/mantras`,
+  "Mantras" in the content editor, where they can be added, edited and deleted). Each has its days, a group heading,
+  its deity or form, intentions, the Devanagari text, its meaning in simple English (line by line where the source
+  gives it), purpose, what it can support, when to use it, a text and tradition note, its source, and a place for a
+  recording by Sarvakali.
+  - **The transliteration (IAST) and a readable pronunciation are worked out from the Devanagari**
+    (`src/data/translit.ts`), in the library's own style ("AUM na-mah shi-vaa-ya"), so a verse corrected in the
+    editor stays consistent; either can be overridden. AUM throughout.
+  - **Labels, as the library asks:** *open to all*; *learn with guidance* (seed syllables and lineage-held texts:
+    Dakshina Kali, Kali Gayatri, Manasa Devi, the Karuppaswamy Shivaputra formula); *wording not yet traced*
+    (Kundali Mala, kept apart from the list's variant); *being checked*: ten texts whose wording in the list could
+    not be matched to a source (Bhuta Natha, Namo Hanumate Tubhyam, Sankat Mochan's formula, Ramaskandam, Gantam
+    Papam, Tripuram Shantam, the Dakshina Kalika Dhyanam, Jwalantam Karalam, the Navagraha line) or that Sarvakali
+    should decide on (Namo Hanumate Rudravataraya, whose wording includes subduing others). Their text is held back;
+    their name, meaning and the wording as supplied show.
+  - **Corrected from the list, with a note on each:** Gita 8.7 (the list's transcription was garbled), Shuklambaradharam
+    (printed "Shuklam Bharadharam"), Karagre Vasate (Govinda/Gauri), Namaste Sharade (vidyādānam), Vanamali.
+  - **Drafted for Sarvakali** (and marked so on the site): the purpose and use of the 50 entries that only the list
+    had, written in the library's manner.
+- **Added: a page for each planetary day** (`/practice/monday` … `/practice/sunday`), each in its planet's colours
+  and light (the Moon's phases, Mars's fire, Mercury's letters, Jupiter's lamps, Venus's lotus, Saturn's astrolabe,
+  the Sun's halo): the planetary character (as symbolism, never a forecast), the day's intention and question, its
+  themes, a gentle practice, its mantras in groups (and those it shares with other days), the library's note on
+  Karuppaswamy and Vettai Karuppar, and the other traditions' connections. Words in "The seven days".
+- **Added: the library** (`/practice/library`): how to use it, what the labels mean, a care note, and every mantra
+  to search and filter by day, deity, intention and label; the filters live in the address, so a view can be shared.
+- **Added: a page for each mantra** (`/practice/mantras/<name>`): the text large, each script can be hidden (the
+  choice is remembered), larger text, copy, keep in "my mantras", a recording when there is one, the meaning line
+  by line, its facts, and a counter to chant it once, 11, 27, 54 or 108 times (tap, click or space), which adds to
+  the visitor's own record. A care note where a mantra touches grief, illness or fierce forms.
+- **Added: across traditions** (`/practice/traditions`): the library's wider index (African and Indigenous, Japanese
+  and East Asian, queer and gender-diverse sacred figures), the further altar names, and each day's connections.
+  No mantra is invented for any tradition.
+- **Changed: Daily practice** is now the hub. Today opens on the weekday (its planet and question) with the lunar
+  day as a second layer; then the seven days, today's mantras, and **the daily rite in six steps**: arrive, light
+  the lamp, **the day's opening prayer**, intention (the day's question, its themes as suggestions), **a main
+  mantra** chosen from the day's (or the visitor's own), counted as many times as they choose, and **the day's
+  closing prayer** with the offering to the fire. Each day's opening and closing prayers are chosen in the editor.
+  The mala can count any of today's mantras or the visitor's own. **My mantras** (kept with ✦ anywhere) sit with the
+  record, with how often each was chanted. A day page's "Begin" opens that day's rite.
+- **Search** now finds mantras too, above the services; the menu links to the library.
+- **Standing rule** (`CLAUDE.md`): in the mantra library a mantra's own text is given in Devanagari, always with its
+  transliteration, pronunciation and English meaning.
+- **Sources** named on the mantras were checked: the Rigveda (7.59.12, 3.62.10, 2.23.1), the Upanishads (Brihadaranyaka
+  1.3.28; the Isha invocation; the Taittiriya/Katha peace invocation; Mahanarayana for the Aghora verse; Skanda 8),
+  the Devi Mahatmya (chapters 5 and 11) and the Argala Stotram, the Gita verses, the Guru Gita, the Rama Raksha
+  Stotram, the Vishnu Sahasranama, the Mahalakshmi Ashtakam (verse 1) and the Sankatanashana Ganesha Stotram (named
+  without the Narada Purana, which it is popularly but unverifiably attributed to). The Karuppaswamy and Manasa Devi
+  sources are the library's own citations. **Every Devanagari text should still be read by Sarvakali**, who decides.
+- **Found by looking, fixed:** the Today boxes squeezed into one narrow column; the moon's form showed through the
+  mantra cards (now more opaque) and crowded long titles (the day forms sit further aside); meaning lines were
+  cramped; the "being checked" note drew stray dashed sides on phones; skipping the chant step dropped repetitions
+  already counted.
+- **Checks written, not run:** the new pages are in the page lists of `audit.cjs`, `a11y.cjs` and `layout.cjs`;
+  `keyboard.cjs` 5b filters the library and counts a chant by keyboard.
+
 ## 2026-11-26 · The Studio, the closed loop, Find your path, Articles, Daily practice, the logo, a 404
 
 Asked for by the owner in one message, built in one pass. **The test suites were not run** (the owner asked that

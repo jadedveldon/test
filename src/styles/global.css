@@ -1797,3 +1797,173 @@ html[data-light="1"] .ar-body > p:first-of-type::first-letter { color: color-mix
 .nf-pillars { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
 .nf-pillars a { display: inline-block; padding: 9px 16px; border-radius: 999px; text-decoration: none; box-shadow: inset 3px 0 0 var(--acc-hex), inset 0 0 0 1px rgb(var(--ink) / 0.22); background: rgb(var(--bg-a) / 0.6); }
 .nf-pillars a:hover { box-shadow: inset 3px 0 0 var(--acc-hex), inset 0 0 0 1px var(--acc-hex); }
+
+/* ---------------------------------------------------------------- the seven-day mantra library (src/pages/practice) */
+.rite-steps { grid-template-columns: repeat(6, 1fr); }
+.today { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); width: 100%; max-width: 780px; }
+.today [hidden] { display: none; }
+.pday-question { margin: 4px 0; padding: 16px 20px; border-left: 3px solid var(--day, rgb(var(--glow))); border-radius: 0 16px 16px 0; background: rgb(var(--bg-a) / 0.55); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); max-width: 680px; }
+.pday-question p:last-child { margin: 4px 0 0; font: 400 clamp(1.2rem, 2.2vw, 1.5rem)/1.35 var(--f-display); font-style: italic; }
+.pday-question .kicker { margin: 0; }
+.pday-care { max-width: 760px; padding: 12px 16px; border-radius: 14px; font-size: 0.9rem; color: rgb(var(--ink-soft)); background: rgb(var(--bg-a) / 0.5); box-shadow: inset 0 0 0 1px rgb(var(--ink) / 0.12); }
+.pday-care a { color: rgb(var(--ink)); }
+
+/* the seven days as a strip of links */
+.week-strip { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 6px; }
+.week-strip a { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 8px 14px; border-radius: 999px; text-decoration: none; color: rgb(var(--ink)); font: 500 0.86rem/1 var(--f-body); background: rgb(var(--bg-a) / 0.5); box-shadow: inset 0 0 0 1px rgb(var(--ink) / 0.16); transition: box-shadow 0.2s, background 0.2s; }
+.week-strip a:hover { box-shadow: inset 0 0 0 1px var(--dc); }
+.week-strip a[aria-current] { background: var(--dc); color: #120808; box-shadow: none; }
+.ws-glyph { font-size: 1.05rem; color: var(--dc); }
+.week-strip a[aria-current] .ws-glyph { color: inherit; }
+.ws-planet { color: rgb(var(--ink-soft)); font-weight: 400; }
+.plib .week-strip a { flex-direction: column; align-items: flex-start; gap: 3px; border-radius: 16px; padding: 10px 14px; }
+
+/* a day */
+.pday-sk { margin: -6px 0 0; font: 400 clamp(1.3rem, 2.6vw, 1.8rem)/1.2 var(--f-display); font-style: italic; color: rgb(var(--ink-soft)); }
+.pday-glyph { color: var(--day); font-style: normal; margin-left: 6px; }
+.pday-about { display: grid; gap: 22px; max-width: 1140px; }
+.pday-cols, .plib-how, .pm-cols { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: clamp(22px, 4vw, 56px); align-items: start; }
+.pday-cols p, .plib-how p { color: rgb(var(--ink-soft)); max-width: 640px; }
+.pday-cols h2.display-m, .plib-how h2.display-m { margin: 8px 0 4px; }
+.pday-cols aside, .plib-how aside, .pm-cols aside { display: grid; gap: 14px; padding: 22px; border-radius: 22px; background: rgb(var(--bg-a) / 0.55); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: inset 0 0 0 1px rgb(var(--ink) / 0.14); }
+.pday-themes { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+.pday-rhythm { padding-top: 12px; border-top: 1px solid rgb(var(--ink) / 0.12); }
+.pday-rhythm p { margin: 6px 0; }
+.pday-others { display: grid; gap: 10px; padding-left: 18px; color: rgb(var(--ink-soft)); }
+.pday-others b { color: rgb(var(--ink)); font-weight: 600; }
+.pday-next { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; max-width: 1100px; margin-top: 18px; }
+.pday-step { display: grid; gap: 4px; padding: 20px 22px; border-radius: 20px; text-decoration: none; color: rgb(var(--ink)); background: rgb(var(--bg-a) / 0.55); box-shadow: inset 0 3px 0 var(--dc, rgb(var(--glow))), inset 0 0 0 1px rgb(var(--ink) / 0.14); transition: transform 0.3s cubic-bezier(.2,.8,.2,1); }
+.pday-step:hover { transform: translateY(-3px); }
+.pday-lib { --dc: rgb(var(--glow)); }
+
+/* mantra cards */
+.mc-group { margin-top: clamp(26px, 4vw, 44px); }
+.mc-group-title { margin: 0 0 6px; }
+.mc-group-note { max-width: 760px; color: rgb(var(--ink-soft)); font-size: 0.95rem; }
+.mc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 14px; margin-top: 14px; }
+.mc { display: grid; gap: 10px; align-content: start; min-width: 0; padding: 20px 20px 18px; border-radius: 20px; background: rgb(var(--bg-a) / 0.86); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: inset 0 0 0 1px rgb(var(--ink) / 0.14); }
+.mc[hidden] { display: none; }
+.mc-head { display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+.mc-name { margin: 0; flex: 1 1 60%; font: 400 1.4rem/1.2 var(--f-display); }
+.mc-name a { color: inherit; text-decoration: none; }
+.mc-name a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.mc-keep { flex: none; width: 40px; height: 40px; border: 0; border-radius: 50%; cursor: pointer; color: rgb(var(--ink-soft)); background: rgb(var(--ink) / 0.06); box-shadow: inset 0 0 0 1px rgb(var(--ink) / 0.18); font-size: 1rem; }
+.mc-keep:hover { color: rgb(var(--glow)); }
+.mc-keep[aria-pressed="true"] { color: rgb(var(--bg-a)); background: rgb(var(--glow)); box-shadow: none; }
+.mc-badge { display: inline-block; padding: 4px 10px; border-radius: 999px; font: 600 0.7rem/1.2 var(--f-body); letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
+.mc-badge-open { background: rgb(120 200 150 / 0.16); color: #bfe8cc; box-shadow: inset 0 0 0 1px rgb(120 200 150 / 0.45); }
+.mc-badge-guidance { background: rgb(240 150 90 / 0.16); color: #ffcfa8; box-shadow: inset 0 0 0 1px rgb(240 150 90 / 0.5); }
+.mc-badge-variant { background: rgb(220 200 120 / 0.14); color: #efe0a6; box-shadow: inset 0 0 0 1px rgb(220 200 120 / 0.45); }
+.mc-badge-verify { background: rgb(170 170 200 / 0.14); color: #d6d6ee; box-shadow: inset 0 0 0 1px rgb(170 170 200 / 0.45); }
+.mc-intent { margin: 0; font: 500 0.8rem/1.4 var(--f-body); letter-spacing: 0.04em; color: rgb(var(--glow)); }
+.mc-days { margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.mc-days span { font-size: 0.75rem; padding: 2px 9px; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--dc); color: rgb(var(--ink-soft)); }
+.mc-text { display: grid; gap: 8px; padding: 12px 0; border-block: 1px solid rgb(var(--ink) / 0.1); }
+.mc-text span, .pm-deva span, .pm-iast span, .pm-read span, .pm-supplied span { display: block; }
+.mc-deva { margin: 0; font: 400 1.32rem/1.55 "Tiro Devanagari Sanskrit", serif; color: rgb(var(--ink)); }
+.mc-iast { margin: 0; font: italic 400 1rem/1.5 var(--f-display); color: rgb(var(--ink-soft)); }
+.mc-read { margin: 0; font: 500 0.86rem/1.5 var(--f-body); letter-spacing: 0.01em; color: rgb(var(--glow) / 0.95); }
+.mc-held { border-block-style: dashed; }
+.mc-held-note { margin: 0; font-size: 0.86rem; color: rgb(var(--ink-soft)); }
+.mc-meaning { margin: 0; color: rgb(var(--ink)); font: 400 0.98rem/1.55 var(--f-body); }
+.mc-more summary { cursor: pointer; font: 500 0.86rem/1 var(--f-body); color: rgb(var(--ink-soft)); padding: 8px 0; min-height: 32px; }
+.mc-more dl { margin: 6px 0 0; display: grid; gap: 8px; }
+.mc-more dt, .pm-facts dt { font: 600 0.72rem/1.2 var(--f-body); letter-spacing: 0.1em; text-transform: uppercase; color: rgb(var(--ink-soft)); }
+.mc-more dd, .pm-facts dd { margin: 2px 0 0; font-size: 0.92rem; }
+.mc-drafted { display: inline-block; font: 500 0.75rem/1.3 var(--f-body); color: rgb(var(--ink-soft)); font-style: italic; }
+.mc-open { justify-self: start; font: 500 0.88rem/1 var(--f-body); color: rgb(var(--glow)); text-decoration: none; padding: 8px 0 2px; }
+.mc-open:hover { text-decoration: underline; text-underline-offset: 4px; }
+.mc-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; font-size: 0.86rem; margin: 10px 0 0; }
+.mc-controls label { display: inline-flex; gap: 6px; align-items: center; min-height: 32px; cursor: pointer; }
+
+/* the library */
+.plib-labels { display: grid; gap: 10px; margin: 0; }
+.plib-labels dd { margin: 2px 0 0; font-size: 0.86rem; color: rgb(var(--ink-soft)); }
+.plib-filters { position: sticky; top: 76px; z-index: 5; display: grid; gap: 12px; margin: 14px 0 6px; padding: 16px 18px; border-radius: 20px; background: rgb(var(--bg-a) / 0.86); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); box-shadow: inset 0 0 0 1px rgb(var(--ink) / 0.16), 0 20px 50px -30px rgb(0 0 0 / 0.8); }
+.plib-search input { width: 100%; min-height: 46px; padding: 10px 16px; border-radius: 999px; border: 0; color: rgb(var(--ink)); background: rgb(var(--ink) / 0.07); box-shadow: inset 0 0 0 1px rgb(var(--ink) / 0.2); font: 400 1rem/1.2 var(--f-body); }
+.plib-chips { display: flex; flex-wrap: wrap; gap: 6px; border: 0; padding: 0; margin: 0; }
+.plib-chips label { position: relative; cursor: pointer; }
+.plib-chips input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+.plib-chips span { display: inline-flex; align-items: center; min-height: 36px; padding: 6px 12px; border-radius: 999px; font: 500 0.84rem/1 var(--f-body); box-shadow: inset 0 0 0 1px var(--dc, rgb(var(--ink) / 0.25)); }
+.plib-chips input:checked + span { background: var(--dc, rgb(var(--glow))); color: #120808; box-shadow: none; }
+.plib-chips input:focus-visible + span { outline: 2px solid rgb(var(--glow)); outline-offset: 2px; }
+.plib-row { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; font-size: 0.9rem; }
+.plib-row select { min-height: 38px; margin-left: 6px; padding: 6px 10px; border-radius: 10px; border: 0; color: rgb(var(--ink)); background: rgb(var(--bg-a)); box-shadow: inset 0 0 0 1px rgb(var(--ink) / 0.25); font: inherit; }
+.plib-check { display: inline-flex; gap: 8px; align-items: center; min-height: 32px; }
+.plib-filters .hint { margin: 0; }
+.plib-none { margin: 20px 0; color: rgb(var(--ink-soft)); }
+
+/* a mantra's page */
+.pm-label { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 0; max-width: 760px; }
+.pm-text { display: grid; gap: 10px; margin-top: 14px; padding: clamp(20px, 3.5vw, 36px); border-radius: 26px; max-width: 980px; background: rgb(var(--bg-a) / 0.72); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); box-shadow: inset 0 3px 0 var(--day, rgb(var(--glow))), inset 0 0 0 1px rgb(var(--ink) / 0.14); }
+.pm-text .mc-controls { margin: 0 0 6px; }
+.pm-text .kicker { margin: 10px 0 0; }
+.pm-deva { margin: 6px 0; font: 400 clamp(1.5rem, 3.2vw, 2.3rem)/1.6 "Tiro Devanagari Sanskrit", serif; }
+.pm-iast { margin: 0; font: italic 400 clamp(1.1rem, 2vw, 1.4rem)/1.5 var(--f-display); color: rgb(var(--ink-soft)); }
+.pm-read { margin: 0; font: 500 clamp(0.95rem, 1.6vw, 1.1rem)/1.6 var(--f-body); color: rgb(var(--glow)); }
+.pmantra.is-big .pm-deva { font-size: clamp(2rem, 5vw, 3.4rem); }
+.pmantra.is-big .pm-iast { font-size: clamp(1.4rem, 3vw, 2rem); }
+.pmantra.is-big .pm-read { font-size: clamp(1.15rem, 2.4vw, 1.5rem); }
+.pm-audio audio { width: 100%; max-width: 480px; }
+.pm-meaning { font: 400 clamp(1.15rem, 2vw, 1.4rem)/1.5 var(--f-display); max-width: 700px; }
+.pm-parts { display: grid; gap: 10px; padding-left: 20px; }
+.pm-parts li { display: grid; gap: 2px; }
+.pm-part-line { font: 400 1.15rem/1.5 "Tiro Devanagari Sanskrit", serif; }
+.pm-parts li > span:last-child { color: rgb(var(--ink-soft)); }
+.pm-supplied { margin-top: 18px; padding: 16px 18px; border-radius: 16px; border: 1px dashed rgb(var(--ink) / 0.3); }
+.pm-supplied p { font: italic 400 1.05rem/1.5 var(--f-display); color: rgb(var(--ink-soft)); }
+.pm-facts { display: grid; gap: 12px; margin: 0; }
+.pm-chant { display: grid; gap: 16px; justify-items: center; text-align: center; padding: clamp(22px, 4vw, 40px); border-radius: 26px; background: rgb(var(--bg-a) / 0.72); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); box-shadow: inset 0 0 0 1px rgb(var(--glow) / 0.3); }
+.pm-chant .rite-lengths { justify-content: center; }
+.pm-japa:disabled { opacity: 0.6; cursor: default; }
+.pm-chant-line { margin: 0; font: 400 clamp(1.2rem, 2.6vw, 1.7rem)/1.5 "Tiro Devanagari Sanskrit", serif; color: rgb(var(--glow)); }
+
+/* across traditions */
+.ptrad-names { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; padding: 0; }
+.ptrad-names li { padding: 5px 12px; border-radius: 999px; font-size: 0.86rem; box-shadow: inset 0 0 0 1px rgb(var(--ink) / 0.2); }
+.ptrad-day { margin: 10px 0; padding: 4px 18px; border-radius: 16px; background: rgb(var(--bg-a) / 0.5); box-shadow: inset 3px 0 0 var(--dc), inset 0 0 0 1px rgb(var(--ink) / 0.12); }
+.ptrad-day summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; gap: 10px; font: 400 1.2rem/1.2 var(--f-display); }
+.ptrad-day summary span { color: var(--dc); }
+
+/* the daily practice page: the week, today's mantras, my mantras */
+.week-cards { list-style: none; margin: 16px 0 0; padding: 0; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; max-width: 1240px; }
+.week-cards a { height: 100%; display: grid; gap: 4px; align-content: start; padding: 18px 16px; border-radius: 20px; text-decoration: none; color: rgb(var(--ink)); background: rgb(var(--bg-a) / 0.58); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: inset 0 3px 0 var(--dc), inset 0 0 0 1px rgb(var(--ink) / 0.14); transition: transform 0.3s cubic-bezier(.2,.8,.2,1), box-shadow 0.3s; }
+.week-cards a:hover { transform: translateY(-3px); }
+.week-cards a.is-today { box-shadow: inset 0 0 0 2px var(--dc), 0 18px 50px -24px var(--dc); }
+.wc-glyph { font-size: 1.6rem; line-height: 1; color: var(--dc); }
+.wc-name { font: 400 1.35rem/1.2 var(--f-display); }
+.wc-today { display: inline-block; margin-left: 4px; padding: 2px 8px; border-radius: 999px; vertical-align: middle; font: 600 0.62rem/1.3 var(--f-body); letter-spacing: 0.08em; text-transform: uppercase; background: var(--dc); color: #120808; }
+.wc-today[hidden] { display: none; }
+.wc-sk { font: italic 400 0.95rem/1.2 var(--f-display); color: rgb(var(--ink-soft)); }
+.wc-planet { font: 500 0.8rem/1.3 var(--f-body); color: var(--dc); }
+.wc-theme { font-size: 0.8rem; color: rgb(var(--ink-soft)); }
+.practice-two-col { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(22px, 4vw, 56px); align-items: start; max-width: 1180px; }
+.practice-two-col > div:first-child { position: sticky; top: 96px; }
+.tm, .mine { padding: 20px; border-radius: 22px; background: rgb(var(--bg-a) / 0.6); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: inset 0 0 0 1px rgb(var(--ink) / 0.14); }
+.tm .kicker { margin: 14px 0 6px; }
+.tm-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.tm-list li { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; padding: 8px 0; border-bottom: 1px solid rgb(var(--ink) / 0.08); }
+.tm-list a { flex: 1 1 60%; display: grid; gap: 2px; text-decoration: none; color: rgb(var(--ink)); min-height: 40px; align-content: center; }
+.tm-list a b { font: 400 1.12rem/1.25 var(--f-display); }
+.tm-list a span { font-size: 0.8rem; color: rgb(var(--ink-soft)); }
+.tm-list a:hover b { text-decoration: underline; text-underline-offset: 4px; }
+.rite-mantra { display: grid; gap: 8px; padding: 16px 18px; border-radius: 18px; background: rgb(var(--ink) / 0.05); box-shadow: inset 0 0 0 1px rgb(var(--ink) / 0.12); }
+.rite-mantra .rm-name { margin: 0; font: 400 1.2rem/1.2 var(--f-display); }
+.rite-mantra .rm-name a { color: inherit; }
+.rite-mantra .mc-deva span, .rite-mantra .mc-iast span { display: block; }
+.rite-choose { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 0.92rem; }
+.rite-choose select { min-height: 40px; max-width: 100%; padding: 6px 10px; border-radius: 10px; border: 0; color: rgb(var(--ink)); background: rgb(var(--bg-a)); box-shadow: inset 0 0 0 1px rgb(var(--ink) / 0.25); font: inherit; }
+.rite-choose[hidden] { display: none; }
+
+@media (max-width: 1100px) {
+  .week-cards { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@media (max-width: 800px) {
+  .pday-cols, .plib-how, .pm-cols, .practice-two-col { grid-template-columns: minmax(0, 1fr); }
+  .practice-two-col > div:first-child { position: static; }
+  .pday-next { grid-template-columns: minmax(0, 1fr); }
+  .week-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .plib-filters { position: static; }
+  .rite-steps { grid-template-columns: repeat(3, 1fr); row-gap: 10px; }
+  .week-strip .ws-name { font-size: 0.8rem; }
+}

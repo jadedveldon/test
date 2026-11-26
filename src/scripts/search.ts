@@ -1,13 +1,14 @@
 import gsap from 'gsap';
 import { setPageInert } from './inert';
 import { isKept } from './keep';
+import { sitePath } from '../studio/client';
 
 /**
  * Search across every service. Opens from the header, or with "/" or Ctrl+K.
  * As results appear, the world behind turns into the world of the pillar the
  * best match belongs to.
  */
-type Index = { pillars: { name: string; slug: string; preset: string }[]; items: [string, number, string, string, string][] };
+type Index = { pillars: { name: string; slug: string; preset: string }[]; items: [string, number, string, string, string][]; mantras?: [string, string, string, string, string][] };
 type Hooks = { preview: (preset: string) => void; restore: () => void };
 
 let index: Index | null = null;
@@ -64,6 +65,28 @@ function render(q: string) {
     return;
   }
   status.textContent = hits.length ? `${hits.length === 60 ? '60+' : hits.length} found` : 'Nothing found. Try a shorter word, or ask Sarvakali directly.';
+  // mantras from the library first (at most six), then services
+  const ws = words(q);
+  const mHits = ws.length ? (index.mantras ?? []).filter((m) => ws.every((w) => startsWord(m[4], w))).slice(0, 6) : [];
+  if (mHits.length) {
+    const h = document.createElement('li');
+    h.className = 'sr-head';
+    h.textContent = 'Mantra library';
+    list.appendChild(h);
+    for (const [name, slug, deity, day] of mHits) {
+      const li = document.createElement('li');
+      li.className = 'sr-row';
+      const a = document.createElement('a');
+      a.className = 'sr-item';
+      a.href = sitePath(`/practice/mantras/${slug}`);
+      a.innerHTML = '<b></b><small></small>';
+      a.querySelector('b')!.textContent = name;
+      a.querySelector('small')!.textContent = `${deity ? `${deity} · ` : ''}${day.charAt(0).toUpperCase()}${day.slice(1)}`;
+      li.append(a);
+      list.appendChild(li);
+    }
+  }
+  if (mHits.length && !hits.length) status.textContent = `${mHits.length} found`;
   let lastPillar = -1;
   for (const { i } of hits) {
     const [t, pi, cat, sub] = index.items[i];

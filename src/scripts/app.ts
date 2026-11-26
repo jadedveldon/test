@@ -58,6 +58,8 @@ const LABELS: Record<string, string> = {
   dawnRise: 'Hero · eye at dawn (rising)', dawnName: 'Hero · eye at dawn', connect: 'Connect', connectHome: 'Home · Connect', findpath: 'Find your path',
   devotion: 'Devotion & the Unseen', magic: 'Witchcraft & Magic', healing: 'Healing & Inner Work',
   identity: 'Identity, Intimacy & the Body', divination: 'Divination & Insight', learning: 'Learning', close: 'Close', notFound: 'Not found',
+  dayMonday: 'Practice · Monday', dayTuesday: 'Practice · Tuesday', dayWednesday: 'Practice · Wednesday', dayThursday: 'Practice · Thursday',
+  dayFriday: 'Practice · Friday', daySaturday: 'Practice · Saturday', daySunday: 'Practice · Sunday', library: 'Mantra library', traditions: 'Across traditions',
 };
 
 let world: WorldHandle;
@@ -655,6 +657,7 @@ function initPage() {
   initConnect();
   const calm = tier === 'calm';
   pageModule('[data-practice]', () => import('./practice'), (m) => { m.initPractice(world); return m.stopPractice; });
+  pageModule('[data-mc], [data-mantra-page], [data-library], [data-practice-day]', () => import('./mantra'), (m) => m.initMantras(world));
   pageModule('[data-invoice-view]', () => import('./invoice-view'), (m) => { m.initInvoiceView(); });
   pageModule('[data-booking]', () => import('./booking'), (m) => { m.initBooking(); });
   pageModule('[data-articles], [data-article]', () => import('./article'), (m) => m.initArticles());

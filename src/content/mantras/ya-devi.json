@@ -1,0 +1,98 @@
+{
+  "name": "Ya Devi Sarva Bhuteshu",
+  "days": [
+    "thursday"
+  ],
+  "group": "The Goddess",
+  "deity": "Devi",
+  "themes": [
+    "devotion",
+    "compassion"
+  ],
+  "intention": "",
+  "text": "या देवी सर्वभूतेषु चेतनेत्यभिधीयते ।\nनमस्तस्यै नमस्तस्यै नमस्तस्यै नमो नमः ॥",
+  "meaning": "To the Goddess who is called consciousness in all beings: salutations to her, salutations to her, salutations again and again.",
+  "purpose": "The refrain of the Devi Mahatmya, praising the Goddess present in all beings in many forms. Each form is sung in turn with the same refrain.",
+  "supports": "Seeing the sacred in ordinary experience; compassion; reverence.",
+  "when": "As a long recitation, one form at a time.",
+  "note": "",
+  "source": "Devi Mahatmya, chapter 5",
+  "status": "open",
+  "drafted": true,
+  "supplied": "",
+  "parts": [
+    {
+      "line": "चेतनेत्यभिधीयते",
+      "meaning": "Chetanetyabhidhiyate: the Goddess who is present as consciousness in all beings."
+    },
+    {
+      "line": "बुद्धिरूपेण संस्थिता",
+      "meaning": "Buddhirupena samsthita: who resides as intellect and wisdom in all."
+    },
+    {
+      "line": "निद्रारूपेण संस्थिता",
+      "meaning": "Nidrarupena samsthita: who resides as sleep in all beings."
+    },
+    {
+      "line": "क्षुधारूपेण संस्थिता",
+      "meaning": "Kshudharupena samsthita: who is hunger in all."
+    },
+    {
+      "line": "छायारूपेण संस्थिता",
+      "meaning": "Chhayarupena samsthita: who is shadow in all."
+    },
+    {
+      "line": "तृष्णारूपेण संस्थिता",
+      "meaning": "Trishnarupena samsthita: who is thirst in all."
+    },
+    {
+      "line": "जातिरूपेण संस्थिता",
+      "meaning": "Jatirupena samsthita: who is birth in all."
+    },
+    {
+      "line": "लज्जारूपेण संस्थिता",
+      "meaning": "Lajjarupena samsthita: who is modesty."
+    },
+    {
+      "line": "शान्तिरूपेण संस्थिता",
+      "meaning": "Shantirupena samsthita: who is peace."
+    },
+    {
+      "line": "श्रद्धारूपेण संस्थिता",
+      "meaning": "Shraddharupena samsthita: who is faith in all."
+    },
+    {
+      "line": "कान्तिरूपेण संस्थिता",
+      "meaning": "Kantirupena samsthita: who is beauty and radiance."
+    },
+    {
+      "line": "वृत्तिरूपेण संस्थिता",
+      "meaning": "Vrittirupena samsthita: who is the way we live and act."
+    },
+    {
+      "line": "स्मृतिरूपेण संस्थिता",
+      "meaning": "Smritirupena samsthita: who is remembrance in all."
+    },
+    {
+      "line": "दयारूपेण संस्थिता",
+      "meaning": "Dayarupena samsthita: who is compassion."
+    },
+    {
+      "line": "तुष्टिरूपेण संस्थिता",
+      "meaning": "Tushtirupena samsthita: who is contentment."
+    },
+    {
+      "line": "मातृरूपेण संस्थिता",
+      "meaning": "Matrurupena samsthita: who is mother in all beings."
+    },
+    {
+      "line": "भ्रान्तिरूपेण संस्थिता",
+      "meaning": "Bhrantirupena samsthita: who is even delusion and illusion."
+    },
+    {
+      "line": "शक्तिरूपेण संस्थिता",
+      "meaning": "Shaktirupena samsthita: who is power and energy in all."
+    }
+  ],
+  "order": 67
+}

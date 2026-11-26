@@ -1,0 +1,53 @@
+---
+/**
+ * Across traditions (/practice/traditions): the library's wider devotional index (African and Indigenous, Japanese
+ * and East Asian, queer and gender-diverse sacred figures), the further altar names, and each day's own
+ * connections. No mantra is invented for any tradition; that is the point of the page. Words:
+ * src/content/pages/traditions.json ("Across traditions") and week.json.
+ */
+import Base from '../../layouts/Base.astro';
+import { DAYS, DAY_HEX, DAY_GLYPH, dayPath, type DayKey } from '../../data/mantras';
+import t from '../../content/pages/traditions.json';
+const item = (s: string) => { const i = s.indexOf(': '); return i > 0 && i < 60 ? [s.slice(0, i), s.slice(i + 2)] : ['', s]; };
+---
+<Base title="Across traditions · Daily practice · Sarvakali" sequence="traditions" description="The mantra library's wider devotional index across traditions, with no invented mantras.">
+  <div class="ptrad">
+    <section class="chapter" data-chapter="traditions">
+      <div class="chapter-inner narrow">
+        <p class="kicker" data-hero><a href="/practice">Daily practice</a> · <a href="/practice/library">The library</a> · {t.kicker}</p>
+        <h1 class="display-l" data-hero data-split>{t.title}</h1>
+        <p class="lede" data-hero>{t.lede}</p>
+      </div>
+    </section>
+    {t.sections.map((s) => (
+      <section class="chapter" data-chapter="traditions">
+        <div class="chapter-inner narrow">
+          <h2 class="display-m" data-fade>{s.title}</h2>
+          <ul class="pday-others" data-fade>{s.items.map((x) => { const [h, b] = item(x); return <li>{h ? <><b>{h}:</b> {b}</> : b}</li>; })}</ul>
+        </div>
+      </section>
+    ))}
+    <section class="chapter" data-chapter="traditions">
+      <div class="chapter-inner narrow">
+        <h2 class="display-m" data-fade>{t.altar.title}</h2>
+        <p data-fade>{t.altar.text}</p>
+        <ul class="ptrad-names" data-fade>{t.altar.names.map((n) => <li>{n}</li>)}</ul>
+        <p class="hint" data-fade>{t.altar.note}</p>
+      </div>
+    </section>
+    <section class="chapter" data-chapter="traditions">
+      <div class="chapter-inner narrow">
+        <h2 class="display-m" data-fade>{t.byDay}</h2>
+        {DAYS.map((d) => d.others?.items?.length ? (
+          <details class="ptrad-day" style={`--dc:${DAY_HEX[d.key as DayKey]}`}>
+            <summary><span aria-hidden="true">{DAY_GLYPH[d.key as DayKey]}</span> {d.name} · {d.planet}</summary>
+            {d.others.text ? <p>{d.others.text}</p> : null}
+            <ul class="pday-others">{d.others.items.map((x) => { const [h, b] = item(x); return <li>{h ? <><b>{h}:</b> {b}</> : b}</li>; })}</ul>
+            <p><a href={dayPath(d.key)}>All of {d.name} →</a></p>
+          </details>
+        ) : null)}
+        <p class="cta-row"><a class="btn btn-ghost" href="/connect?topic=A%20practice%20across%20traditions">{t.ask}</a></p>
+      </div>
+    </section>
+  </div>
+</Base>
