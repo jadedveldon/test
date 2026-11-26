@@ -162,3 +162,9 @@ export async function demoPublic(action: string, payload?: Record<string, unknow
   await ensure();
   return publicCall(env(), action, payload);
 }
+
+/** the demo's records, for the accounts demo's "My space" (a made-up client's sessions and invoices) */
+export async function demoDb(): Promise<DB> {
+  await ensure();
+  return (await store.load()).db;
+}

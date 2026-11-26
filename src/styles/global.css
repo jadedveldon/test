@@ -2039,3 +2039,43 @@ html[data-light="1"] .ar-body > p:first-of-type::first-letter { color: color-mix
 /* a session's panels keep to their column, whatever a list of cards inside them would like */
 .ps-intro, .ps-run, .ps-done { width: 100%; min-width: 0; max-width: 100%; }
 .ps-done .pr-cards { max-width: 100%; }
+
+/* ---------------------------------------------------------------- My space (/me) and the header's way to it */
+.me-btn { position: relative; }
+.me-dot { position: absolute; top: 5px; right: 5px; width: 7px; height: 7px; border-radius: 50%; background: rgb(var(--accent, 236 170 90)); box-shadow: 0 0 0 2px rgb(var(--bg-a) / 0.9); opacity: 0; transform: scale(0.4); transition: opacity 0.3s, transform 0.3s; }
+.me-btn.is-in .me-dot { opacity: 1; transform: none; }
+/* on phones the header has no room: My space is in the menu */
+@media (max-width: 520px) { .me-btn { display: none; } }
+.me h1 { margin: 0; }
+.me .lede { margin: 0; }
+.me-points { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
+.me-form { display: grid; gap: 14px; min-width: 0; }
+.me-form .field input { width: 100%; }
+.me-form .btn { justify-self: start; }
+.me-consent { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: start; font-size: 0.93rem; line-height: 1.5; }
+.me-consent input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: rgb(var(--ink)); }
+.me-sent { display: grid; gap: 12px; }
+.me-sent p, .me-form p { margin: 0; }
+.me-in { display: grid; gap: 18px; min-width: 0; }
+.me-in > .bk-body { min-width: 0; }
+.me-in h2, .me-in h3 { margin: 0; }
+.me-hello { margin: 0; display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; overflow-wrap: anywhere; }
+.me-status { font-size: 0.82rem; color: rgb(var(--ink-soft)); }
+.me-status[data-state="synced"]::before { content: '✓ '; }
+.me-status[data-state="offline"]::before { content: '○ '; }
+.me-warn { padding: 10px 14px; border-radius: 12px; background: rgb(var(--ink) / 0.06); box-shadow: inset 3px 0 0 rgb(236 170 90 / 0.8); }
+.me-ok { color: rgb(var(--ink)); }
+.me-journal { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.me-journal li { padding: 10px 0; border-bottom: 1px solid rgb(var(--ink) / 0.08); }
+.me-journal p { margin: 0 0 4px; overflow-wrap: anywhere; }
+.me-journal small { color: rgb(var(--ink-soft)); }
+.me-tag { font-size: 0.78rem; padding: 3px 10px; border-radius: 999px; background: rgb(var(--ink) / 0.08); color: rgb(var(--ink-soft)); white-space: nowrap; }
+.me-tag-confirmed { background: rgb(120 200 140 / 0.18); color: rgb(var(--ink)); }
+.me-tag-proposed { background: rgb(236 170 90 / 0.2); color: rgb(var(--ink)); }
+.me-danger { color: #ffb4a8; border-color: rgb(236 123 110 / 0.5); }
+.me-care { margin: 0; }
+.me .cta-row { flex-wrap: wrap; }
+.pl-journal li.is-locked p { color: rgb(var(--ink-soft)); }
+[data-me-practice], [data-me-client], [data-me-journal] { display: grid; gap: 14px; min-width: 0; }
+[data-me-practice] > h3.kicker, [data-me-client] > h3.kicker { margin-top: 10px; }
+[data-me-practice] p, [data-me-client] p, [data-me-journal] p { margin: 0; }

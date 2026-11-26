@@ -19,7 +19,7 @@
   "log": {
     "kicker": "Your practice",
     "title": "Day by day",
-    "lede": "Kept only in this browser, never sent. A filled day means you practised.",
+    "lede": "Kept in this browser and sent nowhere, unless you make an account to keep it on your other devices too. A filled day means you practised.",
     "days": "Days practised",
     "streak": "Days in a row",
     "longest": "Longest run",
@@ -28,8 +28,9 @@
     "empty": "Nothing yet. Your days and journal will appear here as you practise.",
     "export": "Download my journal",
     "clear": "Clear everything",
-    "clearConfirm": "Clear your practice record and journal from this device? This cannot be undone.",
-    "delete": "Delete"
+    "clearConfirm": "Clear your practice record and journal? If you have an account, it is cleared on your other devices too. This cannot be undone.",
+    "delete": "Delete",
+    "locked": "Locked. Open it with your journal passphrase in My space."
   },
   "month": {
     "kicker": "The moon this month",

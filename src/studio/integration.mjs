@@ -19,6 +19,8 @@ export default function studio({ mode }) {
         injectRoute({ pattern: '/api/studio/[step]', entrypoint: at('./routes/sign-in.ts'), prerender: false });
         injectRoute({ pattern: '/api/studio/google/[step]', entrypoint: at('./routes/google.ts'), prerender: false });
         injectRoute({ pattern: '/api/public', entrypoint: at('./routes/public.ts'), prerender: false });
+        // visitor accounts (src/me): sign-in by email link, keeping a visitor's practice the same on their devices
+        injectRoute({ pattern: '/api/me', entrypoint: new URL('../me/routes/api.ts', import.meta.url), prerender: false });
       },
     },
   };

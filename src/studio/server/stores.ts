@@ -12,6 +12,19 @@ export interface ServerStore extends Store {
   kvGet<T>(key: string): Promise<T | null>;
   kvSet(key: string, value: unknown): Promise<void>;
   kvDelete(key: string): Promise<void>;
+  /** read, change and write back only if nobody else wrote in between (tried again if they did); null leaves it */
+  kvSwap<T>(key: string, fn: (v: T | null) => T | null): Promise<T | null>;
+}
+
+async function swapLoop<T>(read: () => Promise<{ v: T | null; tag: string | null }>, write: (v: T, tag: string | null) => Promise<boolean>, fn: (v: T | null) => T | null) {
+  for (let i = 0; i < 8; i++) {
+    const { v, tag } = await read();
+    const next = fn(v);
+    if (next === null) return null;
+    if (await write(next, tag)) return next;
+    await new Promise((r) => setTimeout(r, 20 + Math.random() * 60 * (i + 1)));
+  }
+  throw new Error('Too many writers at once; please try again.');
 }
 
 /* ---------------------------------------------------------------- a file, for development */
@@ -45,6 +58,16 @@ async function fileStore(): Promise<ServerStore> {
     async kvGet(k) { const t = await readJson(`kv-${k}`); return t ? JSON.parse(t) : null; },
     async kvSet(k, v) { await write(`kv-${k}`, JSON.stringify(v)); },
     async kvDelete(k) { await fs.rm(file(`kv-${k}`), { force: true }); },
+    kvSwap(k, fn) {
+      const key = `kv-${k}`;
+      const run = chain.then(() => swapLoop(
+        async () => { const t = await readJson(key); return { v: t ? JSON.parse(t) : null, tag: tagOf(t) }; },
+        async (v, tag) => { if (tagOf(await readJson(key)) !== tag) return false; await write(key, JSON.stringify(v)); return true; },
+        fn,
+      ));
+      chain = run.then(() => undefined, () => undefined);
+      return run;
+    },
   };
 }
 
@@ -65,6 +88,13 @@ async function blobStore(): Promise<ServerStore> {
     async kvGet(k) { return ((await store.get(`kv-${k}`, { type: 'json' })) as never) ?? null; },
     async kvSet(k, v) { await store.setJSON(`kv-${k}`, v); },
     async kvDelete(k) { await store.delete(`kv-${k}`); },
+    kvSwap(k, fn) {
+      return swapLoop(
+        async () => { const r = await store.getWithMetadata(`kv-${k}`, { type: 'json' }); return { v: (r?.data as never) ?? null, tag: r?.etag ?? null }; },
+        async (v, tag) => { const res = tag ? await store.setJSON(`kv-${k}`, v, { onlyIfMatch: tag }) : await store.setJSON(`kv-${k}`, v, { onlyIfNew: true }); return res.modified !== false; },
+        fn,
+      );
+    },
   };
 }
 

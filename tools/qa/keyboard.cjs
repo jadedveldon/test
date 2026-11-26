@@ -23,7 +23,7 @@ const ok = (n, v, extra = '') => console.log(`${v ? 'ok  ' : 'FAIL'} ${n}${extra
   });
 
   // 1. tab through whole pages
-  for (const u of (process.env.KPAGES || '/,/pillars/magic,/pillars/healing,/pillars/identity,/pillars/divination,/pillars/learning,/practice,/connect,/path,/invoice,/about,/articles,/studio,/404').split(',')) {
+  for (const u of (process.env.KPAGES || '/,/pillars/magic,/pillars/healing,/pillars/identity,/pillars/divination,/pillars/learning,/practice,/connect,/path,/invoice,/me,/about,/articles,/studio,/404').split(',')) {
     await go(u);
     const bad = []; const seen = []; let n = 0;
     for (let i = 0; i < 160; i++) {

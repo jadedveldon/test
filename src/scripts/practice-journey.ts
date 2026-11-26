@@ -1,7 +1,7 @@
 /**
  * Daily practice, the journey: today (the moon, the next sacred night, the visitor's own streak), the daily rite
  * (five guided steps whose length the visitor chooses), the month's lunar days, the visitor's record and journal,
- * and a daily reminder for their own calendar. The record lives only in this browser (localStorage, "sk-practice-log"):
+ * and a daily reminder for their own calendar. The record lives in this browser (an event log, "sk-events"; see practice-log.ts):
  * nothing is sent. The mala, the fire and the diya below add to the same record.
  */
 import gsap from 'gsap';
@@ -12,7 +12,7 @@ import { moonIcon, tithiAt } from './sky';
 import type { WorldHandle as World } from './world/handle';
 import { sitePath } from '../studio/client';
 
-import { addJournal, logMantra, logPractice, myMantras, readLog, sessionsDone, stats, toggleMine, writeLog } from './practice-log';
+import { addJournal, clearAll, deleteJournal, logMantra, logPractice, myMantras, readLog, sessionsDone, stats, toggleMine } from './practice-log';
 export { logPractice, readLog, stats } from './practice-log';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -399,7 +399,7 @@ function renderLog(w: Words) {
     <dl class="pl-stats"><div><dt>${esc(L.days)}</dt><dd>${s.days}</dd></div><div><dt>${esc(L.streak)}</dt><dd>${s.streak}</dd></div><div><dt>${esc(L.longest)}</dt><dd>${s.longest}</dd></div><div><dt>${esc(L.japa)}</dt><dd>${s.japa}</dd></div></dl>
     <div class="pl-grid" role="img" aria-label="${esc(`${s.days} days practised in all; ${s.streak} in a row`)}">${cells.join('')}</div>
     <div class="pl-journal"><h3 class="display-s">${esc(L.journal)}</h3>
-      ${l.journal.length ? `<ul>${l.journal.slice(0, 30).map((j, i) => `<li><p>${esc(j.text)}</p><small>${esc(new Date(j.at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }))} · ${j.kind === 'intention' ? 'intention' : 'reflection'} <button type="button" class="path-back" data-journal-del="${i}">${esc(L.delete)}</button></small></li>`).join('')}</ul>` : `<p class="hint">${esc(L.empty)}</p>`}
+      ${l.journal.length ? `<ul>${l.journal.slice(0, 30).map((j) => `<li${j.locked ? ' class="is-locked"' : ''}><p>${j.locked ? `<em>${esc(L.locked || '')}</em>` : esc(j.text)}</p><small>${esc(new Date(j.at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }))} · ${j.kind === 'intention' ? 'intention' : 'reflection'} <button type="button" class="path-back" data-journal-del="${esc(j.id)}">${esc(L.delete)}</button></small></li>`).join('')}</ul>` : `<p class="hint">${esc(L.empty)}</p>`}
     </div>
     ${s.days || l.journal.length ? `<div class="cta-row">${l.journal.length ? `<button type="button" class="btn btn-ghost btn-sm" data-journal-export>${esc(L.export)}</button>` : ''}<button type="button" class="btn btn-ghost btn-sm" data-log-clear>${esc(L.clear)}</button></div>` : ''}`;
 }
@@ -411,12 +411,12 @@ function initLog(w: Words) {
   root.addEventListener('click', (e) => {
     const t = e.target as HTMLElement;
     const del = t.closest<HTMLElement>('[data-journal-del]');
-    if (del) { const l = readLog(); l.journal.splice(Number(del.dataset.journalDel), 1); writeLog(l); }
+    if (del) deleteJournal(del.dataset.journalDel!);
     if (t.closest('[data-journal-export]')) {
       const l = readLog();
-      download('my-practice-journal.txt', l.journal.map((j) => `${new Date(j.at).toLocaleString('en-GB')} (${j.kind})\n${j.text}\n`).join('\n'), 'text/plain');
+      download('my-practice-journal.txt', l.journal.filter((j) => !j.locked).map((j) => `${new Date(j.at).toLocaleString('en-GB')} (${j.kind})\n${j.text}\n`).join('\n'), 'text/plain');
     }
-    if (t.closest('[data-log-clear]') && confirm(L.clearConfirm)) writeLog({ days: {}, journal: [], mantras: {} });
+    if (t.closest('[data-log-clear]') && confirm(L.clearConfirm)) clearAll();
   });
   const redraw = () => { renderLog(w); renderToday(w); };
   document.addEventListener('sk:practice-log', redraw);

@@ -1,0 +1,133 @@
+{
+  "kicker": "Your account",
+  "title": "My space",
+  "lede": "Your practice, the same on every device, and your sessions and invoices with Sarvakali in one place.",
+  "header": {
+    "signIn": "Sign in",
+    "mine": "My space"
+  },
+  "signIn": {
+    "title": "Sign in or make an account",
+    "lede": "You never need an account here. Everything you practise is kept in this browser either way. An account keeps it on your other devices too.",
+    "points": [
+      "Your days, counts, kept mantras and finished practices, the same on your phone and your computer.",
+      "Your journal, locked with a passphrase only you know, before it leaves your device.",
+      "If you have worked with Sarvakali, your sessions and invoices in one place."
+    ],
+    "email": "Your email",
+    "consent": "I agree that my email and my practice record are kept so I can use them on my other devices. Nothing else is asked for, nothing is shared, and I can delete it all here at any time.",
+    "button": "Email me a link",
+    "sending": "Sending…",
+    "sent": "A link is on its way to {email}. It works once, for 15 minutes. Open it on this device, or on any device you want to sign in on.",
+    "sentDemo": "This is the preview, so nothing is sent. Here is the link the email would bring:",
+    "openLink": "Open the link",
+    "again": "Use another address",
+    "noPassword": "There are no passwords. Each time you sign in on a new device, a fresh link comes by email.",
+    "signingIn": "Signing you in…",
+    "privacy": "How your account is kept is on the [care and privacy page](/care#privacy)."
+  },
+  "email": {
+    "subject": "Your link to sign in to Sarvakali",
+    "hello": "Here is your link to sign in to your space on Sarvakali.",
+    "button": "Sign in",
+    "expires": "It works once, within {minutes} minutes. If it has run out, ask for a new one on the site.",
+    "notYou": "If you did not ask for this, you can leave it; nothing happens unless the link is opened.",
+    "sign": "Sarvakali",
+    "footer": "You are receiving this because someone asked to sign in with this address on sarvakali.in."
+  },
+  "space": {
+    "hello": "Signed in as {email}",
+    "practice": "Your practice",
+    "practiceLede": "Worked out from everything you have practised on every device you have signed in on.",
+    "days": "Days practised",
+    "streak": "Days in a row",
+    "longest": "Longest run",
+    "japa": "Mantras counted",
+    "sessions": "Practices finished",
+    "kept": "Mantras you keep",
+    "none": "Nothing yet. Choose a practice to begin.",
+    "begin": "Choose a practice",
+    "synced": "Up to date on every device",
+    "syncing": "Bringing your devices up to date…",
+    "offline": "Offline. What you practise is kept here and shared when you are back.",
+    "waiting": "Journal lines waiting for your journal passphrase before they are shared: {n}.",
+    "times": "{n}×"
+  },
+  "journal": {
+    "title": "Your journal",
+    "lede": "Your journal is locked on this device with a passphrase before it is shared with your other devices. Nobody else can read it: not Sarvakali, not the host.",
+    "setTitle": "Choose a journal passphrase",
+    "setText": "Use a few words you will remember. You will be asked for it once on each new device.",
+    "warning": "If you forget it, your shared journal cannot be opened again, by anyone. What is on this device stays readable here.",
+    "passphrase": "Journal passphrase",
+    "confirm": "The same again",
+    "set": "Lock and share my journal",
+    "mismatch": "The two do not match.",
+    "short": "At least 8 characters, please.",
+    "unlockTitle": "Open your journal on this device",
+    "unlockText": "Your journal is locked. Enter your journal passphrase to read it here.",
+    "unlock": "Open",
+    "working": "Opening…",
+    "wrong": "That is not the passphrase this journal was locked with.",
+    "open": "Your journal is open on this device and shared, locked, with your others.",
+    "forget": "I have forgotten my passphrase",
+    "forgetConfirm": "Let go of your shared journal? The locked lines on your other devices and on the host are removed for good. Lines readable on this device stay, and you can choose a new passphrase.",
+    "count": "Journal lines kept: {n}",
+    "empty": "No journal lines yet. The guided practices and the daily rite offer a moment to write one."
+  },
+  "client": {
+    "title": "With Sarvakali",
+    "hello": "Welcome, {name}.",
+    "sessions": "Your conversations",
+    "invoices": "Your invoices",
+    "noSessions": "No conversations yet.",
+    "noInvoices": "No invoices.",
+    "open": "Open",
+    "request": "Ask for a conversation",
+    "statuses": {
+      "requested": "Asked for",
+      "proposed": "Times to choose from",
+      "confirmed": "Confirmed",
+      "completed": "Done",
+      "no_show": "Missed",
+      "declined": "Not possible",
+      "cancelled": "Cancelled"
+    },
+    "invoiceStatuses": {
+      "sent": "To pay",
+      "paid": "Paid",
+      "void": "Cancelled",
+      "overdue": "Past its date",
+      "part": "Part paid",
+      "claimed": "You said you have paid"
+    },
+    "notClient": "If you work with Sarvakali, use the address you wrote from, and your sessions and invoices appear here."
+  },
+  "account": {
+    "title": "Your account",
+    "export": "Download my data",
+    "exportNote": "Your practice events as kept on Sarvakali's host. Journal lines are locked with your passphrase.",
+    "signOut": "Sign out of this device",
+    "signOutNote": "Your practice stays in this browser.",
+    "signOutAll": "Sign out everywhere",
+    "signOutAllConfirm": "Sign out on every device, this one included?",
+    "delete": "Delete my account",
+    "deleteConfirm": "Delete your account and everything kept for it on the host? Your practice stays in this browser. This cannot be undone.",
+    "deleted": "Your account is deleted. Your practice is still kept in this browser.",
+    "signedOut": "You are signed out on this device."
+  },
+  "care": "If what you are carrying feels too heavy, you do not have to hold it alone: Tele-MANAS, free and around the clock in India, 14416. More on the [care page](/care).",
+  "errors": {
+    "email": "That email address does not look right.",
+    "consent": "Please tick the box to agree, so your record can be kept.",
+    "send": "The email could not be sent just now. Please try again in a little while.",
+    "noEmail": "Signing in by email is not switched on yet. Your practice is still kept in this browser.",
+    "link": "That link has been used or has run out. Ask for a new one below.",
+    "signedOut": "You have been signed out. Sign in again to bring your devices up to date.",
+    "full": "Your record is too large to keep more. Please write to Sarvakali.",
+    "tooMany": "Several links have been asked for already. Please wait a little and try again.",
+    "generic": "Something went wrong. Please try again.",
+    "offline": "You seem to be offline. Please try again when you are connected.",
+    "noScript": "My space needs JavaScript to work. Your practice is still kept in this browser."
+  }
+}

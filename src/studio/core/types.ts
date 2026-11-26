@@ -140,7 +140,8 @@ export interface Activity { id: string; at: ISO; text: string; kind: string; cli
 export type MailKind =
   | 'owner.newRequest' | 'owner.clientAccepted' | 'owner.clientSuggested' | 'owner.clientCancelled' | 'owner.clientPaid'
   | 'client.received' | 'client.proposed' | 'client.confirmed' | 'client.declined' | 'client.cancelled' | 'client.reminder'
-  | 'client.invoice' | 'client.invoiceReminder' | 'client.receipt';
+  | 'client.invoice' | 'client.invoiceReminder' | 'client.receipt'
+  | 'me.signIn';
 
 export interface Mail {
   id: string;

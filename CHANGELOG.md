@@ -3,6 +3,63 @@
 Every change to the site, newest first: what changed, why, and how it was checked.
 The rules for checking are in `CLAUDE.md`; the checks themselves are in `tools/qa/`.
 
+## 2026-11-26 · Visitor accounts: one practice record on every device, and My space
+
+The owner chose: accounts optional, sign-in by an email link, the journal shared but locked with the visitor's own
+passphrase, and a client who signs in sees their sessions and invoices. Nothing changes for anyone who never signs
+in. **The test suites were not run**, at the owner's request; the two new checks below were run while building, and
+everything was walked through in the preview and on the dev server and looked at on desktop and phone.
+
+- **Changed: how the practice record is kept** (`src/scripts/practice-log.ts`, `src/me/core/events.ts`).
+  - Every action is now an event with its own id; what the pages show is worked out from the events.
+  - Two devices' records become one by taking every event from both: nothing is counted twice, nothing is lost, and
+    a deletion or "clear my record" holds after a merge.
+  - Records kept the old way (`sk-practice-log`, `sk-my-mantras`, `sk-practice-done`) become events once, on first
+    load, losing nothing.
+  - The rite, guided practices, mantra pages, mala, fire and diya call the same functions as before.
+  - Deleting a journal line and "Clear everything" now go through events (`deleteJournal`, `clearAll`), so they reach
+    a visitor's other devices too.
+- **Added: sign-in by email link** (`POST /api/me`, `src/me/`, on the live site and in development only).
+  - A link that works once, for 15 minutes; only its hash is kept.
+  - A signed cookie for a year, with "sign out everywhere".
+  - Limits per address and per email; a clear yes before an account is made.
+  - Uses the Studio's own settings (`STUDIO_SECRET`, Resend); nothing new to set up. Until email is set up it says so
+    rather than showing a link (the link appears on screen only in development and in the preview's demo).
+- **Added: syncing** (`src/scripts/me-sync.ts`): only on a signed-in device; on opening a page, after practising, on
+  return to the tab and when back online. Offline, everything waits.
+- **Added: the journal lock** (`src/me/core/crypto.ts`).
+  - A passphrase makes a key in the browser (PBKDF2, 310,000 rounds); each line is sealed (AES-GCM) before it leaves.
+  - The host keeps only sealed lines and a sealed check word. A new device opens it with the passphrase once.
+  - Lines wait on the device until a passphrase is set. "I have forgotten my passphrase" lets the shared journal go.
+- **Added: My space** (`/me`, `src/scripts/me.ts`, words in `src/content/pages/me.json`, "My space" in the content
+  editor). It shows:
+  - the record from every device, practices finished and kept mantras;
+  - the journal lock;
+  - for a client (matched by email), their conversations and invoices, each opening its own booking or invoice page;
+  - download, sign out here or everywhere, and delete.
+  - The care note with Tele-MANAS comes first.
+- **Added:** a quiet account button in the header (a dot when signed in; on phones, where the header is full, My space
+  is in the menu), and My space in the menu.
+- **Changed:** the care page's privacy section ("If you make an account", and the one cookie it sets); the practice
+  record's words now say it can be kept on other devices; a locked journal line reads as locked.
+- **Changed:** the offline worker never keeps `/me` or `/api/me`.
+- **Changed (Studio internals):**
+  - the stores gain a safe read-change-write (`kvSwap`);
+  - the email layout and the HMAC are shared with accounts;
+  - the account cookie's signature is kept apart from the Studio's (a `me.` prefix), so one can never pass for the other.
+- **Not done yet:** the Studio's client page does not yet show whether a client has an account.
+- **Checks:**
+  - New `tools/qa/me-core.mjs` (45 lines, all ok): merging, deletions, clearing, old records, the journal lock, links
+    once only and running out, two devices converging, no journal text kept in the open, a client's own space only,
+    signing out everywhere, deleting.
+  - New `tools/qa/me.cjs` (all ok, ERRORS none), against the dev server (two real browsers) and the preview demo:
+    old records converted, sign-in, a second device, the lock, convergence, a client's sessions, download, sign out
+    everywhere, delete, a used link.
+  - `/me` added to the page lists of `audit`, `a11y`, `layout` and `keyboard` (not run, at the owner's request).
+  - Looked at: phone and desktop screenshots of sign-in, the link, My space, the lock, a client's space and the header.
+    Fixed what that showed: the sync line and the waiting journal lines ran together, the lists in My space sat tight
+    under their headings, and on phones the new header button pushed "Book" off the edge.
+
 ## 2026-11-26 · Daily practice made curated: guided practices for a deity, a feeling, or the day
 
 The owner's review of the library round: it handed visitors everything at once ("today you can do this") instead

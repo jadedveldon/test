@@ -661,6 +661,7 @@ function initPage() {
   pageModule('[data-mc], [data-mantra-page], [data-library], [data-practice-day]', () => import('./mantra'), (m) => m.initMantras(world));
   pageModule('[data-invoice-view]', () => import('./invoice-view'), (m) => { m.initInvoiceView(); });
   pageModule('[data-booking]', () => import('./booking'), (m) => { m.initBooking(); });
+  pageModule('[data-me]', () => import('./me'), (m) => m.initMe());
   pageModule('[data-articles], [data-article]', () => import('./article'), (m) => m.initArticles());
   pageModule('[data-devotion]', () => import('./devotion'), (m) => { m.startDevotion(world, calm); return m.stopDevotion; });
   pageModule('[data-magic]', () => import('./magic'), (m) => { m.startMagic(world, calm); return m.stopMagic; });
@@ -1092,6 +1093,23 @@ function boot() {
   document.addEventListener('astro:page-load', markScrolled);
   initTransitions(world, () => tier === 'calm');
   initCard(world);
+  // visitor accounts: the header's way to My space, and keeping a signed-in visitor's devices the same
+  if (STUDIO !== 'off') {
+    import('./me-sync').then((m) => {
+      m.startSync();
+      const label = () => {
+        const a = document.querySelector<HTMLAnchorElement>('[data-me-link]');
+        if (!a) return;
+        const inside = !!m.meLocal();
+        a.classList.toggle('is-in', inside);
+        a.setAttribute('aria-label', (inside ? a.dataset.in : a.dataset.out) || '');
+        a.href = pageHref('me');
+      };
+      label();
+      document.addEventListener('sk:me', label);
+      document.addEventListener('astro:page-load', label);
+    }).catch(() => { /* accounts could not be downloaded; the practice record still works in this browser */ });
+  }
 
   document.addEventListener('astro:before-preparation', () => buzz(PATTERNS.pageChange));
   document.addEventListener('astro:before-swap', cleanupPage);

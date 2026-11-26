@@ -29,7 +29,7 @@ type Block =
   | { rows: [string, string][] };
 
 /** the shape every email shares: the mark, a greeting, the blocks, the signature, a footer */
-function layout(siteUrl: string, sign: string, blocks: Block[], footer: string) {
+export function layout(siteUrl: string, sign: string, blocks: Block[], footer: string) {
   const html = `<!doctype html><html><body style="margin:0;padding:0;background:#f4efe8;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4efe8;padding:24px 12px;"><tr><td align="center">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#fffdf9;border-radius:14px;border:1px solid #e8dccb;">

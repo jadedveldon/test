@@ -10,8 +10,8 @@ self.addEventListener('fetch', (e) => {
   const req = e.request;
   if (req.method !== 'GET' || new URL(req.url).origin !== location.origin) return;
   // never saved: the content editor and its door (the door's address holds its secret word), the Studio and its
-  // requests, and a client's own booking and invoice pages (their address holds the client's private link)
-  if (/^\/(keystatic|api|door|studio|booking|invoice)(\/|$|\.html)/.test(new URL(req.url).pathname)) return;
+  // requests, a client's own booking and invoice pages (their address holds the client's private link), and My space
+  if (/^\/(keystatic|api|door|studio|booking|invoice|me)(\/|$|\.html)/.test(new URL(req.url).pathname)) return;
   if (req.mode === 'navigate') {
     // pages: the network first, so content is always fresh; the saved copy when offline
     e.respondWith(fetch(req).then((res) => { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(req, copy)); return res; })

@@ -9,9 +9,9 @@ import { DEV_PASSWORD, env, isDev, secret } from './env';
 export const SESSION = 'sk_studio';
 const DAYS = 30;
 
-const b64url = (b: Buffer | Uint8Array) => Buffer.from(b).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+export const b64url = (b: Buffer | Uint8Array) => Buffer.from(b).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 
-async function hmac(data: string) {
+export async function hmac(data: string) {
   const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(secret()), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
   return b64url(new Uint8Array(await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(data))));
 }

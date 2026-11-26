@@ -45,6 +45,9 @@ site's owner; follow them every time.
   chapter's `data-chapter`. Forms that sit beside the words on wide screens have a `shift`; they sit below
   the words on phones.
 - Full-screen layers (menu, search) make the page behind inert (`src/scripts/inert.ts`).
+- A visitor's practice is a log of events kept in their browser first (`src/scripts/practice-log.ts`); pages show what is
+  worked out from it, and an optional account only shares the same events between devices, the journal sealed with the
+  visitor's own passphrase. Never store a count directly or send a journal line in the open. See `docs/accounts.md`.
 - **Words live in the content files, not in pages.** Every word and list a visitor reads on a settled page is
   in `src/content/` (JSON, and Markdown for writings), with a field for it in `keystatic.config.ts`, so
   Sarvakali can change it in the content editor. What the design depends on (chapter keys and order, colours,

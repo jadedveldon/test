@@ -409,7 +409,7 @@ const practice = singleton({
     today: fields.object({ day: line('Today'), question: line('Over the day’s question'), dayMantras: line('“{day}’s mantras”'), library: line('Library button'), moon: line('Moon'), next: line('Next sacred night'), you: line('Your practice'), none: line('Not yet today'), done: line('Practised today'), streak: line('“{n} days in a row”'), first: line('First day') }, { label: 'The today strip' }),
     mine: fields.object({ kicker: line('Small heading'), title: line('Heading'), lede: para('Text'), empty: para('When empty'), chanted: line('“chanted {n} times”'), remove: line('Remove') }, { label: 'My mantras' }),
     malaChoose: line('The mala: “The mantra”'), malaOpen: line('The mala: link to its page'),
-    log: fields.object({ kicker: line('Small heading'), title: line('Heading'), lede: para('Text'), days: line('Days practised'), streak: line('Days in a row'), longest: line('Longest run'), japa: line('Mantras counted'), journal: line('Journal'), empty: para('When empty'), export: line('Download'), clear: line('Clear'), clearConfirm: para('Clear: are you sure?'), delete: line('Delete') }, { label: 'Your practice' }),
+    log: fields.object({ kicker: line('Small heading'), title: line('Heading'), lede: para('Text'), days: line('Days practised'), streak: line('Days in a row'), longest: line('Longest run'), japa: line('Mantras counted'), journal: line('Journal'), empty: para('When empty'), export: line('Download'), clear: line('Clear'), clearConfirm: para('Clear: are you sure?'), delete: line('Delete'), locked: line('A journal line still locked') }, { label: 'Your practice' }),
     month: fields.object({ kicker: line('Small heading'), title: line('Heading'), lede: para('Text'), prev: line('Month before'), nextMonth: line('Month after'), amavasya: line('Amavasya'), purnima: line('Purnima'), ekadashi: line('Ekadashi'), ashtami: line('Ashtami') }, { label: 'The month’s moons' }),
     days: fields.object({ kicker: line('Small heading'), title: line('Heading'), lede: para('Text'), amavasyaNote: line('Amavasya'), amavasyaDo: para('Amavasya: a suggestion'), purnimaNote: line('Purnima'), purnimaDo: para('Purnima: a suggestion'), addCalendar: line('Add to calendar'), ask: line('Ask about a ritual') }, { label: 'Sacred days ahead' }),
     reminder: fields.object({ title: line('Heading'), text: para('Text'), time: line('“At”'), add: line('Button'), addedNote: line('After adding') }, { label: 'The daily reminder' }),
@@ -446,6 +446,43 @@ const booking = singleton({
       invoiceSubject: line('Invoice: subject, with {number}'), invoiceText: para('Invoice: text'), invoiceButton: line('Invoice: button'),
       invoiceReminderSubject: line('Invoice reminder: subject'), invoiceReminderText: para('Invoice reminder: text'), receiptSubject: line('Receipt: subject'), receiptText: para('Receipt: text'),
     }, { label: 'Emails to clients' }),
+  },
+});
+
+const me = singleton({
+  label: 'My space', path: 'src/content/pages/me', format: { data: 'json' },
+  schema: {
+    kicker: line('Small heading'), title: must('Heading'), lede: para('Text'),
+    header: fields.object({ signIn: line('Header: “Sign in”'), mine: line('Header: “My space”') }, { label: 'In the header' }),
+    signIn: fields.object({
+      title: line('Heading'), lede: para('Text'), points: lines('What an account does', 'Point'), email: line('Email field'), consent: para('The yes (consent)'),
+      button: line('Button'), sending: line('While sending'), sent: para('After sending, with {email}'), sentDemo: para('In the preview: over the link'), openLink: line('In the preview: open the link'),
+      again: line('Use another address'), noPassword: para('No passwords'), signingIn: line('While signing in'), privacy: para('Privacy line (with a link)'),
+    }, { label: 'Signing in' }),
+    email: fields.object({ subject: line('Subject'), hello: para('Text'), button: line('Button'), expires: para('“Works within {minutes} minutes”'), notYou: para('If it was not them'), sign: line('Signature'), footer: para('Footer') }, { label: 'The sign-in email' }),
+    space: fields.object({
+      hello: line('“Signed in as {email}”'), practice: line('Practice: heading'), practiceLede: para('Practice: text'), days: line('Days practised'), streak: line('Days in a row'), longest: line('Longest run'), japa: line('Mantras counted'),
+      sessions: line('Practices finished'), kept: line('Mantras you keep'), none: para('When empty'), begin: line('Choose a practice'), synced: line('Up to date'), syncing: line('Syncing'), offline: para('Offline'),
+      waiting: para('Journal lines waiting, with {n}'), times: line('“{n}×”'),
+    }, { label: 'Your practice' }),
+    journal: fields.object({
+      title: line('Heading'), lede: para('Text'), setTitle: line('Choose a passphrase: heading'), setText: para('Choose a passphrase: text'), warning: para('If forgotten'),
+      passphrase: line('Passphrase field'), confirm: line('“The same again”'), set: line('Set: button'), mismatch: line('They do not match'), short: line('Too short'),
+      unlockTitle: line('Open: heading'), unlockText: para('Open: text'), unlock: line('Open: button'), working: line('While opening'), wrong: para('Wrong passphrase'),
+      open: para('Open on this device'), forget: line('“I have forgotten”'), forgetConfirm: para('Forget: are you sure?'), count: line('Journal lines kept, with {n}'), empty: para('When empty'),
+    }, { label: 'The journal' }),
+    client: fields.object({
+      title: line('Heading'), hello: line('“Welcome, {name}”'), sessions: line('Conversations'), invoices: line('Invoices'), noSessions: line('No conversations'), noInvoices: line('No invoices'), open: line('Open'), request: line('Ask for a conversation'),
+      statuses: fields.object({ requested: line('Asked for'), proposed: line('Times to choose'), confirmed: line('Confirmed'), completed: line('Done'), no_show: line('Missed'), declined: line('Declined'), cancelled: line('Cancelled') }, { label: 'Conversation states' }),
+      invoiceStatuses: fields.object({ sent: line('To pay'), paid: line('Paid'), void: line('Cancelled'), overdue: line('Past its date'), part: line('Part paid'), claimed: line('They said they paid') }, { label: 'Invoice states' }),
+      notClient: para('For someone who is not a client'),
+    }, { label: 'With Sarvakali (clients)' }),
+    account: fields.object({
+      title: line('Heading'), export: line('Download'), exportNote: para('Note in the download'), signOut: line('Sign out here'), signOutNote: para('Under the buttons'),
+      signOutAll: line('Sign out everywhere'), signOutAllConfirm: para('Everywhere: are you sure?'), delete: line('Delete'), deleteConfirm: para('Delete: are you sure?'), deleted: para('After deleting'), signedOut: para('After signing out'),
+    }, { label: 'The account' }),
+    care: para('Care line (Tele-MANAS, with a link)'),
+    errors: fields.object({ email: line('A wrong address'), consent: line('No yes'), send: para('Could not send'), noEmail: para('Email not set up'), link: para('A used link'), signedOut: para('Signed out'), full: para('Too large'), tooMany: para('Too many tries'), generic: para('Something went wrong'), offline: para('Offline'), noScript: para('Without JavaScript') }, { label: 'Messages' }),
   },
 });
 
@@ -611,7 +648,7 @@ export default config({
     brand: { name: 'Sarvakali' },
     navigation: {
       'The site': ['home', 'kind', 'festivals', 'cards', 'writings', 'settings'],
-      Pages: ['about', 'connect', 'booking', 'path', 'notfound'],
+      Pages: ['about', 'connect', 'booking', 'me', 'path', 'notfound'],
       'Daily practice': ['practice', 'practices', 'mantras', 'week', 'library', 'traditions'],
       'Pillar pages': ['devotion', 'magic', 'healing', 'identity', 'divination', 'learning'],
       Catalogue: ['catDevotion', 'catMagic', 'catHealing', 'catIdentity', 'catDivination', 'catLearning'],
@@ -619,7 +656,7 @@ export default config({
   },
   collections: { writings, mantras, practices },
   singletons: {
-    home, kind, festivals, cards, settings, about, connect, booking, path, practice, notfound, week, library, traditions,
+    home, kind, festivals, cards, settings, about, connect, booking, me, path, practice, notfound, week, library, traditions,
     devotion, magic, healing, identity, divination, learning,
     catDevotion: catalogue('devotion', 'Catalogue · Devotion & the Unseen', CH.devotion, false),
     catMagic: catalogue('magic', 'Catalogue · Witchcraft & Magic', CH.magic),

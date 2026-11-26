@@ -1,102 +1,157 @@
 /**
- * The visitor's own practice record, kept only in this browser (localStorage "sk-practice-log"): which days they
- * practised and what (the rite, japa, the fire, the diya, minutes), how often they chanted each mantra, and their
- * journal. Nothing is sent anywhere. The daily practice page, the mantra pages, the mala, the fire and the diya all
- * add to it. Their kept mantras ("my mantras") are a separate list, "sk-my-mantras".
+ * The visitor's own practice record, kept in this browser (localStorage "sk-events"): every chant, rite, fire,
+ * lamp, finished practice, kept mantra and journal line is one event (src/me/core/events.ts), and what the pages
+ * show (days, streaks, counts, kept mantras, the journal) is worked out from them. Nothing leaves the browser
+ * unless the visitor makes an account (src/scripts/me.ts); then the same events are shared with their other
+ * devices, with journal lines sealed by their own passphrase first. The rite, the guided practices, the mantra
+ * pages, the mala, the fire and the diya all add to it through the functions here.
+ *
+ * Records kept before the log existed ("sk-practice-log", "sk-my-mantras", "sk-practice-done") become events
+ * once, on first read, so nobody loses their history.
  */
 import { dayKey } from './festivals';
+import { derive, fromLegacy, merge, newId, streaks, type DayRec, type Derived, type PracticeEvent } from '../me/core/events';
 
-export type DayRec = { rite?: number; japa?: number; fire?: number; diya?: number; minutes?: number };
-export type Log = { days: Record<string, DayRec>; journal: { at: string; text: string; kind: 'intention' | 'reflection' }[]; mantras: Record<string, number> };
-const KEY = 'sk-practice-log';
-let memory: Log | null = null;
+export type { DayRec };
+export type JournalEntry = { id: string; at: string; text: string; kind: 'intention' | 'reflection'; locked?: boolean };
+export type Log = { days: Record<string, DayRec>; journal: JournalEntry[]; mantras: Record<string, number> };
+/** an event as kept on this device: `s` marks one the host already has */
+export type LocalEvent = PracticeEvent & { s?: 1 };
+type Store = { v: 1; device: string; events: LocalEvent[] };
+
+const KEY = 'sk-events';
+const OLD = { log: 'sk-practice-log', mine: 'sk-my-mantras', done: 'sk-practice-done' };
+let memory: Store | null = null;
+let cache: { raw: string; d: Derived } | null = null;
+
+const parse = (k: string) => { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch { return null; } };
+
+export function readStore(): Store {
+  let raw: string | null = null;
+  try { raw = localStorage.getItem(KEY); } catch { /* storage closed: memory only */ }
+  if (raw) {
+    try {
+      const v = JSON.parse(raw);
+      if (v && Array.isArray(v.events) && typeof v.device === 'string') return v as Store;
+    } catch { /* unreadable: start again below, keeping nothing broken */ }
+  }
+  if (memory) return memory;
+  // first visit with the log: a device id, and anything kept the old way becomes events
+  const device = newId().split('-').pop()!.slice(0, 8);
+  const events = fromLegacy(device, { log: parse(OLD.log), mine: parse(OLD.mine), done: parse(OLD.done) });
+  const s: Store = { v: 1, device, events };
+  if (writeStore(s, false)) { try { Object.values(OLD).forEach((k) => localStorage.removeItem(k)); } catch { /* fine */ } }
+  return s;
+}
+
+/** saves the log; says whether it reached storage */
+export function writeStore(s: Store, announce = true) {
+  let ok = true;
+  try { localStorage.setItem(KEY, JSON.stringify(s)); memory = null; } catch { memory = s; ok = false; }
+  cache = null;
+  if (announce) {
+    document.dispatchEvent(new CustomEvent('sk:practice-log'));
+    document.dispatchEvent(new CustomEvent('sk:my-mantras'));
+  }
+  return ok;
+}
+
+/** the record worked out from the log (worked out once per change) */
+export function record(): Derived {
+  const s = readStore();
+  const raw = `${s.events.length}:${s.events[s.events.length - 1]?.id ?? ''}:${s.events.filter((e) => e.text !== undefined).length}`;
+  if (cache?.raw === raw) return cache.d;
+  const d = derive(s.events);
+  cache = { raw, d };
+  return d;
+}
+
+function add(...es: Omit<PracticeEvent, 'id' | 'at'>[]) {
+  const s = readStore();
+  const at = new Date().toISOString();
+  for (const e of es) s.events.push({ ...e, id: newId(s.device), at });
+  writeStore(s);
+  // something new to share, if the visitor has an account (src/scripts/me-sync.ts)
+  document.dispatchEvent(new CustomEvent('sk:events'));
+}
+
+/** events from elsewhere (another device, through the host) join the log */
+export function absorb(incoming: PracticeEvent[], markSynced: string[] = []) {
+  const s = readStore();
+  const done = new Set(markSynced);
+  const merged = merge(s.events, incoming.map((e) => ({ ...e, s: 1 as const }))) as LocalEvent[];
+  for (const e of merged) if (done.has(e.id)) e.s = 1;
+  const changed = merged.length !== s.events.length || markSynced.length > 0 || incoming.some((e) => e.text !== undefined);
+  if (changed) writeStore({ ...s, events: merged }, merged.length !== s.events.length || incoming.some((e) => e.text !== undefined));
+}
+
+/** fills in journal lines once their seal is opened on this device */
+export function fillJournal(opened: Record<string, string>) {
+  const s = readStore();
+  let n = 0;
+  for (const e of s.events) if (e.t === 'journal' && e.text === undefined && opened[e.id] !== undefined) { e.text = opened[e.id]; n++; }
+  if (n) writeStore(s);
+}
+
+/** a new account (or a fresh sign-in): every event here is offered to it, and the host keeps each once */
+export function unmarkAll() {
+  const s = readStore();
+  writeStore({ ...s, events: s.events.map(({ s: _s, ...e }) => e) }, false);
+}
+
+/** the shared journal was let go: locked lines from elsewhere leave this device, and lines readable here wait for a new passphrase */
+export function resetJournalSync() {
+  const s = readStore();
+  const events = s.events.filter((e) => !(e.t === 'journal' && e.text === undefined)).map((e) => {
+    if (e.t !== 'journal') return e;
+    const { s: _s, enc: _e, ...rest } = e;
+    return rest;
+  });
+  writeStore({ ...s, events });
+}
+
+/* ---------------------------------------------------------------- what the pages use */
 
 export function readLog(): Log {
-  try {
-    const v = JSON.parse(localStorage.getItem(KEY) || 'null');
-    if (v && typeof v === 'object' && v.days) return { days: v.days, journal: Array.isArray(v.journal) ? v.journal : [], mantras: v.mantras && typeof v.mantras === 'object' ? v.mantras : {} };
-  } catch { if (memory) return memory; }
-  return memory ?? { days: {}, journal: [], mantras: {} };
+  const d = record();
+  return {
+    days: d.days,
+    mantras: d.mantras,
+    journal: d.journal.map((j) => ({ id: j.id, at: j.at, kind: j.kind, text: j.text ?? '', locked: j.locked || undefined })),
+  };
 }
-export function writeLog(l: Log) {
-  try { localStorage.setItem(KEY, JSON.stringify(l)); } catch { memory = l; }
-  document.dispatchEvent(new CustomEvent('sk:practice-log'));
-}
+
 /** add to today's record (any of the practices calls this) */
-export function logPractice(add: DayRec) {
-  const l = readLog();
-  const k = dayKey(new Date());
-  const d = (l.days[k] ??= {});
-  for (const [key, v] of Object.entries(add) as [keyof DayRec, number][]) d[key] = (d[key] ?? 0) + v;
-  writeLog(l);
+export function logPractice(rec: DayRec) {
+  const day = dayKey(new Date());
+  const es = (Object.entries(rec) as [keyof DayRec, number][]).filter(([, n]) => n > 0).map(([t, n]) => ({ t, n, day }));
+  if (es.length) add(...es);
 }
-export function addJournal(text: string, kind: 'intention' | 'reflection') {
-  const t = text.trim().slice(0, 500);
-  if (!t) return;
-  const l = readLog();
-  l.journal.unshift({ at: new Date().toISOString(), text: t, kind });
-  l.journal = l.journal.slice(0, 365);
-  writeLog(l);
-}
-
-/** days practised, the run up to today (or yesterday), the longest run */
-export function stats(l = readLog()) {
-  const keys = Object.keys(l.days).filter((k) => Object.values(l.days[k]).some((v) => (v ?? 0) > 0)).sort();
-  const set = new Set(keys);
-  const day = (n: number) => { const d = new Date(); d.setDate(d.getDate() - n); return dayKey(d); };
-  let streak = 0;
-  const start = set.has(day(0)) ? 0 : 1;
-  for (let i = start; set.has(day(i)); i++) streak++;
-  let longest = 0, run = 0, prev: Date | null = null;
-  for (const k of keys) {
-    const [y, m, dd] = k.split('-').map(Number);
-    const d = new Date(y, m - 1, dd);
-    run = prev && Math.round((d.getTime() - prev.getTime()) / 864e5) === 1 ? run + 1 : 1;
-    longest = Math.max(longest, run);
-    prev = d;
-  }
-  const japa = Object.values(l.days).reduce((a, d) => a + (d.japa ?? 0), 0);
-  return { days: keys.length, streak, longest, japa, today: set.has(day(0)) };
-}
-
 
 /** a mantra chanted n times: counted for the day's japa and for that mantra */
 export function logMantra(slug: string, n: number) {
-  if (!n) return;
-  logPractice({ japa: n });
-  const l = readLog();
-  l.mantras[slug] = (l.mantras[slug] ?? 0) + n;
-  writeLog(l);
+  if (n > 0) add({ t: 'japa', n, slug, day: dayKey(new Date()) });
 }
 
-/* ---------------------------------------------------------------- my mantras */
-
-const MINE = 'sk-my-mantras';
-let mineMemory: string[] = [];
-export function myMantras(): string[] {
-  try { const v = JSON.parse(localStorage.getItem(MINE) || '[]'); return Array.isArray(v) ? v.filter((x) => typeof x === 'string') : []; } catch { return mineMemory; }
+export function addJournal(text: string, kind: 'intention' | 'reflection') {
+  const t = text.trim().slice(0, 500);
+  if (t) add({ t: 'journal', text: t, kind });
 }
+export function deleteJournal(id: string) { add({ t: 'journal-del', ref: id }); }
+
+/** "clear my record": days, counts, practices done and the journal (kept mantras stay) */
+export function clearAll() { add({ t: 'clear' }); }
+
+/** days practised, the run up to today (or yesterday), the longest run */
+export function stats(l: Pick<Log, 'days'> = readLog()) { return streaks(l.days, dayKey(new Date())); }
+
+export function myMantras(): string[] { return record().mine; }
 export function toggleMine(slug: string): boolean {
-  const list = myMantras();
-  const has = list.includes(slug);
-  const next = has ? list.filter((x) => x !== slug) : [slug, ...list].slice(0, 60);
-  try { localStorage.setItem(MINE, JSON.stringify(next)); } catch { mineMemory = next; }
-  document.dispatchEvent(new CustomEvent('sk:my-mantras'));
+  const has = myMantras().includes(slug);
+  add({ t: has ? 'unkeep' : 'keep', slug });
   return !has;
 }
 
-/* ---------------------------------------------------------------- guided practices done */
-
-const DONE = 'sk-practice-done';
-type Done = Record<string, { n: number; last: string }>;
-let doneMemory: Done = {};
-export function sessionsDone(): Done {
-  try { const v = JSON.parse(localStorage.getItem(DONE) || '{}'); return v && typeof v === 'object' ? v : {}; } catch { return doneMemory; }
-}
+export function sessionsDone(): Record<string, { n: number; last: string }> { return record().sessions; }
 /** a guided practice completed: how often, and when last */
-export function logSession(slug: string) {
-  const d = sessionsDone();
-  d[slug] = { n: (d[slug]?.n ?? 0) + 1, last: new Date().toISOString() };
-  try { localStorage.setItem(DONE, JSON.stringify(d)); } catch { doneMemory = d; }
-  document.dispatchEvent(new CustomEvent('sk:practice-log'));
-}
+export function logSession(slug: string) { add({ t: 'session', slug }); }

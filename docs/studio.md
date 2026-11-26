@@ -94,6 +94,13 @@ a small scheduled job every hour (`netlify/functions/studio-reminders.mts`), and
   (Client → Erase): their conversations, notes and emails go; sent invoices stay, without contact details, because
   tax records must be kept.
 
+## Visitor accounts
+
+Visitors can make an optional account to keep their practice the same on every device, and a client who signs in with
+the address they wrote from sees their conversations and invoices in **My space** (`/me`), each opening the same
+private booking and invoice pages their emails link to. Accounts use the Studio's own settings (`STUDIO_SECRET` and
+Resend) and its storage; they hold no Studio records, and the Studio holds no practice. See `docs/accounts.md`.
+
 ## The preview's demo
 
 The preview (and any static build of the site) carries a demo of the Studio at `/studio`, with no password, that

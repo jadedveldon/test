@@ -1,0 +1,87 @@
+---
+/**
+ * My space (/me): signing in by email link, and, once signed in, the visitor's practice from all their devices,
+ * their journal (locked with their own passphrase), their sessions and invoices if they are a client, and their
+ * account (download, sign out, delete). The working part is src/scripts/me.ts; accounts themselves are src/me/
+ * (docs/accounts.md). Words: src/content/pages/me.json ("My space" in the content editor). Never indexed.
+ */
+import Base from '../layouts/Base.astro';
+import Rich from '../components/Rich.astro';
+import CareText from '../components/CareText.astro';
+import w from '../content/pages/me.json';
+import { loadMantras, loadPractices } from '../data/mantras';
+
+const names = {
+  practices: Object.fromEntries((await loadPractices()).map((p) => [p.slug, p.title])),
+  mantras: Object.fromEntries((await loadMantras()).map((m) => [m.slug, m.name])),
+};
+const ACCOUNTS = (import.meta.env.PUBLIC_STUDIO || 'off') !== 'off';
+---
+<Base title={`${w.title} · Sarvakali`} sequence="connect" noindex description={w.lede}>
+  <section class="bk me" data-me>
+    <p class="kicker" data-hero>{w.kicker}</p>
+    <h1 class="display-l" data-hero>{w.title}</h1>
+    <p class="lede" data-hero>{w.lede}</p>
+
+    {!ACCOUNTS && <div class="bk-body"><p>{w.errors.noEmail}</p></div>}
+
+    <div class="bk-body" data-me-linking hidden aria-live="polite"><p>{w.signIn.signingIn}</p></div>
+    <p class="bk-error" data-me-error hidden role="alert"></p>
+
+    {ACCOUNTS && (
+      <div class="bk-body me-out" data-me-out hidden>
+        <h2 class="display-s" tabindex="-1">{w.signIn.title}</h2>
+        <p>{w.signIn.lede}</p>
+        <ul class="me-points">{w.signIn.points.filter(Boolean).map((p) => <li>{p}</li>)}</ul>
+        <form class="me-form" data-me-form novalidate>
+          <div class="field">
+            <label for="me-email">{w.signIn.email}</label>
+            <input id="me-email" type="email" name="email" autocomplete="email" inputmode="email" required />
+          </div>
+          <label class="me-consent"><input type="checkbox" name="consent" required /> <span>{w.signIn.consent}</span></label>
+          <button type="submit" class="btn btn-solid" data-sending={w.signIn.sending}>{w.signIn.button}</button>
+          <p class="hint">{w.signIn.noPassword}</p>
+          <p class="hint"><Rich text={w.signIn.privacy} /></p>
+        </form>
+        <div class="me-sent" data-me-sent hidden aria-live="polite"></div>
+      </div>
+    )}
+
+    {ACCOUNTS && (
+      <div class="me-in" data-me-in hidden>
+        <p class="me-hello"><span data-me-hello></span> <span class="me-status" data-me-status aria-live="polite"></span></p>
+        <p class="hint me-care"><CareText text={w.care} /></p>
+
+        <div class="bk-body">
+          <h2 class="display-s">{w.space.practice}</h2>
+          <p class="hint">{w.space.practiceLede}</p>
+          <div data-me-practice></div>
+        </div>
+
+        <div class="bk-body" data-me-journal-box>
+          <h2 class="display-s">{w.journal.title}</h2>
+          <p>{w.journal.lede}</p>
+          <div data-me-journal></div>
+        </div>
+
+        <div class="bk-body" data-me-client-box>
+          <h2 class="display-s">{w.client.title}</h2>
+          <div data-me-client></div>
+        </div>
+
+        <div class="bk-body">
+          <h2 class="display-s">{w.account.title}</h2>
+          <div class="cta-row">
+            <button type="button" class="btn btn-ghost btn-sm" data-me-export>{w.account.export}</button>
+            <button type="button" class="btn btn-ghost btn-sm" data-me-signout>{w.account.signOut}</button>
+            <button type="button" class="btn btn-ghost btn-sm" data-me-signout-all>{w.account.signOutAll}</button>
+            <button type="button" class="btn btn-ghost btn-sm me-danger" data-me-delete>{w.account.delete}</button>
+          </div>
+          <p class="hint">{w.account.signOutNote}</p>
+        </div>
+      </div>
+    )}
+    <noscript><div class="bk-body"><p>{w.errors.noScript}</p></div></noscript>
+    <script type="application/json" data-me-words set:html={JSON.stringify({ w, names })} />
+  </section>
+</Base>
