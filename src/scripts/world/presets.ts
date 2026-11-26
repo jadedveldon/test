@@ -63,6 +63,11 @@ export const PRESETS: Record<string, Preset> = {
     a: '#0c0706', b: '#3a1a12', c: '#c9773a', glow: '#ffcf8a',
     ink: '#f8eee3', inkSoft: '#cdb6a4', scale: 1.3, warp: 2.0, speed: 0.06, light: 0, motes: 0.4, form: 'bloom', shift: 5.2, zoom: 0.76, fade: 0.38, narrow: 0,
   },
+  /* not found: a crossroads in light, beside the words */
+  notFound: {
+    a: '#060304', b: '#1d0b10', c: '#8a3a2a', glow: '#f0b34a',
+    ink: '#f6ece2', inkSoft: '#c4ada0', scale: 1.4, warp: 2.2, speed: 0.05, light: 0, motes: 0.5, form: 'crossroads', shift: 4.6, fade: 0.85, narrow: 0.5,
+  },
   devotion: {
     a: '#07050f', b: '#2b0f2e', c: '#b8892f', glow: '#f2c66b',
     ink: '#f5ead9', inkSoft: '#c2ad98', scale: 1.6, warp: 2.8, speed: 0.06, light: 0, motes: 0.75, form: 'flames', shift: 2.9,

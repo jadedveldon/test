@@ -16,15 +16,14 @@ const ARGS = { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', 
   };
   const nav = (p, r) => p.evaluate((r) => { const a = document.createElement('a'); a.href = r; document.body.appendChild(a); a.click(); a.remove(); }, r);
 
-  // 1-2 depth demo
+  // 1-2 the depth view (once its own demo page; since 2026-11-26 About's portrait)
   { const { ctx, p } = await fresh();
-    await p.goto(`${B}/depth?tier=full&cursor=off`); await p.waitForTimeout(4000);
-    ok('depth: live on a direct load', await p.evaluate(() => document.querySelector('.depth-stage').classList.contains('is-live')));
+    await p.goto(`${B}/about?tier=full&cursor=off`); await p.waitForTimeout(4000);
+    ok('depth: live on a direct load (About)', await p.evaluate(() => document.querySelector('.depth-stage').classList.contains('is-live')));
     await ctx.close(); }
   { const { ctx, p } = await fresh();
-    await p.goto(`${B}/depth?tier=calm&cursor=off`); await p.waitForTimeout(2500);
-    await p.evaluate(() => document.querySelectorAll('[data-work]')[1].click()); await p.waitForTimeout(500);
-    ok('depth: flat mode, switching paintings', p.errs.length === 0, p.errs.join(' | '));
+    await p.goto(`${B}/about?tier=calm&cursor=off`); await p.waitForTimeout(2500);
+    ok('depth: flat mode on a calm device (About)', p.errs.length === 0, p.errs.join(' | '));
     await ctx.close(); }
   // 3 signature moments put themselves back when you leave (they once stayed half-done when the page changed)
   { const { ctx, p } = await fresh();
@@ -51,13 +50,8 @@ const ARGS = { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', 
     const order = await p.evaluate(() => { const gs = Array.from(document.querySelectorAll('[data-piece]')); const home = gs.filter((g) => g.classList.contains('is-home')).map((g) => gs.indexOf(g)); const loose = gs.filter((g) => !g.classList.contains('is-home')).map((g) => gs.indexOf(g)); return { home, loose, fine: home.length > 0 && Math.max(...home) < Math.min(...loose) }; });
     ok('kintsugi: settled pieces sit under loose ones', order.fine, JSON.stringify(order));
     await ctx.close(); }
-  // 4 invoice local date
-  { const { ctx, p } = await fresh({ timezoneId: 'Asia/Kolkata' });
-    await p.clock.install({ time: new Date('2026-11-24T19:45:00Z') }); // 01:15 on 25 Nov in India
-    await p.goto(`${B}/invoice?tier=still&cursor=off`); await p.waitForTimeout(2500);
-    const v = await p.evaluate(() => ({ d: document.querySelector('input[name="date"]')?.value, n: document.querySelector('input[name="number"]')?.value }));
-    ok('invoice: date is local (25 Nov at 01:15 IST)', v.d === '2026-11-25' && (v.n || '').includes('261125'), JSON.stringify(v));
-    await ctx.close(); }
+  // 4 invoice local date: invoices are made in the Studio since 2026-11-26, and dated in Sarvakali's zone; checked
+  //    in tools/qa/studio-core.mjs ("invoice: dated in India at 01:15 IST")
   // 5 path links into Pillars 4-6
   { const { ctx, p } = await fresh();
     for (const [pl, cat] of [['identity', 'Queer-Affirming Work'], ['divination', 'Dreams, Psychic Development & Astral Work'], ['learning', 'Classes & Mentoring']]) {
@@ -158,9 +152,10 @@ const ARGS = { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', 
     ok('daily practice: opens in its own world and lettering, not Divination\'s', !/^div_/.test(pr.key) && !/Unicase/.test(pr.font), `${pr.key} · ${pr.font.split(',')[0]}`);
     await ctx.close(); }
   // 18 on light pages the list bullets took the world's glow (near white) and almost vanished; on the invoice maker
-  //    "(optional)" fell onto a line of its own under each label
+  //    "(optional)" fell onto a line of its own under each label (the maker became the Studio's invoices in 2026-11;
+  //    the same "(optional)" labels are checked on Connect)
   { const { ctx, p } = await fresh();
-    await p.goto(`${B}/writings/who-is-kali?tier=still&cursor=off`); await p.waitForTimeout(3000);
+    await p.goto(`${B}/articles/who-is-kali?tier=still&cursor=off`); await p.waitForTimeout(3000);
     const c = await p.evaluate(() => {
       const lum = (s) => { const v = s.match(/[\d.]+/g).slice(0, 3).map((x) => { x = Number(x) / 255; return x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4; }); return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]; };
       const m = getComputedStyle(document.querySelector('.prose li'), '::marker').color;
@@ -169,12 +164,12 @@ const ARGS = { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', 
       return { light: document.documentElement.dataset.light, ratio: (a + 0.05) / (b + 0.05), m, bg };
     });
     ok('light pages: list bullets stand out from the page (3:1 or more)', c.light === '1' && c.ratio >= 3, `${c.ratio.toFixed(2)}:1 · ${c.m} on ${c.bg}`);
-    await p.goto(`${B}/invoice?tier=still&cursor=off`); await p.waitForTimeout(2000);
-    const lines = await p.evaluate(() => [...document.querySelectorAll('.inv-form label')].filter((l) => l.querySelector('.optional')).map((l) => {
+    await p.goto(`${B}/connect?tier=still&cursor=off`); await p.waitForTimeout(2000);
+    const lines = await p.evaluate(() => [...document.querySelectorAll('#connect-form label')].filter((l) => l.querySelector('.optional') && l.firstChild?.nodeType === 3).map((l) => {
       const o = l.querySelector('.optional').getBoundingClientRect(); const r = document.createRange(); r.selectNodeContents(l.firstChild); const t = r.getBoundingClientRect();
       return Math.abs(o.top - t.top) < 4;
     }));
-    ok('invoice: "(optional)" sits beside its label', lines.length > 0 && lines.every(Boolean), `${lines.filter(Boolean).length} of ${lines.length}`);
+    ok('forms: "(optional)" sits beside its label (Connect)', lines.length > 0 && lines.every(Boolean), `${lines.filter(Boolean).length} of ${lines.length}`);
     await ctx.close(); }
   // 19 at 200% text on a phone the Mahavidya and deity cards on Devotion (Bhuvaneshvari, Chhinnamasta...) ran past
   //    the screen and the page scrolled sideways; found by layout.cjs, which had reported it as a known alarm
@@ -227,6 +222,46 @@ const ARGS = { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', 
     await p.goto(`${B}/pillars/healing?tier=full&cursor=off#mind-and-subconscious-work`); await p.waitForTimeout(5000);
     const r = await p.evaluate(() => ({ form: window.sarvakali.world.formKey, settled: window.sarvakali.world.formSettled }));
     ok('world: a chapter\'s form is whole at its heading', r.form === 'bloom' && r.settled > 0.99, `${r.form} settled ${r.settled.toFixed(3)}`);
+    await ctx.close(); }
+  // 23 found by looking at the request loop (2026-11-26): after sending, Connect's confirmation was scrolled to its
+  //    middle, so its heading sat under the header, and the visitor's own words showed as one more chip; in the Studio
+  //    the DRAFT stamp lay over the invoice's letterhead, a history read "You Confirmed a time", and the Discount box
+  //    stretched beside the Tax box and its hint. Every static build carries the Studio's demo, so this runs anywhere.
+  { const { ctx, p } = await fresh();
+    await p.goto(`${B}/pillars/healing?tier=still&cursor=off`); await p.waitForTimeout(2500);
+    await p.locator('[data-keep]').first().click();
+    await p.goto(`${B}/connect?tier=still&cursor=off`); await p.waitForTimeout(2000);
+    await p.fill('#name', 'Regression Check'); await p.fill('#email', 'regression@example.com'); await p.fill('#topic', 'A few words of my own.');
+    await p.fill('#time1', `${new Date(Date.now() + 3 * 864e5).toISOString().slice(0, 10)}T18:30`);
+    await p.click('[data-connect-send]'); await p.waitForTimeout(3000);
+    const d = await p.evaluate(() => {
+      const h = document.querySelector('#connect-done h2, #connect-done h1, #connect-done .display-m, #connect-done .display-l').getBoundingClientRect();
+      const head = document.querySelector('.site-header').getBoundingClientRect();
+      return { below: h.top >= head.bottom - 1 && h.bottom <= innerHeight, chips: [...document.querySelectorAll('[data-done-asked] li')].map((l) => l.textContent), quote: document.querySelector('[data-done-topic]')?.textContent || '' };
+    });
+    ok('connect: after sending, the confirmation\'s heading is in view, below the header', d.below, JSON.stringify(d));
+    ok('connect: the visitor\'s words are a quote, not a chip', d.chips.length === 1 && !d.chips.some((c) => /words of my own/.test(c)) && /words of my own/.test(d.quote), JSON.stringify(d));
+    // the Studio: a draft invoice for that request
+    await p.goto(`${B}/studio`); await p.waitForTimeout(3000);
+    const db = await p.evaluate(() => JSON.parse(localStorage.getItem('sk-studio-demo')).db);
+    const req = db.bookings.find((x) => x.topic === 'A few words of my own.');
+    await p.evaluate((id) => { location.hash = `#/requests/${id}`; }, req.id); await p.waitForTimeout(1500);
+    const hist = await p.evaluate(() => [...document.querySelectorAll('.st-timeline li')].map((l) => l.textContent));
+    await p.locator('.st-slots button', { hasText: 'Confirm this time' }).first().click(); await p.waitForTimeout(1500);
+    await p.evaluate((id) => { location.hash = `#/clients/${id}`; }, req.clientId); await p.waitForTimeout(1200);
+    await p.locator('button', { hasText: 'New invoice' }).click(); await p.waitForTimeout(2500);
+    const inv = await p.evaluate(() => {
+      const o = (a, b) => !(a.right <= b.left || b.right <= a.left || a.bottom <= b.top || b.bottom <= a.top);
+      const stamp = document.querySelector('.ip-stamp').getBoundingClientRect();
+      const head = document.querySelector('.ip-head').getBoundingClientRect();
+      const box = (label) => [...document.querySelectorAll('.st-field')].find((f) => f.querySelector('.st-label')?.textContent.startsWith(label))?.querySelector('input').getBoundingClientRect();
+      const dis = box('Discount'), tax = box('Tax');
+      return { stampClear: !o(stamp, head), boxes: dis && tax ? Math.abs(dis.top - tax.top) < 2 && Math.abs(dis.height - tax.height) < 2 : false };
+    });
+    ok('studio: a history line follows its actor in lower case ("Meera sent a request")', hist.length > 0 && hist.every((t) => !/^(You|\S+) [A-Z]/.test(t.trim())), hist.join(' | '));
+    ok('studio: the DRAFT stamp leaves the invoice\'s letterhead clear', inv.stampClear, JSON.stringify(inv));
+    ok('studio: the Discount and Tax boxes line up', inv.boxes, JSON.stringify(inv));
+    ok('studio: no errors on the way', p.errs.length === 0, p.errs.join(' | '));
     await ctx.close(); }
   await b.close();
 })();

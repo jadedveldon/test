@@ -98,12 +98,11 @@ const W = Number(process.env.W || 1440), H = Number(process.env.H || 855);
   await p.waitForTimeout(1500);
   await p.screenshot({ path: `${OUT}/${tag}connect.jpg`, type: 'jpeg', quality: 60 });
   ok('connect form responds', await p.evaluate(() => { const f = document.querySelector('#connect-form'); const done = document.querySelector('[data-connect-done], .connect-done, .connect-thanks'); return (done && !done.hidden ? done.querySelector('h2').textContent.trim() : '') || (f && f.hidden ? 'form replaced' : false) || document.querySelector('[data-connect-status], .form-status')?.textContent?.slice(0, 80) || false; }));
-  // invoice
-  await go('/invoice');
-  await p.fill('input[name="upi"]', 'sarvakali@upi');
-  await p.fill('input[name="payee"]', 'Sarvakali');
-  await p.waitForTimeout(1200);
-  ok('invoice draws a QR', await p.evaluate(() => !!document.querySelector('[data-invoice] svg, [data-invoice] canvas, [data-invoice] img[src^="data"]')));
+  // invoice: the client's invoice page draws the UPI QR (an invoice from the Studio's demo, which every static build carries)
+  await go('/studio', 2500);
+  const itok = await p.evaluate(() => { try { return (JSON.parse(localStorage.getItem('sk-studio-demo')).db.invoices.find((i) => i.status === 'sent') || {}).token || ''; } catch (e) { return ''; } });
+  await go(`/invoice?t=${itok}`, 2500);
+  ok('invoice draws a QR', await p.evaluate(() => !!document.querySelector('[data-paper] .ip-qr svg')));
   // sound toggle and the prototype panel
   await go('/');
   await p.click('[data-sound]');

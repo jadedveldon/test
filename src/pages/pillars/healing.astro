@@ -86,7 +86,7 @@ const pieces = polys.map((poly, i) => {
         </div>
 
         <!-- breathe: several patterns, and a five-senses grounding -->
-        <div class="breath" data-breath data-hero>
+        <div class="breath" id="breathe" data-breath data-hero>
           <div class="br-modes" role="group" aria-label="Breathing patterns">
             {BREATHS.map((b, i) => <button type="button" data-breath-mode={b.key} aria-pressed={i === 0 ? 'true' : 'false'}>{b.name}</button>)}
             <button type="button" data-breath-mode="ground" aria-pressed="false">{COPY.breath.grounding.name}</button>

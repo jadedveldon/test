@@ -7,6 +7,7 @@ Q=tools/qa
 run() { node "$@" || echo "FAIL $1 stopped with an error (exit $?)"; }
 echo "== content rules";  run $Q/rules.cjs
 echo "== content files";  node --experimental-strip-types --no-warnings $Q/content.mjs || echo "FAIL content.mjs stopped with an error (exit $?)"
+echo "== studio rules";   node $Q/studio-core.mjs || echo "FAIL studio-core.mjs stopped with an error (exit $?)"
 echo "== pages";          run $Q/audit.cjs
 echo "== regressions";    run $Q/regressions.cjs
 echo "== pillars 4-6";    run $Q/pillars.cjs

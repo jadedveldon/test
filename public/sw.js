@@ -1,5 +1,5 @@
 /* Sarvakali service worker: pages you have visited keep working without a connection. */
-const CACHE = 'sarvakali-v3'; // a new name clears copies kept by the earlier version
+const CACHE = 'sarvakali-v4'; // a new name clears copies kept by the earlier version
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(['./', './practice', './path']).catch(() => {})).then(() => self.skipWaiting()));
 });
@@ -9,8 +9,9 @@ self.addEventListener('activate', (e) => {
 self.addEventListener('fetch', (e) => {
   const req = e.request;
   if (req.method !== 'GET' || new URL(req.url).origin !== location.origin) return;
-  // the content editor and its door are never saved (the door's address holds its secret word)
-  if (/^\/(keystatic|api\/keystatic|door)(\/|$)/.test(new URL(req.url).pathname)) return;
+  // never saved: the content editor and its door (the door's address holds its secret word), the Studio and its
+  // requests, and a client's own booking and invoice pages (their address holds the client's private link)
+  if (/^\/(keystatic|api|door|studio|booking|invoice)(\/|$|\.html)/.test(new URL(req.url).pathname)) return;
   if (req.mode === 'navigate') {
     // pages: the network first, so content is always fresh; the saved copy when offline
     e.respondWith(fetch(req).then((res) => { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(req, copy)); return res; })

@@ -46,7 +46,7 @@ const sky = moves.filter((m) => m.room === 'sky');
 
         <div class="pd-sig" data-hero>
           <!-- find your class, at the library table -->
-          <form class="finder" data-finder>
+          <form class="finder" id="class-finder" data-finder>
             <p class="kicker">{fd.kicker}</p>
             {FINDER.map((f, qi) => (
               <fieldset data-finder-q={qi}>

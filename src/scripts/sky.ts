@@ -63,6 +63,17 @@ export function readSky(mode: SkyMode, now = new Date()): SkyReading {
   return { on: mode !== 'off', night, warm, special, phase, tithi, paksha, name, lit, note };
 }
 
+/** the lunar day at a moment: 1–30, its name, its fortnight, and whether it is Amavasya or Purnima */
+export function tithiAt(d: Date) {
+  const phase = SunCalc.getMoonIllumination(d).phase;
+  const idx = Math.min(29, Math.floor(phase * 30));
+  const paksha: 'Shukla' | 'Krishna' = idx < 15 ? 'Shukla' : 'Krishna';
+  const special = idx === 14 ? 'purnima' : idx === 29 ? 'amavasya' : null;
+  const base = TITHI[idx % 15];
+  const name = special === 'purnima' ? 'Purnima' : special === 'amavasya' ? 'Amavasya' : `${paksha} ${base}`;
+  return { idx, tithi: idx + 1, phase, paksha, special, base, name };
+}
+
 /** a small moon drawing for the header pill, lit like tonight's moon */
 export function moonIcon(phase: number) {
   const r = 7;

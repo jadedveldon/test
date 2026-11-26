@@ -1,0 +1,78 @@
+---
+/**
+ * The Studio (/studio): Sarvakali's own place for requests, sessions, clients, invoices and articles.
+ * On the host it answers "not found" unless the secret door has been opened on this device, then asks for the
+ * password; behind that, the dashboard (src/studio/app). In the preview it is a demo that keeps everything in
+ * the browser. Never indexed.
+ */
+import { getCollection } from 'astro:content';
+import { markSvg, BRAND } from '../../data/brand';
+import StudioApp from '../app/StudioApp.tsx';
+import '../app/studio.css';
+
+const mode = import.meta.env.PUBLIC_STUDIO as 'server' | 'demo';
+let view: 'app' | 'signin' = 'app';
+let devHint = false;
+if (mode === 'server') {
+  const { throughDoor, signedIn, PRIVATE } = await import('../server/runtime');
+  const { env, isDev } = await import('../server/env');
+  if (!(await throughDoor(Astro.cookies))) return new Response('Not found', { status: 404, headers: PRIVATE });
+  for (const [k, v] of Object.entries(PRIVATE)) Astro.response.headers.set(k, v);
+  view = (await signedIn(Astro.cookies)) ? 'app' : 'signin';
+  devHint = isDev() && !env('STUDIO_PASSWORD_HASH');
+}
+// the articles, for the Studio's Articles page (they are edited in the content editor)
+const articles = (await getCollection('writings')).map((a) => ({ slug: a.id, title: a.data.title, date: a.data.date.toISOString().slice(0, 10), pillar: a.data.pillar, draft: a.data.draft, summary: a.data.summary }))
+  .sort((a, b) => b.date.localeCompare(a.date));
+const icon = `data:image/svg+xml,${encodeURIComponent(markSvg({ bg: BRAND.deep, rounded: 12, pad: 4, flame: BRAND.ember }))}`;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="theme-color" content="#120a09" />
+    <title>Studio · Sarvakali</title>
+    <link rel="icon" href={icon} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" />
+  </head>
+  <body class="st-body">
+    {view === 'signin' ? (
+      <main class="st-signin">
+        <form class="st-signin-card" data-signin>
+          <Fragment set:html={markSvg({ size: 56, flame: BRAND.ember })} />
+          <h1>Studio</h1>
+          <p>Requests, sessions, clients, invoices and writing, in one place.</p>
+          <label for="pw">Password</label>
+          <input id="pw" name="password" type="password" autocomplete="current-password" required autofocus />
+          <p class="st-signin-error" data-signin-error role="alert" hidden></p>
+          <button type="submit" class="st-btn st-btn-solid">Sign in</button>
+          {devHint && <p class="st-hint">On your own computer, with no password set yet, the password is <b>studio</b>.</p>}
+        </form>
+      </main>
+    ) : (
+      <StudioApp client:only="react" mode={mode} articles={articles} />
+    )}
+    {view === 'signin' && (
+      <script>
+        const form = document.querySelector<HTMLFormElement>('[data-signin]')!;
+        const err = document.querySelector<HTMLElement>('[data-signin-error]')!;
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const btn = form.querySelector('button')!;
+          btn.disabled = true; err.hidden = true;
+          try {
+            const r = await fetch('/api/studio/sign-in', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ password: (form.elements.namedItem('password') as HTMLInputElement).value }) });
+            if (r.ok) { location.reload(); return; }
+            err.textContent = (await r.json().catch(() => ({}))).error || 'That did not work.';
+          } catch { err.textContent = 'No connection. Please try again.'; }
+          err.hidden = false; btn.disabled = false;
+        });
+      </script>
+    )}
+  </body>
+</html>

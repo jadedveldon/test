@@ -1,18 +1,76 @@
 ---
+/**
+ * Daily practice: today (the lunar day, the next sacred night, the visitor's own streak), the daily rite (five
+ * guided steps: arrive, light, intend, japa, offer; 5, 10 or 20 minutes), the practices one by one (the mala, the
+ * fire, the diya), the visitor's own record and journal, the month's lunar days, the sacred days ahead with what to
+ * do on each, and reminders. Everything a visitor does here stays on their device. Words:
+ * src/content/pages/practice.json ("Daily practice" in the content editor); the rite's guidance, the suggestions
+ * for sacred nights and the mantra are drafts for Sarvakali to approve.
+ */
 import Base from '../layouts/Base.astro';
+import w from '../content/pages/practice.json';
+const r = w.rite;
 ---
-<Base title="Daily practice · Sarvakali" sequence="practice" description="A little practice for today: a card, a round on the mala, an offering to the fire, a diya and the sacred days ahead.">
+<Base title="Daily practice · Sarvakali" sequence="practice" description="A daily practice with Sarvakali: a guided rite, the mala, the fire, the diya, the lunar days and the sacred nights ahead.">
   <div data-practice>
     <a hidden data-connect-href href="/connect" tabindex="-1" aria-hidden="true"></a>
+    <script type="application/json" data-practice-words set:html={JSON.stringify(w)} />
 
+    <!-- today -->
     <section class="chapter" data-chapter="practice">
       <div class="chapter-inner narrow">
-        <p class="kicker" data-hero>Daily practice</p>
-        <h1 class="display-l" data-hero data-split>A little practice for today</h1>
-        <p class="lede" data-hero>Five small things, each a few minutes long. Begin anywhere. Nothing you do here is saved or sent.</p>
+        <p class="kicker" data-hero>{w.kicker}</p>
+        <h1 class="display-l" data-hero data-split>{w.title}</h1>
+        <p class="lede" data-hero>{w.lede}</p>
+        <dl class="today" data-today data-hero>
+          <div><dt>{w.today.moon}</dt><dd><span data-today-moon-icon></span><span data-today-moon>…</span></dd></div>
+          <div><dt>{w.today.next}</dt><dd data-today-next>…</dd></div>
+          <div><dt>{w.today.you}</dt><dd data-today-you>{w.today.none}</dd></div>
+        </dl>
         <div class="cta-row" data-hero>
-          <button type="button" class="btn btn-solid" data-card-open>Draw today's card</button>
-          <a class="btn btn-ghost" href="#mala">Or begin with the mala</a>
+          <a class="btn btn-solid" href="#rite" data-rite-begin>{w.begin}</a>
+          <button type="button" class="btn btn-ghost" data-card-open>{w.card}</button>
+        </div>
+        <p class="practice-jump" data-hero>{w.choose}: <a href="#mala">the mala</a> · <a href="#fire">the fire</a> · <a href="#days">the diya and sacred days</a> · <a href="#moons">the month’s moons</a> · <a href="#yours">your practice</a></p>
+      </div>
+    </section>
+
+    <!-- the daily rite -->
+    <section class="chapter" data-chapter="lampsNight" id="rite">
+      <div class="chapter-inner narrow">
+        <div class="rite" data-rite>
+          <p class="kicker">{r.kicker}</p>
+          <h2 class="display-l" data-split>{r.title}</h2>
+          <div class="rite-start" data-rite-start>
+            <p class="lede">{r.lede}</p>
+            <div class="rite-lengths" role="radiogroup" aria-label="How long">
+              {r.lengths.map((l, i) => <button type="button" role="radio" aria-checked={i === 1 ? 'true' : 'false'} data-rite-length={i}>{l.label}</button>)}
+            </div>
+            <button type="button" class="btn btn-solid" data-rite-go>{r.start}</button>
+          </div>
+          <div class="rite-run" data-rite-run hidden>
+            <ol class="rite-steps" aria-label="Steps">
+              {r.steps.map((s, i) => <li data-rite-dot={i}><span>{s.name}</span></li>)}
+            </ol>
+            <div class="rite-panel" data-rite-panel aria-live="polite"></div>
+            <div class="rite-nav">
+              <button type="button" class="path-back" data-rite-back>← {r.back}</button>
+              <button type="button" class="path-back" data-rite-skip>{r.skip}</button>
+            </div>
+          </div>
+          <div class="rite-done" data-rite-done hidden tabindex="-1">
+            <p class="rite-done-mark" aria-hidden="true">✓</p>
+            <h3 class="display-m">{r.doneTitle}</h3>
+            <p data-rite-streak></p>
+            <p>{r.doneText}</p>
+            <form class="rite-reflect" data-rite-reflect>
+              <label for="rite-reflection">{r.reflection}</label>
+              <textarea id="rite-reflection" rows="2" maxlength="500"></textarea>
+              <button type="submit" class="btn btn-ghost btn-sm">{r.save}</button>
+              <p class="hint" data-rite-saved hidden>{r.saved}</p>
+            </form>
+            <div class="cta-row"><a class="btn btn-ghost btn-sm" href="#yours">{w.log.kicker}</a><button type="button" class="btn btn-ghost btn-sm" data-rite-again>{r.again}</button></div>
+          </div>
         </div>
       </div>
     </section>
@@ -23,7 +81,7 @@ import Base from '../layouts/Base.astro';
           <p class="kicker" data-fade>One round</p>
           <h2 class="display-l" data-split data-dust>Count a round on the mala</h2>
           <p class="lede" data-fade>A mala has 108 beads. Repeat the mantra once for each bead: tap the button, the beads, or press space. The world turns one bead with you.</p>
-          <p class="mantra" data-fade lang="sa"><span>ॐ क्रीं कालिकायै नमः</span><small lang="en">Om Krīm Kālikāyai Namaḥ · the mantra is chosen with Sarvakali</small></p>
+          <p class="mantra" data-fade lang="sa"><span>{r.mantra}</span><small lang="en">{r.mantraNote}</small></p>
           <div class="cta-row" data-fade>
             <button type="button" class="btn btn-solid" data-mala-tap>Next bead</button>
             <button type="button" class="btn btn-ghost" data-mala-reset>Start the round again</button>
@@ -79,35 +137,56 @@ import Base from '../layouts/Base.astro';
             <button type="button" class="btn btn-ghost" data-diya-light>Light a diya</button>
           </div>
         </div>
-        <p class="kicker" data-fade>Sacred days ahead</p>
-        <h2 class="display-l" data-split data-dust>The nights that matter</h2>
-        <p class="lede" data-fade>New and full moons are worked out from the moon itself (to within a few hours; a panchang gives the exact tithi). Festival dates are from public calendars, to be confirmed with Sarvakali's panchang.</p>
+        <p class="kicker" data-fade>{w.days.kicker}</p>
+        <h2 class="display-l" data-split data-dust>{w.days.title}</h2>
+        <p class="lede" data-fade>{w.days.lede}</p>
         <ul class="days" data-days data-fade></ul>
+      </div>
+    </section>
+
+    <!-- the month's lunar days -->
+    <section class="chapter" data-chapter="practice" id="moons">
+      <div class="chapter-inner">
+        <p class="kicker" data-fade>{w.month.kicker}</p>
+        <h2 class="display-l" data-split>{w.month.title}</h2>
+        <p class="lede" data-fade>{w.month.lede}</p>
+        <div class="moonmonth" data-month data-fade>
+          <div class="mm-head"><button type="button" class="icon-btn" data-month-prev aria-label={w.month.prev}>←</button><h3 data-month-title aria-live="polite"></h3><button type="button" class="icon-btn" data-month-next aria-label={w.month.nextMonth}>→</button></div>
+          <div class="mm-grid" data-month-grid role="grid"></div>
+          <p class="mm-detail" data-month-detail aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- the visitor's own record -->
+    <section class="chapter" data-chapter="practice" id="yours">
+      <div class="chapter-inner">
+        <p class="kicker" data-fade>{w.log.kicker}</p>
+        <h2 class="display-l" data-split>{w.log.title}</h2>
+        <p class="lede" data-fade>{w.log.lede}</p>
+        <div class="plog" data-log data-fade></div>
       </div>
     </section>
 
     <section class="chapter" data-chapter="close" id="reminders">
       <div class="chapter-inner practice-two">
         <div class="practice-card" data-fade>
+          <h2 class="display-m">{w.reminder.title}</h2>
+          <p>{w.reminder.text}</p>
+          <div class="cta-row"><label class="rem-time">{w.reminder.time} <input type="time" value="07:00" data-daily-time /></label><button type="button" class="btn btn-solid" data-daily-cal>{w.reminder.add}</button></div>
+          <p class="hint" data-daily-note aria-live="polite"></p>
+        </div>
+        <div class="practice-card" data-fade>
           <h2 class="display-m">A reminder before each Amavasya and Purnima</h2>
           <p>Add the next twelve new and full moons to your calendar, each with a gentle reminder the evening before. It works today, with no sign-up.</p>
           <button type="button" class="btn btn-solid" data-moon-cal>Add moon reminders to my calendar</button>
           <p class="hint" data-moon-note aria-live="polite"></p>
-          <form class="moon-email" data-moon-email>
-            <label for="moon-email">Or by email</label>
-            <div class="moon-email-row">
-              <input id="moon-email" type="email" required autocomplete="email" placeholder="you@example.com" />
-              <button type="submit" class="btn btn-ghost btn-sm">Remind me</button>
-            </div>
-          </form>
-          <p class="hint" data-moon-email-done hidden>In the finished site, this signs you up for one short email before each Amavasya and Purnima. The prototype did not send anything.</p>
         </div>
         <div class="practice-card" data-fade>
           <h2 class="display-m">Keep Sarvakali on your phone</h2>
           <p>Add the site to your home screen and it opens like an app, with shortcuts to today's card and this practice. Pages you have visited keep working without a connection.</p>
           <button type="button" class="btn btn-solid" data-install>Add to your home screen</button>
           <p class="hint" data-install-note aria-live="polite"></p>
-          <p class="hint">A morning notification with today's card needs a small sending service, which can be added at launch.</p>
         </div>
       </div>
     </section>

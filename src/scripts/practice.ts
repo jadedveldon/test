@@ -6,6 +6,7 @@ import { daysUntil, download, icsFile, inDays, moonCalendar, moonEvents, niceDat
 import { canPrompt, installed, isIOS, onInstallChange, promptInstall } from './pwa';
 import { store } from './tiers';
 import type { WorldHandle as World } from './world/handle';
+import { initJourney, logPractice } from './practice-journey';
 
 /**
  * Daily practice: a 108-bead mala, offering words to the fire, moon reminders,
@@ -52,6 +53,7 @@ function initMala(world: World) {
     if (count >= BEADS) {
       rounds++;
       try { localStorage.setItem(key, String(rounds)); } catch { /* fine */ }
+      logPractice({ japa: BEADS });
       tick(true);
       buzz(PATTERNS.diya);
       world.flash(0.8);
@@ -81,7 +83,11 @@ let fireTl: gsap.core.Timeline | null = null;
 let fireWorld: World | null = null;
 let stopInstall: (() => void) | null = null;
 
+let stopJourney: (() => void) | null = null;
+
 export function stopPractice() {
+  stopJourney?.();
+  stopJourney = null;
   stopInstall?.();
   stopInstall = null;
   if (!fireTl) return;
@@ -103,8 +109,9 @@ function initFire(world: World) {
     e.preventDefault();
     const text = input.value.trim().replace(/\s+/g, ' ');
     if (!text) { input.focus(); return; }
-    input.value = ''; // nothing is kept
+    input.value = ''; // nothing is kept (only that an offering was made, in the visitor's own record)
     form.hidden = true;
+    logPractice({ fire: 1 });
     words.textContent = text;
     words.hidden = false;
     words.style.opacity = '1';
@@ -147,13 +154,15 @@ function initFire(world: World) {
 
 function initDays() {
   const list = document.querySelector<HTMLElement>('[data-days]');
+  // the words are in src/content/pages/practice.json
+  const W = (JSON.parse(document.querySelector('[data-practice-words]')?.textContent || '{}').days ?? {}) as Record<string, string>;
   if (list) {
     const moons = moonEvents(new Date(), 2);
-    const rows: { title: string; date: Date; note: string; topic: string; end?: Date }[] = [];
+    const rows: { title: string; date: Date; note: string; todo?: string; topic: string; end?: Date }[] = [];
     const nA = moons.find((m) => m.type === 'amavasya');
     const nP = moons.find((m) => m.type === 'purnima');
-    if (nA) rows.push({ title: 'Amavasya', date: nA.at, note: 'The new moon, a night especially kept for Kali.', topic: 'A ritual on Amavasya' });
-    if (nP) rows.push({ title: 'Purnima', date: nP.at, note: 'The full moon.', topic: 'Something for Purnima' });
+    if (nA) rows.push({ title: 'Amavasya', date: nA.at, note: W.amavasyaNote ?? '', todo: W.amavasyaDo, topic: 'A ritual on Amavasya' });
+    if (nP) rows.push({ title: 'Purnima', date: nP.at, note: W.purnimaNote ?? '', todo: W.purnimaDo, topic: 'Something for Purnima' });
     upcomingFestivals(new Date(), 5).forEach((f) => {
       const [y, m, d] = f.start.split('-').map(Number);
       const [y2, m2, d2] = f.end.split('-').map(Number);
@@ -166,7 +175,10 @@ function initDays() {
       const li = document.createElement('li');
       const n = daysUntil(r.date);
       const range = r.end && r.end.getTime() !== r.date.getTime() ? ` – ${niceDate(r.end)}` : '';
-      li.innerHTML = `<div class="day-when"><b></b><span></span></div><div class="day-what"><h3></h3><p></p></div><div class="day-act"><button type="button" class="btn btn-ghost btn-sm" data-day-cal>Add to calendar</button><a class="btn btn-ghost btn-sm" data-topic>Ask about a ritual</a></div>`;
+      li.innerHTML = `<div class="day-when"><b></b><span></span></div><div class="day-what"><h3></h3><p></p><p class="day-todo" hidden></p></div><div class="day-act"><button type="button" class="btn btn-ghost btn-sm" data-day-cal></button><a class="btn btn-ghost btn-sm" data-topic></a></div>`;
+      li.querySelector('[data-day-cal]')!.textContent = W.addCalendar || 'Add to calendar';
+      li.querySelector('[data-topic]')!.textContent = W.ask || 'Ask about a ritual';
+      if (r.todo) { const t = li.querySelector<HTMLElement>('.day-todo')!; t.textContent = r.todo; t.hidden = false; }
       li.querySelector('b')!.textContent = niceDate(r.date) + range;
       li.querySelector('.day-when span')!.textContent = inDays(n);
       li.querySelector('h3')!.textContent = r.title;
@@ -184,14 +196,6 @@ function initDays() {
     download('sarvakali-moon-reminders.ics', moonCalendar(12));
     const note = document.querySelector('[data-moon-note]');
     if (note) note.textContent = 'Saved. Open the file to add the next 12 Amavasyas and Purnimas to your calendar, each with a reminder the evening before.';
-  });
-  const email = document.querySelector<HTMLFormElement>('[data-moon-email]');
-  email?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    if (!email.reportValidity()) return;
-    email.hidden = true;
-    const done = document.querySelector<HTMLElement>('[data-moon-email-done]');
-    if (done) done.hidden = false;
   });
 }
 
@@ -218,6 +222,8 @@ export function initPractice(world: World) {
   if (!document.querySelector('[data-practice]')) return;
   initMala(world);
   initFire(world);
+  stopJourney?.();
+  stopJourney = initJourney(world);
   initDays();
   initInstall();
   // opened from the app shortcut: show today's card straight away

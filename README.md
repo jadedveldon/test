@@ -20,13 +20,20 @@ Experiments can be set by URL too: `?hero=dawneye|eye|name|dawn`, `?page=eye|smo
 
 ## Editing content
 
-Every word and list on the settled pages, the whole catalogue, the writings, festival days, today's cards and
-the site settings are edited in the **content editor** (Keystatic): run `npm run dev` and open
-http://localhost:4321/keystatic. The files it writes are in `src/content/`. On the live site the editor sits
-behind a secret door and its own sign-in; `docs/editor.md` explains using it and the one-time setup.
+Every word and list on the settled pages, the whole catalogue, the articles, festival days, today's cards, the
+emails clients receive and the site settings are edited in the **content editor** (Keystatic): run `npm run dev`,
+sign in at http://localhost:4321/studio (password `studio` locally) and open http://localhost:4321/keystatic. The
+files it writes are in `src/content/`. On the live site the editor sits behind a secret door and the Studio's
+sign-in; `docs/editor.md` explains using it and the one-time setup. Boundaries and care is still edited in its page.
 
-Boundaries and care, Find your path, Daily practice, the invoice maker and the depth demo are
-still edited in their pages (`src/pages/*.astro`) until their design pass is done.
+## The Studio
+
+Sarvakali's private workplace at `/studio`: requests arrive as cards with the client's times; one tap confirms a
+time (with a Google Meet link and a calendar invite) or offers others; clients choose, move or cancel on their own
+booking page; every client has a profile (sessions, what they asked, notes, invoices, emails); invoices are made,
+sent, paid by UPI, tracked and closed; articles are listed and edited. On the host it sits behind the editor's door
+and one password; a static build carries a demo that keeps everything in the visitor's browser (`STUDIO_DEMO=0`
+leaves it out). `docs/studio.md` explains the whole loop, the setup (password, email, Google) and privacy.
 
 ## How it fits together
 
@@ -46,18 +53,20 @@ still edited in their pages (`src/pages/*.astro`) until their design pass is don
 | Experiments | `src/scripts/experiments.ts` | Hero options (eye at dawn, living eye, name of light, dawn), flame and incense cursors, magnetic buttons, phone tilt, and the switches in the prototype panel. |
 | Incense cursor | `src/scripts/fluid.ts` | A small WebGL2 fluid simulation: smoke rises from the stick, curls, and thins away. Sleeps when idle. |
 | Sound | `src/scripts/audio.ts` | Off by default. A tanpura drone plucked live in the browser (no audio files), with one layer per pillar that cross-fades as you scroll. |
-| Card, diya, path | `src/scripts/card.ts`, `diya.ts`, `path.ts`, `src/pages/path.astro` | Today's card (placeholder deck), a diya to light (count is local in the prototype), and three questions that point to a pillar and category. |
+| Card, diya, path | `src/scripts/card.ts`, `diya.ts`, `path.ts`, `src/pages/path.astro` | Today's card (placeholder deck), a diya to light (count is local in the prototype), and Find your path: three questions (keys 1 to 9 work) that end in a pillar and category with its services to keep, a moment to try, a practice, an article and a way to ask. |
+| Articles | `src/pages/articles/`, `src/scripts/article.ts` | The articles page (lead piece, filter by pillar) and each article (progress, contents, share, read next, ask). |
+| Page not found | `src/pages/404.astro` | A crossroads, a search and the ways back. |
 | Vibration, data saver | `src/scripts/haptics.ts`, `app.ts` | Gentle vibration at key moments on Android; Still mode plus a notice when the phone asks to save data. |
 | Faster first load | `src/scripts/world/handle.ts` | The 3D world is its own download, fetched after the page has painted; a stand-in keeps the page colours blending meanwhile. Still, Calm and data saver never download it. |
 | Search, list, menu | `src/scripts/search.ts`, `keep.ts`, `menu.ts`, `src/pages/search-index.json.ts` | Search every service ("/" or Ctrl+K), keep services in a list that fills the Connect form, full-screen menu. |
 | Festival days, moon | `src/scripts/festivals.ts` | Festival looks (Kali Puja, Diwali, Navratri, eclipse) by date, next new/full moons, calendar (.ics) files. |
-| Daily practice | `src/pages/practice.astro`, `src/scripts/practice.ts` | 108-bead mala, offer to the fire, diya, sacred days, moon reminders, install on phone. |
-| Invoice maker | `src/pages/invoice.astro`, `src/scripts/invoice.ts` | Branded invoice with a UPI QR code for the exact amount; print or save as PDF. Not linked publicly, not indexed. |
+| Daily practice | `src/pages/practice.astro`, `src/scripts/practice.ts`, `practice-journey.ts` | Today (lunar day, next sacred night, your streak), a guided daily rite in five steps, 108-bead mala, offer to the fire, diya, the month's moons, your own record and journal (on the device only), sacred days, daily and moon reminders, install on phone. |
+| Studio | `src/studio/` (core rules, server, React app, demo), `src/pages/booking.astro`, `src/pages/invoice.astro` | Requests, bookings, clients, notes, invoices and payments, emails (Resend) and Google Meet; the client's own booking and invoice pages. See `docs/studio.md`. |
+| Brand | `src/data/brand.ts`, `tools/make-brand.mjs`, `public/brand/` | The mark (a crescent holding a flame that is also the third eye) for the wordmark, favicon, app icons and emails. |
 | Install, offline | `public/manifest.webmanifest`, `public/sw.js`, `src/scripts/pwa.ts` | Add to home screen, shortcuts, visited pages work offline. |
 | Device test | `src/scripts/devicetest.ts` | "Test this device" in the panel: smoothness per quality level and a copyable report. |
 | Link previews | `tools/make-previews.cjs`, `public/og/` | A preview picture per page, taken from the real page. |
-| Content editor | `keystatic.config.ts`, `src/content/`, `src/editor/` | Keystatic at `/keystatic`: every settled page's words, the catalogue, writings, festivals, cards, settings. Behind a secret door (`/door/<word>`) and its own sign-in on the host. |
-| AI depth demo | `src/pages/depth.astro`, `src/scripts/depth.ts`, `public/depth/` | Kalighat paintings (Cleveland Museum of Art, CC0) with depth maps made ahead of time by Depth Anything V2 Small (Apache-2.0). |
+| Content editor | `keystatic.config.ts`, `src/content/`, `src/editor/` | Keystatic at `/keystatic`: every settled page's words, the catalogue, articles, festivals, cards, emails, settings. Behind a secret door (`/door/<word>`) and the Studio's sign-in on the host. |
 
 ## Designing the pillars
 
@@ -93,4 +102,4 @@ layers make the page behind inert (`src/scripts/inert.ts`).
 
 ## Next
 
-The real web address (link previews use the placeholder `sarvakali.example`), testing on real phones (Safari on iPhone especially), art direction per pillar, the commissioned Kali painting (layers + depth map), Cal.com booking on the Connect page, the content editor (Keystatic), and the accounts for email reminders and visitor counts. The WhatsApp button is waiting for a decision.
+The real web address (link previews use the placeholder `sarvakali.example`), testing on real phones (Safari on iPhone especially), art direction per pillar, the commissioned Kali painting (layers + depth map), the Studio's accounts (password, Resend for email, Google for Meet links: `docs/studio.md`), the content editor's accounts (`docs/editor.md`), and visitor counts. The WhatsApp button is waiting for a decision.

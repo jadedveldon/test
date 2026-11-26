@@ -38,7 +38,7 @@ const visibleH1 = (p) => p.evaluate(() => { const h = document.querySelector('h1
     await ctx.addInitScript(() => { try { sessionStorage.setItem('sk-intro-seen', '1'); } catch (e) {} });
     const p = await ctx.newPage(); const errs = []; p.on('pageerror', (e) => errs.push(e.message.slice(0, 120)));
     const res = [];
-    for (const u of ['/', '/pillars/devotion', '/pillars/magic', '/pillars/divination', '/pillars/learning', '/depth', '/practice']) {
+    for (const u of ['/', '/pillars/devotion', '/pillars/magic', '/pillars/divination', '/pillars/learning', '/about', '/practice']) {
       await p.goto(`${B}${u}`); await p.waitForTimeout(3000);
       res.push(`${u}:${await p.evaluate(() => document.documentElement.dataset.tier)}${await visibleH1(p) ? '' : ':HIDDEN'}`);
     }
@@ -51,7 +51,7 @@ const visibleH1 = (p) => p.evaluate(() => { const h = document.querySelector('h1
   // 3. JavaScript off: the words must still be there
   { const { ctx, p } = await mk({ javaScriptEnabled: false });
     const res = [];
-    for (const u of ['/', '/pillars/magic', '/pillars/healing', '/pillars/identity', '/pillars/learning', '/practice', '/connect', '/writings/who-is-kali']) {
+    for (const u of ['/', '/pillars/magic', '/pillars/healing', '/pillars/identity', '/pillars/learning', '/practice', '/connect', '/articles/who-is-kali']) {
       await p.goto(`${B}${u}`); await p.waitForTimeout(800);
       const v = await p.evaluate(() => { const els = Array.from(document.querySelectorAll('h1, h2, .lede, .sub-card')); const hid = els.filter((e) => { let o = 1; for (let n = e; n; n = n.parentElement) o *= Number(getComputedStyle(n).opacity); return o < 0.5 || getComputedStyle(e).visibility === 'hidden'; }); return `${els.length - hid.length}/${els.length}`; });
       res.push(`${u}:${v}`);
@@ -101,13 +101,19 @@ const visibleH1 = (p) => p.evaluate(() => { const h = document.querySelector('h1
     await p.evaluate(() => document.querySelector('[data-comfort] button[type="submit"]').click()); await p.waitForTimeout(600);
     ok('comfort note: markup shown as text, not run', p.errs.length === 0 && !(await p.evaluate(() => !!document.querySelector('img[src="x"]'))) && (await p.evaluate(() => document.querySelector('[data-comfort-text]').textContent.includes('<img'))));
     p.errs.length = 0;
-    await p.goto(`${B}/invoice?tier=still&cursor=off`); await p.waitForTimeout(1500);
-    await p.fill('input[name="client"]', '<b onmouseover=alert(1)>Asha</b>');
-    await p.fill('input[name="upi"]', 'x@y'); await p.fill('.inv-row input[name="desc"]', '<i>Reading</i>');
-    await p.fill('.inv-row input[name="qty"]', '-5'); await p.fill('.inv-row input[name="amt"]', '99999999999');
-    await p.fill('textarea[name="notes"]', 'line one\n<script>x</script>'); await p.waitForTimeout(700);
-    const inv = await p.evaluate(() => ({ b: !!document.querySelector('.inv-paper b[onmouseover], [data-invoice] b[onmouseover]'), s: !!document.querySelector('[data-invoice] script'), total: document.querySelector('.inv-table tfoot td:last-child')?.textContent }));
-    ok('invoice: markup is escaped, negative quantity treated as 1, huge amounts formatted', !inv.b && !inv.s && p.errs.length === 0, JSON.stringify(inv));
+    // requests (since 2026-11-26 they go to the Studio; the invoice maker became the Studio's invoices, whose odd
+    // amounts are checked in tools/qa/studio-core.mjs): markup typed on Connect is shown as text everywhere, never run
+    await p.goto(`${B}/connect?tier=still&cursor=off`); await p.waitForTimeout(1500);
+    await p.fill('#name', '<b onmouseover=alert(1)>Asha</b>'); await p.fill('#email', 'markup@example.com');
+    await p.fill('#topic', 'line one <script>x</script> <img src=x onerror=alert(2)>');
+    await p.fill('#time1', `${new Date(Date.now() + 3 * 864e5).toISOString().slice(0, 10)}T18:30`);
+    await p.click('[data-connect-send]'); await p.waitForTimeout(2000);
+    const track = await p.locator('[data-done-track]').getAttribute('href');
+    await p.goto(new URL(track, p.url()).href); await p.waitForTimeout(2000);
+    const bk = await p.evaluate(() => ({ b: !!document.querySelector('b[onmouseover]'), s: !!document.querySelector('[data-booking-body] script'), img: !!document.querySelector('img[src="x"]'), shown: document.querySelector('[data-booking-body]').textContent.includes('<script>') }));
+    await p.goto(`${B}/studio`); await p.waitForTimeout(2500);
+    const st = await p.evaluate(() => ({ b: !!document.querySelector('b[onmouseover]'), img: !!document.querySelector('img[src="x"]') }));
+    ok('requests: markup is shown as text, not run (booking page and Studio)', !bk.b && !bk.s && !bk.img && bk.shown && !st.b && !st.img && p.errs.length === 0, JSON.stringify({ bk, st }));
     await ctx.close(); }
   // 6. impatient visitors: rapid clicks
   { const { ctx, p } = await mk({}, () => { try { sessionStorage.setItem('sk-intro-seen', '1'); } catch (e) {} });
@@ -167,13 +173,15 @@ const visibleH1 = (p) => p.evaluate(() => { const h = document.querySelector('h1
     await ctx.close(); }
   // 8. printing an invoice and an article
   { const { ctx, p } = await mk({}, () => { try { sessionStorage.setItem('sk-intro-seen', '1'); } catch (e) {} });
-    await p.goto(`${B}/invoice?tier=still&cursor=off`); await p.waitForTimeout(1500);
-    await p.fill('input[name="client"]', 'Asha'); await p.fill('input[name="upi"]', 'sarvakali@upi'); await p.fill('.inv-row input[name="desc"]', 'Tarot reading'); await p.fill('.inv-row input[name="amt"]', '1500'); await p.waitForTimeout(500);
+    // a client's invoice page (an invoice from the Studio's demo, which every static build carries)
+    await p.goto(`${B}/studio`); await p.waitForTimeout(2500);
+    const itok = await p.evaluate(() => (JSON.parse(localStorage.getItem('sk-studio-demo')).db.invoices.find((i) => i.status === 'sent') || {}).token);
+    await p.goto(`${B}/invoice?t=${itok}&tier=still&cursor=off`); await p.waitForTimeout(1500);
     await p.emulateMedia({ media: 'print' });
     await p.pdf({ path: `${OUT}/invoice.pdf`, format: 'A4' }).catch(() => {});
     await p.screenshot({ path: `${OUT}/invoice-print.jpg`, type: 'jpeg', quality: 60, fullPage: true });
-    const pr = await p.evaluate(() => ({ chrome: ['.site-header', '.hud', '#world', '.inv-form, [data-invoice] form'].map((s) => { const e = document.querySelector(s); return e ? `${s}:${getComputedStyle(e).display}` : `${s}:none-in-dom`; }) }));
-    await p.goto(`${B}/writings/who-is-kali?tier=still&cursor=off`); await p.waitForTimeout(1500);
+    const pr = await p.evaluate(() => ({ chrome: ['.site-header', '.hud', '#world', '.bk-pay'].map((s) => { const e = document.querySelector(s); return e ? `${s}:${getComputedStyle(e).display}` : `${s}:none-in-dom`; }) }));
+    await p.goto(`${B}/articles/who-is-kali?tier=still&cursor=off`); await p.waitForTimeout(1500);
     await p.screenshot({ path: `${OUT}/article-print.jpg`, type: 'jpeg', quality: 55, fullPage: true });
     const art = await p.evaluate(() => ['.site-header', '.hud', '#world'].map((s) => { const e = document.querySelector(s); return e ? `${s}:${getComputedStyle(e).display}` : ''; }));
     ok('print: invoice and an article print without the site chrome', pr.chrome.slice(0, 3).every((x) => x.endsWith(':none')) , `${pr.chrome.join(' ')} | article ${art.join(' ')}`);

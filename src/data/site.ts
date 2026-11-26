@@ -43,6 +43,9 @@ export const pillars: Pillar[] = FILES.map(([slug, p]) => {
 
 export const pillarBySlug = (slug: string) => pillars.find((p) => p.slug === slug)!;
 
+/** each pillar's colour where pillars are shown side by side on a dark page (Find your path, Articles) */
+export const ACCENT: Record<string, string> = { devotion: '#e5ae52', magic: '#55c79a', healing: '#7fd1c0', identity: '#ef93b0', divination: '#9db1ff', learning: '#dba56b' };
+
 export const totalServices = pillars.reduce((a, p) => a + p.count, 0);
 
 export const categoryCount = (c: Category) => c.subs.reduce((a, s) => a + s.items.length, 0);

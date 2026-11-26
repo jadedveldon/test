@@ -338,10 +338,111 @@ const connect = singleton({
       kept: line('Heading over the kept services'), keptHint: line('Under the kept services'),
       topic: line('Topic box'), topicExample: line('Example in the topic box'),
       times: line('Heading over the times'), first: line('First choice'), second: line('Second choice'), third: line('Third choice'),
+      timesHint: line('Under the times heading', 'Keep {zone}: the visitor’s time zone goes there.'),
       privacy: para('Privacy note'), send: line('Send button'),
     }, { label: 'The form' }),
+    preview: para('Note in the preview only'),
     done: fields.object({ title: must('Heading'), text: para('Text'), back: line('Back button') }, { label: 'After sending' }),
   },
+});
+
+/** the six pillars, each with one line (the design depends on there being these six) */
+const perPillar = (label: string, field: (l: string) => ReturnType<typeof line> = line) => fields.object({
+  devotion: field('Devotion & the Unseen'), magic: field('Witchcraft & Magic'), healing: field('Healing & Inner Work'),
+  identity: field('Identity, Intimacy & the Body'), divination: field('Divination & Insight'), learning: field('Learning'),
+}, { label });
+
+const path = singleton({
+  label: 'Find your path', path: 'src/content/pages/path', format: { data: 'json' },
+  schema: {
+    kicker: line('Small heading'), title: must('Heading'), lede: para('Text'),
+    steps: lines('The three steps’ names (by the crossroads)', 'Step', { count: 3 }),
+    q1: must('First question'), q1Hint: line('Under the first question'),
+    wants: perPillar('The answers to the first question, one per pillar'),
+    q2: must('Second question'), q2Hint: line('Under the second question'),
+    q3: must('Third question'),
+    begin: fields.object({
+      talk: fields.object({ title: line('Answer'), sub: line('Under it') }, { label: 'A first conversation' }),
+      session: fields.object({ title: line('Answer'), sub: line('Under it') }, { label: 'A session or reading' }),
+      self: fields.object({ title: line('Answer'), sub: line('Under it') }, { label: 'Something on my own first' }),
+      learn: fields.object({ title: line('Answer'), sub: line('Under it') }, { label: 'A class or mentoring' }),
+    }, { label: 'The answers to the third question' }),
+    resultKicker: line('Over the result'), partOf: line('“Part of {pillar}”', 'Keep {pillar} where the pillar’s name goes.'),
+    resultText: fields.object({ talk: para('A first conversation'), session: para('A session or reading'), self: para('On my own first'), learn: para('A class or mentoring') }, { label: 'The result’s words, for each way to begin' }),
+    suggest: line('Heading over the kinds of work'), keepHint: line('Under it'), keepAll: line('“Keep all”'),
+    tryNow: line('“Try it now”'), practice: line('Link to daily practice'), read: line('Over the article to read'),
+    ask: line('Ask button'), explore: line('“See everything in {pillar}”'), restart: line('Start again'), back: line('Back'), share: line('Copy the link'), copied: line('After copying'),
+    care: para('The care note (Healing; Identity)', 'Shown first. 14416 becomes a tap-to-call link by itself.'),
+    moments: fields.object({
+      devotion: fields.object({ title: line('Title'), text: line('Line') }, { label: 'Devotion: the Mahavidyas' }),
+      magic: fields.object({ title: line('Title'), text: line('Line') }, { label: 'Magic: the sigil maker' }),
+      healing: fields.object({ title: line('Title'), text: line('Line') }, { label: 'Healing: the breathing guide' }),
+      identity: fields.object({ title: line('Title'), text: line('Line') }, { label: 'Identity: the comfort note' }),
+      divination: fields.object({ title: line('Title'), text: line('Line') }, { label: 'Divination: the black mirror' }),
+      learning: fields.object({ title: line('Title'), text: line('Line') }, { label: 'Learning: the class finder' }),
+    }, { label: 'Each pillar’s moment to try' }),
+  },
+});
+
+const practice = singleton({
+  label: 'Daily practice', path: 'src/content/pages/practice', format: { data: 'json' },
+  schema: {
+    kicker: line('Small heading'), title: must('Heading'), lede: para('Text'), begin: line('Begin button'), card: line('Card button'), choose: line('“Or choose one practice”'),
+    today: fields.object({ moon: line('Moon'), next: line('Next sacred night'), you: line('Your practice'), none: line('Not yet today'), done: line('Practised today'), streak: line('“{n} days in a row”'), first: line('First day') }, { label: 'The today strip' }),
+    rite: fields.object({
+      kicker: line('Small heading'), title: line('Heading'), lede: para('Text'),
+      lengths: fields.array(fields.object({ minutes: fields.integer({ label: 'Minutes' }), label: line('Label'), breaths: fields.integer({ label: 'Breaths' }), beads: fields.integer({ label: 'Beads to count' }) }), { label: 'The three lengths', itemLabel: (p) => p.fields.label.value, validation: { length: { min: 3, max: 3 } } }),
+      start: line('Begin'), next: line('Next'), back: line('Back'), skip: line('Skip'),
+      steps: fields.array(fields.object({ name: line('Short name'), title: line('Title'), text: para('Guidance') }), { label: 'The five steps', itemLabel: (p) => p.fields.title.value, validation: { length: { min: 5, max: 5 } } }),
+      breatheIn: line('Breathe in'), breatheOut: line('Breathe out'), arrived: line('“I have arrived”'), light: line('Light the lamp'), lit: line('The lamp is lit'),
+      intentionLabel: line('Intention field'), intentionExamples: lines('Suggested intentions', 'Intention'), keepJournal: line('Keep in the journal'),
+      mantra: line('The mantra (Devanagari)'), mantraNote: line('Under the mantra'), bead: line('Next bead'), endRound: line('End the round'),
+      offerLabel: line('Offering field'), offer: line('Offer button'), close: line('Close button'), closing: para('Closing words'),
+      doneTitle: line('When done: heading'), doneText: para('When done: text'), reflection: line('Journal line'), save: line('Save'), saved: line('Saved'), again: line('Practise again'),
+    }, { label: 'The daily rite' }),
+    log: fields.object({ kicker: line('Small heading'), title: line('Heading'), lede: para('Text'), days: line('Days practised'), streak: line('Days in a row'), longest: line('Longest run'), japa: line('Mantras counted'), journal: line('Journal'), empty: para('When empty'), export: line('Download'), clear: line('Clear'), clearConfirm: para('Clear: are you sure?'), delete: line('Delete') }, { label: 'Your practice' }),
+    month: fields.object({ kicker: line('Small heading'), title: line('Heading'), lede: para('Text'), prev: line('Month before'), nextMonth: line('Month after'), amavasya: line('Amavasya'), purnima: line('Purnima'), ekadashi: line('Ekadashi'), ashtami: line('Ashtami') }, { label: 'The month’s moons' }),
+    days: fields.object({ kicker: line('Small heading'), title: line('Heading'), lede: para('Text'), amavasyaNote: line('Amavasya'), amavasyaDo: para('Amavasya: a suggestion'), purnimaNote: line('Purnima'), purnimaDo: para('Purnima: a suggestion'), addCalendar: line('Add to calendar'), ask: line('Ask about a ritual') }, { label: 'Sacred days ahead' }),
+    reminder: fields.object({ title: line('Heading'), text: para('Text'), time: line('“At”'), add: line('Button'), addedNote: line('After adding') }, { label: 'The daily reminder' }),
+  },
+});
+
+const booking = singleton({
+  label: 'Bookings and emails', path: 'src/content/pages/booking', format: { data: 'json' },
+  schema: {
+    connectDone: fields.object({ title: line('Heading'), text: para('Text'), times: line('Over the times'), asked: line('Over what they asked'), cleared: line('Their list was cleared'), track: line('Link to follow it'), back: line('Back'), error: para('If it could not be sent'), sending: line('While sending') }, { label: 'Connect: after sending' }),
+    booking: fields.object({
+      kicker: line('Small heading'), zone: line('“Times in your zone: {zone}”'), asked: line('Over what they asked'),
+      requestedTitle: line('Waiting: heading'), requestedText: para('Waiting: text'), yourTimes: line('Their times'), withdraw: line('Withdraw'),
+      proposedTitle: line('Choose: heading'), proposedText: para('Choose: text'), choose: line('“This time suits me”'), noneSuit: line('“None suit me”'),
+      suggestTitle: line('Suggest: heading'), suggestText: para('Suggest: text'), suggestSend: line('Suggest: send'), note: line('A note'),
+      confirmedTitle: line('Confirmed: heading'), confirmedText: para('Confirmed: text'), join: line('Join'), linkSoon: line('Link to follow'), addCalendar: line('Add to calendar'), googleCalendar: line('Add to Google Calendar'),
+      change: line('Another time'), cancel: line('Cancel'), cancelConfirm: para('Cancel: are you sure?'), reason: line('Reason'),
+      completedTitle: line('Held: heading'), completedText: para('Held: text'), cancelledTitle: line('Cancelled: heading'), cancelledText: para('Cancelled: text'),
+      declinedTitle: line('Declined: heading'), declinedText: para('Declined: text'), newRequest: line('New request'), notFound: para('A link that opens nothing'), done: line('After an action'),
+    }, { label: 'The client’s booking page' }),
+    invoice: fields.object({
+      kicker: line('Small heading'), from: line('From'), to: line('To'), number: line('Invoice'), issued: line('Issued'), due: line('Due'), total: line('Total'), paidSoFar: line('Paid'), due2: line('Still to pay'),
+      payTitle: line('Pay: heading'), payText: para('Pay: text'), payButton: line('Open UPI app'), copy: line('Copy UPI ID'),
+      claim: line('“I have paid”'), claimText: para('I have paid: text'), reference: line('Reference field'), claimSend: line('Send'), claimed: para('After saying so'),
+      paid: line('Paid'), void: para('Cancelled'), print: line('Print'), notFound: para('A link that opens nothing'),
+    }, { label: 'The client’s invoice page' }),
+    emails: fields.object({
+      greeting: line('Greeting, with {name}'), footer: para('Footer of every email'),
+      receivedSubject: line('Received: subject'), receivedText: para('Received: text'),
+      proposedSubject: line('Times offered: subject'), proposedText: para('Times offered: text'), proposedButton: line('Times offered: button'),
+      confirmedSubject: line('Confirmed: subject'), confirmedText: para('Confirmed: text'), confirmedButton: line('Confirmed: button'), manage: line('Change or cancel'), manageButton: line('My booking'),
+      declinedSubject: line('Declined: subject'), declinedText: para('Declined: text'), cancelledSubject: line('Cancelled: subject'), cancelledText: para('Cancelled: text'),
+      reminderSubject: line('Reminder: subject'), reminderText: para('Reminder: text'),
+      invoiceSubject: line('Invoice: subject, with {number}'), invoiceText: para('Invoice: text'), invoiceButton: line('Invoice: button'),
+      invoiceReminderSubject: line('Invoice reminder: subject'), invoiceReminderText: para('Invoice reminder: text'), receiptSubject: line('Receipt: subject'), receiptText: para('Receipt: text'),
+    }, { label: 'Emails to clients' }),
+  },
+});
+
+const notfound = singleton({
+  label: 'Not found', path: 'src/content/pages/notfound', format: { data: 'json' },
+  schema: { kicker: line('Small heading'), title: must('Heading'), lede: para('Text'), search: line('Search button'), path: line('Find your path'), home: line('Homepage'), pillars: line('Over the pillars'), more: line('Last line') },
 });
 
 const about = singleton({
@@ -368,15 +469,18 @@ const about = singleton({
 });
 
 const writings = collection({
-  label: 'Writings', slugField: 'title', path: 'src/content/writings/*', entryLayout: 'content', columns: ['title', 'date'],
+  label: 'Articles', slugField: 'title', path: 'src/content/writings/*', entryLayout: 'content', columns: ['title', 'date'],
   format: { contentField: 'body' },
   schema: {
     title: fields.slug({ name: { label: 'Title', validation: { isRequired: true } }, slug: { label: 'Address', description: 'The end of the page’s address, e.g. who-is-kali.' } }),
-    summary: para('Summary', 'One or two sentences, shown in the list of writings.'),
+    summary: para('Summary', 'One or two sentences, shown on the Articles page and under the title.'),
     date: fields.date({ label: 'Date', validation: { isRequired: true } }),
     pillar: fields.select({ label: 'Pillar', options: [['devotion', 'Devotion & the Unseen'], ['magic', 'Witchcraft & Magic'], ['healing', 'Healing & Inner Work'], ['identity', 'Identity, Intimacy & the Body'], ['divination', 'Divination & Insight'], ['learning', 'Learning']].map(([value, label]) => ({ value, label })), defaultValue: 'devotion' }),
     minutes: fields.integer({ label: 'Minutes to read', defaultValue: 4, validation: { isRequired: true, min: 1 } }),
     draft: fields.checkbox({ label: 'Draft', description: 'Still a draft for Sarvakali.', defaultValue: true }),
+    featured: fields.checkbox({ label: 'Show it large at the top of Articles', description: 'Otherwise the newest is shown large.', defaultValue: false }),
+    image: fields.image({ label: 'Picture (optional)', description: 'Without one, the card is drawn in the pillar’s colours.', directory: 'public/media/articles', publicPath: '/media/articles/' }),
+    imageAlt: line('What the picture shows (for people who cannot see it)'),
     body: fields.markdoc({ label: 'Text', extension: 'md' }),
   },
 });
@@ -388,14 +492,14 @@ export default config({
     brand: { name: 'Sarvakali' },
     navigation: {
       'The site': ['home', 'kind', 'festivals', 'cards', 'writings', 'settings'],
-      Pages: ['about', 'connect'],
+      Pages: ['about', 'connect', 'booking', 'path', 'practice', 'notfound'],
       'Pillar pages': ['devotion', 'magic', 'healing', 'identity', 'divination', 'learning'],
       Catalogue: ['catDevotion', 'catMagic', 'catHealing', 'catIdentity', 'catDivination', 'catLearning'],
     },
   },
   collections: { writings },
   singletons: {
-    home, kind, festivals, cards, settings, about, connect,
+    home, kind, festivals, cards, settings, about, connect, booking, path, practice, notfound,
     devotion, magic, healing, identity, divination, learning,
     catDevotion: catalogue('devotion', 'Catalogue · Devotion & the Unseen', CH.devotion, false),
     catMagic: catalogue('magic', 'Catalogue · Witchcraft & Magic', CH.magic),

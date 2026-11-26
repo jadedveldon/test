@@ -1,0 +1,27 @@
+---
+/**
+ * Not found: a crossroads in light beside the words (a wrong turn; Hecate's crossroads), and the ways on: search,
+ * Find your path, the six pillars, the homepage. The host shows it for any address that is not a page.
+ * Words: src/content/pages/notfound.json ("Not found" in the content editor).
+ */
+import Base from '../layouts/Base.astro';
+import { ACCENT, pillars } from '../data/site';
+import w from '../content/pages/notfound.json';
+---
+<Base title="Not found · Sarvakali" sequence="notFound" noindex description="This page could not be found.">
+  <section class="notfound">
+    <p class="kicker" data-hero>{w.kicker}</p>
+    <h1 class="display-l" data-hero data-split>{w.title}</h1>
+    <p class="lede" data-hero>{w.lede}</p>
+    <div class="cta-row" data-hero>
+      <button type="button" class="btn btn-solid" data-search-open>{w.search}</button>
+      <a class="btn btn-ghost" href="/path">{w.path}</a>
+      <a class="btn btn-ghost" href="/">{w.home}</a>
+    </div>
+    <p class="kicker nf-label" data-hero>{w.pillars}</p>
+    <ul class="nf-pillars" data-hero>
+      {pillars.map((p) => <li><a href={`/pillars/${p.slug}`} style={`--acc-hex: ${ACCENT[p.slug]}`}>{p.name}</a></li>)}
+    </ul>
+    <p class="hint" data-hero>{w.more}</p>
+  </section>
+</Base>

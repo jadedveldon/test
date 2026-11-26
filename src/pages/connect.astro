@@ -2,14 +2,18 @@
 /**
  * Connect: request a conversation. Beside the form, what happens next (the homepage's How it works, so both
  * always agree). The services a visitor kept appear as chips they can remove; their own words go in the box.
- * The words are in src/content/pages/connect.json ("Connect" in the content editor). At launch the three time
- * boxes become the Cal.com calendar, dressed to match.
+ * The words are in src/content/pages/connect.json ("Connect" in the content editor). Sending puts the request in
+ * Sarvakali's Studio (src/studio), emails both of them, and gives the visitor a page to follow it on; their list
+ * then empties. In the preview the request goes to the Studio's demo, in the same browser.
  */
 import Base from '../layouts/Base.astro';
 import Steps from '../components/Steps.astro';
 import Rich from '../components/Rich.astro';
 import c from '../content/pages/connect.json';
+import b from '../content/pages/booking.json';
 const f = c.form;
+const d = b.connectDone;
+const mode = import.meta.env.PUBLIC_STUDIO;
 ---
 <Base title="Connect · Sarvakali" sequence="connect" description="Request a conversation with Sarvakali.">
   <section class="connect">
@@ -54,22 +58,32 @@ const f = c.form;
       </div>
       <fieldset class="field">
         <legend>{f.times}</legend>
+        <p class="hint" data-tz-hint data-text={f.timesHint}></p>
         <div class="times">
           <label class="time"><span>{f.first}</span><input id="time1" name="time1" type="datetime-local" required /></label>
           <label class="time"><span>{f.second} <span class="optional">{f.optional}</span></span><input id="time2" name="time2" type="datetime-local" /></label>
           <label class="time"><span>{f.third} <span class="optional">{f.optional}</span></span><input id="time3" name="time3" type="datetime-local" /></label>
         </div>
       </fieldset>
+      <!-- left empty by people; robots fill it in -->
+      <div class="hp" aria-hidden="true"><label>Leave this empty <input name="website" tabindex="-1" autocomplete="off" /></label></div>
       <p class="notice">{f.privacy}</p>
-      <button type="submit" class="btn btn-solid">{f.send}</button>
-      <p class="proto-note">Prototype: in the finished site this step is the Cal.com booking calendar, styled to match. Nothing is sent from here.</p>
+      <p class="connect-error" data-connect-error role="alert" hidden></p>
+      <button type="submit" class="btn btn-solid" data-connect-send data-sending={d.sending}>{f.send}</button>
+      {mode === 'demo' && <p class="proto-note">{c.preview}</p>}
+      {mode === 'off' && <p class="proto-note">Prototype: this copy of the site has no Studio behind it, so nothing is sent from here.</p>}
     </form>
 
-    <div id="connect-done" class="connect-done" hidden>
-      <h2 class="display-m">{c.done.title}</h2>
-      <p class="lede">{c.done.text}</p>
-      <p class="proto-note">This prototype did not send anything.</p>
-      <a class="btn btn-ghost" href="/">{c.done.back}</a>
+    <div id="connect-done" class="connect-done" hidden tabindex="-1" data-error={d.error}>
+      <h2 class="display-m">{mode === 'off' ? c.done.title : d.title}</h2>
+      <p class="lede">{mode === 'off' ? c.done.text : d.text}</p>
+      <div data-done-times hidden><p class="kicker">{d.times}</p><ul class="bk-times"></ul></div>
+      <div class="bk-asked" data-done-asked hidden><p class="kicker">{d.asked}</p><ul class="kept-chips bk-chips"></ul><p class="bk-quote" data-done-topic hidden></p></div>
+      <p class="hint" data-done-cleared hidden>{d.cleared}</p>
+      <div class="cta-row">
+        <a class="btn btn-solid" href="/booking" data-done-track hidden>{d.track}</a>
+        <a class="btn btn-ghost" href="/">{d.back}</a>
+      </div>
     </div>
   </section>
 </Base>

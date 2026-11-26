@@ -1,0 +1,14 @@
+---
+/**
+ * The client's own booking (/booking?t=…, from the link in their emails): where their conversation stands, and
+ * everything they can do about it (src/scripts/booking.ts). Private to whoever has the link: never indexed.
+ */
+import Base from '../layouts/Base.astro';
+import words from '../content/pages/booking.json';
+---
+<Base title="Your booking · Sarvakali" sequence="connect" noindex description="Your conversation with Sarvakali.">
+  <section class="bk" data-booking>
+    <p class="kicker" data-hero>{words.booking.kicker}</p>
+    <div class="bk-body" data-booking-body aria-live="polite"><p class="lede">…</p></div>
+  </section>
+</Base>

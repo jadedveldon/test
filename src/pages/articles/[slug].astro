@@ -1,0 +1,73 @@
+---
+/**
+ * An article: a thin line in the pillar's colour shows how far you have read; a large opening letter; quotes in
+ * the text (written as "> …" in the editor) become pull quotes; the headings, when there are a few, list what is
+ * in it. At the end: an invitation to ask about it, the pillar, and two more to read next.
+ */
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { ACCENT, pillars } from '../../data/site';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('writings');
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const pillar = pillars.find((p) => p.slug === post.data.pillar)!;
+const all = (await getCollection('writings')).filter((p) => p.id !== post.id).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+// two to read next: the same pillar first, then the newest
+const next = [...all.filter((p) => p.data.pillar === post.data.pillar), ...all.filter((p) => p.data.pillar !== post.data.pillar)].slice(0, 2);
+const h2s = headings.filter((h) => h.depth === 2);
+const accent = ACCENT[pillar.slug];
+const date = post.data.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<Base title={`${post.data.title} · Sarvakali`} sequence="reading" description={post.data.summary}>
+  <div class="ar-progress" data-ar-progress aria-hidden="true" style={`--acc-hex: ${accent}`}><span></span></div>
+  <article class="page ar-article" data-article style={`--acc-hex: ${accent}`}>
+    <header class="page-hero">
+      <a class="back-link" href="/articles">← All articles</a>
+      <p class="kicker" data-hero><a href={`/pillars/${pillar.slug}`} class="ar-pillar">{pillar.name}</a> · {post.data.minutes} min read</p>
+      <h1 class="display-l" data-hero data-split transition:name={`wt-${post.id}`} data-pt>{post.data.title}</h1>
+      <p class="lede" data-hero>{post.data.summary}</p>
+      <p class="ar-byline" data-hero>Sarvakali · {date}{post.data.draft ? ' · a draft' : ''} <button type="button" class="path-back ar-share" data-ar-share data-done="Link copied">Share</button></p>
+    </header>
+    {post.data.image && <figure class="ar-figure page-body"><img src={post.data.image} alt={post.data.imageAlt ?? ''} /></figure>}
+    <div class="ar-layout page-body">
+      {h2s.length >= 2 && (
+        <nav class="ar-toc" aria-label="In this article">
+          <p class="kicker">In this article</p>
+          <ol>{h2s.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
+        </nav>
+      )}
+      <div class="prose article ar-body" data-fade>
+        <Content />
+      </div>
+    </div>
+    <div class="page-body article-end" data-fade>
+      <div class="ar-ask">
+        <p class="display-s">Would you like to talk about this?</p>
+        <p>Sarvakali reads every request personally.</p>
+        <div class="cta-row">
+          <a class="btn btn-solid" href="/connect" data-topic={post.data.title}>Ask about this</a>
+          <a class="btn btn-ghost" href={`/pillars/${pillar.slug}`}>Explore {pillar.name}</a>
+        </div>
+      </div>
+      {next.length > 0 && (
+        <>
+          <p class="kicker">Read next</p>
+          <ul class="ar-grid ar-next">
+            {next.map((o) => (
+              <li><a href={`/articles/${o.id}`} class="ar-card" style={`--acc-hex: ${ACCENT[o.data.pillar]}`}>
+                <span class="writing-meta">{pillars.find((p) => p.slug === o.data.pillar)?.name} · {o.data.minutes} min</span>
+                <span class="ar-card-title">{o.data.title}</span>
+                <span class="writing-summary">{o.data.summary}</span>
+              </a></li>
+            ))}
+          </ul>
+        </>
+      )}
+      <p><a class="back-link" href="/articles">← All articles</a></p>
+    </div>
+  </article>
+</Base>

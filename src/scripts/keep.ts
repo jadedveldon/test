@@ -31,6 +31,9 @@ function save(list: Kept[]) {
 
 export const isKept = (t: string) => keepList().some((k) => k.t === t);
 
+/** empty the list (once it has gone with a request) */
+export function clearKeep() { save([]); }
+
 export function toggleKeep(t: string, p: string) {
   const list = keepList();
   const i = list.findIndex((k) => k.t === t);

@@ -19,11 +19,13 @@
     "second": "Second choice",
     "third": "Third choice",
     "privacy": "We use your name, email and phone only to arrange this conversation. You can ask us to delete them at any time.",
-    "send": "Send request"
+    "send": "Send request",
+    "timesHint": "Times are in your time zone: {zone}. Offer up to three."
   },
   "done": {
     "title": "Request received",
     "text": "Sarvakali will confirm your time, or suggest another, by email.",
     "back": "Back to the homepage"
-  }
+  },
+  "preview": "Preview: your request goes to the Studio demo in this browser, so you can follow it there. Nothing is sent anywhere."
 }

@@ -26,7 +26,7 @@ site's owner; follow them every time.
 
 - No prices and no catalogue numbers anywhere on the site (the invoice maker is Sarvakali's own tool).
 - English only. Deity names in Devanagari or Greek are welcome as labels next to the English.
-- Payment is by UPI only. Booking (Cal.com) and the WhatsApp button come later.
+- Payment is by UPI only. Booking is the site's own (the Studio, `docs/studio.md`); the WhatsApp button comes later.
 - Every factual claim is checked against a source. The sources live in the fact-check table on the preview
   cover, not as lists of facts on the pages. Interpretive copy is a draft for Sarvakali and is marked so in code.
 - Care first: where work touches the mind, the body or identity, a care note comes first, assumes nothing

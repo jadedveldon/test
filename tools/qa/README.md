@@ -43,6 +43,8 @@ node tools/qa/preview-check.cjs
 | `mem.cjs` | Memory over 32 page changes: heap, elements, listeners, animation loops, timers |
 | `vitals.cjs` | Load on a slow phone (4x slower processor, slow 4G): first paint, largest paint, layout shift, long tasks, bytes |
 | `preview-check.cjs` | The shareable preview bundle served statically: the cover, its pictures and links, and each pillar's own code loading and responding |
+| `studio-core.mjs` | The Studio's rules in memory (no browser): every path a request, a booking and an invoice can take, time zones (London, India, New York in summer), saving twice at once, erasing a client, invoice dates in India, calendar files, UPI links (`node tools/qa/studio-core.mjs`) |
+| `studio.cjs` | The whole loop in a browser, as a visitor and as Sarvakali: keep services, ask about them, send (the list empties), follow it; confirm, offer a new time, accepted; an invoice made, sent, paid by the client's word and marked paid; every email in the outbox; every Studio page on a phone. Against the dev server (`npm run dev`, the real API, port 4400 by default with `QA_BASE`) or, with `QA_STUDIO=demo`, the preview bundle on port 8099 |
 
 ## Known false alarms
 
@@ -53,6 +55,13 @@ Each one has been looked at and is not a problem; add to this list only with a r
   target, and it is 36px tall on touch screens (keyboard focus shows a ring on the chip).
 - `layout.cjs`, `/pillars/devotion`: "CLIPPED li.greek-card". Measured while the Greek display font is still
   loading; once it has loaded nothing is clipped (checked in the browser at every size).
+- `studio.cjs` and any check that opens an email in the Studio's outbox: "Failed to read the 'serviceWorker'
+  property from 'Navigator' … sandboxed". The checks block service workers, which injects a script into every
+  frame; an email is shown in a sandboxed frame (no scripts of its own), where that injected script may not
+  look. The page itself is fine. `studio.cjs` skips this one message.
+- `studio.cjs` against the dev server: a 403 for `/brand/email-mark.png`. The dev server refuses pictures asked for
+  from another site, and the sandboxed email frame counts as one; the live site and the preview serve it.
+  `studio.cjs` skips 403s only when run against the dev server.
 
 Software 3D drawing in a test machine is much slower than a phone's graphics chip, so 3D frame rates and long
 tasks here are pessimistic. Only Chromium is covered; Safari and Firefox need a check on real devices.

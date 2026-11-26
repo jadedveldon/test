@@ -42,7 +42,9 @@ import { initPath } from './path';
 import { sampleHeading } from './dust';
 import { FEST_LOOK, activeFestival, daysUntil, inDays, nextMoon, niceDate, type FestMode } from './festivals';
 import { initSearch, revealFound, closeSearch } from './search';
-import { initKeep, keepLine, keepList, onKeepChange, renderKeep } from './keep';
+import { clearKeep, initKeep, keepLine, keepList, onKeepChange, renderKeep } from './keep';
+import { MODE as STUDIO, pageHref, publicCall } from '../studio/client';
+import { whenZ, zoneLabel, zonedToUtc, utcToLocalInput } from '../studio/core/time';
 import { closeMenu, initMenu } from './menu';
 import { initPwa } from './pwa';
 import { runDeviceTest } from './devicetest';
@@ -55,7 +57,7 @@ const LABELS: Record<string, string> = {
   loader: 'Intro', hero: 'Hero · living eye', heroName: 'Hero · name of light', dawn: 'Hero · dawn',
   dawnRise: 'Hero · eye at dawn (rising)', dawnName: 'Hero · eye at dawn', connect: 'Connect', connectHome: 'Home · Connect', findpath: 'Find your path',
   devotion: 'Devotion & the Unseen', magic: 'Witchcraft & Magic', healing: 'Healing & Inner Work',
-  identity: 'Identity, Intimacy & the Body', divination: 'Divination & Insight', learning: 'Learning', close: 'Close',
+  identity: 'Identity, Intimacy & the Body', divination: 'Divination & Insight', learning: 'Learning', close: 'Close', notFound: 'Not found',
 };
 
 let world: WorldHandle;
@@ -653,7 +655,9 @@ function initPage() {
   initConnect();
   const calm = tier === 'calm';
   pageModule('[data-practice]', () => import('./practice'), (m) => { m.initPractice(world); return m.stopPractice; });
-  pageModule('[data-invoice]', () => import('./invoice'), (m) => { m.initInvoice(); });
+  pageModule('[data-invoice-view]', () => import('./invoice-view'), (m) => { m.initInvoiceView(); });
+  pageModule('[data-booking]', () => import('./booking'), (m) => { m.initBooking(); });
+  pageModule('[data-articles], [data-article]', () => import('./article'), (m) => m.initArticles());
   pageModule('[data-devotion]', () => import('./devotion'), (m) => { m.startDevotion(world, calm); return m.stopDevotion; });
   pageModule('[data-magic]', () => import('./magic'), (m) => { m.startMagic(world, calm); return m.stopMagic; });
   pageModule('[data-healing]', () => import('./healing'), (m) => { m.startHealing(world); return m.stopHealing; });
@@ -669,7 +673,8 @@ function initPage() {
   applyFestival();
   renderMoonLine();
   initDiya(world);
-  initPath(world, () => { ScrollTrigger.refresh(); lenis?.resize(); });
+  const stopPath = initPath(world, () => { ScrollTrigger.refresh(); lenis?.resize(); });
+  if (stopPath) pageStops.push(stopPath);
   applySky();
   renderSound();
   hudRender();
@@ -783,13 +788,58 @@ function initConnect() {
     const stop = onKeepChange(draw);
     draw();
   }
-  form.addEventListener('submit', (e) => {
+  // times are offered in the visitor's own zone, which goes with the request
+  let tz = 'Asia/Kolkata';
+  try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || tz; } catch { /* India's, then */ }
+  const hint = form.querySelector<HTMLElement>('[data-tz-hint]');
+  if (hint) hint.textContent = (hint.dataset.text || '').replace('{zone}', zoneLabel(tz));
+  const soon = utcToLocalInput(new Date(Date.now() + 3600_000).toISOString(), tz);
+  form.querySelectorAll<HTMLInputElement>('input[type="datetime-local"]').forEach((i) => { i.min = soon; });
+  const done = document.getElementById('connect-done');
+  const err = form.querySelector<HTMLElement>('[data-connect-error]');
+  const send = form.querySelector<HTMLButtonElement>('[data-connect-send]');
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!form.reportValidity()) return;
-    form.hidden = true;
-    const done = document.getElementById('connect-done');
-    if (done) done.hidden = false;
-    ScrollTrigger.refresh();
+    if (STUDIO === 'off') { form.hidden = true; if (done) done.hidden = false; ScrollTrigger.refresh(); return; }
+    const fd = new FormData(form);
+    const val = (k: string) => String(fd.get(k) || '').trim();
+    const times = ['time1', 'time2', 'time3'].map(val).filter(Boolean).map((v) => zonedToUtc(v, tz)).filter((v): v is string => !!v);
+    const services = keepList().map((k) => k.t);
+    const label = send?.textContent ?? '';
+    if (send) { send.disabled = true; send.textContent = send.dataset.sending || '…'; }
+    if (err) err.hidden = true;
+    try {
+      const r = await publicCall<{ token: string }>('request', { name: val('name'), email: val('email'), phone: val('phone'), topic: val('topic'), services, times, tz, website: val('website') });
+      if (done) {
+        const tl = done.querySelector<HTMLElement>('[data-done-times]');
+        if (tl && times.length) { tl.hidden = false; tl.querySelector('ul')!.replaceChildren(...times.map((t) => Object.assign(document.createElement('li'), { textContent: whenZ(t, tz) }))); }
+        const al = done.querySelector<HTMLElement>('[data-done-asked]');
+        const topic = val('topic');
+        if (al && (services.length || topic)) {
+          al.hidden = false;
+          const ul = al.querySelector('ul')!;
+          ul.hidden = !services.length;
+          ul.replaceChildren(...services.map((t) => { const li = document.createElement('li'); li.append(Object.assign(document.createElement('span'), { textContent: t })); return li; }));
+          // their own words, as words (a quote), not as one more chip
+          const q = al.querySelector<HTMLElement>('[data-done-topic]');
+          if (q) { q.hidden = !topic; q.textContent = topic ? `“${topic}”` : ''; }
+        }
+        if (services.length) { clearKeep(); done.querySelector<HTMLElement>('[data-done-cleared]')!.hidden = false; }
+        const track = done.querySelector<HTMLAnchorElement>('[data-done-track]');
+        if (track) { track.href = `${pageHref('booking')}?t=${encodeURIComponent(r.token)}`; track.hidden = false; }
+        form.hidden = true;
+        done.hidden = false;
+        done.focus({ preventScroll: true });
+        // its top (the heading) in view, below the header; it can be taller than the screen
+        done.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      buzz(PATTERNS.choice);
+      ScrollTrigger.refresh();
+    } catch (x) {
+      if (err) { err.textContent = (x instanceof Error && x.message) || done?.dataset.error || ''; err.hidden = false; }
+      if (send) { send.disabled = false; send.textContent = label; }
+    }
   });
 }
 

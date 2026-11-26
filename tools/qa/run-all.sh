@@ -7,6 +7,7 @@ Q=tools/qa
 run() { node "$@" || echo "FAIL $1 stopped with an error (exit $?)"; }
 echo "== content rules";  run $Q/rules.cjs
 echo "== content files";  node --experimental-strip-types --no-warnings $Q/content.mjs || echo "FAIL content.mjs stopped with an error (exit $?)"
+echo "== studio rules";   node $Q/studio-core.mjs || echo "FAIL studio-core.mjs stopped with an error (exit $?)"
 echo "== pages";          run $Q/audit.cjs
 echo "== interactions";   run $Q/interactions.cjs; W=390 H=844 run $Q/interactions.cjs
 echo "== pillars 4-6";    run $Q/pillars.cjs
@@ -18,3 +19,5 @@ echo "== accessibility";  run $Q/a11y.cjs
 echo "== layout";         run $Q/layout.cjs
 echo "== memory";         run $Q/mem.cjs
 echo "== slow phone";     run $Q/vitals.cjs
+# the whole Studio loop, on the preview bundle served on port 8099 (as for preview-check.cjs)
+echo "== studio loop";    QA_STUDIO=demo node $Q/studio.cjs || echo "FAIL studio.cjs stopped with an error (exit $?)"

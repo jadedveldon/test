@@ -1,0 +1,68 @@
+---
+/**
+ * Articles: the front page. The featured piece (or the newest) large, then the rest in a grid, each in its
+ * pillar's colour, with a filter by pillar. Articles are written in the content editor ("Articles"), behind the
+ * Studio's sign-in; a picture is optional, and without one each card is drawn in its pillar's colours.
+ */
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { ACCENT, pillars } from '../../data/site';
+
+const posts = (await getCollection('writings')).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const lead = posts.find((p) => p.data.featured) ?? posts[0];
+const rest = posts.filter((p) => p !== lead);
+const pillarName = (slug: string) => pillars.find((p) => p.slug === slug)?.name ?? '';
+const used = pillars.filter((p) => posts.some((x) => x.data.pillar === p.slug));
+const date = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+const anyDraft = posts.some((p) => p.data.draft);
+---
+<Base title="Articles · Sarvakali" sequence="reading" description="Articles from Sarvakali on Kali, the moon, healing, magic and the work.">
+  <article class="page articles" data-articles>
+    <header class="page-hero">
+      <p class="kicker" data-hero>Articles</p>
+      <h1 class="display-l" data-hero data-split>Notes on Kali, the moon and the work</h1>
+      <p class="lede" data-hero>Short pieces to read before a first conversation, or simply to sit with.</p>
+      {anyDraft && <p class="proto-flag" data-hero>Drafts written for the prototype. Sarvakali will rewrite them in their own voice.</p>}
+    </header>
+
+    {posts.length === 0 ? <p class="lede">The first articles are being written.</p> : (
+      <>
+        {used.length > 1 && (
+          <div class="ar-filter" role="group" aria-label="Show articles from" data-fade>
+            <button type="button" aria-pressed="true" data-ar-filter="">All</button>
+            {used.map((p) => <button type="button" aria-pressed="false" data-ar-filter={p.slug} style={`--acc-hex: ${ACCENT[p.slug]}`}>{p.name}</button>)}
+          </div>
+        )}
+        {lead && (
+          <a href={`/articles/${lead.id}`} class="ar-lead" data-ar={lead.data.pillar} style={`--acc-hex: ${ACCENT[lead.data.pillar]}`} data-fade>
+            <span class="ar-art" aria-hidden="true">
+              {lead.data.image ? <img src={lead.data.image} alt="" loading="eager" /> : <span class="ar-glyph">{lead.data.title.replace(/[^A-Za-z]/g, '').charAt(0)}</span>}
+            </span>
+            <span class="ar-lead-text">
+              <span class="writing-meta">{pillarName(lead.data.pillar)} · {lead.data.minutes} min read{lead.data.draft ? ' · draft' : ''}</span>
+              <span class="ar-lead-title" transition:name={`wt-${lead.id}`} data-pt>{lead.data.title}</span>
+              <span class="writing-summary">{lead.data.summary}</span>
+              <span class="ar-date">{date(lead.data.date)}</span>
+            </span>
+          </a>
+        )}
+        {rest.length > 0 && (
+          <ul class="ar-grid">
+            {rest.map((p) => (
+              <li data-ar={p.data.pillar} data-fade>
+                <a href={`/articles/${p.id}`} class="ar-card" style={`--acc-hex: ${ACCENT[p.data.pillar]}`}>
+                  {p.data.image && <img class="ar-card-img" src={p.data.image} alt="" loading="lazy" />}
+                  <span class="writing-meta">{pillarName(p.data.pillar)} · {p.data.minutes} min{p.data.draft ? ' · draft' : ''}</span>
+                  <span class="ar-card-title" transition:name={`wt-${p.id}`} data-pt>{p.data.title}</span>
+                  <span class="writing-summary">{p.data.summary}</span>
+                  <span class="ar-date">{date(p.data.date)}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+        <p class="ar-none hint" data-ar-none hidden>No articles from this pillar yet.</p>
+      </>
+    )}
+  </article>
+</Base>

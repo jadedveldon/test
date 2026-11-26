@@ -1,0 +1,57 @@
+/* The invoice as paper (src/studio/core/paper.ts): on screen, and printed on A4 */
+.ip {
+  --ip-accent: #8e1f18; --ip-soft: #f6e4e0;
+  position: relative; box-sizing: border-box; width: 100%; max-width: 760px; margin: 0 auto; padding: 44px 46px 30px;
+  background: #fffdf9; color: #2b1c16; border-radius: 6px; font: 14px/1.5 Inter, system-ui, sans-serif;
+  box-shadow: 0 30px 60px -36px rgb(0 0 0 / 0.55), 0 0 0 1px rgb(0 0 0 / 0.06); overflow: hidden;
+}
+.ip::before { content: ""; position: absolute; inset: 0 0 auto; height: 6px; background: var(--ip-accent); }
+.ip p { margin: 0; }
+.ip-head { display: flex; justify-content: space-between; gap: 24px; align-items: flex-start; padding-bottom: 22px; border-bottom: 1px solid var(--ip-soft); }
+.ip-brand { display: flex; gap: 12px; align-items: center; }
+.ip-mark { width: 40px; height: 40px; fill: var(--ip-accent); flex: none; }
+.ip-name { font: 400 1.7rem/1 "Instrument Serif", Georgia, serif; }
+.ip-sub { font-size: 0.78rem; letter-spacing: 0.08em; color: #7a6455; margin-top: 4px; }
+.ip-meta { text-align: right; font-size: 0.85rem; color: #5a4436; }
+.ip-title { font: 600 0.72rem/1 Inter, sans-serif; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ip-accent); margin-bottom: 6px !important; }
+.ip-num { font-weight: 600; color: #2b1c16; font-size: 0.95rem; }
+.ip-parties { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding: 20px 0; font-size: 0.88rem; }
+.ip-label { font: 600 0.68rem/1.4 Inter, sans-serif; letter-spacing: 0.16em; text-transform: uppercase; color: #8a6a4a; margin-bottom: 4px !important; }
+.ip-strong { font-weight: 600; font-size: 0.98rem; }
+.ip-table { width: 100%; border-collapse: collapse; margin: 6px 0 12px; font-size: 0.9rem; }
+.ip-table th { text-align: left; font: 600 0.68rem/1 Inter, sans-serif; letter-spacing: 0.14em; text-transform: uppercase; color: #8a6a4a; padding: 10px 8px; background: var(--ip-soft); }
+.ip-table td { padding: 11px 8px; border-bottom: 1px solid #efe6da; vertical-align: top; }
+.ip-table th:nth-child(n+2), .ip-table td:nth-child(n+2) { text-align: right; white-space: nowrap; }
+.ip-table th:nth-child(2), .ip-table td:nth-child(2) { width: 52px; }
+.ip-empty { text-align: center !important; color: #a08b7c; }
+.ip-sums { margin-left: auto; width: min(100%, 300px); font-size: 0.92rem; }
+.ip-sums p { display: flex; justify-content: space-between; padding: 4px 8px; }
+.ip-total { font-weight: 700; font-size: 1.06rem; border-top: 1px solid #e3d6c6; padding-top: 8px !important; margin-top: 4px !important; color: var(--ip-accent); }
+.ip-pay { display: flex; gap: 22px; align-items: center; margin-top: 22px; padding: 18px; border-radius: 10px; background: var(--ip-soft); font-size: 0.88rem; }
+.ip-qr { width: 128px; flex: none; background: #fff; padding: 6px; border-radius: 6px; }
+.ip-qr svg { display: block; width: 100%; height: auto; }
+.ip-qr-later { width: 128px; font-size: 0.75rem; color: #8a6a4a; text-align: center; padding: 26px 8px; background: rgb(255 255 255 / 0.6); }
+.ip-upi { font: 600 1.05rem/1.3 ui-monospace, Menlo, monospace; color: #2b1c16; word-break: break-all; }
+.ip-ref { color: #7a6455; font-size: 0.8rem; margin-top: 4px !important; }
+.ip-note { margin-top: 10px !important; color: #4a3528; }
+.ip-foot { margin-top: 26px; padding-top: 14px; border-top: 1px solid #efe6da; text-align: center; font: italic 1.05rem/1 "Instrument Serif", Georgia, serif; color: #8a6a4a; }
+/* the stamp (draft, paid, overdue, cancelled) sits beside the totals, so it never covers the letterhead */
+.ip-end { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; }
+.ip-stamp { margin: 0 0 0 10px !important; transform: rotate(-8deg); padding: 4px 16px; border: 2px solid currentColor; border-radius: 8px; font: 700 0.95rem/1.3 Inter, sans-serif; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.8; pointer-events: none; }
+.ip-stamp-paid { color: #2f7a4d; }
+.ip-stamp-void { color: #8a8a8a; }
+.ip-stamp-overdue { color: #b3261e; }
+.ip-stamp-draft { color: #a08b7c; }
+@media (max-width: 560px) {
+  .ip { padding: 30px 20px 22px; font-size: 13px; }
+  .ip-head { flex-direction: column; }
+  .ip-meta { text-align: left; }
+  .ip-parties { grid-template-columns: 1fr; gap: 14px; }
+  .ip-pay { flex-direction: column; align-items: flex-start; }
+}
+@media print {
+  @page { size: A4; margin: 14mm; }
+  .ip { box-shadow: none; max-width: none; padding: 0 0 10px; border-radius: 0; }
+  .ip::before { display: none; }
+  .ip-pay { break-inside: avoid; }
+}

@@ -1,39 +1,71 @@
 ---
+/**
+ * Find your path: three short questions (what you are looking for, what feels closest, how to begin) that point
+ * to one chapter of one pillar, and from there: kinds of work to keep, the pillar's own moment to try now, a piece
+ * to read first, and a request with all of it. The world turns to each pillar as its answer is hovered or tapped;
+ * a crossroads drawing lights a road for each answer. The result can be shared (its address holds the answers);
+ * nothing is stored or sent. Words: src/content/pages/path.json ("Find your path" in the content editor).
+ */
+import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import { pillars } from '../data/site';
+import CareText from '../components/CareText.astro';
+import { ACCENT, pillars } from '../data/site';
+import w from '../content/pages/path.json';
 
-/** first question: one plain sentence per pillar (placeholder copy) */
-const WANTS: Record<string, string> = {
-  devotion: 'A deeper bond with Kali, the Devi or the unseen',
-  magic: 'To change something: protection, love, abundance, a curse lifted',
-  healing: 'To heal, let go and feel lighter',
-  identity: 'To feel at home in my body, my identity and my relationships',
-  divination: 'Clarity about what lies ahead',
-  learning: 'To learn the craft and practise it myself',
-};
+/** what the design depends on: the moment to try in each pillar, and where care comes first */
+const MOMENT: Record<string, string> = { devotion: '#kali-and-the-mahavidyas', magic: '#make-a-sigil', healing: '#breathe', identity: '#comfort', divination: '#mirror', learning: '#class-finder' };
+const CARE = ['healing', 'identity'];
+const BEGIN = ['talk', 'session', 'self', 'learn'] as const;
 const anchor = (s: string) => s.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const posts = (await getCollection('writings')).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const wants = w.wants as Record<string, string>;
+const moments = w.moments as Record<string, { title: string; text: string }>;
+/** a few kinds of work from a chapter: the first of each kind, then more, at most six */
+const pick = (subs: { items: string[] }[]) => {
+  const out: string[] = [];
+  for (let round = 0; out.length < 6 && round < 4; round++) for (const s of subs) { const it = s.items[round]; if (it && out.length < 6 && !out.includes(it)) out.push(it); }
+  return out;
+};
+const data = Object.fromEntries(pillars.map((p) => {
+  const post = posts.find((a) => a.data.pillar === p.slug);
+  return [p.slug, {
+    name: p.name, accent: ACCENT[p.slug], care: CARE.includes(p.slug),
+    moment: { href: `/pillars/${p.slug}${MOMENT[p.slug]}`, ...(moments[p.slug] ?? { title: '', text: '' }) },
+    article: post ? { title: post.data.title, href: `/articles/${post.id}`, summary: post.data.summary } : null,
+    cats: Object.fromEntries(p.categories.map((c) => [anchor(c.name), { name: c.name, services: pick(c.subs) }])),
+  }];
+}));
 ---
-<Base title="Find your path · Sarvakali" sequence="findpath" description="Three questions to find where to begin with Sarvakali.">
+<Base title="Find your path · Sarvakali" sequence="findpath" description="Three short questions to find where to begin with Sarvakali.">
   <section class="path" data-path>
+    <script type="application/json" data-path-data set:html={JSON.stringify({ data, w })} />
     <div class="path-head">
-      <p class="kicker" data-hero>Find your path</p>
-      <h1 class="display-l" data-hero data-split>Where would you like to begin?</h1>
-      <p class="lede" data-hero>Three short questions. Nothing is saved or sent: it simply points you to the right place.</p>
+      <p class="kicker" data-hero>{w.kicker}</p>
+      <h1 class="display-l" data-hero data-split>{w.title}</h1>
+      <p class="lede" data-hero>{w.lede}</p>
     </div>
 
-    <ol class="path-steps" aria-label="Progress" data-hero>
-      <li data-dot="1" aria-current="step">1</li>
-      <li data-dot="2">2</li>
-      <li data-dot="3">3</li>
-    </ol>
+    <!-- the crossroads: a road lights for each answer, and the middle for the result -->
+    <div class="path-cross" data-hero>
+      <svg viewBox="0 0 240 120" aria-hidden="true">
+        <path class="pc-road" data-road="1" d="M18 112 C60 100 96 84 120 60" />
+        <path class="pc-road" data-road="2" d="M120 116 C120 98 120 80 120 60" />
+        <path class="pc-road" data-road="3" d="M222 112 C180 100 144 84 120 60" />
+        <circle class="pc-heart" cx="120" cy="56" r="7" />
+        <path class="pc-ray" d="M120 38 L120 28 M104 44 L97 37 M136 44 L143 37" />
+      </svg>
+      <p class="path-step-label" data-step-label aria-live="polite">1 / 3 · {w.steps[0]}</p>
+    </div>
 
     <div class="path-stage" data-hero>
       <fieldset class="path-q" data-step="1">
-        <legend class="display-m">What are you looking for?</legend>
-        <div class="path-options">
-          {pillars.map((p) => (
-            <button type="button" class="path-opt" data-pillar={p.slug} data-preset={p.preset} data-name={p.name}>
-              <span class="path-opt-main">{WANTS[p.slug]}</span>
+        <legend class="display-m">{w.q1}</legend>
+        <p class="hint">{w.q1Hint}</p>
+        <div class="path-options path-options-pillars">
+          {pillars.map((p, i) => (
+            <button type="button" class="path-opt" data-pillar={p.slug} data-preset={p.preset} style={`--acc-hex: ${ACCENT[p.slug]}`}>
+              <span class="path-opt-key" aria-hidden="true">{i + 1}</span>
+              <span class="path-opt-main">{wants[p.slug]}</span>
               <span class="path-opt-sub">{p.name}</span>
             </button>
           ))}
@@ -41,12 +73,13 @@ const anchor = (s: string) => s.toLowerCase().replace(/&/g, 'and').replace(/[^a-
       </fieldset>
 
       <fieldset class="path-q" data-step="2" hidden>
-        <legend class="display-m">Which of these feels closest?</legend>
+        <legend class="display-m">{w.q2}</legend>
+        <p class="hint">{w.q2Hint}</p>
         {pillars.map((p) => (
-          <div class="path-options" data-for={p.slug} hidden>
-            <a hidden data-explore href={`/pillars/${p.slug}`} tabindex="-1" aria-hidden="true"></a>
-            {p.categories.map((c) => (
-              <button type="button" class="path-opt" data-category={c.name} data-anchor={anchor(c.name)}>
+          <div class="path-options" data-for={p.slug} hidden style={`--acc-hex: ${ACCENT[p.slug]}`}>
+            {p.categories.map((c, i) => (
+              <button type="button" class="path-opt" data-category={anchor(c.name)}>
+                <span class="path-opt-key" aria-hidden="true">{i + 1}</span>
                 <span class="path-opt-main">{c.name}</span>
                 <span class="path-opt-sub">{c.subs.slice(0, 3).map((s) => s.name).join(' · ')}</span>
               </button>
@@ -56,27 +89,27 @@ const anchor = (s: string) => s.toLowerCase().replace(/&/g, 'and').replace(/[^a-
       </fieldset>
 
       <fieldset class="path-q" data-step="3" hidden>
-        <legend class="display-m">How would you like to begin?</legend>
+        <legend class="display-m">{w.q3}</legend>
         <div class="path-options">
-          <button type="button" class="path-opt" data-begin="talk"><span class="path-opt-main">A first conversation</span><span class="path-opt-sub">Talk it through before choosing anything</span></button>
-          <button type="button" class="path-opt" data-begin="session"><span class="path-opt-main">A session or reading</span><span class="path-opt-sub">Go straight to the work</span></button>
-          <button type="button" class="path-opt" data-begin="learn"><span class="path-opt-main">A class or mentoring</span><span class="path-opt-sub">Learn to do it yourself</span></button>
+          {BEGIN.map((k, i) => (
+            <button type="button" class="path-opt" data-begin={k}>
+              <span class="path-opt-key" aria-hidden="true">{i + 1}</span>
+              <span class="path-opt-main">{w.begin[k].title}</span>
+              <span class="path-opt-sub">{w.begin[k].sub}</span>
+            </button>
+          ))}
         </div>
       </fieldset>
 
-      <div class="path-result" hidden aria-live="polite">
-        <p class="kicker">Your path</p>
-        <h2 class="display-l" data-result-pillar></h2>
-        <p class="lede" data-result-text></p>
-        <div class="cta-row">
-          <a class="btn btn-solid" href="/connect" data-result-connect data-topic="">Request a conversation</a>
-          <a class="btn btn-ghost" href="/" data-result-explore>Explore this pillar</a>
-        </div>
+      <div class="path-result" hidden tabindex="-1">
+        <div class="path-care" data-path-care hidden><CareText text={w.care} /></div>
+        <div data-result></div>
       </div>
 
       <div class="path-nav">
-        <button type="button" class="path-back" data-path-back hidden>← Back</button>
-        <button type="button" class="path-back" data-path-restart hidden>Start again</button>
+        <button type="button" class="path-back" data-path-back hidden>← {w.back}</button>
+        <button type="button" class="path-back" data-path-restart hidden>{w.restart}</button>
+        <button type="button" class="path-back" data-path-share hidden>{w.share}</button>
       </div>
     </div>
   </section>

@@ -50,6 +50,21 @@ const ok = (n, v, extra = '') => console.log(`${v ? 'ok  ' : 'FAIL'} ${n}${extra
     allErrs.push(...errs.map((e) => `${pl}: ${e}`));
     await ctx.close();
   }
+  // the Studio's demo opens from the preview (2026-11-26: it stayed blank, because the island's code and the pieces
+  // the bundler preloads for it were asked for from the server's root, not from beside the page)
+  {
+    const ctx = await b.newContext({ viewport: { width: 1440, height: 900 }, serviceWorkers: 'block' });
+    const p = await ctx.newPage();
+    const errs = [];
+    p.on('pageerror', (e) => errs.push(e.message.slice(0, 120)));
+    p.on('response', (r) => { if (r.status() >= 400) errs.push(`${r.status()} ${r.url().replace(B, '')}`); });
+    await p.goto(`${B}/site/studio.html`, { waitUntil: 'domcontentloaded' });
+    await p.waitForTimeout(4000);
+    const seen = await p.evaluate(() => ({ nav: document.querySelectorAll('.st-nav a, .st-nav button').length, today: /Needs your reply/.test(document.body.innerText) }));
+    ok('preview: the Studio demo opens, with its requests', seen.nav >= 6 && seen.today && !errs.length, `${JSON.stringify(seen)}${errs.length ? ' | ' + [...new Set(errs)].join(' | ') : ''}`);
+    allErrs.push(...errs.map((e) => `studio: ${e}`));
+    await ctx.close();
+  }
   console.log('ERRORS:', allErrs.length ? [...new Set(allErrs)] : 'none');
   await b.close();
 })();

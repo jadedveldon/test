@@ -1,0 +1,54 @@
+{
+  "kicker": "Find your path",
+  "title": "Where would you like to begin?",
+  "lede": "Three short questions, a minute at most. Nothing is saved or sent: it simply points you to the right place, and you can keep what calls to you.",
+  "steps": ["What you are looking for", "What feels closest", "How to begin"],
+  "q1": "What are you looking for?",
+  "q1Hint": "Hover or tap to see each one’s world; choose the one that feels truest.",
+  "wants": {
+    "devotion": "A deeper bond with Kali, the Devi or the unseen",
+    "magic": "To change something: protection, love, abundance, a curse lifted",
+    "healing": "To heal, let go and feel lighter",
+    "identity": "To feel at home in my body, my identity and my relationships",
+    "divination": "Clarity about what lies ahead",
+    "learning": "To learn the craft and practise it myself"
+  },
+  "q2": "Which of these feels closest?",
+  "q2Hint": "Each holds a few kinds of work; you will see some of them next.",
+  "q3": "How would you like to begin?",
+  "begin": {
+    "talk": { "title": "A first conversation", "sub": "Talk it through before choosing anything" },
+    "session": { "title": "A session or reading", "sub": "Go straight to the work" },
+    "self": { "title": "Something to try on my own first", "sub": "A small practice, before asking anything" },
+    "learn": { "title": "A class or mentoring", "sub": "Learn to do it yourself" }
+  },
+  "resultKicker": "Your path",
+  "partOf": "Part of {pillar}",
+  "resultText": {
+    "talk": "A first conversation is unhurried: you say as much or as little as you like, and together you find what would help. Keep anything below that calls to you, and it goes with your request.",
+    "session": "Keep the kinds of work that call to you, and ask about them; Sarvakali will reply with a time, or suggest another way in.",
+    "self": "Begin on your own with the practice below. When you are ready, the services you kept go with your request.",
+    "learn": "Classes and mentoring are in Learning; the class finder there points you to where to start. Keep anything here you would like to learn about."
+  },
+  "suggest": "A few of the kinds of work here",
+  "keepHint": "Tap to keep; your list follows you round the site and goes with your request.",
+  "keepAll": "Keep all of these",
+  "tryNow": "Try it now",
+  "practice": "Or begin with today’s practice",
+  "read": "Read first",
+  "ask": "Ask about this",
+  "explore": "See everything in {pillar}",
+  "restart": "Start again",
+  "back": "Back",
+  "share": "Copy a link to this path",
+  "copied": "Link copied",
+  "care": "Some of this work touches the mind and the body. It is spiritual work, not a replacement for medical or psychological care, and it goes at your pace. If you are struggling, please also reach out to a doctor or counsellor; in India, Tele-MANAS is free on 14416, day and night.",
+  "moments": {
+    "devotion": { "title": "Meet the ten Mahavidyas", "text": "The ten wisdom goddesses, Kali first among them." },
+    "magic": { "title": "Make a sigil from your own words", "text": "Five ways to turn an intention into a sign." },
+    "healing": { "title": "Breathe with the guide", "text": "A few slow rounds, at your own pace." },
+    "identity": { "title": "Write a note of your comfort", "text": "What you would like Sarvakali to know before a first conversation; private, kept on your device." },
+    "divination": { "title": "Gaze into the black mirror", "text": "Ask a question, and receive something to ponder." },
+    "learning": { "title": "Find the class that suits you", "text": "Three questions to where your learning could begin." }
+  }
+}

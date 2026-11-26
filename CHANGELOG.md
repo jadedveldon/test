@@ -3,6 +3,188 @@
 Every change to the site, newest first: what changed, why, and how it was checked.
 The rules for checking are in `CLAUDE.md`; the checks themselves are in `tools/qa/`.
 
+## 2026-11-26 · The Studio, the closed loop, Find your path, Articles, Daily practice, the logo, a 404
+
+Asked for by the owner in one message, built in one pass. **The test suites were not run** (the owner asked that
+they wait until asked); the two new Studio checks were run while building (below).
+
+### The Studio: requests, clients, invoices and articles behind one sign-in (`src/studio/`, `docs/studio.md`)
+
+- **Added: the Studio at `/studio`**, Sarvakali's private workplace, behind the editor's secret door and one password
+  (scrypt hash in `STUDIO_PASSWORD_HASH`, made with `npm run studio:password`; a signed, script-proof cookie for
+  30 days; changes accepted only from the Studio's own pages; wrong passwords limited to 8 in 15 minutes). The
+  same sign-in now opens the content editor; the door leads to the Studio's sign-in.
+  - **Today:** what needs a reply, conversations coming up (with Join), payments to check, what is owed, anything
+    that went wrong.
+  - **Requests as cards:** who they are (new or met before, and how often), what they asked about, their kept
+    services, and their up-to-three times, each in India's time and theirs. One tap confirms a time; or offer up to
+    three others with a note; or keep it while moving; decline kindly; close spam silently.
+  - **Confirmed:** with Google connected, the conversation goes into Sarvakali's Google Calendar with a Google Meet
+    link and the client as a guest; without it, a link can be pasted. The client gets the link, a calendar file and
+    their booking page. Moving or cancelling updates the calendar and tells the client.
+  - **Afterwards:** "Did it take place?" (held, missed); notes on each conversation and each client.
+  - **Clients:** everyone, with sessions held and to come, what is owed; each profile holds their details, what
+    they asked (every request, in their words), sessions, invoices, every email sent to them, notes and a timeline;
+    a new conversation or invoice from there; a copy of their data; archive; erase (sent invoices stay, without
+    contact details, because tax records must be kept).
+  - **Invoices** (replacing the old invoice maker): a draft starts from the client's latest conversation with the
+    services they asked about; lines (with the catalogue's names to pick from), discount, GST, notes, days to pay;
+    numbered `SK-<year>-0001` in Sarvakali's own time zone; a live preview of the paper. **Send** emails the client
+    a link to their invoice page. Standing is worked out (draft, unpaid, part-paid, overdue, paid, cancelled);
+    payments (UPI, cash, bank) can be recorded in parts, with a receipt; a reminder is one tap; an invoice can be
+    cancelled (its number stays used), reopened or copied. A client's "I have paid" (with their UPI reference) shows
+    as a payment to check.
+  - **Sessions:** the week at a glance. **Articles:** every article with View and Edit, and Write a new one (all in
+    the content editor). **Outbox:** every email, to read, send again, or copy and send by hand. **Settings:** your
+    details, UPI ID, GSTIN, numbering, conversation length, reminders, notifications, Google, email, sign out.
+- **Emails** (Resend; until a key is set they wait in the Outbox): to the client (request received, times offered,
+  confirmed with a calendar file, declined, cancelled, reminder the day before, invoice, invoice reminder, receipt)
+  and to Sarvakali (new request, client chose a time, client suggested times, client cancelled, client says paid).
+  Every word a client reads is in `src/content/pages/booking.json` ("Bookings and emails" in the content editor).
+- **Reminders** go out hourly (`netlify/functions/studio-reminders.mts`) and whenever the Studio is opened.
+- **Storage:** Netlify Blobs on the host (strongly consistent, with optimistic retries so two changes at once never
+  overwrite each other); a file in `.studio-data/` (not committed) during `npm run dev`.
+- **The demo:** every static build (the preview too) carries the Studio as a demo with no password, keeping
+  everything in the visitor's own browser and starting with a few made-up people (`@example.com`). Connect sends
+  requests to it and says so; nothing is ever sent. `STUDIO_DEMO=0` leaves it out.
+- **One set of rules** (`src/studio/core/`) serves the host and the demo, so the demo behaves exactly as the
+  live Studio will.
+
+### The client's side of the loop, closed
+
+- **Your list → Connect → sent:** "Ask about these" in the list tray takes the kept services to Connect as chips;
+  the form now really sends (name, email, phone if given, a few words if wished, up to three times in the visitor's
+  own zone, which it names). A hidden field catches robots; requests are limited per address.
+- **After sending:** a confirmation with the times offered and what was asked about, the list emptied (it went with
+  the request), and a link to **their booking page**.
+- **Booking page** (`/booking?t=…`, never indexed or cached offline): where it stands; choose one of the times
+  offered (confirmed at once, with its Meet link), suggest others, add it to a calendar (file or Google Calendar),
+  join, or cancel/withdraw.
+- **Invoice page** (`/invoice?t=…`): the invoice, a UPI QR for the exact amount (on a phone, a button that opens
+  the UPI app), copy the UPI ID, "I have paid" with the reference, print or save as PDF.
+- **Care page:** "Who else handles it" now names the host, Google Calendar and Meet, and the email service (it
+  named Cal.com, which is no longer used). `CLAUDE.md`'s content rule says booking is the site's own.
+
+### Find your path, revamped (`src/pages/path.astro`, `src/scripts/path.ts`, `src/content/pages/path.json`)
+
+- Three steps with a progress line; each answer in its pillar's colour; hovering or focusing an answer previews
+  its world behind the page; number keys 1 to 9 answer; back at any step.
+- **The result:** the pillar and category, a few of its services to keep one by one (or all at once), the pillar's
+  signature moment to try now (straight to it: the breath, the mirror, the class finder, the comfort note...), a
+  practice to begin with, an article to read first, and **Ask about this** (to Connect, with the topic and the kept
+  services filled in). The answers live in the address, so a result can be shared or returned to; Start again.
+- All words are in the content editor ("Find your path").
+
+### Articles (`/articles`, replacing Writings)
+
+- **The Articles page:** a lead piece (the one marked Featured, else the newest), a filter by pillar, and a grid;
+  an article without a picture gets a drawing in its pillar's colours.
+- **Each article:** a reading-progress line, byline with reading time and share, an optional picture, a contents
+  list when it has two or more sections, a drop cap, pull quotes, "Ask about this", and read next.
+- **Add, edit, delete:** from the Studio's Articles page into the content editor (new fields: Featured, Picture,
+  its description). `/writings` and every old article address redirect.
+
+### Daily practice, revamped (`src/pages/practice.astro`, `src/scripts/practice-journey.ts`)
+
+- **Today:** the lunar day (tithi) with its moon, the next sacred night, and the visitor's own streak.
+- **The daily rite:** five guided steps (arrive with a breathing circle, light the lamp, set an intention, count
+  the mantra, offer to the fire), in about 5, 10 or 20 minutes (more breaths and beads for longer); each step waits
+  for you and can be skipped; ends with the day's mark, the streak, and a line to reflect on (kept on the device).
+- **The mala and the fire** now count towards the day; **the diya** sits with the sacred days, each of which now
+  says what to do on it.
+- **The month's moons:** a lunar calendar, month by month: each day's tithi and moon (at sunrise in India), new and
+  full moons, Ekadashi and Ashtami, and the festival days; tap a day for its name.
+- **Your practice:** days practised, the streak and the longest, beads of japa counted, twelve weeks of marks, and
+  a journal of reflections (which can be saved as a file); all on the device only, with a way to clear it.
+- **Reminders:** a daily reminder at a chosen time (a repeating calendar event), the moon reminders, and install
+  on the phone. The pretend email sign-up is gone.
+- The rite's guidance, the sacred nights' suggestions and the mantra are drafts for Sarvakali. All words are in
+  the content editor ("Daily practice").
+
+### The logo (`src/data/brand.ts`, `tools/make-brand.mjs`, `public/brand/`)
+
+- **Chosen: "Lamp, moon and eye":** a crescent moon holding a flame that is also the third eye, with a bindu at its
+  heart; gold on deep red-black, the flame in ember. It reads at favicon size and as a seal, and joins the three
+  things the site keeps returning to: the lamp of devotion, the moon of the lunar days and Hecate, and the eye of
+  insight. Three other directions were drawn and compared (a yantra seal, an S of flame and moon, three eyes);
+  they are in `qa-output/brand/logo-directions.png` when the brand script is run.
+- Used in the header's wordmark, the favicon, the app icons, the emails and the Studio.
+
+### The depth demo: retired into About
+
+- The depth view was already About's portrait; a second page showing the same thing added little, so `/depth` now
+  redirects to `/about` and the menu's "Prototype extras" is gone. `src/scripts/depth.ts` and its paintings stay
+  for the portrait.
+
+### A page for addresses that do not exist (`src/pages/404.astro`)
+
+- A crossroads form in its own world, a short line, search, and the ways back (Find your path, the homepage, each
+  pillar, and the menu for the rest). Words in the content editor ("Page not found").
+
+### Also
+
+- The menu, footer and corner links now say Articles; the corner link opens the Studio.
+- The offline copy (`public/sw.js`, now `sarvakali-v4`) never keeps the Studio, the API, the booking or invoice
+  pages, or the editor.
+- Printing any page now leaves out the world and the site's chrome (the old rule only served the invoice maker).
+- `@netlify/blobs` (the Studio's store on the host) is now a direct dependency; it came only through the Netlify
+  adapter before. Both builds were run: the static one (with the demo) and the host's (`EDITOR_HOST=netlify`), and
+  the hourly reminders job bundles on its own.
+
+### Found by looking at the preview, and fixed
+
+- **The Studio stayed blank in the preview bundle.** The preview tool (`tools/make-relative.mjs`) made page links
+  relative but not the addresses an interactive island loads its code from, nor the pieces the bundler preloads for a
+  dynamic import, so both were asked for from the server's root. It now rewrites both (and stops with a message if
+  the bundler's preload code changes shape). The live site was never affected: it is served from the root.
+  In the same tool, the pages that forward old addresses (Writings to Articles, the depth demo to About) now forward
+  within the preview too; they sent you to the server's root.
+- **Connect's confirmation** scrolled to its middle, so its heading sat under the header; it now scrolls to its top.
+  The visitor's own words showed as one more chip; they are now a quote beneath the chips.
+- **Chips with two outlines** on the booking page and the confirmation (Connect's chip style plus a second one).
+- **The invoice's DRAFT (or PAID, OVERDUE, CANCELLED) stamp** lay over the letterhead in the Studio's narrow preview;
+  it now sits beside the totals.
+- **Histories read "You Confirmed a time"**; they now read "You confirmed a time". Payments were logged as
+  "Received 1500.00"; now "Received ₹1,500".
+- **Emails** showed the booking page and Google Calendar links as raw addresses, and the calendar one ran past the
+  email's edge; they are now words ("My booking · Add to Google Calendar"), the addresses kept in the plain text.
+- **In the Studio**, the Discount box stretched beside the Tax box and its hint; and a new request's page offered
+  Decline twice.
+- **The demo's made-up requests** now ask about services that fit their words (protection for a new home asked about
+  romance workings).
+
+### Checks
+
+- **New:** `tools/qa/studio-core.mjs` (the whole loop in memory: requests, times, confirming, moving, cancelling,
+  reminders, invoices, numbering in India's zone, payments, claims, erasure, odd amounts and markup) and
+  `tools/qa/studio.cjs` (the loop in a browser: list tray → Connect → booking page → Studio confirm → reschedule →
+  invoice made, sent, claimed, paid → the outbox; and the phone layout). Both were run while building, against the
+  dev server; both passed, apart from glitches in the checks themselves, fixed (a box picked by the wrong label, a
+  previous run's data, reading the previous message). The last full browser run was stopped by the sign-in limit
+  (8 tries in 15 minutes) doing its job; the check now signs in once and reuses it.
+- **Page lists:** `audit.cjs`, `a11y.cjs`, `layout.cjs` and `keyboard.cjs` now include `/articles` (and an
+  article), `/booking`, `/invoice`, `/studio` and `/404`; `/writings…` became `/articles…`; `/depth` is gone.
+- **Retargeted, with reasons** (none weakened):
+  - `regressions.cjs` 1–2 (the depth view) now load About, where the depth view lives; the painting switch went
+    with the demo page.
+  - `regressions.cjs` 4 (the invoice's local date) moved to `studio-core.mjs`, because invoices are now dated by
+    the Studio in Sarvakali's zone ("invoice: dated in India at 01:15 IST").
+  - `regressions.cjs` 18's "(optional)" check moved from the invoice maker's labels to Connect's, which use the same
+    pattern; its list-bullet check reads an article at its new address.
+  - `robust.cjs`: the markup test now types markup on Connect and looks for it on the booking page and in the
+    Studio (the invoice maker's version of it, negative quantities and huge amounts, is in `studio-core.mjs`); the
+    print test prints a client's invoice page from the demo; `/depth` → `/about`.
+  - `interactions.cjs`: the invoice QR is checked on a client's invoice page from the demo.
+- **Known false alarms** added to `tools/qa/README.md`, with reasons: Playwright's own "serviceWorker" message in
+  sandboxed email frames, and the dev server's 403 for the email logo inside the sandboxed preview (dev only).
+- `run-quick.sh` runs `studio-core.mjs`; `run-all.sh` also runs `studio.cjs` against the preview's demo.
+- **Written for what looking found** (not yet run): `regressions.cjs` 23 (the confirmation's heading in view, the
+  visitor's words as a quote, history in lower case after its actor, the stamp clear of the letterhead, the Discount
+  and Tax boxes in line) and `preview-check.cjs`'s new check that the Studio demo opens from the preview bundle.
+- **Looked at:** the Studio's Today, request cards, a client profile, the invoice editor and Settings; the
+  booking and invoice pages; Connect on a phone; Find your path's steps and result; Articles and an article; the
+  daily rite from start to end and the record it leaves; the 404; the logo at every size; the new editor sections.
+
 ## 2026-11-25 · The golden bloom and Hecate's key, locked in; the key made dramatic
 
 - **Chosen by the owner: the golden bloom** where the galaxy was (the homepage's Connect chapter, Connect, Find your

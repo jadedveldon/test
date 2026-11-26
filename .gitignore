@@ -7,3 +7,4 @@ qa-output/
 .netlify/
 .env
 .env.*
+.studio-data/
