@@ -3,6 +3,22 @@
 Every change to the site, newest first: what changed, why, and how it was checked.
 The rules for checking are in `CLAUDE.md`; the checks themselves are in `tools/qa/`.
 
+## 2026-11-26 · The opening's face: leaner, more human, the lips and the third eye redrawn
+
+The owner asked for a leaner, longer, more human face, better lips, and a much stronger third eye
+(`src/components/Loader.astro`, `src/scripts/loader.ts`).
+
+- **The face:** narrower and taller. The eyes sit closer and are slimmer, the brows sweep higher, and a faint line of
+  cheek and chin gives the face its shape. The nose has a bridge and a shaped base with nostrils.
+- **The lips:** a cupid's bow, a deeper upper lip, a fuller lower lip, the line between, a soft light on the lower
+  lip, and the hint of the groove under the nose. The nose ring now hangs from the nostril.
+- **The third eye:** taller and flame-shaped, with a heavy kohl line and flicks at its tips, inside a gold frame
+  with a dot at each tip. The eye is ivory; its iris runs gold to crimson, with fine radiating lines, a dark rim, the
+  pupil and two lights. A ring of 36 rays gathers and turns as it opens.
+- **Fixed:** in calm mode the homepage showed through the third eye (the opening's hole was not kept shut).
+- **Checks:** walked on desktop and phone (seven moments) and in calm mode; the intro ends and leaves the page:
+  ERRORS none. The full suites were not run, at the owner's request.
+
 ## 2026-11-26 · A new opening: the Devi's face
 
 The owner chose a picture for the opening: the traditional face, with its third eye, crescent and bindi, winged

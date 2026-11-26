@@ -11,7 +11,7 @@ type Options = {
   onDone: () => void;
 };
 
-const ORIGIN = '800 290'; // the third eye, in the SVG's 1600 × 1000 space
+const ORIGIN = '800 300'; // the third eye, in the SVG's 1600 × 1000 space
 const OPEN = -180; // how far the lids lift
 
 export function runLoader(el: HTMLElement, o: Options) {
@@ -28,6 +28,7 @@ export function runLoader(el: HTMLElement, o: Options) {
   const third = q('#loader-third-open');
   const thirdLine = q('#loader-third-line');
   const thirdGlow = q('#loader-third-glow');
+  const rays = q('#loader-rays');
   const core = q('#loader-third-core');
   const motes = qa('#loader-motes circle');
   const hole = q('#loader-hole');
@@ -36,7 +37,7 @@ export function runLoader(el: HTMLElement, o: Options) {
   // tall phone screens: frame the whole face (brows to nose ring) instead of cropping the wings of the eyes
   const svg = el.querySelector('svg');
   if (svg && innerWidth / innerHeight < 0.8) {
-    svg.setAttribute('viewBox', '300 150 1000 700');
+    svg.setAttribute('viewBox', '330 110 940 850');
     svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
   }
 
@@ -54,6 +55,8 @@ export function runLoader(el: HTMLElement, o: Options) {
     gsap.set(lids, { y: OPEN });
     gsap.set(third, { opacity: 1, scaleX: 1, svgOrigin: ORIGIN });
     gsap.set(thirdGlow, { opacity: 0.6 });
+    gsap.set(rays, { opacity: 0.8 });
+    gsap.set(hole, { scale: 0, svgOrigin: ORIGIN }); // the opening stays shut: the face is shown whole
     o.onReveal();
     // the face goes first, then the darkness behind it, so the face never lies over the page's own words
     gsap.timeline({ delay: 1.2, onComplete: finish })
@@ -83,8 +86,10 @@ export function runLoader(el: HTMLElement, o: Options) {
     // light gathers and the third eye opens
     .to(thirdLine, { opacity: 1, duration: 0.3 }, 2.0)
     .to(motes, { opacity: 1, duration: 0.25, stagger: { each: 0.005, from: 'random' } }, 2.0)
-    .to(motes, { attr: { cx: 800, cy: 290 }, opacity: 0, duration: 0.8, ease: 'power3.in', stagger: { each: 0.004, from: 'random' } }, 2.1)
+    .to(motes, { attr: { cx: 800, cy: 300 }, opacity: 0, duration: 0.8, ease: 'power3.in', stagger: { each: 0.004, from: 'random' } }, 2.1)
     .to(thirdGlow, { opacity: 1, duration: 0.6 }, 2.35)
+    // a ring of rays gathers round the third eye and turns as it opens
+    .fromTo(rays, { opacity: 0, scale: 0.82, rotation: -12, svgOrigin: ORIGIN }, { opacity: 1, scale: 1, rotation: 0, svgOrigin: ORIGIN, duration: 0.9, ease: 'power2.out' }, 2.3)
     .to(third, { opacity: 1, scaleX: 1, duration: 0.55, ease: 'back.out(1.7)' }, 2.62)
     .call(() => buzz(PATTERNS.eyeOpens), [], 2.62)
     .to(thirdLine, { opacity: 0, duration: 0.2 }, 2.7)
