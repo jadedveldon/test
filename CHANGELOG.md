@@ -3,6 +3,76 @@
 Every change to the site, newest first: what changed, why, and how it was checked.
 The rules for checking are in `CLAUDE.md`; the checks themselves are in `tools/qa/`.
 
+## 2026-11-27 · Daily practice for every tradition, a minute of it on the homepage, and being found
+
+The owner asked for daily practice to stop being Hindu-only and to hold every tradition, with practice open to people
+of no faith too; for a small way into it on the homepage; and for the site to be found by search engines and AI
+search, without letting AI companies train on it. All traditions are in scope (the owner's decision); CLAUDE.md's
+content rule now says so.
+
+- **One library for every tradition** (`src/content/mantras`, `src/pages/practice/library.astro`). It holds 151
+  entries:
+  - the 113 from Sarvakali's two lists;
+  - 24 new texts, each in its own language and script, with transliteration, a readable pronunciation, its meaning
+    and its source:
+    - Buddhist: AUM Mani Padme Hum, Green Tara, the Heart Sutra mantra, the Medicine Buddha, Metta, Namu Amida
+      Butsu, Nam Myoho Renge Kyo, Guanyin;
+    - Japanese: Benzaiten;
+    - Ancient Greek: the Homeric Hymns to Selene, Aphrodite, Helios and Earth;
+    - Norse: "Hail, Day";
+    - Jewish: Modeh Ani, the Shema;
+    - Christian: the Jesus Prayer, "All shall be well";
+    - Sufi: La ilaha illallah;
+    - Sikh: the Mool Mantar, Waheguru;
+    - Jain: the Navkar Mantra;
+    - Hindu: salutations to Ardhanarishvara and Harihara;
+  - 14 figures honoured without an invented text, moved in from the old Across traditions page: Mbaba Mwana Waresa,
+    Ieyekhsit, Umai and Ak Ana, Veles, Mazu, Nüwa, Iwanaga-hime, Tsukuyomi, Chang'e, Aravan, Bahuchara Mata, Mohini,
+    Ila and Shikhandi.
+  - Each text was checked against a published source (Perseus and theoi.com for the Greek, Wikipedia's quoted texts,
+    CCEL for Julian of Norwich). Texts that could not be confirmed were left out: the Orphic hymn to Hekate, Tao Te
+    Ching 16, "Deep peace of the running wave" and a Shinto purification phrase.
+  - Notes on the new entries are drafts for Sarvakali.
+- **New in the data:** each entry has a tradition, a kind (mantra, prayer, hymn, chant, verse, sutra, blessing,
+  figure), a language and its code.
+  - An entry may be kept on any day.
+  - A new label, "Honoured here", marks a figure whose prayers belong to their own community.
+  - Right-to-left scripts read from the right.
+  - The content editor has every new field.
+- **The library page:** "Ways in" by tradition (with counts) and by need. Everything can be filtered by day (or any
+  day), tradition, figure, intention and kind. Today's planetary day still gathers what suits it. Monday now also
+  holds Selene, Tsukuyomi, Chang'e and Ardhanarishvara; Friday holds Aphrodite; Sunday holds Helios.
+- **Across traditions page retired:** its figures are in the library, and its address leads there (a redirect).
+  - The page lists of audit, a11y and layout now check Modeh Ani (Hebrew, right to left) in its place.
+  - Regression 25 checks the Hymn to Selene in its place.
+  - The checks were right; the page is gone.
+- **Guided practices for everyone:**
+  - A fourth way in, **Without a deity**: Just breathe, Loving-kindness, Sit in stillness.
+  - Practices with Tara, Guanyin, Selene, Aphrodite and Ardhanarishvara, beside the twelve Hindu ones.
+  - A practice now carries its tradition and the language of its name.
+- **Today's line, on the homepage** (`src/components/TodayLine.astro`, `src/scripts/today-line.ts`):
+  - A minute of practice after the six pillars. One short line from the library, kept on today's weekday or on any
+    day, chosen by the visitor's own date, the traditions taking turns.
+  - Read it, say it nine times on a small mala (tap, click or keyboard), and it is kept in the visitor's practice
+    record. It leads on to the day's page and the library.
+  - It replaces the Divination chapter's "Draw today's card" button: that deck is still placeholder cards.
+  - Its check is in `pillars.cjs`: by mouse, by touch, by keyboard, and kept in the record.
+- **Being found** (`docs/seo.md`):
+  - `/sitemap.xml`, `/robots.txt` and `/llms.txt`, all made from the content.
+  - robots.txt lets search engines and AI search in, and turns crawlers that only train AI models away.
+    Google-Extended is let in, because it also feeds Gemini's answers.
+  - Every public page has a canonical address.
+  - Structured data: Sarvakali as an organisation, each pillar as a service with its catalogue (no prices), each
+    article, each library text (language, transliteration, meaning, source), and each guided practice as steps.
+  - Insights groups visits by **kind of source**, AI assistants included.
+  - The launch steps that need the domain are in `docs/seo.md`.
+- **Link cards** were remade for every page, the new ones included.
+- **Checks:**
+  - Regression 25 (on its own), the new rule in `rules.cjs` (on its own) and `obs-core.mjs` (two new checks): all ok.
+  - The library, the practices and Today's line were walked on desktop and phone, by mouse, touch and keyboard:
+    ERRORS none.
+  - The full suites were not run, at the owner's request.
+
 ## 2026-11-26 · Link previews redrawn as cards for every page; the practice pages stop repeating the trail
 
 - **Link previews (the picture a chat shows when a page is shared) are now designed cards, one for every page.**
