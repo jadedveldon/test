@@ -283,7 +283,7 @@ const ARGS = { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', 
   //    links to the pages above ("Daily practice · The library · …"), left from before the trail at the top existed;
   //    on phones it sat straight under the trail's "‹ Daily practice", saying it twice
   { const { ctx, p } = await fresh({ viewport: { width: 390, height: 844 } });
-    for (const path of ['/practice/library', '/practice/traditions', '/practice/tools', '/practice/monday', '/practice/with/kali', '/practice/mantras/gayatri']) {
+    for (const path of ['/practice/library', '/practice/mantras/hymn-to-selene', '/practice/tools', '/practice/monday', '/practice/with/kali', '/practice/mantras/gayatri']) {
       await p.goto(`${B}${path}?tier=calm&cursor=off`); await p.waitForTimeout(900);
       const d = await p.evaluate(() => {
         const up = [...document.querySelectorAll('[data-crumbs] a')].map((a) => ({ href: a.getAttribute('href'), label: a.textContent.trim().toLowerCase() }));

@@ -22,18 +22,26 @@ const writings = defineCollection({
 });
 
 /**
- * The mantra library: one JSON file per mantra in src/content/mantras ("Mantras" in the content editor). The
- * transliteration and pronunciation are worked out from the Devanagari (src/data/translit.ts) unless a file gives
- * its own. `status`: open (anyone may recite), guidance (learn with a teacher), variant (wording not yet traced),
- * verify (wording held back until checked; only its meaning is shown).
+ * The library: one JSON file per mantra, prayer, hymn or chant in src/content/mantras ("Mantras" in the content
+ * editor), from every tradition. `text` is in the entry's own script (`lang` is its language tag: sa, ja, grc, he…).
+ * For Devanagari the transliteration and pronunciation are worked out (src/data/translit.ts) unless a file gives its
+ * own; any other script gives its own. `days` may be empty (any day). `status`: open (anyone may recite), guidance
+ * (learn with a teacher), variant (wording not yet traced), verify (wording held back until checked; only its meaning
+ * is shown), honoured (a figure honoured here whose prayers belong to their own community: no text is given).
  */
 export const DAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const;
+/** what kind of text an entry is */
+export const KINDS = ['mantra', 'prayer', 'hymn', 'chant', 'verse', 'sutra', 'blessing', 'figure'] as const;
 const mantras = defineCollection({
   loader: glob({ pattern: '**/*.json', base: './src/content/mantras' }),
   schema: z.object({
     name: z.string(),
-    days: z.array(z.enum(DAYS)).min(1),
+    days: z.array(z.enum(DAYS)).default([]),
     group: z.string().default(''),
+    tradition: z.string().default('Hindu'),
+    kind: z.enum(KINDS).default('mantra'),
+    language: z.string().default('Sanskrit'),
+    lang: z.string().default('sa'),
     deity: z.string().default(''),
     themes: z.array(z.string()).default([]),
     intention: z.string().default(''),
@@ -47,7 +55,7 @@ const mantras = defineCollection({
     when: z.string().default(''),
     note: z.string().default(''),
     source: z.string().default(''),
-    status: z.enum(['open', 'guidance', 'variant', 'verify']).default('open'),
+    status: z.enum(['open', 'guidance', 'variant', 'verify', 'honoured']).default('open'),
     drafted: z.boolean().default(false),
     supplied: z.string().default(''),
     audio: z.string().optional(),

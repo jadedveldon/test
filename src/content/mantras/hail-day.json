@@ -1,0 +1,29 @@
+{
+  "group": "Greeting the day",
+  "themes": [
+    "gratitude",
+    "strength"
+  ],
+  "intention": "Greeting · blessing · strength",
+  "text": "Heill dagr, heilir dags synir,\nheil nótt ok nipt.",
+  "meaning": "\"Hail, day! Hail, sons of day! And night and her daughter now!\" (Henry Adams Bellows, 1936). The valkyrie Sigrdrífa’s greeting on waking, often called the oldest surviving Norse prayer.",
+  "purpose": "To greet the day and the night with gratitude.",
+  "supports": "",
+  "when": "On waking, at dawn or at dusk.",
+  "note": "From the Sigrdrífumál in the Poetic Edda. Its next lines hail the gods and goddesses and the bountiful earth.",
+  "source": "Sigrdrífumál (Poetic Edda), Old Norse as normalised by Finnur Jónsson, 1932; translation Henry Adams Bellows, 1936",
+  "status": "open",
+  "drafted": true,
+  "supplied": "",
+  "parts": [],
+  "name": "Hail, Day",
+  "days": [],
+  "tradition": "Norse",
+  "kind": "prayer",
+  "language": "Old Norse",
+  "lang": "non",
+  "deity": "Day and Night",
+  "iast": "Heill dagr, heilir dags synir,\nheil nótt ok nipt.",
+  "pronunciation": "hayl DAG-r, HAY-lir dags SIN-ir; hayl noht ok nipt",
+  "order": 70
+}

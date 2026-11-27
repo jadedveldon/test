@@ -31,7 +31,7 @@ if (editor) {
 export default defineConfig({
   build: { format: 'file' },
   // Writings became Articles; the AI depth demo now lives in About's portrait
-  redirects: { '/writings': '/articles', '/writings/[slug]': '/articles/[slug]', '/depth': '/about' },
+  redirects: { '/writings': '/articles', '/writings/[slug]': '/articles/[slug]', '/depth': '/about', '/practice/traditions': '/practice/library' },
   devToolbar: { enabled: false },
   prefetch: false,
   integrations,

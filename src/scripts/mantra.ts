@@ -64,14 +64,18 @@ export function initMantras(world?: World) {
     const q = filters.querySelector<HTMLInputElement>('[data-f-q]')!;
     const deity = filters.querySelector<HTMLSelectElement>('[data-f-deity]')!;
     const theme = filters.querySelector<HTMLSelectElement>('[data-f-theme]')!;
+    const trad = filters.querySelector<HTMLSelectElement>('[data-f-tradition]');
+    const kind = filters.querySelector<HTMLSelectElement>('[data-f-kind]');
     const guidance = filters.querySelector<HTMLInputElement>('[data-f-guidance]')!;
     const count = filters.querySelector<HTMLElement>('[data-f-count]')!;
     const none = document.querySelector<HTMLElement>('[data-f-none]');
-    // a filter can arrive in the address: /practice/library?day=friday&deity=Lakshmi&theme=courage&q=…
+    // a filter can arrive in the address: /practice/library?day=friday&tradition=buddhist&deity=Lakshmi&theme=courage&kind=hymn&q=…
     const params = new URLSearchParams(location.search);
     if (params.get('q')) q.value = params.get('q')!;
     if (params.get('deity')) deity.value = params.get('deity')!;
     if (params.get('theme')) theme.value = params.get('theme')!;
+    if (trad && params.get('tradition')) trad.value = params.get('tradition')!;
+    if (kind && params.get('kind')) kind.value = params.get('kind')!;
     const d0 = params.get('day');
     if (d0) filters.querySelectorAll<HTMLInputElement>('[data-f-day]').forEach((r) => { r.checked = r.value === d0; });
     const apply = () => {
@@ -79,7 +83,10 @@ export function initMantras(world?: World) {
       const day = filters.querySelector<HTMLInputElement>('[data-f-day]:checked')?.value || '';
       let n = 0;
       for (const c of cards) {
-        const ok = (!day || c.dataset.days!.split(' ').includes(day))
+        const days = c.dataset.days ? c.dataset.days.split(' ') : [];
+        const ok = (!day || (day === 'any' ? !days.length : days.includes(day)))
+          && (!trad?.value || c.dataset.tradition === trad.value)
+          && (!kind?.value || c.dataset.kind === kind.value)
           && (!deity.value || c.dataset.deity === deity.value)
           && (!theme.value || c.dataset.themes!.split(' ').includes(theme.value))
           && (guidance.checked || c.dataset.status !== 'guidance')
@@ -94,6 +101,8 @@ export function initMantras(world?: World) {
       if (day) p.set('day', day);
       if (deity.value) p.set('deity', deity.value);
       if (theme.value) p.set('theme', theme.value);
+      if (trad?.value) p.set('tradition', trad.value);
+      if (kind?.value) p.set('kind', kind.value);
       history.replaceState(history.state, '', `${location.pathname}${p.toString() ? `?${p}` : ''}${location.hash}`);
     };
     on(filters, 'input', apply);

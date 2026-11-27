@@ -26,6 +26,7 @@ const next = dayOf(DAY_KEYS[(i + 1) % 7]);
 const noteFor = (g: string) => d.groupNotes?.find((n) => n.group === g)?.text;
 const count = groups.reduce((n, g) => n + g.mantras.length, 0);
 const practice = (await loadPractices()).find((p) => p.kind === 'day' && p.key === key);
+const dw = lib.dayWords;
 const nameOf = (slug?: string | null) => all.find((m) => m.slug === slug)?.name;
 ---
 <Base title={`${d.name} · ${d.sanskrit} · Daily practice · Sarvakali`} sequence={world} description={`${d.name}, the day of ${d.planet}: ${d.question}`} crumbs={[{ label: cw.practice, href: '/practice' }, { label: d.name }]}>
@@ -102,11 +103,11 @@ const nameOf = (slug?: string | null) => all.find((m) => m.slug === slug)?.name;
     {d.others?.items?.length ? (
       <section class="chapter" data-chapter="traditions">
         <div class="chapter-inner narrow">
-          <p class="kicker" data-fade>Across traditions</p>
+          <p class="kicker" data-fade>{dw.acrossKicker}</p>
           <h2 class="display-m" data-fade>{d.others.title}</h2>
           {d.others.text ? <p class="lede" data-fade>{d.others.text}</p> : null}
           <ul class="pday-others" data-fade>{d.others.items.map((t) => { const [h, ...rest] = t.split(': '); return <li>{rest.length ? <><b>{h}:</b> {rest.join(': ')}</> : t}</li>; })}</ul>
-          <p data-fade><a class="btn btn-ghost btn-sm" href="/practice/traditions">The wider index, across traditions →</a></p>
+          <p data-fade><a class="btn btn-ghost btn-sm" href="/practice/library#ways">{dw.acrossLink} →</a></p>
         </div>
       </section>
     ) : null}

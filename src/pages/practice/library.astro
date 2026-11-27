@@ -1,22 +1,26 @@
 ---
 /**
- * The mantra library (/practice/library): how to use it, what its labels mean, and every mantra, to search and
- * filter by day, deity and intention (src/scripts/mantra.ts). Words: src/content/pages/library.json ("Mantra
- * library" in the content editor). Without scripts, every mantra is simply listed.
+ * The library (/practice/library): prayers of every tradition. Ways in by tradition, by need and by day; how to use
+ * it and what its labels mean; and everything in it, to search and filter by day, tradition, figure, intention and
+ * kind (src/scripts/mantra.ts). Words: src/content/pages/library.json ("Mantra library" in the content editor).
+ * Without scripts, everything is simply listed, and the ways in are plain links.
  */
 import Base from '../../layouts/Base.astro';
 import { crumbWords as cw } from '../../config';
 import MantraCard from '../../components/MantraCard.astro';
 import CareText from '../../components/CareText.astro';
-import { DAYS, DAY_HEX, DAY_GLYPH, deitiesOf, loadMantras, type DayKey } from '../../data/mantras';
+import { DAYS, DAY_HEX, DAY_GLYPH, deitiesOf, loadMantras, traditionsOf, tradKey, type DayKey } from '../../data/mantras';
 import w from '../../content/pages/library.json';
 
 const all = await loadMantras();
 const deities = deitiesOf(all);
 const themes = Object.entries(w.themes).filter(([k]) => all.some((m) => m.themes.includes(k)));
+const traditions = traditionsOf(all);
+const kinds = Object.entries(w.kinds).filter(([k]) => all.some((m) => m.kind === k));
+const lib = (q: string) => `/practice/library?${q}#all`;
 const L = w.labels;
 ---
-<Base title="Mantra library · Daily practice · Sarvakali" sequence="library" description="A seven-day mantra library: mantras, prayers and verses with their text, pronunciation, meaning and use, arranged by the planetary days." crumbs={[{ label: cw.practice, href: '/practice' }, { label: cw.library }]}>
+<Base title="Mantra library · Daily practice · Sarvakali" sequence="library" description="Mantras, prayers, hymns and chants from every tradition, with their own words, pronunciation, meaning and source, arranged by the seven planetary days." crumbs={[{ label: cw.practice, href: '/practice' }, { label: cw.library }]}>
   <div class="plib" data-library>
     <section class="chapter" data-chapter="library">
       <div class="chapter-inner">
@@ -27,6 +31,20 @@ const L = w.labels;
         <nav class="week-strip" aria-label="The seven days" data-hero>
           {DAYS.map((x) => <a href={`/practice/${x.key}`} style={`--dc:${DAY_HEX[x.key as DayKey]}`}><span class="ws-glyph" aria-hidden="true">{DAY_GLYPH[x.key as DayKey]}</span><span class="ws-name">{x.name}</span><span class="ws-planet">{x.planet}</span></a>)}
         </nav>
+      </div>
+    </section>
+
+    <section class="chapter" data-chapter="library" id="ways">
+      <div class="chapter-inner plib-ways">
+        <h2 class="display-m" data-fade>{w.ways.title}</h2>
+        <div class="plib-way" data-fade>
+          <h3 class="kicker">{w.ways.byTradition}</h3>
+          <ul class="plib-shelf">{traditions.map((t) => <li><a href={lib(`tradition=${tradKey(t.name)}`)}><span>{t.name}</span><small>{t.count}</small></a></li>)}</ul>
+        </div>
+        <div class="plib-way" data-fade>
+          <h3 class="kicker">{w.ways.byNeed}</h3>
+          <ul class="plib-shelf plib-shelf-need">{themes.map(([k, v]) => <li><a href={lib(`theme=${k}`)}>{v}</a></li>)}</ul>
+        </div>
       </div>
     </section>
 
@@ -44,32 +62,35 @@ const L = w.labels;
             <dt><span class="mc-badge mc-badge-guidance">{L.guidance}</span></dt><dd>{L.guidanceText}</dd>
             <dt><span class="mc-badge mc-badge-variant">{L.variant}</span></dt><dd>{L.variantText}</dd>
             <dt><span class="mc-badge mc-badge-verify">{L.verify}</span></dt><dd>{L.verifyText}</dd>
+            <dt><span class="mc-badge mc-badge-honoured">{L.honoured}</span></dt><dd>{L.honouredText}</dd>
             <dt><span class="mc-drafted">{L.drafted}</span></dt><dd>{L.draftedText}</dd>
           </dl>
           <div class="pday-care"><CareText text={w.care} /></div>
-          <p><a class="btn btn-ghost btn-sm" href="/practice/traditions">{w.traditionsLink} →</a></p>
         </aside>
       </div>
     </section>
 
     <section class="chapter" data-chapter="library" id="all">
       <div class="chapter-inner">
-        <h2 class="display-m">Every mantra</h2>
+        <h2 class="display-m">{w.every}</h2>
         <form class="plib-filters" data-filters role="search">
           <label class="plib-search"><span class="sr-only">{w.search}</span><input type="search" data-f-q placeholder={w.searchHint} autocomplete="off" /></label>
           <fieldset class="plib-chips">
             <legend class="sr-only">Day</legend>
             <label><input type="radio" name="f-day" value="" checked data-f-day /> <span>{w.allDays}</span></label>
             {DAYS.map((x) => <label style={`--dc:${DAY_HEX[x.key as DayKey]}`}><input type="radio" name="f-day" value={x.key} data-f-day /> <span>{x.name}</span></label>)}
+            <label><input type="radio" name="f-day" value="any" data-f-day /> <span>{w.anyDayChip}</span></label>
           </fieldset>
           <div class="plib-row">
+            <label>{w.tradition} <select data-f-tradition><option value="">{w.anyTradition}</option>{traditions.map((t) => <option value={tradKey(t.name)}>{t.name}</option>)}</select></label>
             <label>{w.deity} <select data-f-deity><option value="">{w.anyDeity}</option>{deities.map((d) => <option value={d}>{d}</option>)}</select></label>
             <label>{w.intention} <select data-f-theme><option value="">{w.anyDeity}</option>{themes.map(([k, v]) => <option value={k}>{v}</option>)}</select></label>
+            <label>{w.kind} <select data-f-kind><option value="">{w.anyDeity}</option>{kinds.map(([k, v]) => <option value={k}>{v}</option>)}</select></label>
             <label class="plib-check"><input type="checkbox" checked data-f-guidance /> {w.include}</label>
           </div>
           <div class="mc-controls" data-mc-controls>
             <span class="hint">Show:</span>
-            <label><input type="checkbox" checked data-show-script="deva" /> Devanagari</label>
+            <label><input type="checkbox" checked data-show-script="deva" /> {w.mantra.script}</label>
             <label><input type="checkbox" checked data-show-script="iast" /> Transliteration</label>
             <label><input type="checkbox" checked data-show-script="read" /> Pronunciation</label>
           </div>

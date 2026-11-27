@@ -1,0 +1,31 @@
+{
+  "group": "The Sun across the world",
+  "themes": [
+    "purpose",
+    "strength"
+  ],
+  "intention": "The Sun · vitality · clarity",
+  "text": "ἥλιον ὑμνεῖν αὖτε Διὸς τέκος ἄρχεο Μοῦσα",
+  "meaning": "\"And now, O Muse Calliope, daughter of Zeus, begin to sing of glowing Helios.\" The opening of the Homeric Hymn to Helios, the Sun.",
+  "purpose": "To greet the Sun and the strength of a new day.",
+  "supports": "",
+  "when": "On Sunday, or at sunrise.",
+  "note": "Sunday is the Sun’s day across Greek, Roman, Norse (Sunna), Indian (Surya) and Japanese reckoning. Translation: Hugh G. Evelyn-White, 1914 (public domain).",
+  "source": "Homeric Hymn 31, To Helios, line 1 (Perseus); translation Hugh G. Evelyn-White, 1914",
+  "status": "open",
+  "drafted": true,
+  "supplied": "",
+  "parts": [],
+  "name": "Hymn to Helios",
+  "days": [
+    "sunday"
+  ],
+  "tradition": "Ancient Greek",
+  "kind": "hymn",
+  "language": "Ancient Greek",
+  "lang": "grc",
+  "deity": "Helios",
+  "iast": "hḗlion humneîn aûte Diòs tékos árkheo Moûsa",
+  "pronunciation": "HAY-lee-on hoom-NAYN OW-te dee-OS TE-kos AR-khe-o MOO-sa",
+  "order": 62
+}

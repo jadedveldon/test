@@ -70,7 +70,7 @@ function render(q: string) {
   const hits = find(q);
   list.innerHTML = '';
   if (!q.trim()) {
-    status.textContent = `Search ${index.items.length.toLocaleString("en-IN")} services, ${index.practices?.length ?? 0} guided practices, ${index.mantras?.length ?? 0} mantras and every article: protection, grief, Kali, tarot, ancestors…`;
+    status.textContent = `Search ${index.items.length.toLocaleString("en-IN")} services, ${index.practices?.length ?? 0} guided practices, ${index.mantras?.length ?? 0} mantras and prayers from every tradition, and every article: protection, grief, Kali, tarot, ancestors…`;
     restorePreview();
     return;
   }
@@ -103,7 +103,7 @@ function render(q: string) {
   const mHits = match(index.mantras, 6);
   const aHits = match(index.articles, 3);
   group('Guided practices', pHits.map(([name, slug, kind, line]) => ({ href: sitePath(`/practice/with/${slug}`), name, sub: KIND[kind] ?? line })));
-  group('Mantra library', mHits.map(([name, slug, deity, day]) => ({ href: sitePath(`/practice/mantras/${slug}`), name, sub: `${deity ? `${deity} · ` : ''}${day.charAt(0).toUpperCase()}${day.slice(1)}` })));
+  group('Mantra library', mHits.map(([name, slug, deity, day]) => ({ href: sitePath(`/practice/mantras/${slug}`), name, sub: `${deity && deity !== name ? `${deity} · ` : ''}${day}` })));
   group('Articles', aHits.map(([name, slug, pillar, summary]) => ({ href: sitePath(`/articles/${slug}`), name, sub: pillar || summary.slice(0, 80) })));
   const others = pHits.length + mHits.length + aHits.length;
   if (others && !hits.length) status.textContent = `${others} found`;

@@ -22,7 +22,7 @@ const esc = (s: string) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&
 /* ---------------------------------------------------------------- the week and its mantras */
 
 type DayInfo = { key: string; name: string; sanskrit: string; planet: string; planetSanskrit: string; question: string; intention: string; themes: string[]; opening: string; closing: string; practice: string };
-type MantraInfo = { slug: string; name: string; days: string[]; deity: string; status: string; text: string; iast: string; read: string; meaning: string; intention: string };
+type MantraInfo = { slug: string; name: string; days: string[]; deity: string; status: string; text: string; iast: string; read: string; meaning: string; intention: string; lang?: string; tradition?: string };
 type Week = { days: DayInfo[]; mantras: MantraInfo[]; badges: Record<string, string>; practices?: { slug: string; title: string; kind: string }[] };
 let week: Week = { days: [], mantras: [], badges: {} };
 const KEYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
@@ -43,7 +43,7 @@ const lines = (t: string) => t.split('\n').map((l) => `<span>${esc(l)}</span>`).
 function mantraBlock(m: MantraInfo | undefined) {
   if (!m) return '';
   return `<div class="rite-mantra"><p class="rm-name"><a href="${esc(href(`/practice/mantras/${m.slug}`))}">${esc(m.name)}</a></p>
-    <p class="mc-deva" lang="sa">${lines(m.text)}</p>${m.iast ? `<p class="mc-iast" lang="sa-Latn">${lines(m.iast)}</p>` : ''}
+    <p class="mc-deva" lang="${esc(m.lang || 'sa')}" dir="auto">${lines(m.text)}</p>${m.iast ? `<p class="mc-iast" lang="${esc(m.lang || 'sa')}-Latn">${lines(m.iast)}</p>` : ''}
     ${m.meaning ? `<p class="mc-meaning">${esc(m.meaning)}</p>` : ''}</div>`;
 }
 

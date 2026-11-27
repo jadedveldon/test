@@ -1,0 +1,29 @@
+{
+  "group": "Morning prayers",
+  "themes": [
+    "gratitude",
+    "beginnings"
+  ],
+  "intention": "Gratitude on waking",
+  "text": "מוֹדֶה אֲנִי לְפָנֶֽיךָ מֶֽלֶךְ חַי וְקַיָּים\nשֶׁהֶֽחֱזַֽרְתָּ בִּי נִשְׁמָתִי בְּחֶמְלָה\nרַבָּה אֱמֽוּנָתֶֽךָ׃",
+  "meaning": "\"I give thanks before you, King living and eternal, for you have returned my soul within me with compassion; abundant is your faithfulness.\" Said on waking. (A woman says Modah ani.)",
+  "purpose": "To begin the day in gratitude.",
+  "supports": "",
+  "when": "On waking, before rising.",
+  "note": "The Jewish prayer on waking, said before washing the hands and before the morning blessings.",
+  "source": "Jewish morning prayer; text and translation as printed in the Wikipedia article on Modeh Ani",
+  "status": "open",
+  "drafted": true,
+  "supplied": "",
+  "parts": [],
+  "name": "Modeh Ani",
+  "days": [],
+  "tradition": "Jewish",
+  "kind": "prayer",
+  "language": "Hebrew",
+  "lang": "he",
+  "deity": "",
+  "iast": "Modeh ani lefanekha melekh ḥai vekayam,\nsheheḥezarta bi nishmati b’ḥemlah,\nrabah emunatekha.",
+  "pronunciation": "mo-DEH a-NEE le-fa-NE-kha ME-lekh khai ve-ka-YAM; she-he-khe-ZAR-ta bee nish-ma-TEE be-khem-LAH; ra-BAH e-moo-na-TE-kha",
+  "order": 80
+}

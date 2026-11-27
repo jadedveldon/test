@@ -25,9 +25,11 @@ site's owner; follow them every time.
 ## Content rules
 
 - No prices and no catalogue numbers anywhere on the site (the invoice maker is Sarvakali's own tool).
-- English only. Deity names in Devanagari or Greek are welcome as labels next to the English. In the mantra
-  library, a mantra's own text is given in Devanagari, always with its transliteration, a readable pronunciation
-  and its meaning in English. The sacred syllable is written AUM.
+- English only. Deity names in Devanagari or Greek are welcome as labels next to the English. The library holds
+  every tradition (the owner's decision, 2026-11-27): a text is given in its own language and script (Devanagari for
+  Sanskrit), always with its transliteration, a readable pronunciation, its meaning in English and its source. Nothing
+  is invented; where a figure's prayers belong to their community, the library honours the figure without a text.
+  The sacred syllable is written AUM.
 - Payment is by UPI only. Booking is the site's own (the Studio, `docs/studio.md`); the WhatsApp button comes later.
 - Every factual claim is checked against a source. The sources live in the fact-check table on the preview
   cover, not as lists of facts on the pages. Interpretive copy is a draft for Sarvakali and is marked so in code.

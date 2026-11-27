@@ -4,7 +4,7 @@ const { chromium } = require('playwright');
 const fs = require('fs');
 const AXE = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
 const B = (process.env.QA_BASE || 'http://127.0.0.1:4321');
-const PAGES = process.env.A11Y_PAGES ? process.env.A11Y_PAGES.split(',') : ['/', '/about', '/care', '/connect', '/path', '/practice', '/practice/with/kali', '/practice/with/grief', '/practice/tools', '/practice/library', '/practice/monday', '/practice/thursday', '/practice/traditions', '/practice/mantras/karpura-gauram', '/practice/mantras/bhutanatha', '/articles', '/articles/who-is-kali', '/articles/the-thirty-moons', '/articles/what-happens-in-a-reading', '/invoice', '/booking', '/me', '/terms', '/studio', '/404',
+const PAGES = process.env.A11Y_PAGES ? process.env.A11Y_PAGES.split(',') : ['/', '/about', '/care', '/connect', '/path', '/practice', '/practice/with/kali', '/practice/with/grief', '/practice/tools', '/practice/library', '/practice/monday', '/practice/thursday', '/practice/mantras/modeh-ani', '/practice/mantras/karpura-gauram', '/practice/mantras/bhutanatha', '/articles', '/articles/who-is-kali', '/articles/the-thirty-moons', '/articles/what-happens-in-a-reading', '/invoice', '/booking', '/me', '/terms', '/studio', '/404',
   '/pillars/devotion', '/pillars/magic', '/pillars/healing', '/pillars/identity', '/pillars/divination', '/pillars/learning'];
 const TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'];
 const OVERLAYS = [

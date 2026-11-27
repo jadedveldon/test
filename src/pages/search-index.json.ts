@@ -15,8 +15,8 @@ export async function GET() {
     seen.add(key);
     items.push([t, pi, c.name, s.name, anchor(c.name)]);
   }))));
-  // mantras: [name, address, deity, day, what to match]
-  const mantras = (await loadMantras()).map((m) => [m.name, m.slug, m.deity, m.days[0], `${m.name} ${m.deity} ${m.intention} ${m.themes.join(' ')}`.toLowerCase()]);
+  // the library, every tradition: [name, address, deity, tradition and day, what to match]
+  const mantras = (await loadMantras()).map((m) => [m.name, m.slug, m.deity, [m.tradition, m.days[0] ? m.days[0].charAt(0).toUpperCase() + m.days[0].slice(1) : ''].filter(Boolean).join(' · '), `${m.name} ${m.deity} ${m.intention} ${m.tradition} ${m.language} ${m.kind} ${m.themes.join(' ')}`.toLowerCase()]);
   // guided practices: [title, address, what kind, its line, what to match]
   const practices = (await loadPractices()).map((p) => [p.title, p.slug, p.kind, p.line, `${p.title} ${p.sanskrit ?? ''} ${p.key ?? ''} ${p.kind} ${p.line}`.toLowerCase()]);
   // articles: [title, address, pillar, summary, what to match]

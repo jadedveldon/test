@@ -1,11 +1,11 @@
 ---
 /**
- * One mantra as a card: its name and label, the Devanagari, transliteration and pronunciation (each can be hidden
+ * One entry of the library as a card (any tradition): its name and label, its own script, transliteration and pronunciation (each can be hidden
  * by the visitor, src/scripts/mantra.ts), its meaning, and the rest folded under "More". Used on the day pages, the
  * library and the daily practice page. The filters in the library read its data attributes.
  */
 import type { Mantra } from '../data/mantras';
-import { dayOf, mantraPath, DAY_HEX } from '../data/mantras';
+import { dayOf, mantraPath, DAY_HEX, isRtl, tradKey } from '../data/mantras';
 import lib from '../content/pages/library.json';
 import Rich from './Rich.astro';
 
@@ -14,23 +14,26 @@ const { m, showDays = false, headingLevel = 'h3' } = Astro.props;
 const H = headingLevel;
 const L = lib.labels;
 const W = lib.mantra;
-const badge = m.status === 'open' ? '' : m.status === 'guidance' ? L.guidance : m.status === 'variant' ? L.variant : L.verify;
-const search = [m.name, m.deity, m.intention, m.meaning, m.group, m.iastText, ...m.themes].join(' ').toLowerCase();
+const badge = m.status === 'open' ? '' : m.status === 'guidance' ? L.guidance : m.status === 'variant' ? L.variant : m.status === 'honoured' ? L.honoured : L.verify;
+const search = [m.name, m.deity, m.intention, m.meaning, m.group, m.iastText, m.tradition, m.language, m.kind, ...m.themes].join(' ').toLowerCase();
+const dir = isRtl(m.lang) ? 'rtl' : undefined;
 ---
-<article class={`mc mc-${m.status}`} data-mc data-slug={m.slug} data-days={m.days.join(' ')} data-deity={m.deity} data-themes={m.themes.join(' ')} data-status={m.status} data-search={search}>
+<article class={`mc mc-${m.status}`} data-mc data-slug={m.slug} data-days={m.days.join(' ')} data-deity={m.deity} data-tradition={tradKey(m.tradition)} data-kind={m.kind} data-themes={m.themes.join(' ')} data-status={m.status} data-search={search}>
   <header class="mc-head">
     <H class="mc-name"><a href={mantraPath(m.slug)}>{m.name}</a></H>
     {badge ? <span class={`mc-badge mc-badge-${m.status}`}>{badge}</span> : null}
     <button type="button" class="mc-keep" data-keep-mantra={m.slug} aria-pressed="false" aria-label={`${W.keep}: ${m.name}`} title={W.keep}><span aria-hidden="true">✦</span></button>
   </header>
   {m.intention ? <p class="mc-intent">{m.intention}</p> : null}
-  {showDays ? <p class="mc-days">{m.days.map((d) => <span style={`--dc:${DAY_HEX[d]}`}>{dayOf(d).name}</span>)}</p> : null}
+  {showDays ? <p class="mc-days"><span class="mc-trad">{m.tradition}</span>{m.days.map((d) => <span style={`--dc:${DAY_HEX[d]}`}>{dayOf(d).name}</span>)}</p> : null}
   {m.text ? (
     <div class="mc-text">
-      <p class="mc-deva" lang="sa" data-script="deva">{m.text.split('\n').map((l) => <span>{l}</span>)}</p>
-      {m.iastText ? <p class="mc-iast" lang="sa-Latn" data-script="iast">{m.iastText.split('\n').map((l) => <span>{l}</span>)}</p> : null}
+      <p class="mc-deva" lang={m.lang} dir={dir} data-script="deva">{m.text.split('\n').map((l) => <span>{l}</span>)}</p>
+      {m.iastText ? <p class="mc-iast" lang={`${m.lang}-Latn`} data-script="iast">{m.iastText.split('\n').map((l) => <span>{l}</span>)}</p> : null}
       {m.readText ? <p class="mc-read" data-script="read"><span class="sr-only">{W.pronunciation}: </span>{m.readText}</p> : null}
     </div>
+  ) : m.status === 'honoured' ? (
+    <div class="mc-text mc-held"><p class="mc-held-note">{L.honouredText}</p></div>
   ) : m.supplied ? (
     <div class="mc-text mc-held"><p class="mc-held-note">{L.verifyText}</p></div>
   ) : null}

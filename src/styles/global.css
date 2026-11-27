@@ -1865,9 +1865,24 @@ html[data-light="1"] .ar-body > p:first-of-type::first-letter { color: color-mix
 .mc-badge-guidance { background: rgb(240 150 90 / 0.16); color: #ffcfa8; box-shadow: inset 0 0 0 1px rgb(240 150 90 / 0.5); }
 .mc-badge-variant { background: rgb(220 200 120 / 0.14); color: #efe0a6; box-shadow: inset 0 0 0 1px rgb(220 200 120 / 0.45); }
 .mc-badge-verify { background: rgb(170 170 200 / 0.14); color: #d6d6ee; box-shadow: inset 0 0 0 1px rgb(170 170 200 / 0.45); }
+.mc-badge-honoured { background: rgb(200 160 230 / 0.14); color: #e6d2f4; box-shadow: inset 0 0 0 1px rgb(200 160 230 / 0.45); }
+.mc-honoured .mc-held-note { font-style: italic; }
+/* text in any script: right-to-left lines read from the right; Greek, Japanese and Hebrew keep the card's size */
+.mc-deva[dir="rtl"], .pm-deva[dir="rtl"] { text-align: right; }
+.mc-deva:lang(ja), .mc-deva:lang(zh-Hant), .pm-deva:lang(ja), .pm-deva:lang(zh-Hant) { letter-spacing: 0.08em; }
+.mc-deva:lang(en), .pm-deva:lang(en) { font-family: var(--f-display); font-style: italic; }
+/* the library's ways in: each tradition with how many it holds, and each need */
+.plib-ways { display: grid; gap: clamp(18px, 3vw, 30px); }
+.plib-way h3 { margin: 0 0 10px; }
+.plib-shelf { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.plib-shelf a { display: inline-flex; align-items: baseline; gap: 8px; min-height: 40px; padding: 9px 16px; border-radius: 999px; text-decoration: none; color: rgb(var(--ink)); background: rgb(var(--ink) / 0.05); box-shadow: inset 0 0 0 1px rgb(var(--ink) / 0.18); transition: box-shadow 0.2s, background 0.2s; }
+.plib-shelf a:hover, .plib-shelf a:focus-visible { background: rgb(var(--glow) / 0.12); box-shadow: inset 0 0 0 1px rgb(var(--glow) / 0.6); }
+.plib-shelf small { font-size: 0.75rem; color: rgb(var(--ink-soft)); }
+.plib-shelf-need a { min-height: 36px; padding: 7px 14px; font-size: 0.9rem; }
 .mc-intent { margin: 0; font: 500 0.8rem/1.4 var(--f-body); letter-spacing: 0.04em; color: rgb(var(--glow)); }
 .mc-days { margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
 .mc-days span { font-size: 0.75rem; padding: 2px 9px; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--dc); color: rgb(var(--ink-soft)); }
+.mc-days .mc-trad { box-shadow: none; padding-left: 0; color: rgb(var(--glow)); letter-spacing: 0.04em; }
 .mc-text { display: grid; gap: 8px; padding: 12px 0; border-block: 1px solid rgb(var(--ink) / 0.1); }
 .mc-text span, .pm-deva span, .pm-iast span, .pm-read span, .pm-supplied span { display: block; }
 .mc-deva { margin: 0; font: 400 1.32rem/1.55 "Tiro Devanagari Sanskrit", serif; color: rgb(var(--ink)); }

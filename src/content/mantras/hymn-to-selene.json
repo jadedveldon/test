@@ -1,0 +1,31 @@
+{
+  "group": "The Moon across the world",
+  "themes": [
+    "peace",
+    "balance"
+  ],
+  "intention": "The Moon · night · reflection",
+  "text": "μήνην ἀείδειν τανυσίπτερον ἔσπετε Μοῦσαι",
+  "meaning": "\"And next, sweet voiced Muses, daughters of Zeus, well-skilled in song, tell of the long-winged Moon.\" The opening of the Homeric Hymn to Selene, the Moon.",
+  "purpose": "To greet the Moon on her own day.",
+  "supports": "",
+  "when": "On Monday, or under the moon.",
+  "note": "The Moon’s day is Monday in Greek, Roman, Norse, Indian and Japanese reckoning alike. Translation: Hugh G. Evelyn-White, 1914 (public domain).",
+  "source": "Homeric Hymn 32, To Selene, line 1 (Perseus); translation Hugh G. Evelyn-White, 1914",
+  "status": "open",
+  "drafted": true,
+  "supplied": "",
+  "parts": [],
+  "name": "Hymn to Selene",
+  "days": [
+    "monday"
+  ],
+  "tradition": "Ancient Greek",
+  "kind": "hymn",
+  "language": "Ancient Greek",
+  "lang": "grc",
+  "deity": "Selene",
+  "iast": "mḗnēn aeídein tanusípteron éspete Moûsai",
+  "pronunciation": "MAY-nayn a-AY-dayn ta-noo-SIP-te-ron ES-pe-te MOO-sai",
+  "order": 60
+}

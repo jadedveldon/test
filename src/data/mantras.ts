@@ -27,6 +27,10 @@ export const DAY_HEX: Record<DayKey, string> = {
 export const DAY_GLYPH: Record<DayKey, string> = { monday: '☽', tuesday: '♂', wednesday: '☿', thursday: '♃', friday: '♀', saturday: '♄', sunday: '☉' };
 
 export type Mantra = CollectionEntry<'mantras'>['data'] & { slug: string; iastText: string; readText: string };
+const DEVA = /[\u0900-\u097F]/;
+const hidden = (s: string) => s === 'verify' || s === 'honoured';
+/** languages written right to left */
+export const isRtl = (lang: string) => /^(he|ar|fa|ur|yi)\b/.test(lang);
 
 export async function loadMantras(): Promise<Mantra[]> {
   const all = await getCollection('mantras');
@@ -34,10 +38,11 @@ export async function loadMantras(): Promise<Mantra[]> {
     .map((e) => ({
       ...e.data,
       slug: e.id,
-      // a mantra held for checking shows no text, whatever its file holds
-      text: e.data.status === 'verify' ? '' : e.data.text,
-      iastText: e.data.status === 'verify' ? '' : e.data.iast?.trim() || (e.data.text ? iast(e.data.text) : ''),
-      readText: e.data.status === 'verify' ? '' : e.data.pronunciation?.trim() || (e.data.text ? pronunciation(e.data.text) : ''),
+      // a mantra held for checking, or a figure honoured without a text, shows no text, whatever its file holds;
+      // the transliteration and pronunciation are worked out only from Devanagari (every other script gives its own)
+      text: hidden(e.data.status) ? '' : e.data.text,
+      iastText: hidden(e.data.status) ? '' : e.data.iast?.trim() || (DEVA.test(e.data.text) ? iast(e.data.text) : ''),
+      readText: hidden(e.data.status) ? '' : e.data.pronunciation?.trim() || (DEVA.test(e.data.text) ? pronunciation(e.data.text) : ''),
     }))
     .sort((a, b) => a.order - b.order || a.name.localeCompare(b.name));
 }
@@ -66,7 +71,7 @@ export const dayPath = (k: string) => `/practice/${k}`;
 /** what the daily practice page's script needs of each mantra (the rite, today's list, my mantras) */
 export function summary(all: Mantra[]) {
   return all.map((m) => ({
-    slug: m.slug, name: m.name, days: m.days, deity: m.deity, status: m.status, text: m.text, iast: m.iastText, read: m.readText,
+    slug: m.slug, name: m.name, days: m.days, deity: m.deity, status: m.status, text: m.text, iast: m.iastText, read: m.readText, lang: m.lang, tradition: m.tradition,
     meaning: m.meaning, intention: m.intention,
   }));
 }
@@ -74,6 +79,14 @@ export type MantraSummary = ReturnType<typeof summary>[number];
 
 /** deities in the order they first appear in the week */
 export const deitiesOf = (all: Mantra[]) => [...new Set(all.map((m) => m.deity).filter(Boolean))];
+/** traditions, the largest first */
+export const traditionsOf = (all: Mantra[]) => {
+  const n = new Map<string, number>();
+  for (const m of all) n.set(m.tradition, (n.get(m.tradition) ?? 0) + 1);
+  return [...n.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map(([t, c]) => ({ name: t, count: c }));
+};
+/** a tradition as part of an address: "Ancient Greek" → ancient-greek */
+export const tradKey = (t: string) => t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 /* ---------------------------------------------------------------- guided practices (src/content/practices) */
 

@@ -1,20 +1,21 @@
 {
-  "kicker": "The mantra library",
-  "title": "Seven days of mantras",
-  "lede": "A practical, inclusive and carefully labelled spiritual reference, arranged by the seven planetary days: mantras, prayers and verses, each with its text, a readable pronunciation, its meaning and how it can be used.",
+  "kicker": "The library",
+  "title": "Prayers of every tradition",
+  "lede": "Mantras, prayers, hymns and chants from many traditions, each with its own words in its own script, a readable pronunciation, its meaning and how it can be used. Arranged by the seven planetary days, and open to everyone.",
   "how": {
     "title": "How to use this library",
     "paras": [
-      "The library is organised by the seven planetary weekdays. Each day begins with its planetary symbolism across the shared Western and Indian weekday systems, then offers mantras and prayers arranged by intention. A mantra may be practised on any day; its place here means that its themes complement the day’s symbolism, or that it appeared under that day in Sarvakali’s own list.",
-      "The planetary correspondences are traditional astrological symbolism, not a claim that a planet physically changes the atmosphere or determines how every person will feel. A person’s birth chart, circumstances and lived experience are individual.",
-      "The pronunciation is a practical reading guide, not a replacement for learning Sanskrit sounds from a knowledgeable teacher. AUM is used throughout; some texts print the opening syllable as Om. The spelling is standardised to AUM without changing the sacred syllable.",
-      "Repetition counts are optional. One careful recitation can be more meaningful than a large number repeated mechanically. Where a mantra contains seed syllables (bija), tantric elements or lineage-sensitive material, the library says so. Do not assume every mantra is appropriate for every practitioner.",
-      "For traditions outside Hindu Sanskrit mantra practice, the library does not manufacture Sanskrit-style mantras. It uses a documented prayer, hymn, chant or traditional invocation where one can be identified; where no widely attested public formula has been verified, it says so plainly."
+      "The library follows the seven planetary days, a week shared across the world: almost everywhere the days are named for the same seven lights. Monday is the Moon’s day for Selene, Chandra and Tsukuyomi alike; Friday belongs to Venus, Aphrodite, Freyja and Shukra. Each day gathers what suits it, from many traditions. A prayer may be practised on any day, and many are kept on no particular day at all.",
+      "You can also come in by tradition, by what you need, or by the kind of text: a mantra, a prayer, a hymn, a chant, a verse or a sutra.",
+      "The planetary correspondences are traditional symbolism, not a claim that a planet changes how anyone feels. A person’s circumstances and lived experience are their own.",
+      "Every text is given in its own language and script, with a readable pronunciation: a practical guide, not a replacement for learning the sounds from someone who keeps the tradition. In Sanskrit the sacred syllable is written AUM.",
+      "Nothing is invented. Each tradition’s own prayer, hymn, chant or invocation is given where one is documented, with its source. Where a figure’s prayers belong to their own community, or are not reliably published, the library honours the figure and says so plainly, rather than make something up.",
+      "Repetition counts are optional; one careful recitation can mean more than many said mechanically. Where a text is lineage-held or needs a teacher, the library says so."
     ]
   },
   "rhythm": {
     "title": "A simple rhythm",
-    "text": "One opening prayer, one main mantra or verse, and one closing intention. You do not need to chant every item listed for a day: choose the practice that genuinely fits your intention and tradition."
+    "text": "One opening prayer, one main mantra, prayer or verse, and one closing intention. You do not need to recite everything listed for a day: choose what genuinely fits your intention and your tradition, or none."
   },
   "labels": {
     "title": "What the labels mean",
@@ -27,19 +28,20 @@
     "verify": "Being checked",
     "verifyText": "The wording in the source list could not be matched to a published text, so it is held back until Sarvakali confirms it. Its meaning is given.",
     "drafted": "Notes drafted for Sarvakali",
-    "draftedText": "Purpose and use written for this library, to be approved by Sarvakali."
+    "draftedText": "Purpose and use written for this library, to be approved by Sarvakali.",
+    "honoured": "Honoured here",
+    "honouredText": "A figure honoured in this library whose prayers belong to their own community or are not reliably published. No text is invented; the notes say who they are and how to learn respectfully."
   },
   "search": "Search the library",
-  "searchHint": "A name, a word of the meaning, a deity or an intention",
+  "searchHint": "A name, a word of the meaning, a tradition or an intention",
   "allDays": "Every day",
-  "deity": "Deity or form",
+  "deity": "Deity or figure",
   "anyDeity": "Any",
   "intention": "Intention",
-  "include": "Include mantras to learn with guidance",
+  "include": "Include texts to learn with guidance",
   "count": "{n} of {total}",
-  "none": "Nothing matches. Try fewer words, or another day.",
+  "none": "Nothing matches. Try fewer words, or another tradition or day.",
   "clear": "Clear the filters",
-  "traditionsLink": "Across traditions: the wider index",
   "themes": {
     "balance": "Balance",
     "beginnings": "Beginnings",
@@ -102,7 +104,35 @@
     "days": "Kept on",
     "more": "More for {deity}",
     "open": "Open the mantra",
-    "dayLink": "All of {day}’s mantras"
+    "dayLink": "All of {day}’s mantras",
+    "anyDay": "Any day",
+    "tradLink": "More from {tradition}",
+    "script": "Original script"
   },
-  "care": "Some of these prayers touch grief, illness and fear. They are spiritual practice, never a replacement for medical or psychological care. If you are struggling, please also reach out to a doctor or counsellor; in India, Tele-MANAS is free on 14416, day and night."
+  "care": "Some of these prayers touch grief, illness and fear. They are spiritual practice, never a replacement for medical or psychological care. If you are struggling, please also reach out to a doctor or counsellor; in India, Tele-MANAS is free on 14416, day and night.",
+  "tradition": "Tradition",
+  "anyTradition": "Every tradition",
+  "kind": "Kind",
+  "kinds": {
+    "mantra": "Mantra",
+    "prayer": "Prayer",
+    "hymn": "Hymn",
+    "chant": "Chant",
+    "verse": "Verse",
+    "sutra": "Sutra",
+    "blessing": "Blessing",
+    "figure": "Figures honoured"
+  },
+  "ways": {
+    "title": "Ways in",
+    "byTradition": "By tradition",
+    "byNeed": "By what you need",
+    "byDay": "By day"
+  },
+  "every": "Everything in the library",
+  "anyDayChip": "Any day",
+  "dayWords": {
+    "acrossKicker": "Across the world",
+    "acrossLink": "Every tradition in the library"
+  }
 }
