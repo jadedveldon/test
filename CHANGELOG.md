@@ -51,6 +51,10 @@ haphazard. They also asked that an article can take any of the site's looks, cho
 - **A one-word mantra name** ("Ila") was a 24px-wide link on phones; names are at least 44px wide to tap.
 
 ### Checks
+- **`audit.cjs` corrected, with why:** it raced down each page and back in a few seconds and then called any part
+  not yet faded in "hidden". Far-off parts are now drawn only when near, so a fast pass leaves some reveals unplayed
+  that do play the moment a visitor arrives (checked on every flagged part: none stayed hidden). The check now goes
+  to each part still hidden and looks again, so what it reports is a part a visitor would never see.
 - **New regressions:**
   - 27: the homepage's longest pause while the world starts stays under 450 ms.
   - 28: the form on screen is made at once and every other form soon after, with no errors.

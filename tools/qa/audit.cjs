@@ -1,4 +1,4 @@
-// Site audit: every page at desktop and phone. Errors, sideways overflow, content left hidden after scrolling,
+// Site audit: every page at desktop and phone. Errors, sideways overflow, content still hidden once reached,
 // broken internal links, unlabelled controls, small tap targets on phones, images without alt. Screenshots for review.
 const { chromium } = require('playwright');
 const OUT = require('path').join(process.env.QA_OUT || 'qa-output', 'audit');
@@ -47,6 +47,20 @@ const VIEWS = (process.env.VIEWS || 'desk,phone').split(',');
         const hrefs = Array.from(document.querySelectorAll('a[href]')).map((a) => a.getAttribute('href')).filter((h) => h && h.startsWith('/') && !h.startsWith('//'));
         return { hidden, sideways, wide, unlabelled, small, noAlt, hrefs, title: document.title, h1: document.querySelectorAll('h1').length };
       }, view === 'phone');
+      // parts far off screen are drawn only when near (content-visibility), so a quick pass can leave some of their
+      // reveals unplayed; what must never happen is a part that stays hidden once a visitor reaches it: go to each
+      // one still hidden and look again
+      if (info.hidden.length) {
+        const n = await p.evaluate(() => { const els = [...document.querySelectorAll('[data-fade], [data-split], [data-hero]')].filter((e) => { const r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0 && parseFloat(getComputedStyle(e).opacity) < 0.5 && !e.closest('[hidden], dialog:not([open])'); }); els.forEach((e, i) => (e.dataset.qaHidden = String(i))); return els.length; });
+        const stuck = [];
+        for (let i = 0; i < n; i++) {
+          await p.evaluate((i) => { const e = document.querySelector(`[data-qa-hidden="${i}"]`); window.scrollTo(0, e.getBoundingClientRect().top + scrollY - innerHeight * 0.5); }, i);
+          await p.waitForTimeout(1300);
+          const r = await p.evaluate((i) => { const e = document.querySelector(`[data-qa-hidden="${i}"]`); return { o: parseFloat(getComputedStyle(e).opacity), c: String(e.className.baseVal ?? e.className ?? e.tagName).slice(0, 40) }; }, i);
+          if (r.o < 0.5) stuck.push(r.c);
+        }
+        info.hidden = stuck;
+      }
       info.hrefs.forEach((h) => links.add(h.split('#')[0].split('?')[0] || '/'));
       report.push({ path, view, errs: [...new Set(errs)], hidden: info.hidden, sideways: info.sideways, wide: info.wide, unlabelled: info.unlabelled, small: info.small, noAlt: info.noAlt, title: info.title, h1: info.h1 });
       await p.close();

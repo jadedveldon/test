@@ -2244,7 +2244,7 @@ html[data-light="1"] .ar-body > p:first-of-type::first-letter { color: color-mix
 a[href^="tel:"] { display: inline-block; min-height: 24px; padding: 3px 0; }
 @media (pointer: coarse) { .mc-controls input[type="checkbox"] { width: 24px; height: 24px; } }
 .plib-chips input { width: 100%; height: 100%; margin: 0; }
-.mc-name a { display: inline-block; min-width: 24px; min-height: 24px; }
+.mc-name a { display: inline-block; min-width: 44px; min-height: 24px; }
 .mc-more dl, .pm-facts { grid-template-columns: minmax(0, 1fr); }
 .mc-more dd, .pm-facts dd { overflow-wrap: anywhere; }
 
