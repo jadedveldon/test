@@ -17,6 +17,7 @@ export * as time from '${process.cwd()}/src/studio/core/time.ts';
 export * as money from '${process.cwd()}/src/studio/core/money.ts';
 export * as ics from '${process.cwd()}/src/studio/core/ics.ts';
 export { emptyDB } from '${process.cwd()}/src/studio/core/types.ts';
+export * as diya from '${process.cwd()}/src/diya/core.ts';
 `);
 await build({ entryPoints: [entry], bundle: true, format: 'esm', platform: 'node', outfile: join(dir, 'core.mjs'), logLevel: 'error', loader: { '.json': 'json' } });
 const M = await import(pathToFileURL(join(dir, 'core.mjs')).href);
@@ -155,6 +156,11 @@ ok('invoice: a negative quantity becomes 0, a huge rate is capped', d2.lines[0].
 const icsText = M.ics.sessionIcs({ id: 'b1', start: '2026-12-08T10:00:00.000Z', durationMin: 60, history: [], meetUrl: 'https://meet.google.com/x' }, { title: 'Conversation, with Sarvakali', description: 'Line one\nLine two', organiser: 'Sarvakali' });
 ok('ics: valid times, escaped text', icsText.includes('DTSTART:20261208T100000Z') && icsText.includes('DTEND:20261208T110000Z') && icsText.includes('Conversation\\, with') && icsText.includes('Line one\\nLine two'));
 ok('upi: link with amount and the @ kept', M.money.upiLink('sarvakali@upi', 'Sarvakali', 2400, 'SK-2026-0001') === 'upi://pay?pa=sarvakali@upi&pn=Sarvakali&cu=INR&am=2400.00&tn=SK-2026-0001');
+
+// 12. the diya's shared count of the day: India's day, one more each time, a damaged tally starts again
+ok('diya: the day turns at midnight in India', M.diya.dayKey(new Date('2026-11-27T18:29:00Z')) === '2026-11-27' && M.diya.dayKey(new Date('2026-11-27T18:31:00Z')) === '2026-11-28');
+ok('diya: one more lamp', M.diya.bump(null).n === 1 && M.diya.bump({ n: 41 }).n === 42);
+ok('diya: a damaged tally starts again', M.diya.bump({ n: -5 }).n === 1 && M.diya.bump({ n: NaN }).n === 1 && M.diya.bump({ n: 2.7 }).n === 3);
 
 console.log(fails ? `\n${fails} FAILED` : '\nall ok');
 process.exit(fails ? 1 : 0);

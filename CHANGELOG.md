@@ -3,6 +3,22 @@
 Every change to the site, newest first: what changed, why, and how it was checked.
 The rules for checking are in `CLAUDE.md`; the checks themselves are in `tools/qa/`.
 
+## 2026-11-27 · The diya's shared count of the day
+
+The owner asked to finish the diya's shared count, left as "on the finished site" since it was first made.
+
+- **One count for the day, for everyone** (`src/diya`, `/api/diya` on the host): each lamp adds one to the day's
+  tally, India's day (it turns at midnight in India). Nothing about the visitor is kept. Their address is used only
+  for ten minutes, to stop one place adding lamps by the hundred (40 in ten minutes still count). Pages on other sites
+  cannot add lamps.
+- **What the diya says:** "{n} lamps lit today, by everyone who came here. 2 of them yours." A new lamp shows at once
+  and the host's count follows. Without a host (the preview) or if it cannot be reached, it counts this device's
+  lamps for the day and promises nothing. The words are in the content editor (Words in interactive moments → the
+  diya).
+- **Checks:** the counting rules in `studio-core.mjs` (India's midnight, one more each time, a damaged tally starts
+  again); `tools/qa/diya.cjs` against a site with its host (two visitors, one count, each their own share, kept
+  after a reload, refused from another site); regression 35 for the preview's device-only count.
+
 ## 2026-11-27 · Live on Netlify, the Studio's sign-in, a smaller badge
 
 - **Live at https://sarvakali.netlify.app**, public. Every page checked answers; `/api/health` is ok; the sitemap,

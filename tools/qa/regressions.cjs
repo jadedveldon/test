@@ -387,5 +387,15 @@ const ARGS = { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', 
     const r = await p.evaluate(() => { const cards = [...document.querySelectorAll('li.greek-card')]; return { all: cards.length, flat: cards.filter((c) => getComputedStyle(c).display !== 'grid').length, cut: cards.filter((c) => c.scrollWidth > c.clientWidth + 2).length }; });
     ok('devotion: the Greek gods\' cards keep their shape on a touch phone', r.all > 0 && r.flat === 0 && r.cut === 0, JSON.stringify(r));
     await ctx.close(); }
+  // 35 the diya said "on the finished site, every lamp joins one shared count" long after the shared count was the
+  //    plan; it now joins one (tools/qa/diya.cjs, with a host). Without a host (this preview) it counts this device's
+  //    lamps for the day and promises nothing
+  { const { ctx, p } = await fresh({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+    await p.goto(`${B}/?tier=calm&cursor=off`); await p.waitForTimeout(2000);
+    await p.evaluate(() => document.querySelector('[data-diya]').scrollIntoView()); await p.waitForTimeout(600);
+    await p.click('[data-diya-light]'); await p.waitForTimeout(600);
+    const t = await p.evaluate(() => document.querySelector('[data-diya-count]').textContent.trim());
+    ok('diya: without a host, this device\'s lamps for the day, and no promise', /one diya here today/.test(t) && !/finished site/.test(t), t);
+    await ctx.close(); }
   await b.close();
 })();

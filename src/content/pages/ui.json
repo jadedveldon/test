@@ -63,8 +63,13 @@
   },
   "diya": {
     "none": "Light a lamp and hold a wish, a name or a quiet thank-you in mind.",
-    "one": "You have lit one diya here. On the finished site, every lamp joins one shared count for the day.",
-    "many": "You have lit {n} diyas here. On the finished site, every lamp joins one shared count for the day.",
+    "one": "You have lit one diya here today.",
+    "many": "You have lit {n} diyas here today.",
+    "sharedNone": "No lamps lit yet today. Yours can be the first.",
+    "sharedOne": "One lamp lit today, by everyone who came here.",
+    "sharedMany": "{n} lamps lit today, by everyone who came here.",
+    "mine": "{mine} of them yours.",
+    "mineOne": "One of them yours.",
     "another": "Offer another"
   },
   "card": {

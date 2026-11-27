@@ -23,6 +23,8 @@ export default function studio({ mode }) {
         injectRoute({ pattern: '/api/me', entrypoint: new URL('../me/routes/api.ts', import.meta.url), prerender: false });
         // observability (src/obs): the site's own visitor counts and error reports, and a health check
         injectRoute({ pattern: '/api/t', entrypoint: new URL('../obs/routes/collect.ts', import.meta.url), prerender: false });
+        // the diya (src/diya): the day's shared count of lamps
+        injectRoute({ pattern: '/api/diya', entrypoint: new URL('../diya/routes/api.ts', import.meta.url), prerender: false });
         injectRoute({ pattern: '/api/health', entrypoint: new URL('../obs/routes/health.ts', import.meta.url), prerender: false });
       },
     },

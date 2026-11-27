@@ -48,6 +48,7 @@ node tools/qa/preview-check.cjs
 | `me-core.mjs` | Visitor accounts in memory: merging two devices, deletions, clearing, old records, the journal lock, sign-in links once only and for 15 minutes, no journal text kept in the open, a client's own space only, the Studio seeing only whether there is an account, signing out everywhere, deleting (`node tools/qa/me-core.mjs`) |
 | `me.cjs` | Accounts in a browser: old records converted, sign-in by link, a second device, the journal lock, convergence, a client's sessions, download, sign out everywhere, delete. Dev server, or `QA_ME=demo` against the preview |
 | `obs-core.mjs` | Observability in memory: private things scrubbed (tokens in links, emails, phones, UPI IDs, private fields), robots, error grouping, a day worked out (visitors, visits, bounces, journeys, goals, speed, errors), days combined, logs by reference, letting old data go, alerts (`node tools/qa/obs-core.mjs`) |
+| `diya.cjs` | The diya's shared count of the day: two visitors, one count, each their own share, kept after a reload, refused from another site. Dev server (`npm run dev`); it lights real lamps, so not against the live site |
 | `obs.cjs` | Observability in a browser: visits, campaign tags and goals counted; an error caught with its trail; nothing private kept; robots left out; references on every host answer leading to log lines; health; breadcrumbs; every Insights tab. Dev server, or `QA_OBS=demo` against the preview |
 
 ## Known false alarms
