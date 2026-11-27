@@ -1,0 +1,51 @@
+{
+  "kind": "open",
+  "key": "Just breathe",
+  "title": "Just breathe",
+  "tradition": "Open to all",
+  "sanskrit": "",
+  "lang": "en",
+  "line": "Five minutes of breath and nothing else. For anyone, of any faith or none.",
+  "intro": "No god is invoked here, and nothing is asked of you except to breathe. This is the oldest practice there is, and the one every tradition shares.",
+  "minutes": 5,
+  "world": "care",
+  "care": false,
+  "offering": "",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Sit or lie comfortably. Follow the circle: in as it grows, out as it settles.",
+      "mantra": null,
+      "count": 6,
+      "prompt": null,
+      "pattern": "even"
+    },
+    {
+      "type": "breathe",
+      "title": "Let the out-breath lengthen",
+      "text": "Now let each out-breath be a little longer than the in-breath. This is how the body learns that it is safe.",
+      "mantra": null,
+      "count": 6,
+      "prompt": null,
+      "pattern": "long"
+    },
+    {
+      "type": "reflect",
+      "title": "Notice",
+      "text": "Without changing anything, notice how you are now.",
+      "mantra": null,
+      "count": null,
+      "prompt": "One word for how I am, right now.",
+      "pattern": null
+    }
+  ],
+  "after": "That is the whole practice. You can come back to it any time, anywhere.",
+  "next": [
+    "kindness",
+    "stillness"
+  ],
+  "ask": "",
+  "drafted": true,
+  "order": 900
+}

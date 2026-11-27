@@ -1,0 +1,69 @@
+{
+  "kind": "open",
+  "key": "Loving-kindness",
+  "title": "Loving-kindness",
+  "tradition": "Open to all",
+  "sanskrit": "",
+  "lang": "en",
+  "line": "Goodwill for yourself, for those you love, for strangers and for those you find hard.",
+  "intro": "Loving-kindness (metta) comes from the Buddha’s teaching but needs no belief at all. You simply wish well: first to yourself, then outward, circle by circle, until it includes everyone.",
+  "minutes": 10,
+  "world": "care",
+  "care": false,
+  "offering": "",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Breathe gently. Let your shoulders drop.",
+      "mantra": null,
+      "count": 5,
+      "prompt": null,
+      "pattern": "even"
+    },
+    {
+      "type": "read",
+      "title": "The old words",
+      "text": "The heart of the Discourse on Loving-kindness. Read it slowly, out loud if you can.",
+      "mantra": "metta",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "chant",
+      "title": "Widen the circle",
+      "text": "Repeat it, and with each repetition think of someone further out: yourself, someone you love, someone you hardly know, someone you find difficult, every being.",
+      "mantra": "metta",
+      "count": 5,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "Notice",
+      "text": "",
+      "mantra": null,
+      "count": null,
+      "prompt": "Who was hardest to wish well, and what happened when I tried?",
+      "pattern": null
+    },
+    {
+      "type": "close",
+      "title": "Close",
+      "text": "Rest for a moment in the wish itself.",
+      "mantra": "metta",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "Goodwill grows with use. You can do this in one breath on a bus, or for an hour.",
+  "next": [
+    "breathe",
+    "stillness"
+  ],
+  "ask": "",
+  "drafted": true,
+  "order": 901
+}

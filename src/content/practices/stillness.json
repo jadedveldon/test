@@ -1,0 +1,60 @@
+{
+  "kind": "open",
+  "key": "Stillness",
+  "title": "Sit in stillness",
+  "tradition": "Open to all",
+  "sanskrit": "",
+  "lang": "en",
+  "line": "A lamp, your breath and a few minutes of quiet. Nothing to believe, nothing to fix.",
+  "intro": "Every tradition keeps a silence at its centre. This practice keeps only that: a small light, a slow breath and a quiet mind, with one line of comfort at the end that has helped people of every faith and none.",
+  "minutes": 8,
+  "world": "lampsNight",
+  "care": false,
+  "offering": "",
+  "steps": [
+    {
+      "type": "light",
+      "title": "Light a lamp",
+      "text": "A candle, a diya, or simply the light on your screen.",
+      "mantra": null,
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "breathe",
+      "title": "Settle",
+      "text": "Breathe slowly. When thoughts come, let them pass like traffic outside a window.",
+      "mantra": null,
+      "count": 8,
+      "prompt": null,
+      "pattern": "long"
+    },
+    {
+      "type": "reflect",
+      "title": "Listen",
+      "text": "Sit for as long as you like. If a thought keeps returning, you can set it down here.",
+      "mantra": null,
+      "count": null,
+      "prompt": "What keeps returning, and can it wait until tomorrow?",
+      "pattern": null
+    },
+    {
+      "type": "close",
+      "title": "Close",
+      "text": "Words given to Julian of Norwich in 1373, said by many who share none of her faith.",
+      "mantra": "all-shall-be-well",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "Stillness is always there underneath. You can return to it.",
+  "next": [
+    "breathe",
+    "kindness"
+  ],
+  "ask": "",
+  "drafted": true,
+  "order": 902
+}

@@ -86,14 +86,19 @@
       "key": "feelings",
       "title": "Work with a feeling",
       "text": "Grief, fear, anger, a decision, gratitude: a practice for how you are."
+    },
+    {
+      "key": "open",
+      "title": "Without a deity",
+      "text": "Breath, kindness and stillness, for anyone."
     }
   ],
   "hub": {
     "todayKicker": "Today’s practice",
     "otherDay": "Or another day",
-    "deitiesKicker": "Be with a deity",
+    "deitiesKicker": "Be with a deity or a figure",
     "deitiesTitle": "Who would you like to be with?",
-    "deitiesLede": "Each practice introduces the deity, offers one verse to read and one mantra to repeat, and a question to sit with.",
+    "deitiesLede": "From many traditions. Each practice introduces who they are, offers one text to read and one to repeat, and a question to sit with.",
     "feelingsKicker": "Work with a feeling",
     "feelingsTitle": "How are you today?",
     "feelingsLede": "Each practice meets a feeling as it is: with breath, with words that have held people for centuries, and with one question.",
@@ -127,7 +132,10 @@
       }
     ],
     "minutes": "About {n} minutes",
-    "done": "Done {n}×"
+    "done": "Done {n}×",
+    "openKicker": "Without a deity",
+    "openTitle": "Practice, simply",
+    "openLede": "For anyone, of any faith or none: breath, kindness, stillness and a question, with no god invoked."
   },
   "session": {
     "withDeity": "With a deity",
@@ -159,7 +167,8 @@
     "home": "Back to daily practice",
     "again": "Begin again",
     "streak": "{n} days in a row",
-    "first": "Your first day. Come back tomorrow, at the same time if you can."
+    "first": "Your first day. Come back tomorrow, at the same time if you can.",
+    "open": "Open to all"
   },
   "tools": {
     "kicker": "Tools for practice",

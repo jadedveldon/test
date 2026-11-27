@@ -1,0 +1,69 @@
+{
+  "kind": "deity",
+  "key": "Ardhanarishvara",
+  "title": "Be whole with Ardhanarishvara",
+  "tradition": "Hindu",
+  "sanskrit": "अर्धनारीश्वर",
+  "lang": "sa",
+  "line": "For wholeness: the Lord who is half woman, Shiva and Shakti in one body.",
+  "intro": "Ardhanarishvara is Shiva and Shakti as one form: the right half Shiva, the left half Parvati, joined down the middle. For many, especially queer and gender-diverse people, the form says something simple and deep: that the sacred is not divided into male and female, and neither are you.",
+  "minutes": 10,
+  "world": "dayMonday",
+  "care": false,
+  "offering": "A lamp, or water.",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Breathe into both sides of the body equally.",
+      "mantra": null,
+      "count": 6,
+      "prompt": null,
+      "pattern": "even"
+    },
+    {
+      "type": "read",
+      "title": "The salutation",
+      "text": "A simple salutation to the whole form.",
+      "mantra": "ardhanarishvara",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "chant",
+      "title": "Repeat",
+      "text": "Repeat it, and let it settle in the whole body.",
+      "mantra": "ardhanarishvara",
+      "count": 11,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "Wholeness",
+      "text": "",
+      "mantra": null,
+      "count": null,
+      "prompt": "A part of myself I have kept apart, that I could welcome back.",
+      "pattern": null
+    },
+    {
+      "type": "close",
+      "title": "Close",
+      "text": "Close with a blessing for all beings.",
+      "mantra": "sarve-bhavantu",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "You are not half of anything.",
+  "next": [
+    "worth",
+    "shiva"
+  ],
+  "ask": "Going deeper with Ardhanarishvara",
+  "drafted": true,
+  "order": 124
+}

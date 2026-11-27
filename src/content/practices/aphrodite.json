@@ -1,0 +1,60 @@
+{
+  "kind": "deity",
+  "key": "Aphrodite",
+  "title": "Honour love with Aphrodite",
+  "tradition": "Ancient Greek",
+  "sanskrit": "Ἀφροδίτη",
+  "lang": "grc",
+  "line": "For Friday, Venus’s day: love, beauty, desire and your own worth.",
+  "intro": "Aphrodite, born of the sea at Cyprus, is the Greek goddess of love, beauty and desire. Friday is her day as Venus, and as Freyja and Shukra. This practice honours love as sacred, beginning with the love you are worth.",
+  "minutes": 8,
+  "world": "dayFriday",
+  "care": false,
+  "offering": "A flower, a scent, or something beautiful you made.",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Breathe, and let the body soften.",
+      "mantra": null,
+      "count": 5,
+      "prompt": null,
+      "pattern": "even"
+    },
+    {
+      "type": "read",
+      "title": "The hymn",
+      "text": "The opening of the Homeric Hymn to Aphrodite.",
+      "mantra": "hymn-to-aphrodite",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "Your worth",
+      "text": "",
+      "mantra": null,
+      "count": null,
+      "prompt": "Something about myself I could love a little more today.",
+      "pattern": null
+    },
+    {
+      "type": "offer",
+      "title": "Offer",
+      "text": "Offer something to the fire: a word of thanks for someone you love, or a harsh thought about yourself you are ready to let go.",
+      "mantra": null,
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "Love is not earned. It is recognised.",
+  "next": [
+    "friday",
+    "worth"
+  ],
+  "ask": "",
+  "drafted": true,
+  "order": 123
+}

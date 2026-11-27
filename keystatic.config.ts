@@ -398,10 +398,11 @@ const practice = singleton({
   label: 'Daily practice: the page', path: 'src/content/pages/practice', format: { data: 'json' },
   schema: {
     kicker: line('Small heading'), title: must('Heading'), lede: para('Text'), card: line('Card button'),
-    doors: fields.array(fields.object({ key: fields.select({ label: 'Leads to', options: [{ value: 'today', label: 'Today’s practice' }, { value: 'deities', label: 'The deities' }, { value: 'feelings', label: 'The feelings' }], defaultValue: 'today' }), title: line('Title'), text: para('Text') }), { label: 'The three ways in', itemLabel: (p) => p.fields.title.value, validation: { length: { min: 3, max: 3 } } }),
+    doors: fields.array(fields.object({ key: fields.select({ label: 'Leads to', options: [{ value: 'today', label: 'Today’s practice' }, { value: 'deities', label: 'The deities' }, { value: 'feelings', label: 'The feelings' }, { value: 'open', label: 'Without a deity' }], defaultValue: 'today' }), title: line('Title'), text: para('Text') }), { label: 'The four ways in', itemLabel: (p) => p.fields.title.value, validation: { length: { min: 4, max: 4 } } }),
     hub: fields.object({
       todayKicker: line('Today: small heading'), otherDay: line('“Or another day”'),
       deitiesKicker: line('Deities: small heading'), deitiesTitle: line('Deities: heading'), deitiesLede: para('Deities: text'),
+      openKicker: line('Without a deity: small heading'), openTitle: line('Without a deity: heading'), openLede: para('Without a deity: text'),
       feelingsKicker: line('Feelings: small heading'), feelingsTitle: line('Feelings: heading'), feelingsLede: para('Feelings: text'),
       yoursKicker: line('Yours: small heading'), yoursTitle: line('Yours: heading'), doneTitle: line('Practices done'), doneNone: para('None yet'), doneTimes: line('“{n}×”'),
       deeperKicker: line('Going deeper: small heading'), deeperTitle: line('Going deeper: heading'),
@@ -409,7 +410,7 @@ const practice = singleton({
       minutes: line('“About {n} minutes”'), done: line('“Done {n}×”'),
     }, { label: 'The page’s sections' }),
     session: fields.object({
-      withDeity: line('“With a deity”'), forFeeling: line('“For how you feel”'), plan: line('“What you will do · about {n} minutes”'), offering: line('Offering'), begin: line('Begin'), ask: line('Ask Sarvakali'), drafted: line('Drafted note'),
+      withDeity: line('“With a deity”'), forFeeling: line('“For how you feel”'), open: line('“Open to all” (no deity)'), plan: line('“What you will do · about {n} minutes”'), offering: line('Offering'), begin: line('Begin'), ask: line('Ask Sarvakali'), drafted: line('Drafted note'),
       steps: line('Steps'), breatheIn: line('Breathe in'), breatheOut: line('Breathe out'), light: line('Light the lamp'), lit: line('The lamp is lit'), lineByLine: line('Line by line'),
       howMany: line('How many times'), once: line('Once'), bead: line('Next repetition'), reflectHint: line('Reflection hint'), keepJournal: line('Keep in journal'),
       offerLabel: line('Offering field'), offer: line('Offer button'), next: line('Next'), back: line('Back'), finish: line('Finish'),
@@ -590,9 +591,11 @@ const practices = collection({
   label: 'Guided practices', slugField: 'title', path: 'src/content/practices/*', format: { data: 'json' }, columns: ['title', 'kind'],
   schema: {
     title: fields.slug({ name: { label: 'Title', validation: { isRequired: true } }, slug: { label: 'Address', description: 'The end of its address, e.g. grief or kali.' } }),
-    kind: fields.select({ label: 'Kind', description: 'Where it is offered: with a deity, for a feeling, or as a day’s practice.', options: [{ value: 'deity', label: 'A deity' }, { value: 'feeling', label: 'A feeling' }, { value: 'day', label: 'A day of the week' }], defaultValue: 'deity' }),
+    kind: fields.select({ label: 'Kind', description: 'Where it is offered: with a deity or figure, for a feeling, as a day’s practice, or with no deity at all.', options: [{ value: 'deity', label: 'A deity or figure' }, { value: 'feeling', label: 'A feeling' }, { value: 'day', label: 'A day of the week' }, { value: 'open', label: 'No deity (open to all)' }], defaultValue: 'deity' }),
+    tradition: line('Tradition', 'e.g. Hindu, Buddhist, Ancient Greek. Shown on its card.'),
     key: line('Deity, feeling or day', 'e.g. Shiva, Grief and loss, monday (a day in lower case).'),
     sanskrit: line('Name in its own script (optional)', 'e.g. शिव'),
+    lang: line('Its language code', 'e.g. sa for Sanskrit, ta for Tamil, grc for Greek, bo for Tibetan.'),
     line: line('One line: who it is for'),
     intro: para('Introduction'),
     minutes: fields.integer({ label: 'About how many minutes', defaultValue: 10 }),

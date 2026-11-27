@@ -1,0 +1,60 @@
+{
+  "kind": "deity",
+  "key": "Selene",
+  "title": "Greet the Moon",
+  "tradition": "Ancient Greek",
+  "sanskrit": "Σελήνη",
+  "lang": "grc",
+  "line": "For Monday, the Moon’s day: reflection, rest and the tides of feeling.",
+  "intro": "Selene is the Moon in Greek myth, the long-winged one who drives her chariot across the night. Monday is the Moon’s day nearly everywhere: Selene’s, Chandra’s, Tsukuyomi’s. This practice greets her with the oldest Greek hymn to the Moon.",
+  "minutes": 8,
+  "world": "dayMonday",
+  "care": false,
+  "offering": "A bowl of water left under the moon, or a quiet word.",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Breathe like a tide: in as it rises, out as it falls back.",
+      "mantra": null,
+      "count": 6,
+      "prompt": null,
+      "pattern": "even"
+    },
+    {
+      "type": "light",
+      "title": "Light a lamp",
+      "text": "A small light for the night.",
+      "mantra": null,
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "read",
+      "title": "The hymn",
+      "text": "The opening of the Homeric Hymn to Selene. Read it aloud if you can, in Greek or in English.",
+      "mantra": "hymn-to-selene",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "Reflect",
+      "text": "The Moon only reflects the Sun’s light. What light are you reflecting?",
+      "mantra": null,
+      "count": null,
+      "prompt": "What has been shining on me lately, and what have I been reflecting back?",
+      "pattern": null
+    }
+  ],
+  "after": "The Moon waxes and wanes, and comes back. So do we.",
+  "next": [
+    "monday",
+    "stillness"
+  ],
+  "ask": "",
+  "drafted": true,
+  "order": 122
+}

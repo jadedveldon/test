@@ -23,7 +23,8 @@ const mantras = await loadMantras();
 const M = (slug?: string | null) => (slug ? mantras.find((m) => m.slug === slug) : undefined);
 const next = p.next.map((s) => all.find((x) => x.slug === s)).filter(Boolean) as typeof all;
 const S = w.session;
-const kindLabel = p.kind === 'deity' ? S.withDeity : p.kind === 'feeling' ? S.forFeeling : dayOf(p.key).name;
+const kindLabel = p.kind === 'deity' ? (p.tradition && p.tradition !== 'Hindu' ? `${p.tradition} · ${S.withDeity}` : S.withDeity) : p.kind === 'feeling' ? S.forFeeling : p.kind === 'open' ? S.open : dayOf(p.key).name;
+const dirOf = (lang: string) => (/^(he|ar|fa|ur)\b/.test(lang) ? 'rtl' : undefined);
 const lines = (t: string) => t.split('\n');
 ---
 <Base title={`${p.title} · Daily practice · Sarvakali`} sequence={p.world} description={`${p.line} A guided practice of about ${p.minutes} minutes.`} crumbs={[{ label: cw.practice, href: '/practice' }, { label: p.title }]}>
@@ -33,7 +34,7 @@ const lines = (t: string) => t.split('\n');
       <div class="chapter-inner narrow">
         <div class="ps-intro" data-session-intro>
           <p class="kicker" data-hero>{kindLabel}</p>
-          {p.sanskrit ? <p class="ps-sk" data-hero lang={p.sanskrit.match(/[஀-௿]/) ? 'ta' : 'sa'}>{p.sanskrit}</p> : null}
+          {p.sanskrit ? <p class="ps-sk" data-hero lang={p.lang}>{p.sanskrit}</p> : null}
           <h1 class="display-l" data-hero data-split>{p.title}</h1>
           <p class="lede" data-hero>{p.line}</p>
           {p.care ? <div class="pday-care" data-hero><CareText text={lib.care} /></div> : null}
@@ -70,12 +71,12 @@ const lines = (t: string) => t.split('\n');
                 {m ? (
                   <div class="rite-mantra">
                     <p class="rm-name"><a href={mantraPath(m.slug)}>{m.name}</a>{m.status === 'guidance' ? <> <span class="mc-badge mc-badge-guidance">{lib.labels.guidance}</span></> : null}</p>
-                    {m.text ? <p class="mc-deva" lang="sa">{lines(m.text).map((l) => <span>{l}</span>)}</p> : null}
-                    {m.iastText ? <p class="mc-iast" lang="sa-Latn">{lines(m.iastText).map((l) => <span>{l}</span>)}</p> : null}
+                    {m.text ? <p class="mc-deva" lang={m.lang} dir={dirOf(m.lang)}>{lines(m.text).map((l) => <span>{l}</span>)}</p> : null}
+                    {m.iastText ? <p class="mc-iast" lang={`${m.lang}-Latn`}>{lines(m.iastText).map((l) => <span>{l}</span>)}</p> : null}
                     {m.readText ? <p class="mc-read">{m.readText}</p> : null}
                     {m.meaning ? <p class="mc-meaning">{m.meaning}</p> : null}
                     {s.type === 'read' && m.parts.length ? (
-                      <details class="mc-more"><summary>{S.lineByLine}</summary><ol class="pm-parts">{m.parts.map(([l, mm]) => <li>{/^\d+$/.test(l) ? null : <span class="pm-part-line" lang="sa">{l}</span>}<span>{mm}</span></li>)}</ol></details>
+                      <details class="mc-more"><summary>{S.lineByLine}</summary><ol class="pm-parts">{m.parts.map(([l, mm]) => <li>{/^\d+$/.test(l) ? null : <span class="pm-part-line" lang={m.lang}>{l}</span>}<span>{mm}</span></li>)}</ol></details>
                     ) : null}
                   </div>
                 ) : null}

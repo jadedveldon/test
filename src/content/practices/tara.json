@@ -1,0 +1,69 @@
+{
+  "kind": "deity",
+  "key": "Tara",
+  "title": "Call on Tara",
+  "tradition": "Buddhist",
+  "sanskrit": "तारा",
+  "lang": "sa",
+  "line": "For swift help: in fear, in danger, when you need courage now.",
+  "intro": "Tara, in Tibetan and Himalayan Buddhism, is a female buddha who moves quickly: Green Tara is shown with one foot already stepping down from her lotus, ready to come to anyone who calls. Her mantra is short, open to everyone, and meant to be said often.",
+  "minutes": 10,
+  "world": "care",
+  "care": false,
+  "offering": "A lamp, a flower, or a moment of honesty about what you fear.",
+  "steps": [
+    {
+      "type": "breathe",
+      "title": "Arrive",
+      "text": "Breathe, and let yourself admit what you are afraid of.",
+      "mantra": null,
+      "count": 5,
+      "prompt": null,
+      "pattern": "long"
+    },
+    {
+      "type": "read",
+      "title": "Her mantra",
+      "text": "Read it with its meaning.",
+      "mantra": "green-tara",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "chant",
+      "title": "Call",
+      "text": "Repeat it, steadily. Twenty-one times is traditional, but once said truly is enough.",
+      "mantra": "green-tara",
+      "count": 21,
+      "prompt": null,
+      "pattern": null
+    },
+    {
+      "type": "reflect",
+      "title": "Step down",
+      "text": "Tara’s foot is already stepping down. What is the first small step you could take?",
+      "mantra": null,
+      "count": null,
+      "prompt": "The first small step I could take is…",
+      "pattern": null
+    },
+    {
+      "type": "close",
+      "title": "Close",
+      "text": "Close with the Heart Sutra’s mantra: gone beyond fear.",
+      "mantra": "heart-sutra-mantra",
+      "count": null,
+      "prompt": null,
+      "pattern": null
+    }
+  ],
+  "after": "Tara is called the swift one because help often begins with a single step. May yours be easy.",
+  "next": [
+    "kindness",
+    "courage"
+  ],
+  "ask": "Going deeper with Tara",
+  "drafted": true,
+  "order": 120
+}

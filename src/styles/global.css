@@ -2023,6 +2023,8 @@ html[data-light="1"] .ar-body > p:first-of-type::first-letter { color: color-mix
 .pr-card small em { font-style: normal; color: rgb(var(--ink-soft)); }
 .pr-sk { font: 400 1.7rem/1.1 "Tiro Devanagari Sanskrit", serif; color: rgb(var(--glow)); }
 .pr-sk:lang(ta) { font-family: "Noto Serif Tamil", "Tiro Devanagari Sanskrit", serif; font-size: 1.3rem; }
+.pr-sk:lang(grc), .pr-sk:lang(bo), .pr-sk:lang(zh-Hant), .pr-sk:lang(ja) { font-family: var(--f-display), serif; font-size: 1.4rem; }
+.pr-trad { display: block; font: italic 400 0.8rem/1.3 var(--f-body); color: rgb(var(--glow)); opacity: 0.85; }
 .pr-feeling { box-shadow: inset 3px 0 0 rgb(var(--glow) / 0.7), inset 0 0 0 1px rgb(var(--ink) / 0.14); }
 .yours-side { display: grid; gap: 14px; }
 

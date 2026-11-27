@@ -64,7 +64,8 @@ const mantras = defineCollection({
 });
 
 /**
- * Guided practices: one short, curated session each, for a deity, a feeling or a day of the week, built in steps
+ * Guided practices: one short, curated session each, for a deity or figure (of any tradition), a feeling, a day of
+ * the week, or with no deity at all (open), built in steps
  * from the mantra library (src/content/practices, "Guided practices" in the content editor). The words are drafts
  * for Sarvakali. A step is one of: breathe, light (the lamp), read (a mantra, with its meaning), chant (a mantra,
  * counted), reflect (a question, with an optional journal line), offer (to the fire), close (a closing prayer).
@@ -72,10 +73,12 @@ const mantras = defineCollection({
 const practices = defineCollection({
   loader: glob({ pattern: '**/*.json', base: './src/content/practices' }),
   schema: z.object({
-    kind: z.enum(['deity', 'feeling', 'day']),
+    kind: z.enum(['deity', 'feeling', 'day', 'open']),
     key: z.string(),
     title: z.string(),
+    tradition: z.string().default('Hindu'),
     sanskrit: z.string().default(''),
+    lang: z.string().default('sa'),
     line: z.string().default(''),
     intro: z.string().default(''),
     minutes: z.number().default(10),

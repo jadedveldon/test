@@ -1,8 +1,8 @@
 ---
 /**
  * Daily practice: "What brings you here today?" Three ways in, each a short guided practice made for one need:
- * today's practice (one for each planetary day), being with a deity (twelve), or working with a feeling (twelve,
- * with a care note first). Then the visitor's own practice (their record, the practices they have done, their kept
+ * today's practice (one for each planetary day), being with a deity or figure (of many traditions), working with a
+ * feeling (with a care note first), or practice with no deity at all. Then the visitor's own practice (their record, the practices they have done, their kept
  * mantras), and, behind all that, the library, the seven days, the tools and the traditions for anyone who wants more.
  * The practices: src/content/practices ("Guided practices"); the words: src/content/pages/practice.json.
  */
@@ -16,6 +16,7 @@ const H = w.hub;
 const practices = await loadPractices();
 const deities = practices.filter((p) => p.kind === 'deity');
 const feelings = practices.filter((p) => p.kind === 'feeling');
+const open = practices.filter((p) => p.kind === 'open');
 const days = DAY_KEYS_ORDER(practices.filter((p) => p.kind === 'day'));
 function DAY_KEYS_ORDER(ps: typeof practices) { return DAYS.map((d) => ps.find((p) => p.key === d.key)).filter(Boolean) as typeof practices; }
 const all = await loadMantras();
@@ -42,8 +43,8 @@ const mins = (n: number) => H.minutes.replace('{n}', String(n));
         <h1 class="display-l" data-hero data-split>{w.title}</h1>
         <p class="lede" data-hero>{w.lede}</p>
         <ul class="doors" data-hero>
-          {(['today', 'deities', 'feelings'] as const).map((k, i) => (
-            <li><a class="door" href={`#${k}`}><span class="door-n" aria-hidden="true">{['☉', '❦', '♡'][i]}</span><b>{door(k).title}</b><span>{door(k).text}</span><span class="door-go" aria-hidden="true">→</span></a></li>
+          {(['today', 'deities', 'feelings', 'open'] as const).map((k, i) => (
+            <li><a class="door" href={`#${k}`}><span class="door-n" aria-hidden="true">{['☉', '❦', '♡', '◌'][i]}</span><b>{door(k).title}</b><span>{door(k).text}</span><span class="door-go" aria-hidden="true">→</span></a></li>
           ))}
         </ul>
         <dl class="today today-sm" data-today data-hero>
@@ -91,8 +92,8 @@ const mins = (n: number) => H.minutes.replace('{n}', String(n));
         <ul class="pr-cards" data-fade>
           {deities.map((p) => (
             <li><a class="pr-card pr-deity" href={practicePath(p.slug)} data-practice-card={p.slug}>
-              {p.sanskrit ? <span class="pr-sk" lang={/[஀-௿]/.test(p.sanskrit) ? 'ta' : 'sa'} aria-hidden="true">{p.sanskrit}</span> : null}
-              <b>{p.key}</b><span>{p.line}</span><small>{mins(p.minutes)} <em data-done-badge hidden></em></small>
+              {p.sanskrit ? <span class="pr-sk" lang={p.lang} aria-hidden="true">{p.sanskrit}</span> : null}
+              <b>{p.key}</b>{p.tradition && p.tradition !== 'Hindu' ? <i class="pr-trad">{p.tradition}</i> : null}<span>{p.line}</span><small>{mins(p.minutes)} <em data-done-badge hidden></em></small>
             </a></li>
           ))}
         </ul>
@@ -110,6 +111,22 @@ const mins = (n: number) => H.minutes.replace('{n}', String(n));
           {feelings.map((p) => (
             <li><a class="pr-card pr-feeling" href={practicePath(p.slug)} data-practice-card={p.slug}>
               <b>{p.title}</b><span>{p.line}</span><small>{mins(p.minutes)} <em data-done-badge hidden></em></small>
+            </a></li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- without a deity -->
+    <section class="chapter" data-chapter="care" id="open">
+      <div class="chapter-inner">
+        <p class="kicker" data-fade>{H.openKicker}</p>
+        <h2 class="display-l" data-split>{H.openTitle}</h2>
+        <p class="lede" data-fade>{H.openLede}</p>
+        <ul class="pr-cards" data-fade>
+          {open.map((p) => (
+            <li><a class="pr-card pr-feeling" href={practicePath(p.slug)} data-practice-card={p.slug}>
+              <b>{p.key}</b><span>{p.line}</span><small>{mins(p.minutes)} <em data-done-badge hidden></em></small>
             </a></li>
           ))}
         </ul>
