@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import TodayLine from '../components/TodayLine.astro';
 import ThirdEye from '../components/ThirdEye.astro';
 import Loader from '../components/Loader.astro';
 import Steps from '../components/Steps.astro';
@@ -67,11 +68,12 @@ const words = kind.words.filter((w) => w.text.trim());
         <div class="cta-row" data-fade>
           <a class="btn btn-solid" href={`/pillars/${p.slug}`}>{h.pillars.explore}</a>
           <a class="btn btn-ghost" href="/connect" data-topic={p.name}>{h.pillars.ask}</a>
-          {p.slug === 'divination' && <button type="button" class="btn btn-ghost" data-card-open>{h.pillars.card}</button>}
         </div>
       </div>
     </section>
   ))}
+
+  <TodayLine />
 
   <section class="chapter chapter-kind" data-chapter="kind">
     <div class="chapter-inner center">

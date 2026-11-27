@@ -2138,3 +2138,36 @@ html[data-light="1"] .ar-body > p:first-of-type::first-letter { color: color-mix
   .terms-layout { grid-template-columns: 240px minmax(0, 760px); gap: 56px; }
   .terms-toc { position: sticky; top: 110px; }
 }
+
+/* Today's line, on the homepage: a card beside the mala's world (the world's form sits to the right on wide screens) */
+.tl { max-width: 1180px; }
+.tl .lede { max-width: 560px; }
+.tl-card { position: relative; max-width: 560px; margin-top: 18px; padding: clamp(20px, 3vw, 30px); border-radius: 26px; background: rgb(var(--bg-a) / 0.6); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); box-shadow: inset 0 0 0 1px rgb(var(--ink) / 0.14), 0 24px 60px -30px rgb(0 0 0 / 0.6); display: grid; gap: 10px; }
+.tl-trad { margin: 0; font: 600 0.72rem/1.2 var(--f-body); letter-spacing: 0.18em; text-transform: uppercase; color: rgb(var(--glow)); }
+.tl-name { margin: 0; font: 400 clamp(1.4rem, 2.4vw, 1.8rem)/1.15 var(--f-display); }
+.tl-name a { color: inherit; text-decoration: none; }
+.tl-name a:hover, .tl-name a:focus-visible { text-decoration: underline; text-underline-offset: 4px; }
+.tl-text { margin: 4px 0 0; font: 400 clamp(1.35rem, 2.6vw, 1.75rem)/1.45 "Tiro Devanagari Sanskrit", var(--f-display), serif; color: rgb(var(--ink)); }
+.tl-text span { display: block; }
+.tl-text[dir="rtl"] { text-align: right; }
+.tl-text:lang(en) { font-family: var(--f-display); font-style: italic; }
+.tl-iast { margin: 0; font: italic 400 1rem/1.5 var(--f-display); color: rgb(var(--ink-soft)); white-space: pre-line; }
+.tl-read { margin: 0; font-size: 0.88rem; color: rgb(var(--glow) / 0.9); }
+.tl-meaning { margin: 4px 0 0; color: rgb(var(--ink-soft)); max-width: 52ch; }
+.tl-mala { display: flex; align-items: center; gap: 16px; margin-top: 8px; }
+.tl-bead { position: relative; flex: none; width: 104px; height: 104px; padding: 0; border: 0; border-radius: 50%; background: none; color: rgb(var(--ink)); cursor: pointer; touch-action: manipulation; }
+.tl-bead svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.tl-thread { fill: none; stroke: rgb(var(--ink) / 0.2); stroke-width: 1; }
+.tl-b { fill: rgb(var(--bg-a)); stroke: rgb(var(--glow) / 0.55); stroke-width: 1.4; transition: fill 0.25s, stroke 0.25s, filter 0.25s; }
+.tl-b.is-on { fill: rgb(var(--glow)); stroke: rgb(var(--glow)); filter: drop-shadow(0 0 5px rgb(var(--glow) / 0.8)); }
+.tl-bead-label { position: relative; font: 600 0.78rem/1.2 var(--f-body); letter-spacing: 0.06em; }
+.tl-bead:hover .tl-thread, .tl-bead:focus-visible .tl-thread { stroke: rgb(var(--glow) / 0.7); }
+.tl-bead:focus-visible { outline: 2px solid rgb(var(--glow)); outline-offset: 4px; }
+.tl-bead:disabled { cursor: default; }
+.tl-bead:active:not(:disabled) svg { transform: scale(0.97); }
+.tl-done { margin: 4px 0 0; color: rgb(var(--ink)); }
+.tl-done:focus { outline: none; }
+@media (max-width: 700px) {
+  .tl-card { padding: 18px; border-radius: 22px; }
+  .tl-bead { width: 92px; height: 92px; }
+}

@@ -1,0 +1,54 @@
+---
+/**
+ * Today's line, on the homepage: a minute of practice. One short line from the library (src/data/today-line.ts),
+ * read, then said nine times on a small mala, by tap, click or keyboard (src/scripts/today-line.ts). It is kept in
+ * the visitor's own practice record, and leads on to the day's page and the whole library. Without scripts it shows
+ * the first line, and the links still lead on. Words: src/content/home.json ("Today's line").
+ */
+import { loadMantras, mantraPath, isRtl } from '../data/mantras';
+import { todayLines } from '../data/today-line';
+import h from '../content/home.json';
+
+const L = h.line;
+const lines = todayLines(await loadMantras());
+const first = lines[0];
+const beads = Array.from({ length: 9 }, (_, i) => {
+  const a = (i / 9) * Math.PI * 2 - Math.PI / 2;
+  return { x: (60 + Math.cos(a) * 46).toFixed(1), y: (60 + Math.sin(a) * 46).toFixed(1) };
+});
+---
+{first ? (
+  <section class="chapter chapter-line" data-chapter="mala" id="today-line">
+    <div class="chapter-inner tl" data-today-line>
+      <script type="application/json" data-tl-lines set:html={JSON.stringify(lines)} />
+      <script type="application/json" data-tl-words set:html={JSON.stringify(L)} />
+      <p class="kicker" data-fade>{L.kicker} · <span data-tl-day></span></p>
+      <h2 class="display-l" data-split>{L.title}</h2>
+      <p class="lede" data-fade>{L.lede}</p>
+      <div class="tl-card" data-fade>
+        <p class="tl-trad" data-tl-trad>{first.tradition}</p>
+        <h3 class="tl-name"><a href={mantraPath(first.slug)} data-tl-link>{first.name}</a></h3>
+        <p class="tl-text" lang={first.lang} dir={isRtl(first.lang) ? 'rtl' : undefined} data-tl-text>{first.text.split('\n').map((l) => <span>{l}</span>)}</p>
+        <p class="tl-iast" data-tl-iast>{first.iast}</p>
+        <p class="tl-read" data-tl-read>{first.read}</p>
+        <p class="tl-meaning"><span class="sr-only">{L.meaningLabel}: </span><span data-tl-meaning>{first.meaning}</span></p>
+        <div class="tl-mala">
+          <button type="button" class="tl-bead" data-tl-bead aria-describedby="tl-progress">
+            <svg viewBox="0 0 120 120" aria-hidden="true">
+              <circle cx="60" cy="60" r="46" class="tl-thread" />
+              {beads.map((b, i) => <circle cx={b.x} cy={b.y} r={i === 0 ? 7 : 5.5} class={i === 0 ? 'tl-b tl-meru' : 'tl-b'} data-tl-b={i} />)}
+            </svg>
+            <span class="tl-bead-label">{L.bead}</span>
+          </button>
+          <p class="hint" id="tl-progress" aria-live="polite" data-tl-progress>{L.progress.replace('{n}', '0')}</p>
+        </div>
+        <p class="tl-done" data-tl-done hidden tabindex="-1">{L.done}</p>
+        <div class="cta-row">
+          <a class="btn btn-ghost btn-sm" href="/practice" data-tl-more>{L.more.replace('{day}', 'today')}</a>
+          <a class="btn btn-ghost btn-sm" href="/practice/library#ways">{L.library}</a>
+          <button type="button" class="path-back" data-tl-again hidden>{L.again}</button>
+        </div>
+      </div>
+    </div>
+  </section>
+) : null}

@@ -114,6 +114,17 @@ const PILLARS = {
     await stage.focus(); await p.keyboard.press('Home'); await p.keyboard.press('ArrowRight'); await p.keyboard.press('ArrowRight'); await p.keyboard.press('ArrowDown');
     const byKey = await stage.getAttribute('data-look');
     ok(`${view} about: the portrait looks around by keyboard`, byKey === '0.50 0.25', byKey || 'no response');
+    // Today's line on the homepage (a signature moment): nine beads, by ${phone ? 'finger' : 'mouse'} and by keyboard,
+    // and the ninth is kept in the visitor's own practice record
+    await go('/');
+    await p.locator('[data-today-line]').scrollIntoViewIfNeeded(); await p.waitForTimeout(1500);
+    ok(`${view} today's line: a line for today, from the library`, await p.evaluate(() => !!document.querySelector('[data-tl-text]')?.textContent.trim() && !!document.querySelector('[data-tl-day]')?.textContent));
+    for (let i = 0; i < 4; i++) { await tap('[data-tl-bead]'); await p.waitForTimeout(120); }
+    ok(`${view} today's line: beads by ${phone ? 'finger' : 'mouse'}`, /^4\b/.test(await p.locator('[data-tl-progress]').textContent()));
+    await p.locator('[data-tl-bead]').focus();
+    for (let i = 0; i < 5; i++) { await p.keyboard.press(i % 2 ? 'Enter' : 'Space'); await p.waitForTimeout(120); }
+    ok(`${view} today's line: beads by keyboard, and the ninth closes it`, await p.evaluate(() => !document.querySelector('[data-tl-done]').hidden && document.querySelector('[data-tl-bead]').disabled));
+    ok(`${view} today's line: kept in the practice record`, await p.evaluate(() => /"t":"japa"/.test(Object.values(localStorage).join(' '))));
     console.log(`ERRORS (${view}):`, errs.length ? [...new Set(errs)] : 'none');
     await ctx.close();
   }

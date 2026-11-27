@@ -34,8 +34,7 @@
   },
   "pillars": {
     "explore": "Explore this pillar",
-    "ask": "Ask about this",
-    "card": "Draw today's card"
+    "ask": "Ask about this"
   },
   "kind": {
     "kicker": "Kind words",
@@ -49,5 +48,17 @@
     "primary": "Request a conversation",
     "secondary": "Find your path",
     "practice": "A little practice for today →"
+  },
+  "line": {
+    "kicker": "Today’s line",
+    "title": "A minute of practice",
+    "lede": "One short line for today, from one of the world’s traditions. Read it, say it nine times, and it is part of your practice today.",
+    "bead": "Say it",
+    "progress": "{n} of 9",
+    "done": "That is today’s practice. It is kept in your own practice record, on this device.",
+    "more": "More for {day}",
+    "library": "Every tradition in the library",
+    "again": "Once more",
+    "meaningLabel": "What it means"
   }
 }

@@ -293,7 +293,11 @@ const home = singleton({
       kicker: line('Small heading'), title: must('Heading'), lede: para('Text'), primary: line('Main button'), secondary: line('Second button'),
       steps: fields.object({ request: step('1 · Request'), confirm: step('2 · Confirm'), meet: step('3 · Meet'), pay: step('4 · Pay') }, { label: 'How it works (also shown on Connect)' }),
     }, { label: 'Connect' }),
-    pillars: fields.object({ explore: line('Explore button'), ask: line('Ask button'), card: line('Card button (Divination)') }, { label: 'The six pillars (their names and lines are in the Catalogue)' }),
+    pillars: fields.object({ explore: line('Explore button'), ask: line('Ask button') }, { label: 'The six pillars (their names and lines are in the Catalogue)' }),
+    line: fields.object({
+      kicker: line('Small heading'), title: must('Heading'), lede: para('Text'), bead: line('The bead button'), progress: line('“{n} of 9”'),
+      done: para('When the nine are said'), more: line('“More for {day}”'), library: line('Link to the library'), again: line('“Once more”'), meaningLabel: line('“What it means”'),
+    }, { label: 'Today’s line (the lines come from the library: short, open to all, kept on today or any day)' }),
     kind: fields.object({ kicker: line('Small heading'), title: must('Heading'), note: para('Note under the words (leave empty once the words are real)') }, { label: 'Kind words (the words themselves have their own page)' }),
     close: fields.object({ diya: line('Diya button'), kicker: line('Small heading'), title: must('Heading'), primary: line('Main button'), secondary: line('Second button'), practice: line('Link to Daily practice') }, { label: 'The close' }),
   },
