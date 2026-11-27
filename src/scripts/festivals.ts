@@ -1,5 +1,6 @@
 import * as SunCalcNs from 'suncalc';
 import days from '../content/festivals.json';
+import { say } from './words';
 
 const SunCalc = ((SunCalcNs as unknown as { default?: typeof SunCalcNs }).default ?? SunCalcNs) as unknown as {
   getMoonIllumination(d: Date): { phase: number };
@@ -26,7 +27,7 @@ export const FESTIVALS: Festival[] = days.festivals
 
 /** how each festival changes the site */
 export const FEST_LOOK: Record<FestKind, { preset: string; moon: number; kicker: (f: Festival, day: number) => string }> = {
-  kalipuja: { preset: 'festKali', moon: 0, kicker: (f) => `Tonight is ${f.name}` },
+  kalipuja: { preset: 'festKali', moon: 0, kicker: (f) => say('festivals.tonight', { name: f.name }, `Tonight is ${f.name}`) },
   diwali: { preset: 'festDiwali', moon: 0, kicker: () => 'A blessed Diwali' },
   navratri: { preset: 'festNavratri', moon: 0, kicker: (f, d) => `${f.name} · night ${d} of 9` },
   eclipse: { preset: 'festEclipse', moon: 2, kicker: () => 'A solar eclipse today' },
@@ -121,11 +122,11 @@ export function icsFile(events: CalEvent[]) {
 
 export function moonCalendar(count = 12) {
   return icsFile(moonEvents(new Date(), count).map((e) => ({
-    title: e.type === 'amavasya' ? 'Amavasya (new moon)' : 'Purnima (full moon)',
+    title: e.type === 'amavasya' ? say('sky.amavasyaTitle', {}, 'Amavasya') : say('sky.purnimaTitle', {}, 'Purnima'),
     date: e.at,
     description: e.type === 'amavasya'
-      ? 'The new moon, a night especially kept for Kali. From Sarvakali.'
-      : 'The full moon. From Sarvakali.',
+      ? say('festivals.amavasya')
+      : say('festivals.purnima'),
   })));
 }
 

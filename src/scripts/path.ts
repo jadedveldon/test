@@ -117,7 +117,7 @@ export function initPath(world: World, done: () => void) {
       <div class="path-r-grid">${begin === 'self' ? moment + keep : keep + moment}${read}</div>
       <div class="cta-row path-r-cta">
         <a class="btn btn-solid" href="${esc(sitePath('/connect'))}" data-path-ask>${esc(w.ask)}</a>
-        <a class="btn btn-ghost" href="${esc(sitePath(`/pillars/${choice.pillar}#${choice.cat}`))}">${esc(String(w.explore).replace('{pillar}', p.name))}</a>
+        <a class="btn btn-ghost" data-result-explore href="${esc(sitePath(`/pillars/${choice.pillar}#${choice.cat}`))}">${esc(String(w.explore).replace('{pillar}', p.name))}</a>
       </div>`;
     document.dispatchEvent(new CustomEvent('sk:keep-refresh'));
     // the path's own address, to share or come back to

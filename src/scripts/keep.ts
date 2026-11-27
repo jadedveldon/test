@@ -2,6 +2,7 @@ import gsap from 'gsap';
 import { buzz, PATTERNS } from './haptics';
 import { store } from './tiers';
 import { track } from './track';
+import { say } from './words';
 
 /**
  * Keep a list. Visitors tap services that call to them; the list follows them
@@ -74,7 +75,7 @@ export function renderKeep() {
       rm.type = 'button';
       rm.className = 'keep-remove';
       rm.dataset.keepRemove = k.t;
-      rm.setAttribute('aria-label', `Remove ${k.t}`);
+      rm.setAttribute('aria-label', say('keep.remove', { name: k.t }, `Remove ${k.t}`));
       rm.textContent = '×';
       li.append(span, rm);
       ul.appendChild(li);

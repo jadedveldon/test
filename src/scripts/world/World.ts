@@ -20,7 +20,7 @@ import {
 } from 'three';
 import { PRESETS, toNumeric, mixInto, dampInto, cloneNumeric, type Numeric } from './presets';
 import {
-  FLAMES, HALO_SECTORS, MALA_BEADS, FORM_KEYS, buildForms, buildFormsAsync, lettersForm, makeDirs, makeSeeds, nameForm,
+  FLAMES, HALO_SECTORS, MALA_BEADS, FORM_KEYS, formMakers, buildFormsAsync, lettersForm, makeDirs, makeSeeds, nameForm,
   type FormKey,
 } from './forms';
 import { KEY_AXIS } from '../../data/hecate-key';
@@ -722,9 +722,43 @@ export class World {
     g.setAttribute('aDir', set.dirs);
   }
 
+  /** forms not made yet: each is made the moment the world needs it, the rest one at a time when the page is idle,
+   *  so starting the world never stops the page for long (making all of them at once took most of a second) */
+  private unmade = new Map<FormKey, () => Float32Array>();
+
+  private need(k: FormKey) {
+    const make = this.unmade.get(k);
+    if (!make || !this.base) return;
+    this.unmade.delete(k);
+    this.base.forms[k].set(make());
+    this.base.attrs[k].needsUpdate = true;
+  }
+
+  private async makeTheRest() {
+    type Deadline = { timeRemaining(): number };
+    const idle = () => new Promise<Deadline>((res) => {
+      const ric = (window as unknown as { requestIdleCallback?: (cb: (d: Deadline) => void, o?: { timeout: number }) => void }).requestIdleCallback;
+      if (ric) ric(res, { timeout: 160 }); else setTimeout(() => res({ timeRemaining: () => 0 }), 32);
+    });
+    while (this.unmade.size) {
+      const d = await idle();
+      // at least one form each time; more while the browser says it has time to spare
+      do {
+        // the forms of this page's chapters first, in their order
+        const next = this.seqForms.find((k) => this.unmade.has(k)) ?? this.unmade.keys().next().value;
+        if (!next) break;
+        this.need(next);
+      } while (this.unmade.size && d.timeRemaining() > 12);
+    }
+  }
+
   private buildFormSystem() {
     const seeds = makeSeeds(BASE_N);
-    this.base = this.makeSet(BASE_N, buildForms(BASE_N, seeds), seeds);
+    const makers = formMakers(BASE_N, seeds);
+    const dust0 = makers.dust();
+    const forms = Object.fromEntries(FORM_KEYS.map((k) => [k, k === 'dust' ? dust0 : dust0.slice()])) as Record<FormKey, Float32Array>;
+    (Object.entries(makers) as [FormKey, () => Float32Array][]).forEach(([k, make]) => { if (k !== 'dust') this.unmade.set(k, make); });
+    this.base = this.makeSet(BASE_N, forms, seeds);
     this.formGeo = new BufferGeometry();
     this.formMat = new ShaderMaterial({
       vertexShader: formVert, fragmentShader: formFrag,
@@ -761,6 +795,7 @@ export class World {
     }).catch(() => {});
     const lettersP = lettersForm(BASE_N, '"Tiro Devanagari Sanskrit", "Noto Serif Devanagari", "Nirmala UI", "Devanagari Sangam MN", serif').then((a) => swapIn('letters', a)).catch(() => {});
     this.textReady = Promise.all([nameP, lettersP]).then(() => {});
+    void this.makeTheRest();
   }
 
   private textReady: Promise<void> = Promise.resolve();
@@ -1128,6 +1163,7 @@ export class World {
     const kFrom = this.seqForms[Math.min(fi, this.seqForms.length - 1)];
     const kTo = this.seqForms[fj];
     if (this.formGeo && this.set) {
+      if (this.unmade.size) { this.need(kFrom); this.need(kTo); }
       if (kFrom !== this.fromKey) { this.fromKey = kFrom; this.formGeo.setAttribute('aFrom', this.set.attrs[kFrom]); this.formGeo.setAttribute('position', this.set.attrs[kFrom]); }
       if (kTo !== this.toKey) { this.toKey = kTo; this.formGeo.setAttribute('aTo', this.set.attrs[kTo]); }
     }

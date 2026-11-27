@@ -1,6 +1,7 @@
 import gsap from 'gsap';
 import { buzz, PATTERNS } from './haptics';
 import { ring } from './audio';
+import { say } from './words';
 
 /**
  * Pillar 4, Identity, Intimacy & the Body (Soft prism): the signature moment.
@@ -20,20 +21,20 @@ function initComfort(form: HTMLFormElement) {
     const avoid = String(fd.get('cf-avoid') || '').trim();
     const explore = fd.getAll('cf-explore').map(String), ways = fd.getAll('cf-way').map(String);
     const lines = ['A note for my first conversation with Sarvakali', ''];
-    if (name) lines.push(`Please call me ${name}${pro ? `; my pronouns are ${pro}` : ''}.`);
-    else if (pro) lines.push(`My pronouns are ${pro}.`);
+    if (name) lines.push(pro ? say('identity.callMePronouns', { name, pronouns: pro }) : say('identity.callMe', { name }));
+    else if (pro) lines.push(say('identity.pronouns', { pronouns: pro }));
     lines.push(`Pace: ${String(fd.get('cf-pace') || 'Steadily')}.`);
     if (explore.length) lines.push(`I would like to explore: ${explore.join('; ')}.`);
     if (ways.length) lines.push(`I like to work through: ${ways.join('; ')}.`);
-    if (avoid) lines.push(`Please leave aside, for now: ${avoid}.`);
+    if (avoid) lines.push(say('identity.avoid', { avoid }));
     pre.textContent = lines.join('\n');
     box.hidden = false;
-    copy.textContent = 'Copy the note';
+    copy.textContent = say('identity.copy', {}, 'Copy the note');
     gsap.fromTo(box, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.5 });
     ring('choice'); buzz(PATTERNS.choice);
   };
   const doCopy = async () => {
-    try { await navigator.clipboard.writeText(pre.textContent || ''); copy.textContent = 'Copied'; } catch { copy.textContent = 'Select the note to copy it'; }
+    try { await navigator.clipboard.writeText(pre.textContent || ''); copy.textContent = say('identity.copied', {}, 'Copied'); } catch { copy.textContent = say('identity.selectToCopy'); }
   };
   form.addEventListener('submit', make);
   copy.addEventListener('click', doCopy);

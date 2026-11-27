@@ -4,6 +4,7 @@ import { BREATHS, CHAKRAS, GROUNDING, PROMPTS } from '../data/healing';
 import { buzz, PATTERNS } from './haptics';
 import { ring, tick } from './audio';
 import type { WorldHandle as World } from './world/handle';
+import { say } from './words';
 
 /**
  * Pillar 3, Healing & Inner Work · Still water, with gold.
@@ -58,18 +59,18 @@ function initBreath(root: HTMLElement, world: World) {
     setSide();
     gsap.to(core, { attr: { r: MIN_R }, duration: 1.2, ease: 'sine.inOut' });
     gsap.to(hold, { opacity: 0, duration: 0.4 });
-    btn.textContent = 'Begin';
+    btn.textContent = say('healing.begin', {}, 'Begin');
     word.textContent = text;
   };
   const stop = () => {
-    if (mode === 'ground') { ground.querySelectorAll('li').forEach((li) => li.classList.remove('is-on', 'is-done')); groundStep = 0; rest('Come back to the room whenever you like'); return; }
+    if (mode === 'ground') { ground.querySelectorAll('li').forEach((li) => li.classList.remove('is-on', 'is-done')); groundStep = 0; rest(say('healing.comeBack', {}, 'Come back to the room whenever you like')); return; }
     const p = BREATHS.find((b) => b.key === mode)!;
-    rest(rounds ? `${rounds} ${rounds === 1 ? 'round' : 'rounds'} of ${p.name.toLowerCase()}. Come back whenever you like.` : 'Choose a pattern, then begin');
+    rest(rounds ? say('healing.rounds', { n: rounds, unit: rounds === 1 ? say('healing.round', {}, 'round') : say('healing.roundsWord', {}, 'rounds'), name: p.name.toLowerCase() }) : say('healing.choose', {}, 'Choose a pattern, then begin'));
   };
   const startBreath = () => {
     const p = BREATHS.find((b) => b.key === mode)!;
     rounds = 0;
-    btn.textContent = 'Stop';
+    btn.textContent = say('healing.stop', {}, 'Stop');
     tl = gsap.timeline({ repeat: p.rounds ? p.rounds - 1 : -1, onRepeat: () => { rounds++; }, onComplete: () => { rounds = p.rounds ?? rounds; stop(); } });
     let t = 0;
     p.phases.forEach((ph) => {
@@ -87,17 +88,17 @@ function initBreath(root: HTMLElement, world: World) {
     });
   };
   const startGround = () => {
-    btn.textContent = 'Next';
+    btn.textContent = say('healing.next', {}, 'Next');
     const items = Array.from(ground.querySelectorAll<HTMLElement>('li'));
     if (groundStep >= items.length) { stop(); return; }
     items.forEach((li, k) => { li.classList.toggle('is-on', k === groundStep); li.classList.toggle('is-done', k < groundStep); });
     const g = GROUNDING[groundStep];
-    word.textContent = `Name ${g.n} ${g.sense}`;
+    word.textContent = say('healing.nameSense', { n: g.n, sense: g.sense }, `Name ${g.n} ${g.sense}`);
     count.textContent = String(g.n);
     gsap.to(core, { attr: { r: MIN_R + ((MAX_R - MIN_R) * (5 - groundStep)) / 5 }, duration: 1.2, ease: 'sine.inOut' });
     ripple();
     groundStep++;
-    if (groundStep >= items.length) btn.textContent = 'Finish';
+    if (groundStep >= items.length) btn.textContent = say('healing.finish', {}, 'Finish');
   };
   const choose = (key: string) => {
     if (tl || groundStep) stop();
@@ -108,14 +109,14 @@ function initBreath(root: HTMLElement, world: World) {
     root.classList.toggle('is-ground', isGround);
     root.classList.toggle('is-nadi', key === 'nadi');
     if (isGround) {
-      short.textContent = 'Five senses, one at a time';
-      about.textContent = 'A grounding exercise: name five things you can see, four you can touch, three you can hear, two you can smell and one you can taste. Take your time with each.';
-      word.textContent = 'Begin when you are ready';
+      short.textContent = say('healing.groundShort', {}, 'Five senses, one at a time');
+      about.textContent = say('healing.groundAbout');
+      word.textContent = say('healing.ready', {}, 'Begin when you are ready');
     } else {
       const p = BREATHS.find((b) => b.key === key)!;
       short.textContent = p.short;
       about.textContent = p.about;
-      word.textContent = 'Begin when you are ready';
+      word.textContent = say('healing.ready', {}, 'Begin when you are ready');
     }
     buzz(PATTERNS.choice);
   };
@@ -147,7 +148,7 @@ function initBody(root: HTMLElement, world: World) {
     root.style.setProperty('--ck', c.color);
     deva.textContent = c.deva;
     name.textContent = `${c.name} · ${c.english}`;
-    place.textContent = `Placed ${c.place}.`;
+    place.textContent = say('healing.placed', { place: c.place }, `Placed ${c.place}.`);
     work.textContent = c.working;
     work.dataset.keep = c.working;
     work.setAttribute('aria-pressed', String(document.querySelector(`.chip-keep[data-keep="${CSS.escape(c.working)}"][aria-pressed="true"]:not([data-bl-work])`) !== null));
@@ -190,12 +191,12 @@ function initMend(root: HTMLElement, world: World) {
     tick();
     buzz([8]);
     const n = left();
-    word.textContent = n ? `${n} ${n === 1 ? 'piece' : 'pieces'} to go` : 'Whole again, with gold where it broke';
+    word.textContent = n ? say('healing.toGo', { n, unit: n === 1 ? say('healing.piece', {}, 'piece') : say('healing.pieces', {}, 'pieces') }) : say('healing.whole', {}, 'Whole again, with gold where it broke');
     if (!n) {
       root.classList.add('is-whole');
       note.hidden = false;
       gsap.fromTo(note, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.8, delay: 0.8 });
-      all.textContent = 'Break it again';
+      all.textContent = say('healing.breakAgain', {}, 'Break it again');
       setTimeout(() => { ring('card'); buzz(PATTERNS.cardFlip); world.flash(0.8); world.impulse(1.2); }, 700);
     }
   };
@@ -242,8 +243,8 @@ function initMend(root: HTMLElement, world: World) {
       pieces[i].classList.remove('is-home');
       gsap.to(s, { x: s.sx, y: s.sy, r: s.sr, duration: 0.8, ease: 'power2.inOut', onUpdate: () => place(i) });
     });
-    word.textContent = 'Drag each piece home, or tap it';
-    all.textContent = 'Set them all back';
+    word.textContent = say('healing.dragHome', {}, 'Drag each piece home, or tap it');
+    all.textContent = say('healing.setBack', {}, 'Set them all back');
   };
   const onAll = () => {
     if (!left()) { reset(); return; }

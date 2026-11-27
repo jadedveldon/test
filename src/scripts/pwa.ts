@@ -4,6 +4,7 @@
  * worker keeps the pages visited so far available without a connection.
  */
 import { track } from './track';
+import { say } from './words';
 type BIP = Event & { prompt: () => Promise<void>; userChoice: Promise<{ outcome: string }> };
 let deferred: BIP | null = null;
 const listeners = new Set<() => void>();
@@ -15,17 +16,17 @@ export const canPrompt = () => !!deferred;
 export function onInstallChange(fn: () => void) { listeners.add(fn); return () => { listeners.delete(fn); }; }
 
 export async function promptInstall(): Promise<string> {
-  if (installed()) return 'Already on your home screen.';
+  if (installed()) return say('pwa.already');
   if (deferred) {
     await deferred.prompt();
     const { outcome } = await deferred.userChoice;
     deferred = null;
     track(outcome === 'accepted' ? 'install' : 'install-declined');
     listeners.forEach((f) => f());
-    return outcome === 'accepted' ? 'Added. Look for Sarvakali on your home screen.' : 'No problem. You can add it any time.';
+    return outcome === 'accepted' ? say('pwa.added') : say('pwa.later');
   }
-  if (isIOS()) return 'On iPhone: tap the Share button, then "Add to Home Screen".';
-  return 'Open this site in Chrome on Android (or Edge or Chrome on a computer) to add it. This preview viewer cannot install apps.';
+  if (isIOS()) return say('pwa.iphone');
+  return say('pwa.elsewhere');
 }
 
 let ready = false;

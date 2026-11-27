@@ -168,11 +168,58 @@
     "again": "Begin again",
     "streak": "{n} days in a row",
     "first": "Your first day. Come back tomorrow, at the same time if you can.",
-    "open": "Open to all"
+    "open": "Open to all",
+    "metaTitle": "{title} · Daily practice · Sarvakali",
+    "metaDescription": "{line} A guided practice of about {n} minutes."
   },
   "tools": {
     "kicker": "Tools for practice",
     "title": "The mala, the fire, the lamp and the moon",
-    "lede": "Small practices to use on their own, the moon calendar, and reminders for your own calendar."
+    "lede": "Small practices to use on their own, the moon calendar, and reminders for your own calendar.",
+    "meta": {
+      "title": "Tools for practice · Daily practice · Sarvakali",
+      "description": "The mala, the fire, the diya, the month’s lunar days, sacred days ahead and reminders."
+    },
+    "jump": [
+      "The mala",
+      "the fire",
+      "the diya and sacred days",
+      "the month’s moons",
+      "reminders"
+    ],
+    "mala": {
+      "kicker": "One round",
+      "title": "Count a round on the mala",
+      "lede": "A mala has 108 beads. Repeat the mantra once for each bead: tap the button, the beads, or press space. The world turns one bead with you.",
+      "mantra": "ॐ नमः शिवाय",
+      "mantraNote": "AUM Namah Shivaya",
+      "next": "Next bead",
+      "reset": "Start the round again",
+      "label": "The mala: activate to count the next bead",
+      "of": "of 108"
+    },
+    "fire": {
+      "kicker": "Let it go",
+      "title": "Offer it to the fire",
+      "lede": "Write down a fear, a habit or a word you never said. Offer it, and watch the fire take it. It is never saved or sent anywhere.",
+      "label": "What would you like to let go of?",
+      "button": "Offer it to the fire",
+      "done": "It has gone to the fire. Nothing was kept.",
+      "again": "Offer something else"
+    },
+    "diya": {
+      "title": "Light a diya",
+      "button": "Light a diya"
+    },
+    "moonReminder": {
+      "title": "A reminder before each Amavasya and Purnima",
+      "text": "Add the next twelve new and full moons to your calendar, each with a gentle reminder the evening before. It works today, with no sign-up.",
+      "button": "Add moon reminders to my calendar"
+    },
+    "install": {
+      "title": "Keep Sarvakali on your phone",
+      "text": "Add the site to your home screen and it opens like an app, with shortcuts to today's card and this practice. Pages you have visited keep working without a connection.",
+      "button": "Add to your home screen"
+    }
   }
 }

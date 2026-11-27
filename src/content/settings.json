@@ -10,7 +10,32 @@
     "previous": "Previous pillar",
     "next": "Next pillar",
     "care": "Boundaries and care",
-    "path": "Find your path"
+    "path": "Find your path",
+    "keep": "Keep",
+    "keepLabel": "Keep {name} in your list",
+    "otherPillars": "Other pillars",
+    "chapters": "The chapters",
+    "inThisPillar": "In this pillar",
+    "request": "Request a conversation",
+    "skipIntro": "Skip intro",
+    "opening": "Opening animation",
+    "howItWorks": "How it works",
+    "loading": "shown when the page has loaded",
+    "turnYantra": "Turn the yantra",
+    "familyOfGods": "Show one family of gods",
+    "bookChapters": "The chapters of this book",
+    "sigilWays": "Ways of making a sigil",
+    "yourSigil": "Your sigil",
+    "yourIntention": "Your intention",
+    "arrangeMonogram": "Arrange the monogram",
+    "whichWheel": "Which wheel",
+    "turnWheel": "Turn the wheel",
+    "fourChapters": "The four chapters",
+    "breathPatterns": "Breathing patterns",
+    "honeypot": "Leave this empty",
+    "prototypeNote": "Prototype: this copy of the site has no Studio behind it, so nothing is sent from here.",
+    "aboutPlaceholder": "Placeholder page: the lines in brackets are for Sarvakali to write, in the content editor.",
+    "searchLinkTitle": "All services"
   },
   "crumbs": {
     "label": "You are here",
@@ -86,5 +111,43 @@
     "top": "Back to the top",
     "rights": "© {year} Sarvakali",
     "label": "Site footer"
+  },
+  "pages": {
+    "home": {
+      "title": "Sarvakali · Devotion, magic, healing and insight",
+      "description": "Sarvakali: devotion, witchcraft, healing, identity, divination and learning. Spiritual work by conversation, and a free daily practice open to every tradition."
+    },
+    "about": {
+      "title": "About · Sarvakali",
+      "description": "About Sarvakali: the person behind the institute, and how the work is held."
+    },
+    "connect": {
+      "title": "Connect · Sarvakali",
+      "description": "Request a conversation with Sarvakali, at a time that suits you, in any time zone."
+    },
+    "path": {
+      "title": "Find your path · Sarvakali",
+      "description": "Three short questions to find where to begin with Sarvakali."
+    },
+    "practice": {
+      "title": "Daily practice · Sarvakali",
+      "description": "Guided daily practices with Sarvakali: for today, with a deity or figure of many traditions, for how you feel, or with no deity at all."
+    },
+    "terms": {
+      "title": "Terms and refunds · Sarvakali",
+      "description": ""
+    },
+    "invoice": {
+      "title": "Invoice · Sarvakali",
+      "description": "An invoice from Sarvakali."
+    },
+    "booking": {
+      "title": "Your booking · Sarvakali",
+      "description": "Your conversation with Sarvakali."
+    },
+    "notFound": {
+      "title": "Not found · Sarvakali",
+      "description": "This page could not be found."
+    }
   }
 }

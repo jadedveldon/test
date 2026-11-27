@@ -2,6 +2,7 @@ import gsap from 'gsap';
 import { buzz, PATTERNS } from './haptics';
 import { ring } from './audio';
 import type { WorldHandle as World } from './world/handle';
+import { say } from './words';
 
 /**
  * Light a diya. In this prototype the count lives only on this device. On the
@@ -20,8 +21,8 @@ function count(add = 0) {
 }
 
 function label(n: number) {
-  if (!n) return 'Light a lamp and hold a wish, a name or a quiet thank-you in mind.';
-  return `You have lit ${n === 1 ? 'one diya' : `${n} diyas`} here. On the finished site, every lamp joins one shared count for the day.`;
+  if (!n) return say('diya.none');
+  return n === 1 ? say('diya.one') : say('diya.many', { n });
 }
 
 export function initDiya(world: World) {
@@ -35,7 +36,7 @@ export function initDiya(world: World) {
       const n = count(1);
       const first = !root.classList.contains('is-lit');
       root.classList.add('is-lit');
-      btn.textContent = 'Offer another';
+      btn.textContent = say('diya.another', {}, 'Offer another');
       note.textContent = label(n);
       buzz(PATTERNS.diya);
       ring('diya');

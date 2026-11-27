@@ -68,6 +68,9 @@ export function initMantras(world?: World) {
     const kind = filters.querySelector<HTMLSelectElement>('[data-f-kind]');
     const guidance = filters.querySelector<HTMLInputElement>('[data-f-guidance]')!;
     const count = filters.querySelector<HTMLElement>('[data-f-count]')!;
+    // on a phone the lists and switches start folded, so the cards are close below the search and the days
+    const narrow = filters.querySelector<HTMLDetailsElement>('[data-plib-narrow]');
+    if (narrow && matchMedia('(max-width: 720px)').matches && !/(tradition|deity|theme|kind|guidance)=/.test(location.search)) narrow.open = false;
     const none = document.querySelector<HTMLElement>('[data-f-none]');
     // a filter can arrive in the address: /practice/library?day=friday&tradition=buddhist&deity=Lakshmi&theme=courage&kind=hymn&q=…
     const params = new URLSearchParams(location.search);

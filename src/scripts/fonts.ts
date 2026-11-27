@@ -15,14 +15,39 @@ export function addFont(href: string) {
   document.head.appendChild(l);
 }
 
+/**
+ * On the pillar's own page the font is wanted at once. On the homepage it is wanted only when its chapter comes near
+ * (a screen and a half before it is reached), so the first screen does not wait for six pillars' lettering.
+ */
+let near: IntersectionObserver | null = null;
+const waiting = new Map<Element, string>();
+function whenNear(own: string, chapter: string, href: string) {
+  if (added.has(href)) return;
+  if (document.querySelector(own)) return addFont(href);
+  const ch = document.querySelector(chapter);
+  if (!ch) return;
+  if (!('IntersectionObserver' in window)) return addFont(href);
+  near ??= new IntersectionObserver((seen) => {
+    seen.forEach((e) => {
+      if (!e.isIntersecting) return;
+      const h = waiting.get(e.target);
+      waiting.delete(e.target);
+      near?.unobserve(e.target);
+      if (h) addFont(h);
+    });
+  }, { rootMargin: '150% 0px 150% 0px' });
+  waiting.set(ch, href);
+  near.observe(ch);
+}
+
 /** IM Fell English (the book) and Cinzel (the gilded capitals) */
 export function loadMagicFonts() {
-  if (document.querySelector('[data-magic], [data-chapter="magic"]')) addFont(MAGIC);
+  whenNear('[data-magic]', '[data-chapter="magic"]', MAGIC);
 }
 
 /** Spectral, for Healing and Inner Work */
 export function loadHealingFont() {
-  if (document.querySelector('[data-healing], [data-chapter="healing"]')) addFont(HEALING);
+  whenNear('[data-healing]', '[data-chapter="healing"]', HEALING);
 }
 
 /** Pillars 4 to 6: Identity in DM Serif Display (Soft prism); Divination in Cormorant Unicase with Tenor Sans
@@ -34,5 +59,5 @@ const SETTLED: [string, string][] = [
   ['[data-learning], [data-chapter="learning"]', 'https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital@0;1&family=Gotu&family=Josefin+Slab:ital,wght@0,400;0,600;1,300&display=swap'],
 ];
 export function loadSettledFonts() {
-  SETTLED.forEach(([where, href]) => { if (document.querySelector(where)) addFont(href); });
+  SETTLED.forEach(([where, href]) => { const [own, chapter] = where.split(', '); whenNear(own, chapter, href); });
 }

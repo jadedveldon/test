@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "title": "Boundaries and care · Sarvakali",
+    "description": "How Sarvakali works with care: what this work is and is not, boundaries, privacy and payments."
+  },
+  "kicker": "Boundaries and care",
+  "title": "Held with care",
+  "lede": "What this work can and cannot do, what Sarvakali will and won't take on, and what happens to your details.",
+  "draftNote": "Draft for Sarvakali to decide, and for a lawyer to review before launch. Not legal advice.",
+  "crisis": {
+    "title": "If you are in crisis",
+    "text": "Spiritual work can support you, but it does not replace a doctor, therapist or emergency help. If you are thinking of harming yourself, or someone is in danger, please contact a doctor or emergency services now. In India you can call **Tele-MANAS**, the free national mental health helpline, on 14416 at any hour."
+  },
+  "sections": [
+    {
+      "id": "what",
+      "title": "What this work is, and is not",
+      "paras": [
+        "Readings, rituals, energy work and spiritual guidance can bring clarity, comfort and change. They are not medical, psychological, legal or financial advice, and they are never a reason to stop treatment you are receiving. Where Sarvakali uses therapeutic methods such as hypnotherapy, CBT, NLP or EFT, these support your wellbeing alongside professional care, not instead of it."
+      ],
+      "points": []
+    },
+    {
+      "id": "will",
+      "title": "What Sarvakali will do",
+      "paras": [],
+      "points": [
+        "Listen without judgement, whatever your faith, identity or story.",
+        "Explain what each piece of work involves before it begins, and answer your questions.",
+        "Keep what you share confidential.",
+        "Say honestly when something is not the right work for you, and suggest another way."
+      ]
+    },
+    {
+      "id": "will-not",
+      "title": "What Sarvakali will not do",
+      "paras": [],
+      "points": [
+        "Promise guaranteed results. No honest practitioner can.",
+        "Ask for more money to \"remove\" something frightening after a session. If anyone does this in Sarvakali's name, it is not Sarvakali.",
+        "Offer intimacy or sexuality work to anyone under 18.",
+        "Diagnose illness or tell you to stop medical care.",
+        "[Work affecting another person is considered case by case, and may be declined. Sarvakali to word this.]"
+      ]
+    },
+    {
+      "id": "privacy",
+      "title": "Your privacy",
+      "paras": [
+        "**What we collect.** When you request a conversation: your name, email, phone number if you give it, and the times that suit you. Nothing about your situation is asked for in the form.",
+        "**Why.** Only to arrange and hold your conversation, send the meeting link and your invoice, and reply to you.",
+        "**Who else handles it.** The website's host, where your request, bookings and invoices are kept; Google Calendar and Google Meet, for the call; and the email service that sends your confirmations, reminders and invoices. They process it only to provide those services.",
+        "**How long.** [For as long as you are working with Sarvakali, and up to N months after, unless the law requires longer for invoices.]",
+        "**Your rights.** You can ask to see, correct or delete your details at any time, and withdraw your consent. You can also raise a complaint with India's Data Protection Board.",
+        "**Contact.** [Email address for privacy requests.]",
+        "**On this website.** Things like your kept list, today's card and the diya count are stored only in your own browser. So is your practice record (your days, chants, kept mantras and journal), unless you make an account.",
+        "**If you make an account.** An account is optional. It keeps your email and your practice record on the website's host, so your other devices can show the same record; nothing else is asked for, and nothing is shared. Your journal is locked in your own browser, with a passphrase only you know, before it leaves your device: nobody else can read it, Sarvakali included. If your email is the one you wrote to Sarvakali from, My space also shows your conversations and invoices. In My space you can download everything kept for your account, sign out everywhere, or delete the account at any time.",
+        "**Cookies.** Signing in sets one cookie on that device, which keeps you signed in. Nothing else on this website sets a cookie for visitors.",
+        "**How visits are counted.** To know how the site is used and to fix what breaks, the site counts its visits itself; nothing is sent to an analytics company. It notes which pages are opened, for how long and how far down they are read, which site sent you (its name only), the country, the kind of device and browser, how fast the page was, and steps such as finishing a practice or sending a request. It sets no cookie and keeps nothing in your browser for this. Your internet address is used only for a moment, mixed with a secret that changes every day, to tell one visitor's pages apart that day; the address itself is never kept, and the next day you cannot be linked to the day before. If your browser asks sites not to track you (Global Privacy Control or Do Not Track), your visits are not counted at all.",
+        "**When something goes wrong.** If a page breaks, the site sends a report of the error and the few steps before it (pages opened, buttons pressed), so it can be fixed. What you type is never part of it, and email addresses, phone numbers and private links are removed before anything is kept. Error messages you see may end with a reference, which lets Sarvakali find what happened. Counts and reports are kept on the website's host: the day-by-day details for 30 days, the totals for about a year."
+      ],
+      "points": []
+    },
+    {
+      "id": "payments",
+      "title": "Payments and changes",
+      "paras": [
+        "Payment is by UPI only, after a time is confirmed. You receive an invoice with the UPI ID and a QR code. Sarvakali never asks for card details or bank passwords.",
+        "Moving, cancelling and refunds are set out in the [terms and refunds](/terms#changes): in short, free to move or cancel up to 24 hours before, and one free move after that."
+      ],
+      "points": []
+    }
+  ]
+}

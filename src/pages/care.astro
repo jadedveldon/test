@@ -1,64 +1,37 @@
 ---
+/**
+ * Boundaries and care (/care): what the work is and is not, what Sarvakali will and will not do, privacy, payments.
+ * Every word is in src/content/pages/care.json ("Boundaries and care" in the content editor): the parts can be
+ * added, removed, reordered and renamed there. A part whose address is "privacy" is where /care#privacy leads.
+ */
 import Base from '../layouts/Base.astro';
+import Rich from '../components/Rich.astro';
+import w from '../content/pages/care.json';
+const sections = w.sections.filter((s) => s.title?.trim() || s.paras.some((p) => p.trim()) || s.points.some((p) => p.trim()));
 ---
-<Base title="Boundaries and care · Sarvakali" sequence="care" description="How Sarvakali works with care: what this work is and is not, boundaries, privacy and payments.">
+<Base title={w.meta.title} sequence="care" description={w.meta.description}>
   <article class="page">
     <header class="page-hero">
-      <p class="kicker" data-hero>Boundaries and care</p>
-      <h1 class="display-l" data-hero data-split>Held with care</h1>
-      <p class="lede" data-hero>What this work can and cannot do, what Sarvakali will and won't take on, and what happens to your details.</p>
-      <p class="proto-flag" data-hero>Draft for Sarvakali to decide, and for a lawyer to review before launch. Not legal advice.</p>
+      <p class="kicker" data-hero>{w.kicker}</p>
+      <h1 class="display-l" data-hero data-split>{w.title}</h1>
+      {w.lede ? <p class="lede" data-hero>{w.lede}</p> : null}
+      {w.draftNote?.trim() ? <p class="proto-flag" data-hero>{w.draftNote}</p> : null}
     </header>
 
     <div class="prose page-body">
-      <section class="care-box" data-fade aria-labelledby="crisis">
-        <h2 id="crisis">If you are in crisis</h2>
-        <p>Spiritual work can support you, but it does not replace a doctor, therapist or emergency help. If you are thinking of harming yourself, or someone is in danger, please contact a doctor or emergency services now. In India you can call <b>Tele-MANAS</b>, the free national mental health helpline, on <a href="tel:14416">14416</a> at any hour.</p>
-      </section>
-
-      <section data-fade>
-        <h2>What this work is, and is not</h2>
-        <p>Readings, rituals, energy work and spiritual guidance can bring clarity, comfort and change. They are not medical, psychological, legal or financial advice, and they are never a reason to stop treatment you are receiving. Where Sarvakali uses therapeutic methods such as hypnotherapy, CBT, NLP or EFT, these support your wellbeing alongside professional care, not instead of it.</p>
-      </section>
-
-      <section data-fade>
-        <h2>What Sarvakali will do</h2>
-        <ul>
-          <li>Listen without judgement, whatever your faith, identity or story.</li>
-          <li>Explain what each piece of work involves before it begins, and answer your questions.</li>
-          <li>Keep what you share confidential.</li>
-          <li>Say honestly when something is not the right work for you, and suggest another way.</li>
-        </ul>
-        <h2>What Sarvakali will not do</h2>
-        <ul>
-          <li>Promise guaranteed results. No honest practitioner can.</li>
-          <li>Ask for more money to "remove" something frightening after a session. If anyone does this in Sarvakali's name, it is not Sarvakali.</li>
-          <li>Offer intimacy or sexuality work to anyone under 18.</li>
-          <li>Diagnose illness or tell you to stop medical care.</li>
-          <li>[Work affecting another person is considered case by case, and may be declined. Sarvakali to word this.]</li>
-        </ul>
-      </section>
-
-      <section data-fade aria-labelledby="privacy">
-        <h2 id="privacy">Your privacy</h2>
-        <p><b>What we collect.</b> When you request a conversation: your name, email, phone number if you give it, and the times that suit you. Nothing about your situation is asked for in the form.</p>
-        <p><b>Why.</b> Only to arrange and hold your conversation, send the meeting link and your invoice, and reply to you.</p>
-        <p><b>Who else handles it.</b> The website's host, where your request, bookings and invoices are kept; Google Calendar and Google Meet, for the call; and the email service that sends your confirmations, reminders and invoices. They process it only to provide those services.</p>
-        <p><b>How long.</b> [For as long as you are working with Sarvakali, and up to N months after, unless the law requires longer for invoices.]</p>
-        <p><b>Your rights.</b> You can ask to see, correct or delete your details at any time, and withdraw your consent. You can also raise a complaint with India's Data Protection Board.</p>
-        <p><b>Contact.</b> [Email address for privacy requests.]</p>
-        <p><b>On this website.</b> Things like your kept list, today's card and the diya count are stored only in your own browser. So is your practice record (your days, chants, kept mantras and journal), unless you make an account.</p>
-        <p><b>If you make an account.</b> An account is optional. It keeps your email and your practice record on the website's host, so your other devices can show the same record; nothing else is asked for, and nothing is shared. Your journal is locked in your own browser, with a passphrase only you know, before it leaves your device: nobody else can read it, Sarvakali included. If your email is the one you wrote to Sarvakali from, My space also shows your conversations and invoices. In My space you can download everything kept for your account, sign out everywhere, or delete the account at any time.</p>
-        <p><b>Cookies.</b> Signing in sets one cookie on that device, which keeps you signed in. Nothing else on this website sets a cookie for visitors.</p>
-        <p><b>How visits are counted.</b> To know how the site is used and to fix what breaks, the site counts its visits itself; nothing is sent to an analytics company. It notes which pages are opened, for how long and how far down they are read, which site sent you (its name only), the country, the kind of device and browser, how fast the page was, and steps such as finishing a practice or sending a request. It sets no cookie and keeps nothing in your browser for this. Your internet address is used only for a moment, mixed with a secret that changes every day, to tell one visitor's pages apart that day; the address itself is never kept, and the next day you cannot be linked to the day before. If your browser asks sites not to track you (Global Privacy Control or Do Not Track), your visits are not counted at all.</p>
-        <p><b>When something goes wrong.</b> If a page breaks, the site sends a report of the error and the few steps before it (pages opened, buttons pressed), so it can be fixed. What you type is never part of it, and email addresses, phone numbers and private links are removed before anything is kept. Error messages you see may end with a reference, which lets Sarvakali find what happened. Counts and reports are kept on the website's host: the day-by-day details for 30 days, the totals for about a year.</p>
-      </section>
-
-      <section data-fade>
-        <h2>Payments and changes</h2>
-        <p>Payment is by UPI only, after a time is confirmed. You receive an invoice with the UPI ID and a QR code. Sarvakali never asks for card details or bank passwords.</p>
-        <p>Moving, cancelling and refunds are set out in the <a href="/terms#changes">terms and refunds</a>: in short, free to move or cancel up to 24 hours before, and one free move after that.</p>
-      </section>
+      {w.crisis?.text?.trim() ? (
+        <section class="care-box" data-fade aria-labelledby="crisis">
+          <h2 id="crisis">{w.crisis.title}</h2>
+          <p><Rich text={w.crisis.text} /></p>
+        </section>
+      ) : null}
+      {sections.map((s) => (
+        <section data-fade id={s.id || undefined} aria-labelledby={s.id ? `${s.id}-h` : undefined}>
+          {s.title ? <h2 id={s.id ? `${s.id}-h` : undefined}>{s.title}</h2> : null}
+          {s.paras.filter((p) => p.trim()).map((p) => <p><Rich text={p} /></p>)}
+          {s.points.some((p) => p.trim()) ? <ul>{s.points.filter((p) => p.trim()).map((p) => <li><Rich text={p} /></li>)}</ul> : null}
+        </section>
+      ))}
     </div>
   </article>
 </Base>

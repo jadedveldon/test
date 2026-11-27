@@ -1,14 +1,15 @@
 ---
 /**
- * A line from a content file, as the editor wrote it: [words](address) becomes a link, and the helpline
- * number 14416 a link that dials it from a phone. Only addresses on this site (/… or #…), https:// pages and
+ * A line from a content file, as the editor wrote it: [words](address) becomes a link, **words** are bold, and the
+ * helpline number 14416 a link that dials it from a phone. Only addresses on this site (/… or #…), https:// pages and
  * email or phone links become links; anything else stays plain text. Pages elsewhere open in a new tab.
  */
 const { text = '' } = Astro.props as { text?: string };
-type Part = { kind: 'text'; v: string } | { kind: 'link'; label: string; href: string } | { kind: 'tel' };
+type Part = { kind: 'text'; v: string } | { kind: 'bold'; v: string } | { kind: 'link'; label: string; href: string } | { kind: 'tel' };
 const safe = (h: string) => /^(\/(?!\/)|#|https:\/\/|mailto:|tel:)/.test(h);
 const parts: Part[] = [];
-const push = (v: string) => v.split('14416').forEach((s, i) => { if (i) parts.push({ kind: 'tel' }); if (s) parts.push({ kind: 'text', v: s }); });
+const plain = (v: string) => v.split('14416').forEach((s, i) => { if (i) parts.push({ kind: 'tel' }); if (s) parts.push({ kind: 'text', v: s }); });
+const push = (v: string) => v.split(/\*\*([^*]+)\*\*/).forEach((s, i) => { if (i % 2) parts.push({ kind: 'bold', v: s }); else plain(s); });
 let last = 0;
 for (const m of text.matchAll(/\[([^\]]+)\]\(([^)\s]+)\)/g)) {
   push(text.slice(last, m.index));
@@ -18,4 +19,4 @@ for (const m of text.matchAll(/\[([^\]]+)\]\(([^)\s]+)\)/g)) {
 }
 push(text.slice(last));
 ---
-{parts.map((p) => p.kind === 'tel' ? <a href="tel:14416">14416</a> : p.kind === 'link' ? (p.href.startsWith('https://') ? <a href={p.href} target="_blank" rel="noopener">{p.label}</a> : <a href={p.href}>{p.label}</a>) : p.v)}
+{parts.map((p) => p.kind === 'tel' ? <a href="tel:14416">14416</a> : p.kind === 'bold' ? <b>{p.v}</b> : p.kind === 'link' ? (p.href.startsWith('https://') ? <a href={p.href} target="_blank" rel="noopener">{p.label}</a> : <a href={p.href}>{p.label}</a>) : p.v)}

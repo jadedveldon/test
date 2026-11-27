@@ -23,6 +23,9 @@ password on. Behind the door the editor still needs the Studio's sign-in, so kno
   Tick **Draft** to keep it off the site until it is ready.
 - **A picture (optional):** upload it in the article's **Picture** field with a few words describing it. Without
   one, the article gets a drawing in its pillar's colours. **Featured** puts it first on the Articles page.
+- **A theme:** the **Theme** field gives the article the look of any page of the site: the quiet reading page (the
+  default), its own pillar's world, any of the six pillars, Daily practice, or Boundaries and care. It brings that
+  page's colours, light, accent and heading lettering. The words stay the same.
 - **Edit:** Studio → Articles → **Edit** beside it (or pick it in the editor's list).
 - **Delete:** open it in the editor, then the **⋯** menu at the top → **Delete**. To take it down for a while
   instead, tick Draft.

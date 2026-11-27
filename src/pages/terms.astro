@@ -5,6 +5,7 @@
  * bracketed lines are Sarvakali's to fill in (legal name, address, grievance officer, city). A draft for a lawyer to
  * review before launch. The care note comes first.
  */
+import { pageMeta as PM } from '../config';
 import Base from '../layouts/Base.astro';
 import Rich from '../components/Rich.astro';
 import CareText from '../components/CareText.astro';
@@ -14,7 +15,7 @@ import t from '../content/pages/terms.json';
 const sections = t.sections.filter((s) => s.title.trim() && (s.paras.some((p) => p.trim()) || s.points.some((p) => p.trim())));
 const slug = (s: { id?: string; title: string }, i: number) => (s.id?.trim() || s.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || `part-${i + 1}`);
 ---
-<Base title="Terms and refunds · Sarvakali" sequence="care" description={t.lede} crumbs={[{ label: t.kicker || 'Terms and refunds' }]}>
+<Base title={PM.terms.title} sequence="care" description={PM.terms.description || t.lede} crumbs={[{ label: t.kicker || 'Terms and refunds' }]}>
   <article class="page terms">
     <header class="page-hero">
       <p class="kicker" data-hero>{t.kicker}</p>

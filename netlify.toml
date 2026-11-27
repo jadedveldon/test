@@ -7,3 +7,16 @@
 [build.environment]
   EDITOR_HOST = "netlify"
   NODE_VERSION = "22"
+
+# Speed for returning visitors: the build's scripts, styles and fonts have their content's fingerprint in their names,
+# so a browser may keep them for a year without asking again; a new build gives new names.
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# link-preview cards and icons change rarely: kept a week, then checked again
+[[headers]]
+  for = "/og/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, must-revalidate"

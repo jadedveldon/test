@@ -5,6 +5,8 @@
  * The words are in src/content/pages/about.json ("About" in the content editor), where Sarvakali can write the
  * story; bracketed lines are theirs to write.
  */
+import { words as SW } from '../config';
+import { pageMeta as PM } from '../config';
 import Base from '../layouts/Base.astro';
 import Rich from '../components/Rich.astro';
 import { ICONS } from '../data/icons';
@@ -13,14 +15,14 @@ import a from '../content/pages/about.json';
 const promises = a.promises.items.filter((p) => p.title.trim());
 const portrait = { img: '/depth/kali-163.jpg', depth: '/depth/kali-163-depth.png', w: 1100, h: 1755, alt: 'Kali, an unfinished study: Kalighat painting, Calcutta, nineteenth century' };
 ---
-<Base title="About · Sarvakali" sequence="about" description="About Sarvakali: the person behind the institute, and how the work is held.">
+<Base title={PM.about.title} sequence="about" description={PM.about.description}>
   <article class="about">
     <header class="about-hero">
       <div class="about-hero-copy">
         <p class="kicker" data-hero>{a.hero.kicker}</p>
         <h1 class="display-l" data-hero data-split>{a.hero.title}</h1>
         <p class="lede" data-hero>{a.hero.lede}</p>
-        <p class="proto-flag" data-hero>Placeholder page: the lines in brackets are for Sarvakali to write, in the content editor.</p>
+        {SW.aboutPlaceholder?.trim() ? <p class="proto-flag" data-hero>{SW.aboutPlaceholder}</p> : null}
       </div>
       <figure class="about-portrait" data-depth data-hero>
         <div class="depth-stage about-stage" role="img" aria-label={`${portrait.alt}. Move your pointer, drag, or use the arrow keys to look into it.`}>

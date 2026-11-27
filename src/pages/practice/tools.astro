@@ -16,9 +16,10 @@ const weekData = {
   mantras: summary(all),
   badges: { guidance: lib.labels.guidance, variant: lib.labels.variant, verify: lib.labels.verify },
 };
-const r = { mantra: 'ॐ नमः शिवाय', mantraNote: 'AUM Namah Shivaya' };
+const T = w.tools;
+const ids = ['mala', 'fire', 'days', 'moons', 'reminders'];
 ---
-<Base title="Tools for practice · Daily practice · Sarvakali" sequence="practice" description="The mala, the fire, the diya, the month’s lunar days, sacred days ahead and reminders." crumbs={[{ label: cw.practice, href: '/practice' }, { label: w.tools.title }]}>
+<Base title={T.meta.title} sequence="practice" description={T.meta.description} crumbs={[{ label: cw.practice, href: '/practice' }, { label: w.tools.kicker || w.tools.title }]}>
   <div data-practice>
     <a hidden data-connect-href href="/connect" tabindex="-1" aria-hidden="true"></a>
     <script type="application/json" data-practice-words set:html={JSON.stringify(w)} />
@@ -28,49 +29,49 @@ const r = { mantra: 'ॐ नमः शिवाय', mantraNote: 'AUM Namah Shiv
         <p class="kicker" data-hero>{w.tools.kicker}</p>
         <h1 class="display-l" data-hero data-split>{w.tools.title}</h1>
         <p class="lede" data-hero>{w.tools.lede}</p>
-        <p class="practice-jump" data-hero><a href="#mala">The mala</a> · <a href="#fire">the fire</a> · <a href="#days">the diya and sacred days</a> · <a href="#moons">the month’s moons</a> · <a href="#reminders">reminders</a></p>
+        <p class="practice-jump" data-hero>{T.jump.slice(0, ids.length).map((label, i) => <>{i ? ' · ' : ''}<a href={`#${ids[i]}`}>{label}</a></>)}</p>
       </div>
     </section>
 
     <section class="chapter" data-chapter="mala" id="mala">
       <div class="chapter-inner practice-split" data-mala>
         <div class="practice-copy">
-          <p class="kicker" data-fade>One round</p>
-          <h2 class="display-l" data-split data-dust>Count a round on the mala</h2>
-          <p class="lede" data-fade>A mala has 108 beads. Repeat the mantra once for each bead: tap the button, the beads, or press space. The world turns one bead with you.</p>
+          <p class="kicker" data-fade>{T.mala.kicker}</p>
+          <h2 class="display-l" data-split data-dust>{T.mala.title}</h2>
+          <p class="lede" data-fade>{T.mala.lede}</p>
           <label class="rite-choose" data-fade hidden>{w.malaChoose} <select data-mala-choose></select></label>
-          <p class="mantra" data-fade lang="sa" data-mala-mantra><span>{r.mantra}</span><small lang="en">{r.mantraNote}</small></p>
+          <p class="mantra" data-fade lang="sa" data-mala-mantra><span>{T.mala.mantra}</span><small lang="en">{T.mala.mantraNote}</small></p>
           <div class="cta-row" data-fade>
-            <button type="button" class="btn btn-solid" data-mala-tap>Next bead</button>
-            <button type="button" class="btn btn-ghost" data-mala-reset>Start the round again</button>
+            <button type="button" class="btn btn-solid" data-mala-tap>{T.mala.next}</button>
+            <button type="button" class="btn btn-ghost" data-mala-reset>{T.mala.reset}</button>
           </div>
           <p class="hint" data-fade data-mala-rounds aria-live="polite"></p>
         </div>
         <div class="mala-wrap" data-fade>
-          <svg class="mala-svg" viewBox="-140 -140 280 280" tabindex="0" role="button" aria-label="The mala: activate to count the next bead">
+          <svg class="mala-svg" viewBox="-140 -140 280 280" tabindex="0" role="button" aria-label={T.mala.label}>
             <circle r="120" fill="none" class="mala-thread" />
             <g class="mala-beads"></g>
             <circle cy="133" r="7" class="mala-meru" />
           </svg>
-          <p class="mala-count"><b data-mala-count>0</b><span>of 108</span></p>
+          <p class="mala-count"><b data-mala-count>0</b><span>{T.mala.of}</span></p>
         </div>
       </div>
     </section>
 
     <section class="chapter" data-chapter="agni" id="fire">
       <div class="chapter-inner narrow" data-fire>
-        <p class="kicker" data-fade>Let it go</p>
-        <h2 class="display-l" data-split data-dust>Offer it to the fire</h2>
-        <p class="lede" data-fade>Write down a fear, a habit or a word you never said. Offer it, and watch the fire take it. It is never saved or sent anywhere.</p>
+        <p class="kicker" data-fade>{T.fire.kicker}</p>
+        <h2 class="display-l" data-split data-dust>{T.fire.title}</h2>
+        <p class="lede" data-fade>{T.fire.lede}</p>
         <form class="fire-form" data-fade>
-          <label class="sr-only" for="fire-text">What would you like to let go of?</label>
-          <textarea id="fire-text" maxlength="90" rows="2" placeholder="What would you like to let go of?" autocomplete="off"></textarea>
-          <button type="submit" class="btn btn-solid">Offer it to the fire</button>
+          <label class="sr-only" for="fire-text">{T.fire.label}</label>
+          <textarea id="fire-text" maxlength="90" rows="2" placeholder={T.fire.label} autocomplete="off"></textarea>
+          <button type="submit" class="btn btn-solid">{T.fire.button}</button>
         </form>
         <p class="fire-words" data-fire-words hidden aria-hidden="true"></p>
         <div class="fire-after" data-fire-after hidden aria-live="polite">
-          <p class="lede">It has gone to the fire. Nothing was kept.</p>
-          <button type="button" class="btn btn-ghost" data-fire-again>Offer something else</button>
+          <p class="lede">{T.fire.done}</p>
+          <button type="button" class="btn btn-ghost" data-fire-again>{T.fire.again}</button>
         </div>
       </div>
     </section>
@@ -90,9 +91,9 @@ const r = { mantra: 'ॐ नमः शिवाय', mantraNote: 'AUM Namah Shiv
             <path d="M22 78 Q80 74 132 72 L142 66 Q140 80 128 86 Q80 122 32 92 Q22 86 22 78 Z" fill="url(#pdiya-clay)" />
           </svg>
           <div>
-            <h2 class="display-m">Light a diya</h2>
+            <h2 class="display-m">{T.diya.title}</h2>
             <p class="diya-count" data-diya-count aria-live="polite"></p>
-            <button type="button" class="btn btn-ghost" data-diya-light>Light a diya</button>
+            <button type="button" class="btn btn-ghost" data-diya-light>{T.diya.button}</button>
           </div>
         </div>
         <p class="kicker" data-fade>{w.days.kicker}</p>
@@ -109,8 +110,8 @@ const r = { mantra: 'ॐ नमः शिवाय', mantraNote: 'AUM Namah Shiv
         <h2 class="display-l" data-split>{w.month.title}</h2>
         <p class="lede" data-fade>{w.month.lede}</p>
         <div class="moonmonth" data-month data-fade>
-          <div class="mm-head"><button type="button" class="icon-btn" data-month-prev aria-label={w.month.prev}>←</button><h3 data-month-title aria-live="polite"></h3><button type="button" class="icon-btn" data-month-next aria-label={w.month.nextMonth}>→</button></div>
-          <div class="mm-grid" data-month-grid role="grid"></div>
+          <div class="mm-head"><button type="button" class="icon-btn" data-month-prev aria-label={w.month.prev}>←</button><h3 id="mm-title" data-month-title aria-live="polite"></h3><button type="button" class="icon-btn" data-month-next aria-label={w.month.nextMonth}>→</button></div>
+          <div class="mm-grid" data-month-grid role="group" aria-labelledby="mm-title"></div>
           <p class="mm-detail" data-month-detail aria-live="polite"></p>
         </div>
       </div>
@@ -125,15 +126,15 @@ const r = { mantra: 'ॐ नमः शिवाय', mantraNote: 'AUM Namah Shiv
           <p class="hint" data-daily-note aria-live="polite"></p>
         </div>
         <div class="practice-card" data-fade>
-          <h2 class="display-m">A reminder before each Amavasya and Purnima</h2>
-          <p>Add the next twelve new and full moons to your calendar, each with a gentle reminder the evening before. It works today, with no sign-up.</p>
-          <button type="button" class="btn btn-solid" data-moon-cal>Add moon reminders to my calendar</button>
+          <h2 class="display-m">{T.moonReminder.title}</h2>
+          <p>{T.moonReminder.text}</p>
+          <button type="button" class="btn btn-solid" data-moon-cal>{T.moonReminder.button}</button>
           <p class="hint" data-moon-note aria-live="polite"></p>
         </div>
         <div class="practice-card" data-fade>
-          <h2 class="display-m">Keep Sarvakali on your phone</h2>
-          <p>Add the site to your home screen and it opens like an app, with shortcuts to today's card and this practice. Pages you have visited keep working without a connection.</p>
-          <button type="button" class="btn btn-solid" data-install>Add to your home screen</button>
+          <h2 class="display-m">{T.install.title}</h2>
+          <p>{T.install.text}</p>
+          <button type="button" class="btn btn-solid" data-install>{T.install.button}</button>
           <p class="hint" data-install-note aria-live="polite"></p>
         </div>
       </div>

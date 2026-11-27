@@ -9,6 +9,7 @@
  * (the catalogue's seven categories).
  */
 import { pillarService } from '../../seo/ld';
+import { words as SW } from '../../config';
 import Base from '../../layouts/Base.astro';
 import { crumbWords as cw } from '../../config';
 import { words } from '../../config';
@@ -52,7 +53,7 @@ const hecateWork = devotion.categories.flatMap((c) => c.subs).flatMap((s) => s.i
             <svg viewBox="-40 -40 80 80" aria-hidden="true"><circle r="36" class="mp-ring" /><HecateMark x={-27} y={-27} size={54} /></svg>
             <span><small>{COPY.presides.small}</small> {COPY.presides.name}</span>
           </a>
-          <ol class="mg-index" data-hero aria-label="The chapters of this book">
+          <ol class="mg-index" data-hero aria-label={SW.bookChapters}>
             <li class="is-night"><a href="#hecate"><span class="mg-num" aria-hidden="true">✦</span><span class="mg-ix-title">{COPY.index.hecate}</span></a></li>
             <li class="is-day"><a href="#make-a-sigil"><span class="mg-num" aria-hidden="true">✦</span><span class="mg-ix-title">{COPY.index.sigil}</span></a></li>
             {moves.map((m, i) => (
@@ -95,7 +96,7 @@ const hecateWork = devotion.categories.flatMap((c) => c.subs).flatMap((s) => s.i
           <div class="hk-supper-copy">
             <h3>{HECATE.supper.title}</h3>
             <p>{HECATE.supper.text}</p>
-            <p class="hk-when">{hk.supper.when} <span data-supper-when>shown when the page has loaded</span></p>
+            <p class="hk-when">{hk.supper.when} <span data-supper-when>{SW.loading}</span></p>
             <div class="cta-row">
               <button type="button" class="btn btn-ghost btn-sm" data-supper-cal>{hk.supper.calendar}</button>
               <a class="btn btn-ghost btn-sm" href="/connect" data-topic="A working on the dark moon">{hk.supper.ask}</a>
@@ -121,7 +122,7 @@ const hecateWork = devotion.categories.flatMap((c) => c.subs).flatMap((s) => s.i
           <p class="kicker" data-fade>{sg.kicker}</p>
           <h2 class="display-l" data-split data-dust>{sg.title}</h2>
           <p class="lede" data-fade>{sg.lede}</p>
-          <div class="sg-methods" role="group" aria-label="Ways of making a sigil" data-fade>
+          <div class="sg-methods" role="group" aria-label={SW.sigilWays} data-fade>
             {SIGIL_METHODS.map((m, i) => <button type="button" data-sigil-method={m.key} aria-pressed={i === 0 ? 'true' : 'false'}>{m.name}</button>)}
           </div>
           <div class="sg-method-note" data-fade aria-live="polite">
@@ -131,7 +132,7 @@ const hecateWork = devotion.categories.flatMap((c) => c.subs).flatMap((s) => s.i
           <p class="hk-note" data-fade>{sg.note}</p>
         </header>
         <div class="sigil-maker" data-sigil data-method={SIGIL_METHODS[0].key} data-arr="line" data-fade>
-          <svg viewBox="-130 -130 260 260" class="sigil-svg" data-sigil-svg aria-label="Your sigil" role="img">
+          <svg viewBox="-130 -130 260 260" class="sigil-svg" data-sigil-svg aria-label={SW.yourSigil} role="img">
             <circle r="122" class="sg-gild" /><circle r="114" class="sg-ring" />
             {Array.from({ length: 52 }, (_, k) => { const [x1, y1] = pos(k * (360 / 52), 114); const [x2, y2] = pos(k * (360 / 52), k % 2 ? 118 : 121); return <line x1={x1.toFixed(1)} y1={y1.toFixed(1)} x2={x2.toFixed(1)} y2={y2.toFixed(1)} class="sg-tick" />; })}
             <g class="sg-board" data-board="wheel">
@@ -147,11 +148,11 @@ const hecateWork = devotion.categories.flatMap((c) => c.subs).flatMap((s) => s.i
             <g class="sg-mark" data-sigil-mark></g>
           </svg>
           <form class="sigil-form" data-sigil-form>
-            <label class="sr-only" for="sigil-word">Your intention</label>
+            <label class="sr-only" for="sigil-word">{SW.yourIntention}</label>
             <input id="sigil-word" maxlength="40" autocomplete="off" placeholder={sg.placeholder} />
             <button type="submit" class="btn btn-ghost btn-sm">{sg.make}</button>
           </form>
-          <div class="sg-mono-tools" role="group" aria-label="Arrange the monogram">
+          <div class="sg-mono-tools" role="group" aria-label={SW.arrangeMonogram}>
             <div class="sg-arr">
               <span>{sg.arrange}</span>
               <button type="button" data-mono-arr="line" aria-pressed="true">{sg.line}</button>
@@ -194,11 +195,11 @@ const hecateWork = devotion.categories.flatMap((c) => c.subs).flatMap((s) => s.i
 
           {m.key === 'rituals' && (
             <div class="wheel" data-wheel data-mode="sabbats" data-fade>
-              <div class="wheel-modes" role="group" aria-label="Which wheel">
+              <div class="wheel-modes" role="group" aria-label={SW.whichWheel}>
                 <button type="button" data-wheel-mode="sabbats" aria-pressed="true">{COPY.wheel.sabbatsLabel}</button>
                 <button type="button" data-wheel-mode="ritus" aria-pressed="false">{COPY.wheel.ritusLabel}</button>
               </div>
-              <svg viewBox="-150 -150 300 300" class="wheel-svg" tabindex="0" role="slider" aria-label="Turn the wheel" aria-valuemin="0" aria-valuemax="360" aria-valuenow="0">
+              <svg viewBox="-150 -150 300 300" class="wheel-svg" tabindex="0" role="slider" aria-label={SW.turnWheel} aria-valuemin="0" aria-valuemax="360" aria-valuenow="0">
                 <g data-wheel-rot>
                   <circle r="128" class="wh-ring" /><circle r="98" class="wh-ring thin" /><circle r="60" class="wh-ring thin" />
                   <g class="wh-set" data-set="sabbats">
@@ -246,7 +247,7 @@ const hecateWork = devotion.categories.flatMap((c) => c.subs).flatMap((s) => s.i
       </div>
     </section>
 
-    <nav class="pp-nav" aria-label="Other pillars">
+    <nav class="pp-nav" aria-label={SW.otherPillars}>
       <a href={`/pillars/${prev.slug}`}><span>{words.previous}</span><b transition:name={`pt-${prev.slug}`} data-pt>{prev.name}</b></a>
       <a href={`/pillars/${next.slug}`}><span>{words.next}</span><b transition:name={`pt-${next.slug}`} data-pt>{next.name}</b></a>
     </nav>

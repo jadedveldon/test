@@ -38,7 +38,8 @@ const visibleH1 = (p) => p.evaluate(() => { const h = document.querySelector('h1
     await ctx.addInitScript(() => { try { sessionStorage.setItem('sk-intro-seen', '1'); } catch (e) {} });
     const p = await ctx.newPage(); const errs = []; p.on('pageerror', (e) => errs.push(e.message.slice(0, 120)));
     const res = [];
-    for (const u of ['/', '/pillars/devotion', '/pillars/magic', '/pillars/divination', '/pillars/learning', '/about', '/practice']) {
+    // the fire is on Tools for practice since the daily practice revamp (2026-11-26), so that page is the last one opened
+    for (const u of ['/', '/pillars/devotion', '/pillars/magic', '/pillars/divination', '/pillars/learning', '/about', '/practice', '/practice/tools']) {
       await p.goto(`${B}${u}`); await p.waitForTimeout(3000);
       res.push(`${u}:${await p.evaluate(() => document.documentElement.dataset.tier)}${await visibleH1(p) ? '' : ':HIDDEN'}`);
     }

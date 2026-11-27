@@ -57,7 +57,9 @@ const ARGS = { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', 
     for (const [pl, cat] of [['identity', 'Queer-Affirming Work'], ['divination', 'Dreams, Psychic Development & Astral Work'], ['learning', 'Classes & Mentoring']]) {
       await p.goto(`${B}/path?tier=still&cursor=off`); await p.waitForTimeout(1500);
       await p.click(`.path-opt[data-pillar="${pl}"]`); await p.waitForTimeout(900);
-      await p.click(`.path-opt[data-category="${cat}"]`); await p.waitForTimeout(900);
+      // the options carry their category as an address (since the path revamp): "Classes & Mentoring" → classes-and-mentoring
+      const key = cat.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      await p.click(`.path-opt[data-category="${key}"]`); await p.waitForTimeout(900);
       await p.click('[data-begin] >> nth=0'); await p.waitForTimeout(900);
       const href = await p.getAttribute('[data-result-explore]', 'href');
       await p.click('[data-result-explore]'); await p.waitForTimeout(3000);
@@ -295,6 +297,88 @@ const ARGS = { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', 
       ok(`trail: the line above the title does not repeat the trail (${path})`, d.repeats.length === 0, JSON.stringify(d));
     }
     ok('trail: no errors on the way', p.errs.length === 0, p.errs.join(' | '));
+    await ctx.close(); }
+  // 26 found by keyboard.cjs (2026-11-27): the site-wide footer, added after the menu and search, was left out of what
+  //    those full-screen layers make inert, so Tab walked out of search into the footer's links
+  { const { ctx, p } = await fresh();
+    await p.goto(`${B}/?tier=calm&cursor=off`); await p.waitForTimeout(1500);
+    const inertWhen = async (open) => { await p.evaluate(open); await p.waitForTimeout(700); const r = await p.evaluate(() => { const f = document.querySelector('.site-foot'); return !f || f.inert || !!f.closest('[inert]'); }); await p.keyboard.press('Escape'); await p.waitForTimeout(600); return r; };
+    ok('footer: inert while search is open', await inertWhen(() => document.querySelector('[data-search-open]').click()));
+    ok('footer: inert while the menu is open', await inertWhen(() => document.querySelector('[data-menu-open]').click()));
+    ok('footer: back to normal when they close', await p.evaluate(() => { const f = document.querySelector('.site-foot'); return !!f && !f.inert; }));
+    await ctx.close(); }
+  // 27 found while making the site smoother (2026-11-27): starting the 3D world made all of its ~36 light forms at
+  //    once (60,000 points each), which stopped the homepage for about three quarters of a second on a laptop (three
+  //    seconds on a slow phone) just as it appeared; forms are now made as they are needed and the rest when idle
+  { const { ctx, p } = await fresh({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+    await p.addInitScript(() => { window.__lt = []; new PerformanceObserver((l) => l.getEntries().forEach((e) => window.__lt.push(Math.round(e.duration)))).observe({ type: 'longtask', buffered: true }); });
+    await p.goto(`${B}/?tier=full&cursor=off`); await p.waitForTimeout(6000);
+    const lt = await p.evaluate(() => window.__lt);
+    const worst = Math.max(0, ...lt);
+    ok('smooth: the homepage never stops for long while the world starts', worst < 450, `longest ${worst} ms (it was ~740)`);
+    await ctx.close(); }
+  // 28 the forms made on demand: the one on screen is real at once, and every form is made soon after
+  { const { ctx, p } = await fresh();
+    await p.goto(`${B}/pillars/magic?tier=full&cursor=off`); await p.waitForTimeout(2500);
+    const now = await p.evaluate(() => { const w = window.sarvakali.world.impl; const k = w.formKey; const a = w.base.forms[k], d = w.base.forms.dust; let same = 0; for (let i = 0; i < 300; i++) if (a[i] === d[i]) same++; return { k, real: k === 'dust' || same < 30 }; });
+    await p.waitForTimeout(9000);
+    const left = await p.evaluate(() => window.sarvakali.world.impl.unmade.size);
+    ok('world: the form on screen is made at once', now.real, now.k);
+    ok('world: every other form is made soon after, when the page is idle', left === 0, `${left} still to make`);
+    ok('world: no errors while making forms', p.errs.length === 0, p.errs.join(' | '));
+    await ctx.close(); }
+  // 29 the library's ~150 cards, and every chapter after the first, were styled and drawn even far off screen; each
+  //    change of the world's colours restyled all of them (15 ms on a laptop for the library); far ones now wait
+  { const { ctx, p } = await fresh({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+    await p.goto(`${B}/practice/library?tier=calm&cursor=off`); await p.waitForTimeout(1500);
+    const lib = await p.evaluate(() => { const cards = [...document.querySelectorAll('.mc')]; const drawn = cards.filter((c) => c.checkVisibility({ contentVisibilityAuto: true })).length; return { all: cards.length, drawn }; });
+    ok('smooth: library cards far off screen wait to be drawn', lib.all > 50 && lib.drawn < lib.all / 3, `${lib.drawn} of ${lib.all} drawn`);
+    await p.evaluate(() => document.querySelectorAll('.mc')[60].scrollIntoView()); await p.waitForTimeout(600);
+    const shown = await p.evaluate(() => { const c = document.querySelectorAll('.mc')[60]; return c.checkVisibility({ contentVisibilityAuto: true }) && c.getBoundingClientRect().height > 100; });
+    ok('smooth: a card is drawn in full once it comes near', shown);
+    await ctx.close(); }
+  // 30 the homepage asked for every pillar's own lettering at once (about 170 KB of fonts); each is now asked for
+  //    only when its chapter comes near
+  { const { ctx, p } = await fresh();
+    const asked = []; p.on('request', (r) => { if (/fonts\.googleapis\.com/.test(r.url())) asked.push(r.url()); });
+    await p.goto(`${B}/?tier=calm&cursor=off`); await p.waitForTimeout(2000);
+    const pillarFont = () => asked.filter((u) => /Cinzel|Spectral|DM\+Serif|Cormorant\+Unicase|Libre\+Baskerville/.test(u)).length;
+    const first = pillarFont();
+    await p.evaluate(() => document.querySelector('[data-chapter="learning"]').scrollIntoView()); await p.waitForTimeout(1500);
+    ok('smooth: pillar lettering is not fetched for the homepage\'s first screen', first === 0, `${first} fetched`);
+    ok('smooth: pillar lettering arrives as its chapter comes near', pillarFont() >= 3, `${pillarFont()} fetched after scrolling`);
+    await ctx.close(); }
+  // 31 reported by the owner (2026-11-27): the library's filters floated over the page the whole way down, taking a
+  //    large part of the screen, and its cards had too little padding to read as cards
+  for (const view of [{ viewport: { width: 1440, height: 900 } }, { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true }]) {
+    const { ctx, p } = await fresh(view);
+    await p.goto(`${B}/practice/library?tier=calm&cursor=off`); await p.waitForTimeout(1500);
+    await p.evaluate(() => document.querySelector('.plib-filters').scrollIntoView()); await p.waitForTimeout(300);
+    await p.evaluate(() => window.scrollBy(0, innerHeight * 3)); await p.waitForTimeout(600);
+    const r = await p.evaluate(() => { const f = document.querySelector('.plib-filters'); const fb = f.getBoundingClientRect(); const c = document.querySelector('.mc'); const cs = getComputedStyle(c);
+      return { pos: getComputedStyle(f).position, onScreen: fb.bottom > 0 && fb.top < innerHeight, pad: parseFloat(cs.paddingLeft), panelPad: parseFloat(getComputedStyle(c.querySelector('.mc-text') || c).paddingLeft) }; });
+    const w = view.viewport.width;
+    ok(`library: the filters stay at the head of the list, not over the cards (${w})`, r.pos !== 'sticky' && r.pos !== 'fixed' && !r.onScreen, `${r.pos}, on screen: ${r.onScreen}`);
+    ok(`library: cards have room inside them (${w})`, r.pad >= 18 && r.panelPad >= 12, `card ${r.pad}px, words ${r.panelPad}px`);
+    await ctx.close(); }
+  // 32 reported by the owner (2026-11-27): an article's text sat to one side of a wide screen, with its contents,
+  //    invitation and "read next" each at a different width; it now reads down one centred column
+  { const { ctx, p } = await fresh({ viewport: { width: 1440, height: 900 } });
+    await p.goto(`${B}/articles/who-is-kali?tier=calm&cursor=off`); await p.waitForTimeout(1500);
+    const r = await p.evaluate(() => { const box = (s) => document.querySelector(s)?.getBoundingClientRect(); const body = box('.ar-body'), h1 = box('.ar-article h1'), end = box('.article-end'), toc = box('.ar-toc');
+      return { off: Math.round(body.left + body.width / 2 - innerWidth / 2), h1: Math.round(h1.left - body.left), end: Math.round(end.left - body.left), endW: Math.round(end.width - body.width), toc: toc ? toc.right <= body.left : true }; });
+    ok('articles: the text is centred on a wide screen', Math.abs(r.off) < 40, `${r.off}px off centre`);
+    ok('articles: title, text and ending share one column', Math.abs(r.h1) < 4 && Math.abs(r.end) < 4 && Math.abs(r.endW) < 4 && r.toc, JSON.stringify(r));
+    await ctx.close(); }
+  // 33 every article's theme is one the site knows (an unknown one reads as the reading page)
+  { const { ctx, p } = await fresh();
+    await p.goto(`${B}/articles?tier=calm&cursor=off`); await p.waitForTimeout(800);
+    const links = await p.evaluate(() => [...new Set([...document.querySelectorAll('a[href^="/articles/"]')].map((a) => a.getAttribute('href')))]);
+    const bad = [];
+    for (const l of links) { await p.goto(`${B}${l}?tier=calm&cursor=off`); await p.waitForTimeout(500);
+      const t = await p.evaluate(() => ({ theme: document.querySelector('[data-ar-theme]')?.dataset.arTheme, seq: document.getElementById('main')?.dataset.sequence }));
+      if (!t.theme || !t.seq) bad.push(`${l} ${JSON.stringify(t)}`); }
+    ok('articles: each has a theme and its world', links.length > 0 && bad.length === 0, bad.join(' | ') || `${links.length} articles`);
     await ctx.close(); }
   await b.close();
 })();

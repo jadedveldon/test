@@ -7,6 +7,7 @@
  * eyes open and blink twice, the crescent and bindi glow, light gathers and the third eye opens within its rays, then
  * we fly into the third eye and an eye-shaped opening reveals the site (src/scripts/loader.ts).
  */
+import { words as SW } from '../config';
 import ThirdEye from './ThirdEye.astro';
 import { thirdPath } from '../data/third-eye';
 
@@ -38,7 +39,7 @@ const beads = [12, 28, 44, 60].map((deg, i) => {
   return { x: nath.x + Math.cos(a) * nath.r, y: nath.y + Math.sin(a) * nath.r, r: i % 2 ? 8 : 11 };
 });
 ---
-<div id="loader" class="loader" role="dialog" aria-label="Opening animation" aria-modal="false">
+<div id="loader" class="loader" role="dialog" aria-label={SW.opening} aria-modal="false">
   <svg class="loader-svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
     <defs>
       <radialGradient id="lg-ember" cx="50%" cy="50%" r="50%">
@@ -133,5 +134,5 @@ const beads = [12, 28, 44, 60].map((deg, i) => {
     </g>
   </svg>
 
-  <button type="button" class="loader-skip" id="loader-skip">Skip intro</button>
+  <button type="button" class="loader-skip" id="loader-skip">{SW.skipIntro}</button>
 </div>

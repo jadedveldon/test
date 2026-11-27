@@ -27,26 +27,28 @@ const noteFor = (g: string) => d.groupNotes?.find((n) => n.group === g)?.text;
 const count = groups.reduce((n, g) => n + g.mantras.length, 0);
 const practice = (await loadPractices()).find((p) => p.kind === 'day' && p.key === key);
 const dw = lib.dayWords;
+const fill = (t: string, v: Record<string, string | number>) => Object.entries(v).reduce((a, [k, x]) => a.replaceAll(`{${k}}`, String(x)), t);
+const C = lib.controls;
 const nameOf = (slug?: string | null) => all.find((m) => m.slug === slug)?.name;
 ---
-<Base title={`${d.name} · ${d.sanskrit} · Daily practice · Sarvakali`} sequence={world} description={`${d.name}, the day of ${d.planet}: ${d.question}`} crumbs={[{ label: cw.practice, href: '/practice' }, { label: d.name }]}>
+<Base title={fill(dw.metaTitle, { day: d.name, sanskrit: d.sanskrit })} sequence={world} description={fill(dw.metaDescription, { day: d.name, planet: d.planet, question: d.question })} crumbs={[{ label: cw.practice, href: '/practice' }, { label: d.name }]}>
   <div class="pday" data-practice-day data-day={key} style={`--day:${DAY_HEX[key]}`}>
     <section class="chapter" data-chapter={world}>
       <div class="chapter-inner">
-        <nav class="week-strip" aria-label="The seven days" data-hero>
+        <nav class="week-strip" aria-label={dw.weekLabel} data-hero>
           {DAYS.map((x) => <a href={dayPath(x.key)} aria-current={x.key === key ? 'page' : undefined} style={`--dc:${DAY_HEX[x.key as DayKey]}`} data-week-day={x.key}><span class="ws-glyph" aria-hidden="true">{DAY_GLYPH[x.key as DayKey]}</span><span class="ws-name">{x.name.slice(0, 3)}</span></a>)}
         </nav>
-        <p class="kicker" data-hero><span data-today-badge hidden>Today · </span>{d.planet} · {d.planetSanskrit}</p>
+        <p class="kicker" data-hero><span data-today-badge hidden>{dw.today} · </span>{d.planet} · {d.planetSanskrit}</p>
         <h1 class="display-l" data-hero data-split>{d.name}</h1>
         <p class="pday-sk" data-hero lang="sa-Latn">{d.sanskrit} <span class="pday-glyph" aria-hidden="true">{DAY_GLYPH[key]}</span></p>
-        <blockquote class="pday-question" data-hero><p class="kicker">A question for the day</p><p>{d.question}</p></blockquote>
+        <blockquote class="pday-question" data-hero><p class="kicker">{dw.question}</p><p>{d.question}</p></blockquote>
         <div class="cta-row" data-hero>
-          {practice ? <a class="btn btn-solid" href={practicePath(practice.slug)}>Begin {d.name}’s practice</a> : null}
-          <a class="btn btn-ghost" href="#about">About {d.name}</a>
+          {practice ? <a class="btn btn-solid" href={practicePath(practice.slug)}>{fill(dw.begin, { day: d.name })}</a> : null}
+          <a class="btn btn-ghost" href="#about">{fill(dw.about, { day: d.name })}</a>
         </div>
         {practice ? (
           <div class="ps-plan pday-plan" data-hero>
-            <p class="kicker">{practice.title} · about {practice.minutes} minutes</p>
+            <p class="kicker">{fill(dw.planMinutes, { title: practice.title, n: practice.minutes })}</p>
             <ol class="ps-outline">{practice.steps.map((s) => <li><span class="ps-ico" aria-hidden="true">{STEP_ICON[s.type]}</span><span>{s.title}{nameOf(s.mantra) ? <small>{nameOf(s.mantra)}</small> : null}</span></li>)}</ol>
           </div>
         ) : null}
@@ -56,20 +58,20 @@ const nameOf = (slug?: string | null) => all.find((m) => m.slug === slug)?.name;
     <section class="chapter" data-chapter={world} id="about">
       <div class="chapter-inner pday-about">
         <details class="pday-fold" data-fade>
-        <summary><span class="display-m">About {d.name}</span><span class="hint">Its planet, its intention and its themes</span></summary>
+        <summary><span class="display-m">{fill(dw.about, { day: d.name })}</span><span class="hint">{dw.aboutHint}</span></summary>
         <div class="pday-care"><CareText text={lib.care} /></div>
         <div class="pday-cols">
           <div data-fade>
-            <h2 class="display-m">The planetary character of the day</h2>
+            <h2 class="display-m">{dw.character}</h2>
             {d.character.map((p) => <p>{p}</p>)}
-            <h2 class="display-m">The day’s spiritual intention</h2>
+            <h2 class="display-m">{dw.intention}</h2>
             <p>{d.intention}</p>
           </div>
-          <aside data-fade>
-            <h2 class="kicker">Themes and areas for reflection</h2>
+          <aside role="none" data-fade>
+            <h2 class="kicker">{dw.themes}</h2>
             <ul class="pday-themes">{d.themes.map((t) => <li>{t}</li>)}</ul>
             <div class="pday-rhythm">
-              <h2 class="kicker">A gentle practice for {d.name}</h2>
+              <h2 class="kicker">{fill(dw.gentle, { day: d.name })}</h2>
               <p>{d.practice}</p>
               <p class="hint">{lib.rhythm.text}</p>
             </div>
@@ -82,12 +84,12 @@ const nameOf = (slug?: string | null) => all.find((m) => m.slug === slug)?.name;
     <section class="chapter" data-chapter={world} id="mantras">
       <div class="chapter-inner">
         <details class="pday-fold" data-fade>
-        <summary><span class="display-m">All {count} of {d.name}’s mantras</span><span class="hint">For study, or to choose your own</span></summary>
+        <summary><span class="display-m">{fill(dw.all, { n: count, day: d.name })}</span><span class="hint">{dw.allHint}</span></summary>
         <div class="mc-controls" data-mc-controls>
-          <span class="hint">Show:</span>
-          <label><input type="checkbox" checked data-show-script="deva" /> Devanagari</label>
-          <label><input type="checkbox" checked data-show-script="iast" /> Transliteration</label>
-          <label><input type="checkbox" checked data-show-script="read" /> Pronunciation</label>
+          <span class="hint">{C.show}</span>
+          <label><input type="checkbox" checked data-show-script="deva" /> {C.script}</label>
+          <label><input type="checkbox" checked data-show-script="iast" /> {C.iast}</label>
+          <label><input type="checkbox" checked data-show-script="read" /> {C.read}</label>
         </div>
         {groups.map((g) => (
           <div class="mc-group">
@@ -114,9 +116,9 @@ const nameOf = (slug?: string | null) => all.find((m) => m.slug === slug)?.name;
 
     <section class="chapter" data-chapter="close">
       <div class="chapter-inner pday-next">
-        <a class="pday-step" href={dayPath(prev.key)} style={`--dc:${DAY_HEX[prev.key as DayKey]}`}><span class="hint">← The day before</span><span class="display-m">{prev.name}</span><span class="hint">{prev.planet}</span></a>
-        <a class="pday-step pday-lib" href="/practice/library"><span class="hint">Every mantra</span><span class="display-m">The library</span><span class="hint">by day, deity or intention</span></a>
-        <a class="pday-step" href={dayPath(next.key)} style={`--dc:${DAY_HEX[next.key as DayKey]}`}><span class="hint">The day after →</span><span class="display-m">{next.name}</span><span class="hint">{next.planet}</span></a>
+        <a class="pday-step" href={dayPath(prev.key)} style={`--dc:${DAY_HEX[prev.key as DayKey]}`}><span class="hint">{dw.before}</span><span class="display-m">{prev.name}</span><span class="hint">{prev.planet}</span></a>
+        <a class="pday-step pday-lib" href="/practice/library"><span class="hint">{dw.libraryHint}</span><span class="display-m">{dw.library}</span><span class="hint">{dw.libraryBy}</span></a>
+        <a class="pday-step" href={dayPath(next.key)} style={`--dc:${DAY_HEX[next.key as DayKey]}`}><span class="hint">{dw.after}</span><span class="display-m">{next.name}</span><span class="hint">{next.planet}</span></a>
       </div>
     </section>
   </div>

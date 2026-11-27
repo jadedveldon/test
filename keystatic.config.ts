@@ -14,6 +14,7 @@
  */
 import { collection, config, fields, singleton } from '@keystatic/core';
 import { ICON_NAMES } from './src/data/icons.ts';
+import uiWords from './src/content/pages/ui.json' with { type: 'json' };
 
 /* ---------------------------------------------------------------- where edits go */
 
@@ -269,7 +270,17 @@ const settings = singleton({
     words: fields.object({
       ask: line('“Ask about this”'), previous: line('Previous pillar'), next: line('Next pillar'),
       care: line('Boundaries and care'), path: line('Find your path'),
-    }, { label: 'Words on every pillar page' }),
+      keep: line('“Keep” (a button)'), keepLabel: line('For screen readers: “Keep {name} in your list”'), request: line('“Request a conversation”'),
+      otherPillars: line('For screen readers: “Other pillars”'), chapters: line('For screen readers: “The chapters”'), inThisPillar: line('For screen readers: “In this pillar”'),
+      skipIntro: line('“Skip intro” (the opening)'), opening: line('For screen readers: the opening animation'), howItWorks: line('For screen readers: “How it works”'),
+      loading: line('Shown until a date is worked out'), turnYantra: line('For screen readers: “Turn the yantra”'), familyOfGods: line('For screen readers: the families of gods'),
+      bookChapters: line('For screen readers: Witchcraft & Magic’s chapters'), sigilWays: line('For screen readers: ways of making a sigil'), yourSigil: line('For screen readers: “Your sigil”'),
+      yourIntention: line('For screen readers: “Your intention”'), arrangeMonogram: line('For screen readers: “Arrange the monogram”'), whichWheel: line('For screen readers: “Which wheel”'),
+      turnWheel: line('For screen readers: “Turn the wheel”'), fourChapters: line('For screen readers: Healing’s chapters'), breathPatterns: line('For screen readers: “Breathing patterns”'),
+      honeypot: line('Hidden trap field for robots (people never see it)'), prototypeNote: para('Note on Connect while the site has no Studio behind it'),
+      aboutPlaceholder: para('Note on About while it has placeholder lines (empty it when About is final)'), searchLinkTitle: line('Name of the search index (not shown)'),
+    }, { label: 'Words used across the site (buttons, notes, and names read by screen readers)' }),
+    pages: fields.object({ home: fields.object({ title: line('Title (browser tab and search results)'), description: para('Line for search results and link previews') }, { label: 'The homepage' }), about: fields.object({ title: line('Title (browser tab and search results)'), description: para('Line for search results and link previews') }, { label: 'About' }), connect: fields.object({ title: line('Title (browser tab and search results)'), description: para('Line for search results and link previews') }, { label: 'Connect' }), path: fields.object({ title: line('Title (browser tab and search results)'), description: para('Line for search results and link previews') }, { label: 'Find your path' }), practice: fields.object({ title: line('Title (browser tab and search results)'), description: para('Line for search results and link previews') }, { label: 'Daily practice' }), terms: fields.object({ title: line('Title (browser tab and search results)'), description: para('Line for search results and link previews') }, { label: 'Terms (empty: its opening line)' }), invoice: fields.object({ title: line('Title (browser tab and search results)'), description: para('Line for search results and link previews') }, { label: 'An invoice' }), booking: fields.object({ title: line('Title (browser tab and search results)'), description: para('Line for search results and link previews') }, { label: 'A booking' }), notFound: fields.object({ title: line('Title (browser tab and search results)'), description: para('Line for search results and link previews') }, { label: 'Page not found' }) }, { label: 'Pages for search engines: titles and lines' }),
     crumbs: fields.object({
       label: line('For screen readers: what the trail is'), home: line('Home'), practice: line('Daily practice'), library: line('Mantra library'), week: line('The seven days'), articles: line('Articles'), pillars: line('The six pillars'),
     }, { label: 'The trail at the top of inner pages (breadcrumbs)' }),
@@ -414,13 +425,22 @@ const practice = singleton({
       minutes: line('“About {n} minutes”'), done: line('“Done {n}×”'),
     }, { label: 'The page’s sections' }),
     session: fields.object({
-      withDeity: line('“With a deity”'), forFeeling: line('“For how you feel”'), open: line('“Open to all” (no deity)'), plan: line('“What you will do · about {n} minutes”'), offering: line('Offering'), begin: line('Begin'), ask: line('Ask Sarvakali'), drafted: line('Drafted note'),
+      metaTitle: line('A practice’s title in the browser tab', '{title}'), metaDescription: line('A practice’s line for search results', '{line}, {n} minutes'), withDeity: line('“With a deity”'), forFeeling: line('“For how you feel”'), open: line('“Open to all” (no deity)'), plan: line('“What you will do · about {n} minutes”'), offering: line('Offering'), begin: line('Begin'), ask: line('Ask Sarvakali'), drafted: line('Drafted note'),
       steps: line('Steps'), breatheIn: line('Breathe in'), breatheOut: line('Breathe out'), light: line('Light the lamp'), lit: line('The lamp is lit'), lineByLine: line('Line by line'),
       howMany: line('How many times'), once: line('Once'), bead: line('Next repetition'), reflectHint: line('Reflection hint'), keepJournal: line('Keep in journal'),
       offerLabel: line('Offering field'), offer: line('Offer button'), next: line('Next'), back: line('Back'), finish: line('Finish'),
       doneTitle: line('Done: heading'), nextTime: line('Next time'), minutes: line('“About {n} minutes”'), home: line('Back'), again: line('Again'), streak: line('“{n} days in a row”'), first: para('First day'),
     }, { label: 'A guided practice: its words' }),
-    tools: fields.object({ kicker: line('Small heading'), title: line('Heading'), lede: para('Text') }, { label: 'Tools for practice' }),
+    tools: fields.object({
+      meta: fields.object({ title: line('Title in the browser tab and search results'), description: para('Line for search results and link previews') }, { label: 'For search engines' }),
+      kicker: line('Small heading'), title: line('Heading'), lede: para('Text'),
+      jump: lines('Links to the parts, in order: mala, fire, diya, moons, reminders', 'Link'),
+      mala: fields.object({ kicker: line('Small heading'), title: line('Heading'), lede: para('Text'), mantra: line('Mantra (Devanagari)'), mantraNote: line('Mantra (Roman letters)'), next: line('“Next bead”'), reset: line('“Start the round again”'), label: line('For screen readers: the mala'), of: line('“of 108”') }, { label: 'The mala' }),
+      fire: fields.object({ kicker: line('Small heading'), title: line('Heading'), lede: para('Text'), label: line('What to write (shown in the box)'), button: line('Button'), done: line('After the offering'), again: line('“Offer something else”') }, { label: 'The fire' }),
+      diya: fields.object({ title: line('Heading'), button: line('Button') }, { label: 'The diya' }),
+      moonReminder: fields.object({ title: line('Heading'), text: para('Text'), button: line('Button') }, { label: 'Moon reminders' }),
+      install: fields.object({ title: line('Heading'), text: para('Text'), button: line('Button') }, { label: 'On your phone' }),
+    }, { label: 'Tools for practice' }),
     today: fields.object({ day: line('Today'), question: line('Over the day’s question'), dayMantras: line('“{day}’s mantras”'), library: line('Library button'), moon: line('Moon'), next: line('Next sacred night'), you: line('Your practice'), none: line('Not yet today'), done: line('Practised today'), streak: line('“{n} days in a row”'), first: line('First day') }, { label: 'The today strip' }),
     mine: fields.object({ kicker: line('Small heading'), title: line('Heading'), lede: para('Text'), empty: para('When empty'), chanted: line('“chanted {n} times”'), remove: line('Remove') }, { label: 'My mantras' }),
     malaChoose: line('The mala: “The mantra”'), malaOpen: line('The mala: link to its page'),
@@ -501,6 +521,49 @@ const me = singleton({
   },
 });
 
+const articlesPage = singleton({
+  label: 'Articles (the words around them)', path: 'src/content/pages/articles', format: { data: 'json' },
+  schema: {
+    meta: fields.object({ title: line('Title in the browser tab and search results'), description: para('Line for search results and link previews') }, { label: 'For search engines' }),
+    kicker: line('Small heading'), title: must('Heading'), lede: para('Text'), draftNote: para('Note while articles are drafts (empty it when they are final)'),
+    empty: line('When there are no articles'), filterLabel: line('For screen readers: the pillar filter'), all: line('“All”'), none: line('When a pillar has no articles'),
+    minRead: line('“{n} min read”'), min: line('“{n} min”'), draft: line('“draft”'),
+    article: fields.object({
+      titleSuffix: line('After an article’s title in the browser tab', 'e.g. “ · Sarvakali”'), by: line('Byline'), aDraft: line('“a draft”'), share: line('“Share”'), shared: line('“Link copied”'),
+      contents: line('“In this article”'), askTitle: line('Heading at the end'), askText: line('Text at the end'), ask: line('“Ask about this”'), explore: line('“Explore {pillar}”'), next: line('“Read next”'), back: line('“All articles”'),
+    }, { label: 'On an article' }),
+  },
+});
+
+/* ---------------------------------------------------------------- words in interactive moments (src/scripts/words.ts) */
+
+// the fields follow the file itself: every group and every line it holds is editable, with its current words as the hint
+const UI_GROUPS: Record<string, string> = {
+  common: 'Shared', healing: 'Healing (breath, grounding, chakras, the mended bowl)', magic: 'Witchcraft & Magic (sigils, the wheel, the dark moon)',
+  identity: 'Identity (the note for a practitioner)', devotion: 'Devotion (turn the yantra)', divination: 'Divination (the mirror)', diya: 'The diya',
+  card: 'Today’s card', festivals: 'Festival days', pwa: 'Adding the site to a phone', search: 'Search', keep: 'Your list', practice: 'Daily practice',
+  booking: 'A client’s booking page', sky: 'The moon',
+};
+const uiGroup = (o: Record<string, string>) => fields.object(Object.fromEntries(Object.entries(o).map(([k, v]) => [k, v.length > 70 ? para(k, `Now: ${v}`) : line(k, `Now: ${v}`)])));
+const ui = singleton({
+  label: 'Words in interactive moments', path: 'src/content/pages/ui', format: { data: 'json' },
+  schema: Object.fromEntries(Object.entries(uiWords as Record<string, Record<string, string>>).map(([g, o]) => [g, fields.object(uiGroup(o).fields, { label: UI_GROUPS[g] ?? g, description: 'Words in {braces} are filled in by the site: keep them as they are.' })])),
+});
+
+const care = singleton({
+  label: 'Boundaries and care', path: 'src/content/pages/care', format: { data: 'json' },
+  schema: {
+    meta: fields.object({ title: line('Title in the browser tab and in search results'), description: para('One or two lines for search results and link previews') }, { label: 'For search engines' }),
+    kicker: line('Small heading'), title: must('Heading'), lede: para('Text'),
+    draftNote: para('Draft note (empty it once Sarvakali and a lawyer have approved the page)'),
+    crisis: fields.object({ title: line('Heading'), text: para('Text', LINKS) }, { label: 'If you are in crisis (shown first, in a box)' }),
+    sections: fields.array(fields.object({
+      id: line('Address of this part (letters and dashes; “privacy” is where the footer’s privacy link leads)'), title: line('Heading'),
+      paras: lines('Paragraphs', 'Paragraph', { description: LINKS }), points: lines('Points (a list under the paragraphs)', 'Point', { description: LINKS }),
+    }), { label: 'The parts, in order', itemLabel: (p) => p.fields.title.value || 'A part' }),
+  },
+});
+
 const terms = singleton({
   label: 'Terms and refunds', path: 'src/content/pages/terms', format: { data: 'json' },
   schema: {
@@ -546,6 +609,11 @@ const writings = collection({
     pillar: fields.select({ label: 'Pillar', options: [['devotion', 'Devotion & the Unseen'], ['magic', 'Witchcraft & Magic'], ['healing', 'Healing & Inner Work'], ['identity', 'Identity, Intimacy & the Body'], ['divination', 'Divination & Insight'], ['learning', 'Learning']].map(([value, label]) => ({ value, label })), defaultValue: 'devotion' }),
     minutes: fields.integer({ label: 'Minutes to read', defaultValue: 4, validation: { isRequired: true, min: 1 } }),
     draft: fields.checkbox({ label: 'Draft', description: 'Still a draft for Sarvakali.', defaultValue: true }),
+    theme: fields.select({
+      label: 'Theme', description: 'How the article looks: the quiet reading page, its own pillar’s world, or the world of any page of the site (colours, light and lettering).',
+      options: [['reading', 'Reading (the Articles page)'], ['pillar', 'Its pillar’s world'], ['devotion', 'Devotion & the Unseen: cosmic mother'], ['magic', 'Witchcraft & Magic: the gilded grimoire'], ['healing', 'Healing & Inner Work: still water'], ['identity', 'Identity, Intimacy & the Body: soft prism'], ['divination', 'Divination & Insight: candlelight'], ['learning', 'Learning: the library'], ['practice', 'Daily practice'], ['care', 'Boundaries and care']].map(([value, label]) => ({ value, label })),
+      defaultValue: 'reading',
+    }),
     featured: fields.checkbox({ label: 'Show it large at the top of Articles', description: 'Otherwise the newest is shown large.', defaultValue: false }),
     image: fields.image({ label: 'Picture (optional)', description: 'Without one, the card is drawn in the pillar’s colours.', directory: 'public/media/articles', publicPath: '/media/articles/' }),
     imageAlt: line('What the picture shows (for people who cannot see it)'),
@@ -647,16 +715,28 @@ const library = singleton({
     how: fields.object({ title: line('Heading'), paras: lines('How to use this library', 'Paragraph') }, { label: 'How to use it' }),
     rhythm: fields.object({ title: line('Heading'), text: para('Text') }, { label: 'A simple rhythm' }),
     labels: fields.object({ title: line('Heading'), open: line('Open'), openText: para('Open: meaning'), guidance: line('Guidance'), guidanceText: para('Guidance: meaning'), variant: line('Variant'), variantText: para('Variant: meaning'), verify: line('Being checked'), verifyText: para('Being checked: meaning'), honoured: line('Honoured'), honouredText: para('Honoured: meaning'), drafted: line('Drafted'), draftedText: para('Drafted: meaning') }, { label: 'The labels' }),
-    search: line('Search'), searchHint: line('Search hint'), allDays: line('Every day'), deity: line('Deity'), anyDeity: line('Any deity'), intention: line('Intention'), include: line('Include guidance'), count: line('“{n} of {total}”'), none: para('Nothing found'), clear: line('Clear filters'), tradition: line('Tradition'), anyTradition: line('Every tradition'), kind: line('Kind'), every: line('Heading over everything'), anyDayChip: line('“Any day”'),
+    search: line('Search'), searchHint: line('Search hint'), allDays: line('Every day'), deity: line('Deity'), anyDeity: line('Any deity'), intention: line('Intention'), include: line('Include guidance'), count: line('“{n} of {total}”'), none: para('Nothing found'), clear: line('Clear filters'), tradition: line('Tradition'), anyTradition: line('Every tradition'), kind: line('Kind'), every: line('Heading over everything'), anyDayChip: line('“Any day”'), narrow: line('“More ways to narrow” (folds the lists and switches away on phones)'),
     kinds: fields.object({ mantra: line('Mantra'), prayer: line('Prayer'), hymn: line('Hymn'), chant: line('Chant'), verse: line('Verse'), sutra: line('Sutra'), blessing: line('Blessing'), figure: line('Figures honoured') }, { label: 'Kinds of text' }),
-    dayWords: fields.object({ acrossKicker: line('Small heading over other traditions on a day'), acrossLink: line('Link to every tradition') }, { label: 'On a day’s page' }),
+    meta: fields.object({ title: line('Title in the browser tab and search results'), description: para('Line for search results and link previews') }, { label: 'For search engines (the library page)' }),
+    mantraMeta: line('A mantra’s title in the browser tab', '{name} is the mantra’s name.'),
+    start: para('“Looking for where to begin?”', LINKS), dayLegend: line('For screen readers: “Day”'),
+    controls: fields.object({ show: line('“Show:”'), script: line('Original script'), iast: line('Transliteration'), read: line('Pronunciation') }, { label: 'Which scripts to show' }),
+    dayWords: fields.object({
+      acrossKicker: line('Small heading over other traditions on a day'), acrossLink: line('Link to every tradition'),
+      metaTitle: line('A day’s title in the browser tab', '{day}, {sanskrit}'), metaDescription: line('A day’s line for search results', '{day}, {planet}, {question}'),
+      weekLabel: line('For screen readers: the seven days'), today: line('“Today”'), question: line('“A question for the day”'), begin: line('“Begin {day}’s practice”'),
+      about: line('“About {day}”'), aboutHint: line('Under it'), character: line('“The planetary character of the day”'), intention: line('“The day’s spiritual intention”'),
+      themes: line('“Themes and areas for reflection”'), gentle: line('“A gentle practice for {day}”'), all: line('“All {n} of {day}’s mantras”'), allHint: line('Under it'),
+      before: line('“The day before”'), after: line('“The day after”'), libraryHint: line('Over the library link'), library: line('The library link'), libraryBy: line('Under it'),
+      planMinutes: line('“{title} · about {n} minutes”'),
+    }, { label: 'On a day’s page' }),
     ways: fields.object({ title: line('Heading'), byTradition: line('By tradition'), byNeed: line('By what you need'), byDay: line('By day') }, { label: 'Ways in' }),
     themes: fields.object(Object.fromEntries(THEME_OPTIONS.map((t) => [t.value, line(t.value)])), { label: 'Intention names' }),
     mantra: fields.object({
       text: line('Sanskrit'), iast: line('Transliteration'), pronunciation: line('Pronunciation'), meaning: line('Meaning'), parts: line('Line by line'), purpose: line('Purpose'), supports: line('Supports'), when: line('When'), note: line('Note'), source: line('Source'), supplied: line('As supplied'),
       listen: line('Listen'), noAudio: line('No recording yet'), show: line('Show'), bigger: line('Larger text'), copy: line('Copy'), copied: line('Copied'), keep: line('Keep'), kept: line('Kept'),
       chant: line('Chant: heading'), chantLede: para('Chant: text'), counts: fields.array(fields.integer({ label: 'Count' }), { label: 'Counts offered' }), once: line('Once'), times: line('“{n} times”'), next: line('Next repetition'), doneChant: line('Complete'), again: line('Again'),
-      days: line('Kept on'), more: line('“More for {deity}”'), open: line('Open'), dayLink: line('“All of {day}’s mantras”'), anyDay: line('Kept on any day'), tradLink: line('“More from {tradition}”'), script: line('Original script'),
+      days: line('Kept on'), more: line('“More for {deity}”'), open: line('Open'), dayLink: line('“All of {day}’s mantras”'), anyDay: line('Kept on any day'), tradLink: line('“More from {tradition}”'), script: line('Original script'), yourPractice: line('Link to your practice'), usedIn: line('“Guided practices that use it”'), before: line('“Before it”'), beforeOn: line('“Before it on {day}”'), after: line('“After it”'), howMany: line('For screen readers: “How many times”'), moreDayLabel: line('For screen readers: more on this day'), moreTradLabel: line('For screen readers: more from this tradition'), moreFold: line('“More” (on a card)'),
     }, { label: 'A mantra’s page' }),
     care: para('Care note', 'Tele-MANAS 14416 becomes a tap-to-call link by itself.'),
   },
@@ -669,8 +749,8 @@ export default config({
   ui: {
     brand: { name: 'Sarvakali' },
     navigation: {
-      'The site': ['home', 'kind', 'festivals', 'cards', 'writings', 'settings'],
-      Pages: ['about', 'connect', 'booking', 'me', 'terms', 'path', 'notfound'],
+      'The site': ['home', 'kind', 'festivals', 'cards', 'writings', 'articlesPage', 'settings', 'ui'],
+      Pages: ['about', 'care', 'connect', 'booking', 'me', 'terms', 'path', 'notfound'],
       'Daily practice': ['practice', 'practices', 'mantras', 'week', 'library'],
       'Pillar pages': ['devotion', 'magic', 'healing', 'identity', 'divination', 'learning'],
       Catalogue: ['catDevotion', 'catMagic', 'catHealing', 'catIdentity', 'catDivination', 'catLearning'],
@@ -678,7 +758,7 @@ export default config({
   },
   collections: { writings, mantras, practices },
   singletons: {
-    home, kind, festivals, cards, settings, about, connect, booking, me, terms, path, practice, notfound, week, library,
+    home, kind, festivals, cards, settings, articlesPage, ui, about, care, connect, booking, me, terms, path, practice, notfound, week, library,
     devotion, magic, healing, identity, divination, learning,
     catDevotion: catalogue('devotion', 'Catalogue · Devotion & the Unseen', CH.devotion, false),
     catMagic: catalogue('magic', 'Catalogue · Witchcraft & Magic', CH.magic),

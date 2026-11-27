@@ -8,6 +8,7 @@
  *   shamanic work (the world tree).
  */
 import { pillarService } from '../../seo/ld';
+import { words as SW } from '../../config';
 import Base from '../../layouts/Base.astro';
 import { crumbWords as cw } from '../../config';
 import { words } from '../../config';
@@ -58,13 +59,13 @@ const alias = (k: string) => (aliases[k] || []);
           <p class="kicker" data-hero>Pillar {index + 1} of {pillars.length} · {p.count} services</p>
           <h1 class="display-l dv-title" data-hero data-split transition:name="pt-devotion" data-pt>{p.name}</h1>
           <p class="lede" data-hero>{p.line}</p>
-          <ol class="dv-moves" data-hero aria-label="In this pillar">
+          <ol class="dv-moves" data-hero aria-label={SW.inThisPillar}>
             {MOVES.map(([k, id], i) => <li><a href={`#${id}`}><span>{ROMAN[i]}</span>{mv[k].menu}</a></li>)}
           </ol>
         </div>
         <div class="dv-sig" data-hero>
           <div class="yantra-turn" data-yantra>
-            <svg viewBox="-150 -150 300 300" class="yt-svg" tabindex="0" role="slider" aria-label="Turn the yantra" aria-valuemin="0" aria-valuemax="360" aria-valuenow="47">
+            <svg viewBox="-150 -150 300 300" class="yt-svg" tabindex="0" role="slider" aria-label={SW.turnYantra} aria-valuemin="0" aria-valuemax="360" aria-valuenow="47">
               <!-- a mala of 108 beads round the yantra, drawn in the same figure so it always shares its centre -->
               <g class="yt-mala" aria-hidden="true">{Array.from({ length: 108 }, (_, i) => { const a = (i / 108) * Math.PI * 2 - Math.PI / 2; return <circle cx={(Math.cos(a) * 143).toFixed(1)} cy={(Math.sin(a) * 143).toFixed(1)} r={i === 0 ? 3.4 : 1.6} class={i === 0 ? 'yt-bead meru' : 'yt-bead'} />; })}</g>
               <g class="yt-rot" data-yt-rot>
@@ -98,7 +99,7 @@ const alias = (k: string) => (aliases[k] || []);
             <li class="vidya" style={`--i:${i}`}>
               <span class="vidya-deva" lang="sa">{v.deva}</span>
               <span class="vidya-name">{v.name}</span>
-              <button type="button" class="vidya-keep" data-keep={v.service} data-keep-p={p.name} aria-pressed="false" aria-label={`Keep ${v.service} in your list`}>Keep</button>
+              <button type="button" class="vidya-keep" data-keep={v.service} data-keep-p={p.name} aria-pressed="false" aria-label={SW.keepLabel.replace('{name}', v.service)}>{SW.keep}</button>
             </li>
           ))}
           <li class="vidya-bindu" aria-hidden="true"></li>
@@ -126,7 +127,7 @@ const alias = (k: string) => (aliases[k] || []);
               <span class="deity-script" lang="sa">{d.deva}</span>
               <span class="deity-name">{d.name}</span>
               <span class="deity-line">{d.line}</span>
-              <button type="button" class="vidya-keep" data-keep={d.service} data-keep-p={p.name} aria-pressed="false" aria-label={`Keep ${d.service} in your list`}>Keep</button>
+              <button type="button" class="vidya-keep" data-keep={d.service} data-keep-p={p.name} aria-pressed="false" aria-label={SW.keepLabel.replace('{name}', d.service)}>{SW.keep}</button>
             </li>
           ))}
         </ul>
@@ -154,7 +155,7 @@ const alias = (k: string) => (aliases[k] || []);
           <ul aria-hidden="true">{ELEMENTS.map((e) => <li><svg viewBox="-20 -20 40 40"><path d={e.symbol} /></svg><small lang="grc">{e.greek}</small></li>)}</ul>
           <figcaption>{COPY.greek.rootsCaption}</figcaption>
         </figure>
-        <div class="elements" role="group" aria-label="Show one family of gods" data-fade data-elements>
+        <div class="elements" role="group" aria-label={SW.familyOfGods} data-fade data-elements>
           <button type="button" data-el="all" aria-pressed="true"><span class="el-all">{COPY.greek.allLabel}</span></button>
           {FAMILIES.map((f) => <button type="button" data-el={f.key} aria-pressed="false"><span>{f.name}</span></button>)}
         </div>
@@ -257,7 +258,7 @@ const alias = (k: string) => (aliases[k] || []);
       </div>
     </section>
 
-    <nav class="pp-nav" aria-label="Other pillars">
+    <nav class="pp-nav" aria-label={SW.otherPillars}>
       <a href={`/pillars/${prev.slug}`}><span>{words.previous}</span><b transition:name={`pt-${prev.slug}`} data-pt>{prev.name}</b></a>
       <a href={`/pillars/${next.slug}`}><span>{words.next}</span><b transition:name={`pt-${next.slug}`} data-pt>{next.name}</b></a>
     </nav>

@@ -6,6 +6,7 @@
  * prompts to ponder. Readings are offered for reflection.
  */
 import { pillarService } from '../../seo/ld';
+import { words as SW } from '../../config';
 import Base from '../../layouts/Base.astro';
 import { crumbWords as cw } from '../../config';
 import { words } from '../../config';
@@ -33,7 +34,7 @@ const mr = COPY.mirror;
           <h1 class="display-l pd-title" data-hero data-split transition:name="pt-divination" data-pt>{p.name}</h1>
           <p class="lede" data-hero>{p.line}</p>
           <p class="pd-note" data-hero><Rich text={CARE} /></p>
-          <ol class="pd-index" data-hero aria-label="The chapters">
+          <ol class="pd-index" data-hero aria-label={SW.chapters}>
             {moves.map((m, i) => <li class={`dv5-ix-${m.room}`}><a href={`#${m.id}`}><span class="pd-num" aria-hidden="true">{ROMAN[i]}</span><span class="pd-ix-title">{m.title}</span><span class="pd-ix-n">{categoryCount(m.cat)} services</span></a></li>)}
           </ol>
         </div>
@@ -84,7 +85,7 @@ const mr = COPY.mirror;
       </div>
     </section>
 
-    <nav class="pp-nav" aria-label="Other pillars">
+    <nav class="pp-nav" aria-label={SW.otherPillars}>
       <a href={`/pillars/${prev.slug}`}><span>{words.previous}</span><b transition:name={`pt-${prev.slug}`} data-pt>{prev.name}</b></a>
       <a href={`/pillars/${next.slug}`}><span>{words.next}</span><b transition:name={`pt-${next.slug}`} data-pt>{next.name}</b></a>
     </nav>

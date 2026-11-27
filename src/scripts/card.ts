@@ -3,6 +3,7 @@ import { buzz, PATTERNS } from './haptics';
 import { ring } from './audio';
 import type { WorldHandle as World } from './world/handle';
 import deck from '../content/cards.json';
+import { say } from './words';
 
 /**
  * Draw today's card. One card a day for each visitor: the same card all day,
@@ -84,7 +85,7 @@ function open() {
   gsap.set(inner, { rotateY: drawn ? 180 : 0 });
   dialog.dataset.state = drawn ? 'shown' : 'ready';
   const status = dialog.querySelector('[data-card-status]');
-  if (status) status.textContent = drawn ? 'Your card for today. A new one waits for you tomorrow.' : 'Take a breath, then turn the card.';
+  if (status) status.textContent = drawn ? say('card.drawn') : say('card.turn');
   if (typeof dialog.showModal === 'function') dialog.showModal(); else dialog.setAttribute('open', '');
   gsap.fromTo(dialog.querySelector('.card3d'), { y: 40, opacity: 0, rotateX: 12 }, { y: 0, opacity: 1, rotateX: 0, duration: 0.8, ease: 'expo.out' });
 }
@@ -101,7 +102,7 @@ function flip(dialog: HTMLElement) {
       dialog.dataset.state = 'shown';
       local('sk-card-day', today());
       const status = dialog.querySelector('[data-card-status]');
-      if (status) status.textContent = 'Your card for today. A new one waits for you tomorrow.';
+      if (status) status.textContent = say('card.drawn');
     },
   })
     .to(inner, { y: -18, scale: 1.04, duration: 0.35, ease: 'power2.out' })
@@ -164,7 +165,7 @@ async function share(dialog: HTMLElement) {
   a.href = url; a.download = 'sarvakali-card.png';
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 4000);
-  if (status) status.textContent = 'Saved as a picture. (If nothing downloaded, this viewer blocks it; the real site allows it.)';
+  if (status) status.textContent = say('card.saved');
 }
 
 let ready = false;

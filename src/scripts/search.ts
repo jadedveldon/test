@@ -3,6 +3,7 @@ import { setPageInert } from './inert';
 import { isKept } from './keep';
 import { sitePath } from '../studio/client';
 import { track } from './track';
+import { say } from './words';
 
 /**
  * Search across every service, guided practice, mantra and article. Opens from the header, or with "/" or Ctrl+K.
@@ -70,16 +71,16 @@ function render(q: string) {
   const hits = find(q);
   list.innerHTML = '';
   if (!q.trim()) {
-    status.textContent = `Search ${index.items.length.toLocaleString("en-IN")} services, ${index.practices?.length ?? 0} guided practices, ${index.mantras?.length ?? 0} mantras and prayers from every tradition, and every article: protection, grief, Kali, tarot, ancestors…`;
+    status.textContent = say('search.intro', { services: index.items.length.toLocaleString('en-IN'), practices: index.practices?.length ?? 0, mantras: index.mantras?.length ?? 0 });
     restorePreview();
     return;
   }
-  status.textContent = hits.length ? `${hits.length === 60 ? '60+' : hits.length} found` : 'Nothing found. Try a shorter word, or ask Sarvakali directly.';
+  status.textContent = hits.length ? say('search.found', { n: hits.length === 60 ? '60+' : hits.length }) : say('search.none');
 
   // guided practices first (the way in), then mantras from the library, then articles, then services
   const ws = words(q);
   const match = (rows: Row5[] | undefined, n: number) => (ws.length ? (rows ?? []).filter((m) => ws.every((w) => startsWord(m[4], w))).slice(0, n) : []);
-  const KIND: Record<string, string> = { deity: 'Guided practice · with a deity', feeling: 'Guided practice · for how you feel', day: 'Guided practice · for the day' };
+  const KIND: Record<string, string> = { deity: say('search.withDeity'), feeling: say('search.forFeeling'), day: say('search.forDay'), open: say('search.open') };
   const group = (title: string, rows: { href: string; name: string; sub: string }[]) => {
     if (!rows.length) return;
     const h = document.createElement('li');
@@ -102,11 +103,11 @@ function render(q: string) {
   const pHits = match(index.practices, 4);
   const mHits = match(index.mantras, 6);
   const aHits = match(index.articles, 3);
-  group('Guided practices', pHits.map(([name, slug, kind, line]) => ({ href: sitePath(`/practice/with/${slug}`), name, sub: KIND[kind] ?? line })));
-  group('Mantra library', mHits.map(([name, slug, deity, day]) => ({ href: sitePath(`/practice/mantras/${slug}`), name, sub: `${deity && deity !== name ? `${deity} · ` : ''}${day}` })));
-  group('Articles', aHits.map(([name, slug, pillar, summary]) => ({ href: sitePath(`/articles/${slug}`), name, sub: pillar || summary.slice(0, 80) })));
+  group(say('search.practices', {}, 'Guided practices'), pHits.map(([name, slug, kind, line]) => ({ href: sitePath(`/practice/with/${slug}`), name, sub: KIND[kind] ?? line })));
+  group(say('search.library', {}, 'Mantra library'), mHits.map(([name, slug, deity, day]) => ({ href: sitePath(`/practice/mantras/${slug}`), name, sub: `${deity && deity !== name ? `${deity} · ` : ''}${day}` })));
+  group(say('search.articles', {}, 'Articles'), aHits.map(([name, slug, pillar, summary]) => ({ href: sitePath(`/articles/${slug}`), name, sub: pillar || summary.slice(0, 80) })));
   const others = pHits.length + mHits.length + aHits.length;
-  if (others && !hits.length) status.textContent = `${others} found`;
+  if (others && !hits.length) status.textContent = say('search.found', { n: others });
   noteSearch(q, hits.length + others);
   let lastPillar = -1;
   for (const { i } of hits) {
@@ -133,7 +134,7 @@ function render(q: string) {
     keep.dataset.keep = t;
     keep.dataset.keepP = p.name;
     keep.setAttribute('aria-pressed', String(isKept(t)));
-    keep.setAttribute('aria-label', `Keep ${t} in your list`);
+    keep.setAttribute('aria-label', say('search.keep', { name: t }, `Keep ${t} in your list`));
     keep.innerHTML = '<span aria-hidden="true">+</span>';
     li.append(a, keep);
     list.appendChild(li);

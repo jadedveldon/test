@@ -40,7 +40,7 @@ const dir = isRtl(m.lang) ? 'rtl' : undefined;
   {m.meaning ? <p class="mc-meaning">{m.meaning}</p> : null}
   {(m.purpose || m.supports || m.when || m.note || m.source) ? (
     <details class="mc-more">
-      <summary>More</summary>
+      <summary>{W.moreFold}</summary>
       <dl>
         {m.purpose ? <><dt>{W.purpose}</dt><dd>{m.purpose}</dd></> : null}
         {m.supports ? <><dt>{W.supports}</dt><dd>{m.supports}</dd></> : null}
@@ -51,5 +51,5 @@ const dir = isRtl(m.lang) ? 'rtl' : undefined;
       {m.drafted ? <p class="mc-drafted">{L.drafted}</p> : null}
     </details>
   ) : null}
-  <a class="mc-open" href={mantraPath(m.slug)}>{m.text ? W.chant : W.open} <span aria-hidden="true">→</span></a>
+  <a class="mc-go" href={mantraPath(m.slug)}>{m.text ? W.chant : W.open} <span aria-hidden="true">→</span></a>
 </article>

@@ -11,6 +11,7 @@ import type { PublicBooking } from '../studio/core/ops';
 import { whenZ, zoneLabel, zonedToUtc } from '../studio/core/time';
 import { buzz, PATTERNS } from './haptics';
 import { track } from './track';
+import { say } from './words';
 
 const W = words.booking;
 const esc = (s: string) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
@@ -35,7 +36,7 @@ export function initBooking() {
       <h2 class="display-m">${esc(title)}</h2>
       <p>${esc(text)}</p>
       <div class="times">
-        ${[1, 2, 3].map((i) => `<label class="time"><span>${i === 1 ? 'First choice' : i === 2 ? 'Second choice <span class="optional">(optional)</span>' : 'Third choice <span class="optional">(optional)</span>'}</span><input type="datetime-local" name="t${i}" ${i === 1 ? 'required' : ''} /></label>`).join('')}
+        ${[1, 2, 3].map((i) => `<label class="time"><span>${i === 1 ? esc(say('booking.first')) : `${esc(say(i === 2 ? 'booking.second' : 'booking.third'))} <span class="optional">${esc(say('booking.optional'))}</span>`}</span><input type="datetime-local" name="t${i}" ${i === 1 ? 'required' : ''} /></label>`).join('')}
       </div>
       <p class="hint">${esc(fill(W.zone, { zone: zoneLabel(tz) }))}</p>
       <label class="field"><span>${esc(W.note)} <span class="optional">(optional)</span></span><textarea name="note" rows="2"></textarea></label>
@@ -66,7 +67,7 @@ export function initBooking() {
         <div class="cta-row"><button type="button" class="btn btn-ghost" data-act="suggest">${esc(W.noneSuit)}</button><button type="button" class="btn btn-ghost" data-act="cancel">${esc(W.withdraw)}</button></div>
         ${asked(x)}`;
     } else if (x.status === 'confirmed' && x.start) {
-      const title = `Conversation with ${x.practiceName}`;
+      const title = say('booking.conversationWith', { name: x.practiceName });
       const pseudo = { id: x.id, start: x.start, durationMin: x.durationMin, meetUrl: x.meetUrl, history: [] } as never;
       html = `<h1 class="display-l">${esc(W.confirmedTitle)}</h1><p class="lede">${esc(W.confirmedText)}</p>
         <div class="bk-when"><p class="bk-time">${esc(whenZ(x.start, tz, { year: true }))}</p><p class="hint">${x.durationMin} minutes · Google Meet</p></div>
@@ -111,7 +112,7 @@ export function initBooking() {
     if (m) { mode = m.dataset.act as typeof mode; render(); body.querySelector<HTMLElement>('input, textarea')?.focus(); return; }
     if (t.closest('[data-back]')) { mode = 'view'; render(); return; }
     if (t.closest('[data-ics]') && b?.start) {
-      const text = sessionIcs({ id: b.id, start: b.start, durationMin: b.durationMin, meetUrl: b.meetUrl, history: [] } as never, { title: `Conversation with ${b.practiceName}`, description: `${b.meetingNote}\n\n${location.href}`, organiser: b.practiceName });
+      const text = sessionIcs({ id: b.id, start: b.start, durationMin: b.durationMin, meetUrl: b.meetUrl, history: [] } as never, { title: say('booking.conversationWith', { name: b.practiceName }), description: `${b.meetingNote}\n\n${location.href}`, organiser: b.practiceName });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(new Blob([text], { type: 'text/calendar' }));
       link.download = 'sarvakali.ics';

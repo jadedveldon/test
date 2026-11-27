@@ -3,6 +3,151 @@
 Every change to the site, newest first: what changed, why, and how it was checked.
 The rules for checking are in `CLAUDE.md`; the checks themselves are in `tools/qa/`.
 
+## 2026-11-27 · Smoother, and the library and articles set right
+
+The owner asked for the site to be as smooth as it can be, and reported two things: the library's cards had no
+real styling or padding and its filters floated over the page the whole way down; the article pages were
+haphazard. They also asked that an article can take any of the site's looks, chosen in the content editor.
+
+### Smoothness (measured on a phone-sized screen, the processor slowed four times, and on a laptop)
+- **Starting the 3D world no longer stops the page.** It made all of its ~36 light forms (60,000 points each) at
+  once: about 0.75 s on a laptop, 2.9 s on the slowed phone, just as the homepage appeared. Now the forms on screen
+  are made at once and the rest one at a time when the browser is idle (`World.ts`, `forms.ts`). The longest pause
+  went from about 740 ms to about 250 ms, and the homepage's main words appear at about 0.95 s instead of 1.6 s.
+- **Far-off parts of a page are not styled or drawn until they come near** (`content-visibility`): the library's
+  150 cards and every chapter after the first. The world's colours change on the page's root as you scroll, and
+  each change made the browser restyle the whole page: 15 ms each time on the library (now 2.4), 6.5 on a pillar
+  page (now 2.5), on a laptop; a phone is several times slower.
+- **The chapters are measured only when the page moves,** not on every frame (a measurement forces a new layout),
+  and the page's bend while scrolling gets its own layer instead of a repaint.
+- **Pillar lettering on the homepage** (Cinzel, IM Fell, Spectral, DM Serif, Cormorant Unicase, Libre Baskerville
+  and others, about 170 KB) is fetched when its chapter comes near, not for the first screen.
+- **Rarely used code left the main script:** Find your path and the device report download only when needed.
+- **Found on the way and fixed:** a tall chapter reached by a link (Healing's "Mind and subconscious") showed its
+  form only 95% formed, because the world followed the chapter's centre. A chapter now turns into the next over a
+  band one screen high at each edge, the rule Magic's day and night pages already used; for a chapter no taller
+  than the screen nothing changes. Regression 22 had caught it.
+
+### The library
+- **Cards are cards:** a lighter face with a hairline edge and a line of light along the top, more room inside,
+  the text in its own quieter panel, "Chant it" along the foot, and cards in a row the same height.
+- **The filters sit at the head of the list** and scroll away with the page, instead of floating over the cards.
+  On phones the lists and switches fold under "More ways to narrow" (open when a link chose a filter).
+- **"How to use this library"** has space between its paragraphs again.
+- The checkboxes match each other and are 24px on touch screens.
+
+### Articles
+- **One centred column:** title, text, the invitation and "read next" share it; on wide screens the contents list
+  sits in a rail to the left. The Articles page opens with a shorter heading and its cards fill the row.
+- **A theme for each article** (content editor → Articles → **Theme**; `src/data/article-themes.ts`): the reading
+  page (as now, the default), its own pillar's world, any of the six pillar worlds, Daily practice, or Boundaries and
+  care. A theme brings that page's colours, light and form, accent and heading lettering. Cards now take the
+  world's own surface, so they read on dark themes too.
+
+### Checks
+- **New regressions:**
+  - 27: the homepage's longest pause while the world starts stays under 450 ms.
+  - 28: the form on screen is made at once and every other form soon after, with no errors.
+  - 29: far-off library cards wait to be drawn, and a card is drawn in full once near.
+  - 30: pillar lettering is not fetched for the first screen and arrives as its chapter comes near.
+  - 31: the library's filters do not float over the cards, and cards have room inside (phone and desktop).
+  - 32: an article's text is centred on a wide screen, and its title, text and ending share one column.
+  - 33: every article has a theme and its world.
+- Each failed on the old site (measured, or seen in the screenshots) and passes now.
+- Phone and desktop screenshots were taken of the library, the articles, two themes and the pillar pages, before
+  and after, and looked at.
+
+## 2026-11-27 · Every test, every word editable, Netlify ready, and search checked
+
+The owner asked for the whole test suite, run end to end, everything found fixed; every word of the site editable
+in the content editor; the site made ready to host on Netlify; and search and AI search finished and verified. Two
+mantra answers came too: the Dakshina Kalika Dhyanam meanings are approved, and Tripuram Shantam has no meaning.
+
+### Every word in the content editor
+- **New sections in the editor:**
+  - **Boundaries and care:** the whole page, its parts addable, removable and reorderable. "privacy" stays the
+    address the footer leads to.
+  - **Articles (the words around them):** the front page and an article's page.
+  - **Words in interactive moments** (`src/content/pages/ui.json`, read through `src/scripts/words.ts`): every hint,
+    button state and message the scripts show:
+    - breath, grounding and the mended bowl;
+    - sigils and the wheel;
+    - the comfort note;
+    - the yantra and the mirror;
+    - the diya and today's card;
+    - festivals and the moon line;
+    - adding to a phone;
+    - search and the list;
+    - daily practice and the booking page.
+  - **Site settings → Pages for search engines:** each page's title and line in search results.
+- **More of an existing section, now editable:**
+  - every label of the tools page, the seven days and a mantra's page;
+  - the library's scripts switches;
+  - the screen-reader names of the pillar pages' controls;
+  - "Skip intro";
+  - the notes on Connect and About.
+- **How words are filled in:** words in `{braces}` are filled in by the site. A missing line falls back to its
+  words, so no edit can leave a button blank.
+- **Still in code, on purpose:** the prototype panel and the device report. They come off before launch.
+- `Rich` text now takes **bold** too.
+
+### Fixed by the suite (each reproduced first where the rules ask)
+- **Search let keyboard focus walk out into the footer:** the footer, added after the menu and search, was not made
+  inert with the rest of the page. Regression 26 reproduces it.
+- **Tap targets under 24px on phones:**
+  - the script switches above a mantra, larger-text, copy and keep;
+  - a mantra's name (even "Ila") and its "Chant it";
+  - today's line;
+  - the consent box;
+  - the helpline link;
+  - the library's day chips;
+  - the Studio's text links.
+- **A naming clash:** the "Chant it" link and an open-to-all card shared the class `mc-open`, so the link's styles
+  also landed on the whole card. On touch screens that made cards wider than the screen. The link is now `mc-go`.
+- **Pages pushed sideways:**
+  - at 320px wide, the tools page (a long drop-down) and the library (verses without spaces);
+  - at 200% text, the library's labels, filters and panels, and Terms.
+  - Verses may now break anywhere, panels wrap, and single-column grids never outgrow their container.
+- **Assistive technology:**
+  - The moon calendar called itself a grid without rows.
+  - Side notes inside a page were announced as separate regions.
+  - A gold button in the Studio had light text (1.8:1).
+- **High contrast:** today's line's mala lost its edge.
+- **Missing headings and labels:**
+  - The invoice page had no main heading.
+  - The Studio page had no description for a shared link.
+  - The tools page's trail used its long title; it now uses its short name.
+- **Type checking:** `@types/node` was missing, so 38 type errors hid real checks. There are none now.
+- **Find your path:** the result's explore link lost its check hook in the revamp; restored.
+
+### Checks that were wrong, fixed (with why)
+- `rules.cjs` checked Astro's bare redirect pages (old addresses that only forward) as if they were pages; they are
+  now skipped.
+- `regressions.cjs` 5 looked for path options by their old names; they are addresses since the revamp.
+- `robust.cjs` looked for the fire on Daily practice; it is on Tools for practice since the revamp.
+- `studio.cjs` expected the visitor's own words as a third chip; they are a quote since regression 23.
+- `audit.cjs` counted a link inside a sentence as a tap target. WCAG 2.5.8 exempts inline links, as the check
+  already did for links inside paragraphs.
+- `a11y.cjs` could not start: `axe-core` was missing from the dev packages. Now installed.
+- `audit.cjs` measured a checkbox or radio by its own box even when it sits inside its label, which is tapped
+  anywhere (WCAG 2.5.8 counts the label). It now measures the label for an input inside one.
+
+### Search engines and AI search
+- **New rule in `rules.cjs`, "what search results show":** every listed page has a title of 10 to 70 letters and a
+  description of 50 to 170, neither shared with another page; one main heading; every picture described; no broken
+  links to pages of the site.
+- **Fixed to pass it:** the homepage's title (was "Sarvakali" alone), Connect's description, and mantra pages with
+  short meanings or long names.
+- **Every listed page asks for large image previews** (`max-image-preview:large`).
+
+### Netlify
+- **Caching for returning visitors** (`netlify.toml`): the build's fingerprinted scripts, styles and fonts are kept
+  for a year; link-preview cards for a week.
+- **`docs/deploy.md`:** connecting the repository, every setting to add, the domain, and a five-minute check after
+  the first deploy.
+- **The host build** (`EDITOR_HOST=netlify`) was built and bundles its function.
+- **Before a domain is set,** the site uses its own Netlify address for previews, the sitemap and canonical links.
+
 ## 2026-11-27 · Sarvakali's answers on the eleven mantras
 
 Sarvakali answered the questions on the mantras held back or unclear. Most are from her guru and have no published

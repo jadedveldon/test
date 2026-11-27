@@ -7,9 +7,14 @@ import settings from './content/settings.json';
 type Provider = 'none' | 'cloudflare' | 'umami' | 'plausible';
 const PROVIDERS: Provider[] = ['none', 'cloudflare', 'umami', 'plausible'];
 
+// on Netlify, until the real domain is set in Site settings, the site's own Netlify address is used (Netlify gives
+// it to the build as URL), so link previews, the sitemap and search engines see a working address from day one
+const fromHost = typeof process !== 'undefined' ? (process.env?.URL ?? '') : '';
+const PLACEHOLDER = 'https://sarvakali.example';
+const given = settings.url.trim();
 export const site = {
-  /** the real address, once there is one (used for link previews); a mistyped one falls back to the placeholder */
-  url: /^https:\/\/[^\s/]+/.test(settings.url.trim()) ? settings.url.trim() : 'https://sarvakali.example',
+  /** the real address, once there is one (link previews, the sitemap, canonical addresses); a mistyped one falls back */
+  url: /^https:\/\/[^\s/]+/.test(given) && given !== PLACEHOLDER ? given.replace(/\/$/, '') : /^https:\/\/[^\s/]+/.test(fromHost) ? fromHost.replace(/\/$/, '') : PLACEHOLDER,
 };
 
 /**
@@ -31,3 +36,6 @@ export const words = settings.words;
 
 /** the trail at the top of inner pages (breadcrumbs) */
 export const crumbWords = settings.crumbs;
+
+/** each page's title and line for search engines and link previews (Site settings → Pages for search engines) */
+export const pageMeta = settings.pages;

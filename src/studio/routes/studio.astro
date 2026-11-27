@@ -7,6 +7,7 @@
  */
 import { getCollection } from 'astro:content';
 import { markSvg, BRAND } from '../../data/brand';
+import { site } from '../../config';
 import StudioApp from '../app/StudioApp.tsx';
 import '../app/studio.css';
 
@@ -35,6 +36,9 @@ const icon = `data:image/svg+xml,${encodeURIComponent(markSvg({ bg: BRAND.deep, 
     <meta name="referrer" content="no-referrer" />
     <meta name="theme-color" content="#120a09" />
     <title>Studio · Sarvakali</title>
+    <!-- the Studio is private: it asks not to be listed, and a shared link shows only the site's own card -->
+    <meta name="description" content="Sarvakali's Studio: requests, clients, bookings and invoices. Signed in only." />
+    <meta property="og:image" content={new URL('/og/home.jpg', site.url).href} />
     <link rel="icon" href={icon} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

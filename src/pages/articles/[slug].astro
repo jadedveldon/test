@@ -7,9 +7,12 @@
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import { article } from '../../seo/ld';
+import A from '../../content/pages/articles.json';
+const T = A.article;
 import { site } from '../../config';
 import { crumbWords as cw } from '../../config';
 import { ACCENT, pillars } from '../../data/site';
+import { articleLook } from '../../data/article-themes';
 
 export async function getStaticPaths() {
   const posts = await getCollection('writings');
@@ -22,24 +25,27 @@ const all = (await getCollection('writings')).filter((p) => p.id !== post.id).so
 // two to read next: the same pillar first, then the newest
 const next = [...all.filter((p) => p.data.pillar === post.data.pillar), ...all.filter((p) => p.data.pillar !== post.data.pillar)].slice(0, 2);
 const h2s = headings.filter((h) => h.depth === 2);
-const accent = ACCENT[pillar.slug];
+const look = articleLook(post.data.theme, pillar.slug);
+const accent = look.accent;
+const themeStyle = `--acc-hex: ${accent}${look.font ? `; --ar-font: ${look.font}` : ''}`;
 const ld = [article({ slug: post.id, title: post.data.title, summary: post.data.summary, date: post.data.date, image: new URL(`/og/articles-${post.id}.jpg`, site.url).href })];
 const date = post.data.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 ---
-<Base title={`${post.data.title} · Sarvakali`} ld={ld} sequence="reading" description={post.data.summary} crumbs={[{ label: cw.articles, href: '/articles' }, { label: post.data.title }]}>
+<Base title={`${post.data.title}${T.titleSuffix}`} ld={ld} sequence={look.world} description={post.data.summary} crumbs={[{ label: cw.articles, href: '/articles' }, { label: post.data.title }]}>
   <div class="ar-progress" data-ar-progress aria-hidden="true" style={`--acc-hex: ${accent}`}><span></span></div>
-  <article class="page ar-article" data-article style={`--acc-hex: ${accent}`}>
+  {look.fontCss ? <link rel="stylesheet" href={look.fontCss} /> : null}
+  <article class="page ar-article" data-article data-ar-theme={post.data.theme} style={themeStyle}>
     <header class="page-hero">
-      <p class="kicker" data-hero><a href={`/pillars/${pillar.slug}`} class="ar-pillar">{pillar.name}</a> · {post.data.minutes} min read</p>
+      <p class="kicker" data-hero><a href={`/pillars/${pillar.slug}`} class="ar-pillar">{pillar.name}</a> · {A.minRead.replace('{n}', String(post.data.minutes))}</p>
       <h1 class="display-l" data-hero data-split transition:name={`wt-${post.id}`} data-pt>{post.data.title}</h1>
       <p class="lede" data-hero>{post.data.summary}</p>
-      <p class="ar-byline" data-hero>Sarvakali · {date}{post.data.draft ? ' · a draft' : ''} <button type="button" class="path-back ar-share" data-ar-share data-done="Link copied">Share</button></p>
+      <p class="ar-byline" data-hero>{T.by} · {date}{post.data.draft ? ` · ${T.aDraft}` : ''} <button type="button" class="path-back ar-share" data-ar-share data-done={T.shared}>{T.share}</button></p>
     </header>
     {post.data.image && <figure class="ar-figure page-body"><img src={post.data.image} alt={post.data.imageAlt ?? ''} /></figure>}
     <div class="ar-layout page-body">
       {h2s.length >= 2 && (
-        <nav class="ar-toc" aria-label="In this article">
-          <p class="kicker">In this article</p>
+        <nav class="ar-toc" aria-label={T.contents}>
+          <p class="kicker">{T.contents}</p>
           <ol>{h2s.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
         </nav>
       )}
@@ -49,20 +55,20 @@ const date = post.data.date.toLocaleDateString('en-GB', { day: 'numeric', month:
     </div>
     <div class="page-body article-end" data-fade>
       <div class="ar-ask">
-        <p class="display-s">Would you like to talk about this?</p>
-        <p>Sarvakali reads every request personally.</p>
+        <p class="display-s">{T.askTitle}</p>
+        <p>{T.askText}</p>
         <div class="cta-row">
-          <a class="btn btn-solid" href="/connect" data-topic={post.data.title}>Ask about this</a>
-          <a class="btn btn-ghost" href={`/pillars/${pillar.slug}`}>Explore {pillar.name}</a>
+          <a class="btn btn-solid" href="/connect" data-topic={post.data.title}>{T.ask}</a>
+          <a class="btn btn-ghost" href={`/pillars/${pillar.slug}`}>{T.explore.replace('{pillar}', pillar.name)}</a>
         </div>
       </div>
       {next.length > 0 && (
         <>
-          <p class="kicker">Read next</p>
+          <p class="kicker">{T.next}</p>
           <ul class="ar-grid ar-next">
             {next.map((o) => (
               <li><a href={`/articles/${o.id}`} class="ar-card" style={`--acc-hex: ${ACCENT[o.data.pillar]}`}>
-                <span class="writing-meta">{pillars.find((p) => p.slug === o.data.pillar)?.name} · {o.data.minutes} min</span>
+                <span class="writing-meta">{pillars.find((p) => p.slug === o.data.pillar)?.name} · {A.min.replace('{n}', String(o.data.minutes))}</span>
                 <span class="ar-card-title">{o.data.title}</span>
                 <span class="writing-summary">{o.data.summary}</span>
               </a></li>
@@ -70,7 +76,7 @@ const date = post.data.date.toLocaleDateString('en-GB', { day: 'numeric', month:
           </ul>
         </>
       )}
-      <p><a class="back-link" href="/articles">← All articles</a></p>
+      <p><a class="back-link" href="/articles">{T.back}</a></p>
     </div>
   </article>
 </Base>

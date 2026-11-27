@@ -7,6 +7,7 @@ import { analytics, crumbWords, site } from '../config';
 import { MARK } from '../data/brand';
 import '../styles/global.css';
 import meWords from '../content/pages/me.json';
+import uiWords from '../content/pages/ui.json';
 import SiteFooter from '../components/SiteFooter.astro';
 // visitor accounts exist wherever the Studio does (the host, development, the preview's demo)
 const ACCOUNTS = (import.meta.env.PUBLIC_STUDIO || 'off') !== 'off';
@@ -56,7 +57,7 @@ const trailLd = trail.length ? JSON.stringify({
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#060304" />
-    {noindex ? <meta name="robots" content="noindex, nofollow" /> : <link rel="canonical" href={pageUrl} />}
+    {noindex ? <meta name="robots" content="noindex, nofollow" /> : <><link rel="canonical" href={pageUrl} /><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" /></>}
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Sarvakali" />
     <meta property="og:title" content={title} />
@@ -97,6 +98,8 @@ const trailLd = trail.length ? JSON.stringify({
       })();
     </script>
     <ClientRouter fallback="animate" />
+    <!-- the words the scripts show (src/scripts/words.ts) -->
+    <script type="application/json" id="sk-words" set:html={JSON.stringify(uiWords)} />
     {trailLd && <script type="application/ld+json" set:html={trailLd} />}
     {ld.map((x) => <script type="application/ld+json" set:html={JSON.stringify(x)} />)}
   </head>

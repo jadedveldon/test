@@ -1,6 +1,7 @@
 import * as SunCalcNs from 'suncalc';
 import type { SkyMode } from './experiments';
 import type { SkyInput } from './world/World';
+import { say } from './words';
 // suncalc is an older CommonJS package: take whichever shape the bundler hands us
 const SunCalc = ((SunCalcNs as unknown as { default?: typeof SunCalcNs }).default ?? SunCalcNs) as unknown as { getMoonIllumination(d: Date): { phase: number; fraction: number } };
 
@@ -55,9 +56,9 @@ export function readSky(mode: SkyMode, now = new Date()): SkyReading {
   const lit = Math.round((0.5 - 0.5 * Math.cos(phase * Math.PI * 2)) * 100);
 
   let note: string;
-  if (special === 'amavasya') note = 'Amavasya, the new moon: a night especially kept for Kali. The site turns deeper tonight.';
-  else if (special === 'purnima') note = 'Purnima, the full moon. The site is washed in silver tonight.';
-  else note = `${paksha === 'Shukla' ? 'Waxing' : 'Waning'} moon, ${lit}% lit. The moon in the sky behind this page is tonight's moon.`;
+  if (special === 'amavasya') note = say('sky.amavasyaNote', {}, 'Amavasya, the new moon.');
+  else if (special === 'purnima') note = say('sky.purnimaNote', {}, 'Purnima, the full moon.');
+  else note = say('sky.phaseNote', { phase: paksha === 'Shukla' ? say('sky.waxing', {}, 'Waxing') : say('sky.waning', {}, 'Waning'), lit }, `${lit}% lit.`);
   if (mode !== 'now' && mode !== 'off') note += ' (Preview: chosen in the prototype panel.)';
 
   return { on: mode !== 'off', night, warm, special, phase, tithi, paksha, name, lit, note };

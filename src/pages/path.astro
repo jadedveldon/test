@@ -7,6 +7,7 @@
  * nothing is stored or sent. Words: src/content/pages/path.json ("Find your path" in the content editor).
  */
 import { getCollection } from 'astro:content';
+import { pageMeta as PM } from '../config';
 import Base from '../layouts/Base.astro';
 import CareText from '../components/CareText.astro';
 import { ACCENT, pillars } from '../data/site';
@@ -36,7 +37,7 @@ const data = Object.fromEntries(pillars.map((p) => {
   }];
 }));
 ---
-<Base title="Find your path · Sarvakali" sequence="findpath" description="Three short questions to find where to begin with Sarvakali.">
+<Base title={PM.path.title} sequence="findpath" description={PM.path.description}>
   <section class="path" data-path>
     <script type="application/json" data-path-data set:html={JSON.stringify({ data, w })} />
     <div class="path-head">

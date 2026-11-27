@@ -38,7 +38,6 @@ import { PATTERNS, buzz, setHaptics } from './haptics';
 import type { Incense } from './fluid';
 import { initCard } from './card';
 import { initDiya } from './diya';
-import { initPath } from './path';
 import { sampleHeading } from './dust';
 import { FEST_LOOK, activeFestival, daysUntil, inDays, nextMoon, niceDate, type FestMode } from './festivals';
 import { initSearch, revealFound, closeSearch } from './search';
@@ -48,9 +47,9 @@ import { whenZ, zoneLabel, zonedToUtc, utcToLocalInput } from '../studio/core/ti
 import { closeMenu, initMenu } from './menu';
 import { initPwa } from './pwa';
 import { startTelemetry } from './telemetry';
-import { runDeviceTest } from './devicetest';
 import { loadHealingFont, loadMagicFonts, loadSettledFonts } from './fonts';
 import { track } from './track';
+import { say } from './words';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -262,12 +261,20 @@ function renderSaverNote() {
 
 /* ---------------------------------------------------------- chapters */
 
+// the chapters are measured only when the page has moved or the window changed, and otherwise a few times a second
+// (for a part that opens or grows), not on every frame: measuring forces the browser to lay the page out again
+let tracked = { y: NaN, h: 0, frames: 0, edge: false, of: null as HTMLElement[] | null };
 function trackChapters() {
   if (!chapters.length) return;
+  if (tracked.of !== chapters) tracked = { y: NaN, h: 0, frames: 0, edge: !!document.querySelector('[data-blend="edge"]'), of: chapters };
+  if (scrollY === tracked.y && innerHeight === tracked.h && ++tracked.frames < 12) return;
+  tracked.y = scrollY; tracked.h = innerHeight; tracked.frames = 0;
   const mid = innerHeight * 0.5;
-  // pages that change sharply (Magic's day and night pages) turn only near each edge, so the
-  // middle of a long chapter keeps its own colours instead of drifting between two
-  const edge = document.querySelector('[data-blend="edge"]') ? innerHeight * 0.6 : 0;
+  // a chapter turns into the next over a band at each edge: a screen's height, or less on pages that change sharply
+  // (Magic's day and night pages), so the middle of a long chapter keeps its own colours and form instead of drifting
+  // between two, and a tall chapter's form is whole when its heading arrives under the header (for a chapter no
+  // taller than the band this is the same as following its centre)
+  const edge = tracked.edge ? innerHeight * 0.6 : innerHeight;
   let pos = 0;
   for (let i = 0; i < chapters.length; i++) {
     const r = chapters[i].getBoundingClientRect();
@@ -481,10 +488,12 @@ function skewText() {
   const on = exp.bend === 'on' && tier !== 'calm';
   const k = on ? world.speed * 2.2 : 0;
   if (Math.abs(k) > 0.02) {
+    if (!skewing) mainEl.style.willChange = 'transform'; // its own layer while it bends, so bending is not repainting
     mainEl.style.transform = `skewY(${k.toFixed(3)}deg)`;
     skewing = true;
   } else if (skewing) {
     mainEl.style.transform = '';
+    mainEl.style.willChange = '';
     skewing = false;
   }
 }
@@ -501,17 +510,17 @@ function applySky() {
   wrap.hidden = exp.sky === 'off';
   wrap.querySelector('[data-sky-icon]')!.innerHTML = moonIcon(s.phase);
   const nA = nextMoon('amavasya');
-  const next = nA && s.special !== 'amavasya' ? ` Next Amavasya: ${niceDate(nA.at)}, ${inDays(daysUntil(nA.at))}.` : '';
+  const next = nA && s.special !== 'amavasya' ? ` ${say('sky.nextAmavasya', { date: niceDate(nA.at), when: inDays(daysUntil(nA.at)) })}` : '';
   if (festival) {
     wrap.querySelector('[data-sky-name]')!.textContent = festival.f.name;
     wrap.querySelector('[data-sky-title]')!.textContent = festival.f.name;
-    wrap.querySelector('[data-sky-note]')!.textContent = `${festival.f.note} The site is dressed for the day.${festival.preview ? ' (Preview: chosen in the prototype panel.)' : ''}`;
+    wrap.querySelector('[data-sky-note]')!.textContent = `${festival.f.note} ${say('sky.dressed')}${festival.preview ? ' (Preview: chosen in the prototype panel.)' : ''}`;
   } else {
     wrap.querySelector('[data-sky-name]')!.textContent = s.name;
-    wrap.querySelector('[data-sky-title]')!.textContent = s.special ? s.name : `${s.name} · tithi ${s.tithi}`;
+    wrap.querySelector('[data-sky-title]')!.textContent = s.special ? s.name : say('sky.tithi', { name: s.name, n: s.tithi });
     wrap.querySelector('[data-sky-note]')!.textContent = s.note + next;
   }
-  wrap.querySelector('[data-sky-btn]')!.setAttribute('aria-label', `Tonight's moon: ${s.name}`);
+  wrap.querySelector('[data-sky-btn]')!.setAttribute('aria-label', say('sky.tonightsMoon', { name: s.name }));
 }
 
 /** festival days dress the site: the hero's world, its first line and the moon */
@@ -521,7 +530,7 @@ function applyFestival() {
   if (festival) html.dataset.festivalOn = '1'; else delete html.dataset.festivalOn;
   world.setMoonMode(festival ? FEST_LOOK[festival.f.kind].moon : 0);
   const k = document.querySelector('[data-hero-kicker]');
-  if (k) k.textContent = festival ? FEST_LOOK[festival.f.kind].kicker(festival.f, festival.day) : 'Welcome to';
+  if (k) { const el = k as HTMLElement; el.dataset.plain ??= el.textContent ?? ''; el.textContent = festival ? FEST_LOOK[festival.f.kind].kicker(festival.f, festival.day) : el.dataset.plain; }
   if (chapters.length && document.querySelector('[data-hero-chapter]')) world.setSequence(chapterKeys());
 }
 
@@ -532,11 +541,11 @@ function renderMoonLine() {
   const n = nextMoon('amavasya');
   if (!n) return;
   const d = daysUntil(n.at);
-  el.textContent = `Next Amavasya: ${niceDate(n.at)}, ${inDays(d)}. `;
+  el.textContent = `${say('sky.nextAmavasya', { date: niceDate(n.at), when: inDays(d) })} `;
   const a = document.createElement('a');
   a.href = document.querySelector('.chapter-close a.btn-solid')?.getAttribute('href') || '/connect';
-  a.dataset.topic = 'A ritual on Amavasya';
-  a.textContent = 'Ask about a ritual for that night';
+  a.dataset.topic = say('sky.ritualTopic');
+  a.textContent = say('sky.askRitual');
   el.appendChild(a);
 }
 
@@ -681,8 +690,7 @@ function initPage() {
   applyFestival();
   renderMoonLine();
   initDiya(world);
-  const stopPath = initPath(world, () => { ScrollTrigger.refresh(); lenis?.resize(); });
-  if (stopPath) pageStops.push(stopPath);
+  pageModule('[data-path]', () => import('./path'), (m) => m.initPath(world, () => { ScrollTrigger.refresh(); lenis?.resize(); }));
   applySky();
   renderSound();
   hudRender();
@@ -1088,14 +1096,14 @@ function boot() {
     copy.disabled = true;
     dlg.showModal();
     testing = true;
-    runDeviceTest({
+    import('./devicetest').then(({ runDeviceTest }) => runDeviceTest({
       tier: () => tier,
       setTier: (t) => setTier(t),
       fps: () => meter.fps,
       resetMeter: () => meter.reset(),
       ensureWorld,
       points: () => world.pointCount,
-    }, (m) => (step.textContent = m)).then((report) => {
+    }, (m) => (step.textContent = m))).then((report) => {
       text.value = report;
       copy.disabled = false;
       step.textContent = 'Done. Copy the report and send it to whoever asked you to test.';

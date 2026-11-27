@@ -3,6 +3,7 @@ import { PROMPTS } from '../data/divination';
 import { buzz, PATTERNS } from './haptics';
 import { ring, tick } from './audio';
 import type { WorldHandle as World } from './world/handle';
+import { say } from './words';
 
 /**
  * Pillar 5, Divination & Insight (candlelight and the black mirror): the signature moment.
@@ -25,7 +26,7 @@ function initMirror(root: HTMLElement, world: World) {
   const start = () => {
     if (tl) return;
     if (done) { done = false; gsap.to(symbol, { opacity: 0, duration: 0.4 }); }
-    word.textContent = 'Be still…';
+    word.textContent = say('divination.still', {}, 'Be still…');
     tl = gsap.timeline({ onComplete: reveal })
       .to(mist, { opacity: 0, duration: HOLD, ease: 'sine.in' }, 0)
       .to(rings, { scale: 0.2, opacity: 0, duration: HOLD, ease: 'sine.inOut', stagger: 0.12, transformOrigin: '50% 50%' }, 0);
@@ -38,7 +39,7 @@ function initMirror(root: HTMLElement, world: World) {
       tl.kill(); tl = null;
       gsap.to(mist, { opacity: 1, duration: 0.8 });
       gsap.to(rings, { scale: 1, opacity: 1, duration: 0.8, transformOrigin: '50% 50%' });
-      word.textContent = 'Hold a little longer; the water needs time to settle';
+      word.textContent = say('divination.longer');
     }
     surface.classList.remove('is-held');
   };

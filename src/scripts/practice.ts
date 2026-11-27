@@ -7,6 +7,7 @@ import { canPrompt, installed, isIOS, onInstallChange, promptInstall } from './p
 import { store } from './tiers';
 import type { WorldHandle as World } from './world/handle';
 import { initJourney, logPractice } from './practice-journey';
+import { say } from './words';
 
 /**
  * Daily practice: a 108-bead mala, offering words to the fire, moon reminders,
@@ -43,7 +44,7 @@ function initMala(world: World) {
   let rounds = Number((() => { try { return localStorage.getItem(key); } catch { return null; } })() || 0);
   const show = () => {
     countEl.textContent = String(count);
-    roundsEl.textContent = rounds ? `${rounds} ${rounds === 1 ? 'round' : 'rounds'} today` : 'No rounds yet today';
+    roundsEl.textContent = rounds ? say('practice.roundsToday', { n: rounds, unit: rounds === 1 ? say('practice.round', {}, 'round') : say('practice.roundsWord', {}, 'rounds') }) : say('practice.noRounds');
     beads.forEach((b, i) => b.classList.toggle('is-done', i < count));
     beads.forEach((b, i) => b.classList.toggle('is-now', i === count % BEADS));
   };
@@ -162,11 +163,11 @@ function initDays() {
     const nA = moons.find((m) => m.type === 'amavasya');
     const nP = moons.find((m) => m.type === 'purnima');
     if (nA) rows.push({ title: 'Amavasya', date: nA.at, note: W.amavasyaNote ?? '', todo: W.amavasyaDo, topic: 'A ritual on Amavasya' });
-    if (nP) rows.push({ title: 'Purnima', date: nP.at, note: W.purnimaNote ?? '', todo: W.purnimaDo, topic: 'Something for Purnima' });
+    if (nP) rows.push({ title: say('practice.purnima', {}, 'Purnima'), date: nP.at, note: W.purnimaNote ?? '', todo: W.purnimaDo, topic: say('practice.somethingFor', { name: say('practice.purnima', {}, 'Purnima') }) });
     upcomingFestivals(new Date(), 5).forEach((f) => {
       const [y, m, d] = f.start.split('-').map(Number);
       const [y2, m2, d2] = f.end.split('-').map(Number);
-      rows.push({ title: f.name, date: new Date(y, m - 1, d), end: new Date(y2, m2 - 1, d2), note: f.note, topic: `Something for ${f.name}` });
+      rows.push({ title: f.name, date: new Date(y, m - 1, d), end: new Date(y2, m2 - 1, d2), note: f.note, topic: say('practice.somethingFor', { name: f.name }, `Something for ${f.name}`) });
     });
     rows.sort((a, b) => a.date.getTime() - b.date.getTime());
     list.innerHTML = '';
@@ -195,7 +196,7 @@ function initDays() {
   document.querySelector('[data-moon-cal]')?.addEventListener('click', () => {
     download('sarvakali-moon-reminders.ics', moonCalendar(12));
     const note = document.querySelector('[data-moon-note]');
-    if (note) note.textContent = 'Saved. Open the file to add the next 12 Amavasyas and Purnimas to your calendar, each with a reminder the evening before.';
+    if (note) note.textContent = say('practice.moonSaved');
   });
 }
 
@@ -206,7 +207,7 @@ function initInstall() {
   if (!btns.length) return;
   const note = document.querySelector<HTMLElement>('[data-install-note]');
   const render = () => {
-    btns.forEach((b) => { b.textContent = installed() ? 'Installed' : canPrompt() ? 'Add Sarvakali to your home screen' : isIOS() ? 'How to add it on iPhone' : 'Add to your home screen'; });
+    btns.forEach((b) => { b.textContent = installed() ? say('pwa.installed') : canPrompt() ? say('pwa.addSarvakali') : isIOS() ? say('pwa.howIphone') : say('pwa.add'); });
   };
   btns.forEach((b) => b.addEventListener('click', async () => {
     const msg = await promptInstall();

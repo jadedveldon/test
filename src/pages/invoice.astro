@@ -3,16 +3,17 @@
  * The client's own invoice (/invoice?t=…, from the link in their invoice email): the invoice, paying by UPI, and
  * "I have paid" (src/scripts/invoice-view.ts). Invoices are made in the Studio, behind the sign-in. Never indexed.
  */
+import { pageMeta as PM } from '../config';
 import Base from '../layouts/Base.astro';
 import words from '../content/pages/booking.json';
 import '../studio/paper.css';
 ---
-<Base title="Invoice · Sarvakali" sequence="connect" noindex description="An invoice from Sarvakali.">
+<Base title={PM.invoice.title} sequence="connect" noindex description={PM.invoice.description}>
   <section class="bk bk-invoice" data-invoice-view>
-    <p class="kicker" data-hero>{words.invoice.kicker}</p>
+    <h1 class="kicker" data-hero>{words.invoice.kicker}</h1>
     <div class="bk-inv-layout">
       <div class="bk-paper" data-paper aria-live="polite"><p class="lede">…</p></div>
-      <aside class="bk-pay" data-pay></aside>
+      <aside role="none" class="bk-pay" data-pay></aside>
     </div>
   </section>
 </Base>

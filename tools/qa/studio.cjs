@@ -65,7 +65,8 @@ const ok = (n, v, extra = '') => { if (!v) fails++; console.log(`${v ? 'ok  ' : 
   ok('connect: the time zone is named', /London/.test(await p.locator('[data-tz-hint]').textContent()));
   await p.click('[data-connect-send]'); await p.waitForTimeout(2500);
   ok('connect: the confirmation shows', await p.locator('#connect-done').isVisible(), await p.locator('[data-connect-error]').isVisible() ? await p.locator('[data-connect-error]').textContent() : '');
-  ok('connect: with the times offered and what was asked', (await p.locator('[data-done-times] li').count()) === 2 && (await p.locator('[data-done-asked] li').count()) === 3);
+  // what was asked: the kept services as chips, and the visitor's own words as a quote (since 2026-11-26, regression 23)
+  ok('connect: with the times offered and what was asked', (await p.locator('[data-done-times] li').count()) === 2 && (await p.locator('[data-done-asked] li').count()) === 2 && (await p.locator('[data-done-topic]').textContent()).includes(RUN));
   ok('connect: the list went with it and is now empty', (await p.evaluate(() => JSON.parse(localStorage.getItem('sk-keep') || '[]').length)) === 0 && await p.locator('[data-done-cleared]').isVisible());
   const track = await p.locator('[data-done-track]').getAttribute('href');
   ok('connect: a link to follow it', /booking(\.html)?\?t=/.test(track), track);

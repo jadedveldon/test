@@ -2,6 +2,7 @@ import gsap from 'gsap';
 import { buzz, PATTERNS } from './haptics';
 import { ring } from './audio';
 import type { WorldHandle as World } from './world/handle';
+import { say } from './words';
 
 /**
  * Pillar 1, Devotion & the Unseen · direction C, Cosmic mother.
@@ -31,7 +32,7 @@ function initYantra(root: HTMLElement, world: World) {
       st.vel = 0;
       gsap.to(st, { rot: st.rot - o, duration: 0.5, ease: 'power3.out' });
       root.classList.add('is-aligned');
-      hint.textContent = 'Aligned. The ten Mahavidyas surround the bindu.';
+      hint.textContent = say('devotion.aligned');
       ring('card');
       buzz(PATTERNS.cardFlip);
       world.flash(0.8);
@@ -40,7 +41,7 @@ function initYantra(root: HTMLElement, world: World) {
       st.aligned = false;
       st.turned = 0;
       root.classList.remove('is-aligned');
-      hint.textContent = 'Drag to turn the yantra into alignment';
+      hint.textContent = say('devotion.turn', {}, 'Drag to turn the yantra into alignment');
     }
   };
   const frame = (now: number) => {

@@ -30,7 +30,7 @@ const sameDay = day ? all.filter((x) => x.days[0] === day) : all.filter((x) => !
 const world = day ? DAY_WORLD[day] : 'library';
 const hex = day ? DAY_HEX[day] : '#e7c46a';
 const dir = isRtl(m.lang) ? 'rtl' : undefined;
-const neighbours = day ? { label: W.dayLink.replace('{day}', dayOf(day).name), name: dayOf(day).name, href: dayPath(day), before: `← Before it on ${dayOf(day).name}` } : { label: w.mantra.tradLink.replace('{tradition}', m.tradition), name: m.tradition, href: `/practice/library?tradition=${tradKey(m.tradition)}#all`, before: '← Before it' };
+const neighbours = day ? { label: W.dayLink.replace('{day}', dayOf(day).name), name: dayOf(day).name, href: dayPath(day), before: W.beforeOn.replace('{day}', dayOf(day).name) } : { label: w.mantra.tradLink.replace('{tradition}', m.tradition), name: m.tradition, href: `/practice/library?tradition=${tradKey(m.tradition)}#all`, before: W.before };
 const at = sameDay.indexOf(m);
 const prev = sameDay[(at - 1 + sameDay.length) % sameDay.length];
 const next = sameDay[(at + 1) % sameDay.length];
@@ -38,9 +38,14 @@ const related = all.filter((x) => x.slug !== m.slug && x.deity && x.deity === m.
 const label = m.status === 'open' ? [L.open, L.openText] : m.status === 'guidance' ? [L.guidance, L.guidanceText] : m.status === 'variant' ? [L.variant, L.variantText] : m.status === 'honoured' ? [L.honoured, L.honouredText] : [L.verify, L.verifyText];
 const canChant = !!m.text && m.status !== 'verify' && m.status !== 'honoured';
 const usedIn = (await loadPractices()).filter((p) => p.steps.some((s) => s.mantra === m.slug));
+// for search results: a title that fits (about 70 letters), and a line long enough to say what the page is
+const fullTitle = w.mantraMeta.replace('{name}', m.name);
+const pageTitle = fullTitle.length <= 70 ? fullTitle : `${m.name} · Sarvakali`;
+const about = `${m.tradition}${m.kind && m.kind !== 'figure' ? ` ${m.kind}` : ''}${m.language ? ` in ${m.language.replace(/ \(.*\)$/, '')}` : ''}, with its pronunciation and source`;
+const pageDescription = (m.meaning ? (m.meaning.length >= 60 ? m.meaning : `${m.meaning} ${m.name}: ${about}.`) : `${m.name}: ${about}, in the Sarvakali library.`).replace(/\s+/g, ' ').slice(0, 160);
 const sensitive = /grief|healing/.test(m.themes.join(' ')) || m.status === 'guidance';
 ---
-<Base title={`${m.name} · Mantra library · Sarvakali`} ld={[libraryText(m)]} sequence={world} description={m.meaning.slice(0, 155)} crumbs={[{ label: cw.practice, href: '/practice' }, { label: cw.library, href: '/practice/library' }, { label: m.name }]}>
+<Base title={pageTitle} ld={[libraryText(m)]} sequence={world} description={pageDescription} crumbs={[{ label: cw.practice, href: '/practice' }, { label: cw.library, href: '/practice/library' }, { label: m.name }]}>
   <article class="pmantra" data-mantra-page data-slug={m.slug} data-name={m.name} style={`--day:${hex}`}>
     <section class="chapter" data-chapter={world}>
       <div class="chapter-inner">
@@ -84,7 +89,7 @@ const sensitive = /grief|healing/.test(m.themes.join(' ')) || m.status === 'guid
             <div class="pm-supplied"><h2 class="kicker">{W.supplied}</h2><p>{m.supplied.split('\n').map((l) => <span>{l}</span>)}</p>{m.status === 'verify' ? <p class="hint">{L.verifyText}</p> : null}</div>
           ) : null}
         </div>
-        <aside data-fade>
+        <aside role="none" data-fade>
           <dl class="pm-facts">
             {m.purpose ? <><dt>{W.purpose}</dt><dd>{m.purpose}</dd></> : null}
             {m.supports ? <><dt>{W.supports}</dt><dd>{m.supports}</dd></> : null}
@@ -103,12 +108,12 @@ const sensitive = /grief|healing/.test(m.themes.join(' ')) || m.status === 'guid
           <p class="kicker" data-fade>{W.chant}</p>
           <h2 class="display-m" data-fade>{m.name}</h2>
           <p data-fade>{W.chantLede}</p>
-          <div class="rite-lengths" role="radiogroup" aria-label="How many times" data-fade>
+          <div class="rite-lengths" role="radiogroup" aria-label={W.howMany} data-fade>
             {W.counts.map((n, i) => <button type="button" role="radio" aria-checked={i === 0 ? 'true' : 'false'} data-chant-count={n}>{n === 1 ? W.once : W.times.replace('{n}', String(n))}</button>)}
           </div>
           <button type="button" class="rite-japa pm-japa" data-chant-tap aria-label={W.next}><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" class="rj-track" /><circle cx="60" cy="60" r="52" class="rj-fill" pathLength="1" style="stroke-dasharray:1;stroke-dashoffset:1" /></svg><b data-chant-n>0</b><small data-chant-of>/ 1</small></button>
           <p class="pm-chant-line" lang={m.lang} dir={dir} aria-hidden="true">{m.text.split('\n')[0]}</p>
-          <p class="hint" data-chant-done hidden aria-live="polite">{W.doneChant} <a href="/practice#yours">Your practice →</a></p>
+          <p class="hint" data-chant-done hidden aria-live="polite">{W.doneChant} <a href="/practice#yours">{W.yourPractice}</a></p>
           <button type="button" class="btn btn-ghost btn-sm" data-chant-again hidden>{W.again}</button>
         </div>
       </section>
@@ -117,17 +122,17 @@ const sensitive = /grief|healing/.test(m.themes.join(' ')) || m.status === 'guid
     <section class="chapter" data-chapter={world}>
       <div class="chapter-inner">
         {usedIn.length ? (
-          <><h2 class="kicker">Guided practices that use it</h2>
+          <><h2 class="kicker">{W.usedIn}</h2>
           <ul class="pr-cards pr-cards-sm">{usedIn.map((p) => <li><a class="pr-card" href={practicePath(p.slug)}><b>{p.title}</b><span>{p.line}</span></a></li>)}</ul></>
         ) : null}
         {related.length ? (
           <><h2 class="kicker">{W.more.replace('{deity}', m.deity)}</h2>
           <div class="mc-grid">{related.map((r) => <MantraCard m={r} />)}</div></>
         ) : null}
-        <nav class="pday-next" aria-label={day ? 'More on this day' : 'More from this tradition'}>
+        <nav class="pday-next" aria-label={day ? W.moreDayLabel : W.moreTradLabel}>
           {sameDay.length > 1 ? <a class="pday-step" href={mantraPath(prev.slug)}><span class="hint">{neighbours.before}</span><span class="display-s">{prev.name}</span></a> : null}
           <a class="pday-step pday-lib" href={neighbours.href}><span class="hint">{neighbours.label}</span><span class="display-s">{neighbours.name}</span></a>
-          {sameDay.length > 1 ? <a class="pday-step" href={mantraPath(next.slug)}><span class="hint">After it →</span><span class="display-s">{next.name}</span></a> : null}
+          {sameDay.length > 1 ? <a class="pday-step" href={mantraPath(next.slug)}><span class="hint">{W.after}</span><span class="display-s">{next.name}</span></a> : null}
         </nav>
       </div>
     </section>

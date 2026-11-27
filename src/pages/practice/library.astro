@@ -9,6 +9,7 @@ import Base from '../../layouts/Base.astro';
 import { crumbWords as cw } from '../../config';
 import MantraCard from '../../components/MantraCard.astro';
 import CareText from '../../components/CareText.astro';
+import Rich from '../../components/Rich.astro';
 import { DAYS, DAY_HEX, DAY_GLYPH, deitiesOf, loadMantras, traditionsOf, tradKey, type DayKey } from '../../data/mantras';
 import w from '../../content/pages/library.json';
 
@@ -20,15 +21,15 @@ const kinds = Object.entries(w.kinds).filter(([k]) => all.some((m) => m.kind ===
 const lib = (q: string) => `/practice/library?${q}#all`;
 const L = w.labels;
 ---
-<Base title="Mantra library · Daily practice · Sarvakali" sequence="library" description="Mantras, prayers, hymns and chants from every tradition, with their own words, pronunciation, meaning and source, arranged by the seven planetary days." crumbs={[{ label: cw.practice, href: '/practice' }, { label: cw.library }]}>
+<Base title={w.meta.title} sequence="library" description={w.meta.description} crumbs={[{ label: cw.practice, href: '/practice' }, { label: cw.library }]}>
   <div class="plib" data-library>
     <section class="chapter" data-chapter="library">
       <div class="chapter-inner">
         <p class="kicker" data-hero>{w.kicker}</p>
         <h1 class="display-l" data-hero data-split>{w.title}</h1>
         <p class="lede" data-hero>{w.lede}</p>
-        <p class="plib-start" data-hero>Looking for where to begin? <a href="/practice">Choose a guided practice</a>: for today, with a deity, or for how you feel.</p>
-        <nav class="week-strip" aria-label="The seven days" data-hero>
+        <p class="plib-start" data-hero><Rich text={w.start} /></p>
+        <nav class="week-strip" aria-label={w.dayWords.weekLabel} data-hero>
           {DAYS.map((x) => <a href={`/practice/${x.key}`} style={`--dc:${DAY_HEX[x.key as DayKey]}`}><span class="ws-glyph" aria-hidden="true">{DAY_GLYPH[x.key as DayKey]}</span><span class="ws-name">{x.name}</span><span class="ws-planet">{x.planet}</span></a>)}
         </nav>
       </div>
@@ -55,7 +56,7 @@ const L = w.labels;
           {w.how.paras.map((p) => <p>{p}</p>)}
           <div class="pday-rhythm"><h3 class="kicker">{w.rhythm.title}</h3><p>{w.rhythm.text}</p></div>
         </div>
-        <aside data-fade>
+        <aside role="none" data-fade>
           <h2 class="kicker">{L.title}</h2>
           <dl class="plib-labels">
             <dt><span class="mc-badge mc-badge-open">{L.open}</span></dt><dd>{L.openText}</dd>
@@ -76,11 +77,13 @@ const L = w.labels;
         <form class="plib-filters" data-filters role="search">
           <label class="plib-search"><span class="sr-only">{w.search}</span><input type="search" data-f-q placeholder={w.searchHint} autocomplete="off" /></label>
           <fieldset class="plib-chips">
-            <legend class="sr-only">Day</legend>
+            <legend class="sr-only">{w.dayLegend}</legend>
             <label><input type="radio" name="f-day" value="" checked data-f-day /> <span>{w.allDays}</span></label>
             {DAYS.map((x) => <label style={`--dc:${DAY_HEX[x.key as DayKey]}`}><input type="radio" name="f-day" value={x.key} data-f-day /> <span>{x.name}</span></label>)}
             <label><input type="radio" name="f-day" value="any" data-f-day /> <span>{w.anyDayChip}</span></label>
           </fieldset>
+          <details class="plib-narrow" open data-plib-narrow>
+          <summary>{w.narrow}</summary>
           <div class="plib-row">
             <label>{w.tradition} <select data-f-tradition><option value="">{w.anyTradition}</option>{traditions.map((t) => <option value={tradKey(t.name)}>{t.name}</option>)}</select></label>
             <label>{w.deity} <select data-f-deity><option value="">{w.anyDeity}</option>{deities.map((d) => <option value={d}>{d}</option>)}</select></label>
@@ -89,12 +92,13 @@ const L = w.labels;
             <label class="plib-check"><input type="checkbox" checked data-f-guidance /> {w.include}</label>
           </div>
           <div class="mc-controls" data-mc-controls>
-            <span class="hint">Show:</span>
-            <label><input type="checkbox" checked data-show-script="deva" /> {w.mantra.script}</label>
-            <label><input type="checkbox" checked data-show-script="iast" /> Transliteration</label>
-            <label><input type="checkbox" checked data-show-script="read" /> Pronunciation</label>
+            <span class="hint">{w.controls.show}</span>
+            <label><input type="checkbox" checked data-show-script="deva" /> {w.controls.script}</label>
+            <label><input type="checkbox" checked data-show-script="iast" /> {w.controls.iast}</label>
+            <label><input type="checkbox" checked data-show-script="read" /> {w.controls.read}</label>
           </div>
-          <p class="hint" aria-live="polite" data-f-count data-template={w.count} data-total={all.length}>{all.length}</p>
+          </details>
+          <p class="hint plib-count" aria-live="polite" data-f-count data-template={w.count} data-total={all.length}>{all.length}</p>
         </form>
         <p class="plib-none" data-f-none hidden>{w.none} <button type="button" class="path-back" data-f-clear>{w.clear}</button></p>
         <div class="mc-grid plib-grid">{all.map((m) => <MantraCard m={m} showDays />)}</div>

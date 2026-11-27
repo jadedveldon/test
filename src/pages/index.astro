@@ -1,4 +1,5 @@
 ---
+import { pageMeta as PM } from '../config';
 import Base from '../layouts/Base.astro';
 import { organisation, website } from '../seo/ld';
 import TodayLine from '../components/TodayLine.astro';
@@ -12,7 +13,7 @@ import home from '../content/home.json';
 const h = home;
 const words = kind.words.filter((w) => w.text.trim());
 ---
-<Base title="Sarvakali" ld={[organisation(), website()]}>
+<Base title={PM.home.title} description={PM.home.description} ld={[organisation(), website()]}>
   <Loader slot="overlay" />
 
   <section class="chapter chapter-hero" data-chapter="hero" data-hero-chapter>

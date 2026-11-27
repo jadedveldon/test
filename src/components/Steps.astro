@@ -4,6 +4,7 @@
  * content editor), so the homepage and Connect always say the same thing; the drawings stay here.
  */
 import home from '../content/home.json';
+import { words as SW } from '../config';
 interface Props { variant?: 'row' | 'column'; fade?: boolean }
 const { variant = 'row', fade = true } = Astro.props;
 const st = home.connect.steps;
@@ -15,7 +16,7 @@ const ICON = {
 };
 const steps = (['request', 'confirm', 'meet', 'pay'] as const).map((k) => ({ k, ...st[k], icon: ICON[k] }));
 ---
-<ol class={`how${variant === 'column' ? ' how-col' : ''}`} aria-label="How it works">
+<ol class={`how${variant === 'column' ? ' how-col' : ''}`} aria-label={SW.howItWorks}>
   {steps.map((s) => (
     <li data-fade={fade ? '' : undefined}>
       <svg viewBox="0 0 48 48" aria-hidden="true" set:html={s.icon} />

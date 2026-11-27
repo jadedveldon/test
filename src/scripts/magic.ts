@@ -6,6 +6,7 @@ import { ring } from './audio';
 import { moonIcon, readSky } from './sky';
 import { daysUntil, download, icsFile, inDays, moonEvents, niceDate } from './festivals';
 import type { WorldHandle as World } from './world/handle';
+import { say } from './words';
 
 /**
  * Pillar 2, Witchcraft & Magic · the gilded grimoire.
@@ -214,7 +215,7 @@ function initSigil(root: HTMLElement, world: World) {
     const has = mark.querySelector('.sg-line') !== null;
     saveBtn.hidden = !has;
     penBtn.hidden = !has || method === 'draw';
-    saveBtn.textContent = 'Save it as a picture';
+    saveBtn.textContent = say('magic.savePicture', {}, 'Save it as a picture');
     root.classList.toggle('has-sigil', has);
   };
   const clear = () => {
@@ -250,7 +251,7 @@ function initSigil(root: HTMLElement, world: World) {
     ];
   };
   const path = (pts: number[][]) => `M${pts.map((q) => q.map((v) => v.toFixed(1)).join(' ')).join(' L')}`;
-  const done = (what: string) => { hint.textContent = `${what} Nothing you typed was saved.`; };
+  const done = (what: string) => { hint.textContent = say('magic.nothingKept', { what }, `${what} Nothing you typed was saved.`); };
 
   /* ---- the monogram: letters you can move, turn and flip */
   const letterTransform = (p: Placed) => `translate(${p.x.toFixed(1)} ${p.y.toFixed(1)}) rotate(${p.rot}) scale(${(p.mir * p.sx).toFixed(2)} ${p.sy.toFixed(2)})`;
@@ -373,7 +374,7 @@ function initSigil(root: HTMLElement, world: World) {
     lastPt = p;
   };
   const up = () => {
-    if (stroke) { stroke = null; lastPt = null; showTools(); if (method === 'draw') hint.textContent = 'Keep drawing, or save it when it feels finished. Nothing you drew is saved unless you save the picture.'; }
+    if (stroke) { stroke = null; lastPt = null; showTools(); if (method === 'draw') hint.textContent = say('magic.keepDrawing'); }
     drag = null;
   };
   svg.addEventListener('pointerdown', down);
@@ -383,12 +384,12 @@ function initSigil(root: HTMLElement, world: World) {
   const onPen = () => {
     setPen(!pen);
     pick(-1);
-    hint.textContent = pen ? 'The pen is on: draw over the sigil inside the ring. Tap the pen again to stop.' : hint.textContent;
+    hint.textContent = pen ? say('magic.penOn') : hint.textContent;
     buzz(PATTERNS.choice);
   };
   const onTurn = () => { if (picked < 0) return; placed[picked].rot = (placed[picked].rot + 45) % 360; placeLetter(picked); buzz([5]); };
   const onFlip = () => { if (picked < 0) return; placed[picked].mir *= -1; placeLetter(picked); buzz([5]); };
-  const onClear = () => { clear(); if (method === 'draw') hint.textContent = 'Draw with your finger or mouse inside the ring.'; };
+  const onClear = () => { clear(); if (method === 'draw') hint.textContent = say('magic.drawHere'); };
   penBtn.addEventListener('click', onPen);
   turnBtn.addEventListener('click', onTurn);
   flipBtn.addEventListener('click', onFlip);
@@ -402,9 +403,9 @@ function initSigil(root: HTMLElement, world: World) {
     const info = SIGIL_METHODS.find((x) => x.key === m)!;
     if (how) how.textContent = info.how;
     if (origin) origin.textContent = info.origin;
-    if (m === 'draw') { clear(); setPen(false); hint.textContent = 'Draw with your finger or mouse inside the ring.'; return; }
+    if (m === 'draw') { clear(); setPen(false); hint.textContent = say('magic.drawHere'); return; }
     if (text) render();
-    else { clear(); hint.textContent = 'Your sigil will be drawn here.'; }
+    else { clear(); hint.textContent = say('magic.drawnHere'); }
   };
   const onClick = (e: Event) => {
     const t = e.target as Element | null;
@@ -455,7 +456,7 @@ function initSigil(root: HTMLElement, world: World) {
         a.download = 'my-sigil.png';
         document.body.appendChild(a); a.click(); a.remove();
         setTimeout(() => URL.revokeObjectURL(a.href), 4000);
-        saveBtn.textContent = 'Saved';
+        saveBtn.textContent = say('magic.saved', {}, 'Saved');
         buzz(PATTERNS.choice);
       }, 'image/png');
     };
@@ -497,16 +498,16 @@ function wheelItems(mode: string): { items: WheelItem[]; segments: boolean; note
       return {
         name: r.name, deg: start,
         title: `${r.name} (${r.deva}) · ${r.english}`,
-        line: `Lunar months ${r.months}; by the sun, about ${fmtDate(r.from[0], r.from[1])} to ${fmtDate(nx[0], nx[1])}.`,
+        line: say('magic.lunarLine', { months: r.months, from: fmtDate(r.from[0], r.from[1]), to: fmtDate(nx[0], nx[1]) }),
         end,
       } as WheelItem & { end: number };
     });
-    return { items, segments: true, note: 'Drag to turn. The marker at the top is today. Dates by the sun, as Drik Panchang reckons the ritus; by the lunar months each season comes a few weeks later. Calendars differ.' };
+    return { items, segments: true, note: say('magic.ritusNote') };
   }
   return {
     items: SABBATS.map((s) => ({ name: s.name, deg: degOf(s.month, s.day), title: `${s.name} · ${s.approx ? 'around ' : ''}${fmtDate(s.month, s.day)}`, line: `${s.line}.` })),
     segments: false,
-    note: 'Drag to turn. The marker at the top is today. The Wheel of the Year as kept in modern pagan witchcraft, northern hemisphere.',
+    note: say('magic.wheelNote'),
   };
 }
 
@@ -570,10 +571,10 @@ function initWheel(root: HTMLElement, world: World) {
       if (atToday && !data.segments) {
         const ahead = data.items.map((it, i) => ({ i, gap: (it.deg - todayDeg + 360) % 360 })).sort((x, y) => x.gap - y.gap)[0];
         const days = Math.round((ahead.gap / 360) * 365);
-        b.textContent = `Today. Next: ${data.items[ahead.i].name}, ${days === 0 ? 'today' : `in about ${days} days`}`;
+        b.textContent = say('magic.todayNext', { name: data.items[ahead.i].name, when: days === 0 ? say('common.today', {}, 'today') : say('common.inDays', { n: days }) });
         sp.textContent = ` ${data.items[ahead.i].line}`;
       } else {
-        b.textContent = atToday ? `Today: ${data.items[idx].title}` : data.items[idx].title;
+        b.textContent = atToday ? say('magic.todayIs', { name: data.items[idx].title }) : data.items[idx].title;
         sp.textContent = ` ${data.items[idx].line}`;
       }
       now.append(b, sp);
@@ -633,12 +634,12 @@ function initSupper(root: HTMLElement) {
   when.append(b, sp);
   const save = () => {
     download('sarvakali-dark-moon.ics', icsFile(next.slice(0, 3).map((e) => ({
-      title: 'Dark moon: Amavasya, and Hecate’s supper',
+      title: say('magic.darkMoon'),
       date: e.at,
       description: 'Amavasya, a night especially kept for Kali; in ancient Athens, the night of Hecate’s supper (the Deipnon). From Sarvakali.',
     }))));
     buzz(PATTERNS.choice);
-    if (btn) btn.textContent = 'Saved to your calendar file';
+    if (btn) btn.textContent = say('magic.savedCalendar');
   };
   btn?.addEventListener('click', save);
   return () => btn?.removeEventListener('click', save);

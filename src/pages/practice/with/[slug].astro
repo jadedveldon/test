@@ -28,7 +28,7 @@ const kindLabel = p.kind === 'deity' ? (p.tradition && p.tradition !== 'Hindu' ?
 const dirOf = (lang: string) => (/^(he|ar|fa|ur)\b/.test(lang) ? 'rtl' : undefined);
 const lines = (t: string) => t.split('\n');
 ---
-<Base title={`${p.title} · Daily practice · Sarvakali`} ld={[practiceSteps(p, p.slug)]} sequence={p.world} description={`${p.line} A guided practice of about ${p.minutes} minutes.`} crumbs={[{ label: cw.practice, href: '/practice' }, { label: p.title }]}>
+<Base title={S.metaTitle.replace('{title}', p.title)} ld={[practiceSteps(p, p.slug)]} sequence={p.world} description={S.metaDescription.replace('{line}', p.line).replace('{n}', String(p.minutes))} crumbs={[{ label: cw.practice, href: '/practice' }, { label: p.title }]}>
   <div class="psess" data-session data-slug={p.slug} data-minutes={p.minutes}>
     <script type="application/json" data-session-words set:html={JSON.stringify(S)} />
     <section class="chapter" data-chapter={p.world}>

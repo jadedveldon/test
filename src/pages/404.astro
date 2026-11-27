@@ -4,11 +4,12 @@
  * Find your path, the six pillars, the homepage. The host shows it for any address that is not a page.
  * Words: src/content/pages/notfound.json ("Not found" in the content editor).
  */
+import { pageMeta as PM } from '../config';
 import Base from '../layouts/Base.astro';
 import { ACCENT, pillars } from '../data/site';
 import w from '../content/pages/notfound.json';
 ---
-<Base title="Not found · Sarvakali" sequence="notFound" noindex description="This page could not be found.">
+<Base title={PM.notFound.title} sequence="notFound" noindex description={PM.notFound.description}>
   <section class="notfound">
     <p class="kicker" data-hero>{w.kicker}</p>
     <h1 class="display-l" data-hero data-split>{w.title}</h1>

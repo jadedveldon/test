@@ -13,6 +13,7 @@ import type { WorldHandle as World } from './world/handle';
 import { sitePath } from '../studio/client';
 
 import { addJournal, clearAll, deleteJournal, logMantra, logPractice, myMantras, readLog, sessionsDone, stats, toggleMine } from './practice-log';
+import { say } from './words';
 export { logPractice, readLog, stats } from './practice-log';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -347,7 +348,8 @@ function initMonth(w: Words) {
     title.textContent = new Date(y, m, 1).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
     const days = new Date(y, m + 1, 0).getDate();
     const lead = (new Date(y, m, 1).getDay() + 6) % 7;
-    const head = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((d) => `<span class="mm-dow" role="columnheader">${d}</span>`).join('');
+    const dows = say('practice.weekdays', {}, 'Mon, Tue, Wed, Thu, Fri, Sat, Sun').split(',').map((x) => x.trim());
+    const head = [0, 1, 2, 3, 4, 5, 6].map((i) => dows[i] ?? '').map((d) => `<span class="mm-dow" aria-hidden="true">${d}</span>`).join('');
     let cells = '';
     for (let i = 0; i < lead; i++) cells += '<span class="mm-blank"></span>';
     for (let d = 1; d <= days; d++) {

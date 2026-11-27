@@ -10,6 +10,7 @@ import { rupees, upiLink } from '../studio/core/money';
 import type { PublicInvoice } from '../studio/core/ops';
 import { paperHtml } from '../studio/core/paper';
 import { track } from './track';
+import { say } from './words';
 
 const W = words.invoice;
 const esc = (s: string) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
@@ -50,7 +51,7 @@ export function initInvoiceView() {
   side.addEventListener('click', async (e) => {
     const t = e.target as HTMLElement;
     const c = t.closest<HTMLElement>('[data-copy]');
-    if (c) { try { await navigator.clipboard.writeText(c.dataset.copy!); c.textContent = 'Copied'; } catch { /* the ID is on the invoice */ } }
+    if (c) { try { await navigator.clipboard.writeText(c.dataset.copy!); c.textContent = say('common.copied', {}, 'Copied'); } catch { /* the ID is on the invoice */ } }
     if (t.closest('[data-print]')) window.print();
   });
   side.addEventListener('submit', async (e) => {

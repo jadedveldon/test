@@ -107,7 +107,16 @@
     "dayLink": "All of {day}’s mantras",
     "anyDay": "Any day",
     "tradLink": "More from {tradition}",
-    "script": "Original script"
+    "script": "Original script",
+    "yourPractice": "Your practice →",
+    "usedIn": "Guided practices that use it",
+    "before": "← Before it",
+    "beforeOn": "← Before it on {day}",
+    "after": "After it →",
+    "howMany": "How many times",
+    "moreDayLabel": "More on this day",
+    "moreTradLabel": "More from this tradition",
+    "moreFold": "More"
   },
   "care": "Some of these prayers touch grief, illness and fear. They are spiritual practice, never a replacement for medical or psychological care. If you are struggling, please also reach out to a doctor or counsellor; in India, Tele-MANAS is free on 14416, day and night.",
   "tradition": "Tradition",
@@ -133,6 +142,40 @@
   "anyDayChip": "Any day",
   "dayWords": {
     "acrossKicker": "Across the world",
-    "acrossLink": "Every tradition in the library"
-  }
+    "acrossLink": "Every tradition in the library",
+    "metaTitle": "{day} · {sanskrit} · Daily practice · Sarvakali",
+    "metaDescription": "{day}, the day of {planet}: {question}",
+    "weekLabel": "The seven days",
+    "today": "Today",
+    "question": "A question for the day",
+    "begin": "Begin {day}’s practice",
+    "about": "About {day}",
+    "aboutHint": "Its planet, its intention and its themes",
+    "character": "The planetary character of the day",
+    "intention": "The day’s spiritual intention",
+    "themes": "Themes and areas for reflection",
+    "gentle": "A gentle practice for {day}",
+    "all": "All {n} of {day}’s mantras",
+    "allHint": "For study, or to choose your own",
+    "before": "← The day before",
+    "after": "The day after →",
+    "libraryHint": "Every mantra",
+    "library": "The library",
+    "libraryBy": "by day, tradition, need or kind",
+    "planMinutes": "{title} · about {n} minutes"
+  },
+  "controls": {
+    "show": "Show:",
+    "script": "Original script",
+    "iast": "Transliteration",
+    "read": "Pronunciation"
+  },
+  "start": "Looking for where to begin? [Choose a guided practice](/practice): for today, with a deity or figure, for how you feel, or with no deity at all.",
+  "dayLegend": "Day",
+  "meta": {
+    "title": "Mantra library · Daily practice · Sarvakali",
+    "description": "Mantras, prayers, hymns and chants from every tradition, with their own words, pronunciation, meaning and source, arranged by the seven planetary days."
+  },
+  "mantraMeta": "{name} · Mantra library · Sarvakali",
+  "narrow": "More ways to narrow"
 }

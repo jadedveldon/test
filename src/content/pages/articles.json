@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "title": "Articles · Sarvakali",
+    "description": "Articles from Sarvakali on Kali, the moon, healing, magic and the work."
+  },
+  "kicker": "Articles",
+  "title": "Notes on Kali, the moon and the work",
+  "lede": "Short pieces to read before a first conversation, or simply to sit with.",
+  "draftNote": "Drafts written for the prototype. Sarvakali will rewrite them in their own voice.",
+  "empty": "The first articles are being written.",
+  "filterLabel": "Show articles from",
+  "all": "All",
+  "none": "No articles from this pillar yet.",
+  "minRead": "{n} min read",
+  "min": "{n} min",
+  "draft": "draft",
+  "article": {
+    "titleSuffix": " · Sarvakali",
+    "by": "Sarvakali",
+    "aDraft": "a draft",
+    "share": "Share",
+    "shared": "Link copied",
+    "contents": "In this article",
+    "askTitle": "Would you like to talk about this?",
+    "askText": "Sarvakali reads every request personally.",
+    "ask": "Ask about this",
+    "explore": "Explore {pillar}",
+    "next": "Read next",
+    "back": "← All articles"
+  }
+}

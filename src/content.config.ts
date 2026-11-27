@@ -18,6 +18,8 @@ const writings = defineCollection({
     featured: z.boolean().default(false),
     image: z.string().optional(),
     imageAlt: z.string().optional(),
+    /** its look: one of the site's page worlds (src/data/article-themes.ts); any other value reads as "reading" */
+    theme: z.string().default('reading'),
   }),
 });
 

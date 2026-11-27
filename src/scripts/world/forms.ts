@@ -795,47 +795,51 @@ export async function lettersForm(n: number, font: string) {
   });
 }
 
-/** all forms that need no fonts; text forms start as dust and are swapped in when ready */
-export function buildForms(n: number, seeds: Float32Array): Record<FormKey, Float32Array> {
-  const shuffled = (o: Out, seed: number) => { shuffleInPlace(o, rng(seed)); return o; };
-  const d = dust(n);
+type Made = Exclude<FormKey, 'name' | 'letters'>;
+/** how to make each form that needs no fonts, one at a time (so the page can make only those it shows first) */
+export function formMakers(n: number, seeds: Float32Array): Record<Made, () => Float32Array> {
+  const sh = (o: Out, seed: number) => { shuffleInPlace(o, rng(seed)); return o; };
   return {
-    dust: d,
-    halo: halo(n),
-    name: d.slice(),
-    flames: flames(n),
-    sigils: shuffled(sigils(n), 101),
-    water: shuffled(water(n), 103),
-    silk: shuffled(silk(n), 107),
-    stars: shuffled(stars(n), 109),
-    letters: d.slice(),
-    eye: shuffled(eye(n), 113),
-    horizon: horizon(n, seeds),
-    mala: mala(n),
-    lamps: shuffled(lamps(n), 127),
-    agni: agni(n, seeds),
-    yantra: shuffled(yantra(n), 131),
-    temple: shuffled(temple(n), 137),
-    tree: shuffled(tree(n), 139),
-    rose: shuffled(rose(n), 149),
-    pentacle: shuffled(pentacle(n), 151),
-    astrolabe: shuffled(astrolabe(n), 157),
-    moons: shuffled(moons(n), 163),
-    crossroads: shuffled(crossroads(n), 167),
-    lotus: shuffled(lotus(n), 173),
-    chakras: shuffled(chakras(n), 179),
-    bowl: shuffled(bowl(n), 181),
-    halves: shuffled(halves(n), 233),
-    prism: shuffled(prism(n), 239),
-    figure: shuffled(figure(n), 241),
-    cards: shuffled(cards(n), 251),
-    mirror: shuffled(mirror(n), 257),
-    pendulum: shuffled(pendulum(n), 263),
-    book: shuffled(book(n), 269),
-    path: shuffled(path(n), 271),
-    key: keyForm(n, seeds),
-    bloom: shuffled(bloom(n), 317),
+    dust: () => dust(n),
+    halo: () => halo(n),
+    flames: () => flames(n),
+    sigils: () => sh(sigils(n), 101),
+    water: () => sh(water(n), 103),
+    silk: () => sh(silk(n), 107),
+    stars: () => sh(stars(n), 109),
+    eye: () => sh(eye(n), 113),
+    horizon: () => horizon(n, seeds),
+    mala: () => mala(n),
+    lamps: () => sh(lamps(n), 127),
+    agni: () => agni(n, seeds),
+    yantra: () => sh(yantra(n), 131),
+    temple: () => sh(temple(n), 137),
+    tree: () => sh(tree(n), 139),
+    rose: () => sh(rose(n), 149),
+    pentacle: () => sh(pentacle(n), 151),
+    astrolabe: () => sh(astrolabe(n), 157),
+    moons: () => sh(moons(n), 163),
+    crossroads: () => sh(crossroads(n), 167),
+    lotus: () => sh(lotus(n), 173),
+    chakras: () => sh(chakras(n), 179),
+    bowl: () => sh(bowl(n), 181),
+    halves: () => sh(halves(n), 233),
+    prism: () => sh(prism(n), 239),
+    figure: () => sh(figure(n), 241),
+    cards: () => sh(cards(n), 251),
+    mirror: () => sh(mirror(n), 257),
+    pendulum: () => sh(pendulum(n), 263),
+    book: () => sh(book(n), 269),
+    path: () => sh(path(n), 271),
+    key: () => keyForm(n, seeds),
+    bloom: () => sh(bloom(n), 317),
   };
+}
+
+/** all forms that need no fonts, at once; text forms start as dust and are swapped in when ready */
+export function buildForms(n: number, seeds: Float32Array): Record<FormKey, Float32Array> {
+  const made = Object.fromEntries(Object.entries(formMakers(n, seeds)).map(([k, make]) => [k, make()])) as Record<Made, Float32Array>;
+  return { ...made, name: made.dust.slice(), letters: made.dust.slice() };
 }
 
 export const shuffleForm = (o: Float32Array, seed: number) => { shuffleInPlace(o, rng(seed)); return o; };
@@ -862,17 +866,7 @@ export async function buildFormsAsync(n: number, seeds: Float32Array, textFrom?:
   });
   const out: Partial<Record<FormKey, Float32Array>> = {};
   const steps: [FormKey, () => Float32Array][] = [
-    ['dust', () => dust(n)], ['halo', () => halo(n)], ['flames', () => flames(n)],
-    ['sigils', () => shuffleForm(sigils(n), 101)], ['water', () => shuffleForm(water(n), 103)], ['silk', () => shuffleForm(silk(n), 107)],
-    ['stars', () => shuffleForm(stars(n), 109)], ['eye', () => shuffleForm(eye(n), 113)], ['horizon', () => horizon(n, seeds)],
-    ['mala', () => mala(n)], ['lamps', () => shuffleForm(lamps(n), 127)], ['agni', () => agni(n, seeds)],
-    ['yantra', () => shuffleForm(yantra(n), 131)], ['temple', () => shuffleForm(temple(n), 137)], ['tree', () => shuffleForm(tree(n), 139)],
-    ['rose', () => shuffleForm(rose(n), 149)], ['pentacle', () => shuffleForm(pentacle(n), 151)], ['astrolabe', () => shuffleForm(astrolabe(n), 157)], ['moons', () => shuffleForm(moons(n), 163)],
-    ['crossroads', () => shuffleForm(crossroads(n), 167)],
-    ['lotus', () => shuffleForm(lotus(n), 173)], ['chakras', () => shuffleForm(chakras(n), 179)], ['bowl', () => shuffleForm(bowl(n), 181)],
-    ['halves', () => shuffleForm(halves(n), 233)], ['prism', () => shuffleForm(prism(n), 239)], ['figure', () => shuffleForm(figure(n), 241)], ['cards', () => shuffleForm(cards(n), 251)],
-    ['mirror', () => shuffleForm(mirror(n), 257)], ['pendulum', () => shuffleForm(pendulum(n), 263)], ['book', () => shuffleForm(book(n), 269)], ['path', () => shuffleForm(path(n), 271)],
-    ['key', () => keyForm(n, seeds)], ['bloom', () => shuffleForm(bloom(n), 317)],
+    ...(Object.entries(formMakers(n, seeds)) as [FormKey, () => Float32Array][]),
     ['name', () => (textFrom ? upsample(textFrom.name, n, 0.01, 61) : dust(n))],
     ['letters', () => (textFrom ? upsample(textFrom.letters, n, 0.008, 67) : dust(n))],
   ];

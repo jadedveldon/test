@@ -9,6 +9,7 @@
  *   IV  Journaling: a prompt for today
  */
 import { pillarService } from '../../seo/ld';
+import { words as SW } from '../../config';
 import Base from '../../layouts/Base.astro';
 import { crumbWords as cw } from '../../config';
 import { words } from '../../config';
@@ -79,7 +80,7 @@ const pieces = polys.map((poly, i) => {
           <p class="kicker" data-hero>Pillar {index + 1} of {pillars.length} · {p.count} services</p>
           <h1 class="display-l hl-title" data-hero data-split transition:name="pt-healing" data-pt>{p.name}</h1>
           <p class="lede" data-hero>{p.line}</p>
-          <ol class="hl-index" data-hero aria-label="The four chapters">
+          <ol class="hl-index" data-hero aria-label={SW.fourChapters}>
             {moves.map((m, i) => (
               <li><a href={`#${m.id}`}><span class="hl-num" aria-hidden="true">{ROMAN[i]}</span><span class="hl-ix-title">{m.title}</span><span class="hl-ix-n">{categoryCount(m.cat)} services</span></a></li>
             ))}
@@ -88,7 +89,7 @@ const pieces = polys.map((poly, i) => {
 
         <!-- breathe: several patterns, and a five-senses grounding -->
         <div class="breath" id="breathe" data-breath data-hero>
-          <div class="br-modes" role="group" aria-label="Breathing patterns">
+          <div class="br-modes" role="group" aria-label={SW.breathPatterns}>
             {BREATHS.map((b, i) => <button type="button" data-breath-mode={b.key} aria-pressed={i === 0 ? 'true' : 'false'}>{b.name}</button>)}
             <button type="button" data-breath-mode="ground" aria-pressed="false">{COPY.breath.grounding.name}</button>
           </div>
@@ -199,7 +200,7 @@ const pieces = polys.map((poly, i) => {
       </div>
     </section>
 
-    <nav class="pp-nav" aria-label="Other pillars">
+    <nav class="pp-nav" aria-label={SW.otherPillars}>
       <a href={`/pillars/${prev.slug}`}><span>{words.previous}</span><b transition:name={`pt-${prev.slug}`} data-pt>{prev.name}</b></a>
       <a href={`/pillars/${next.slug}`}><span>{words.next}</span><b transition:name={`pt-${next.slug}`} data-pt>{next.name}</b></a>
     </nav>

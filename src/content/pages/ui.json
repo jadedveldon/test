@@ -1,0 +1,139 @@
+{
+  "common": {
+    "copied": "Copied",
+    "saved": "Saved",
+    "today": "today",
+    "inDays": "in about {n} days"
+  },
+  "healing": {
+    "begin": "Begin",
+    "stop": "Stop",
+    "next": "Next",
+    "finish": "Finish",
+    "ready": "Begin when you are ready",
+    "choose": "Choose a pattern, then begin",
+    "comeBack": "Come back to the room whenever you like",
+    "rounds": "{n} {unit} of {name}. Come back whenever you like.",
+    "round": "round",
+    "roundsWord": "rounds",
+    "nameSense": "Name {n} {sense}",
+    "groundShort": "Five senses, one at a time",
+    "groundAbout": "A grounding exercise: name five things you can see, four you can touch, three you can hear, two you can smell and one you can taste. Take your time with each.",
+    "placed": "Placed {place}.",
+    "toGo": "{n} {unit} to go",
+    "piece": "piece",
+    "pieces": "pieces",
+    "whole": "Whole again, with gold where it broke",
+    "breakAgain": "Break it again",
+    "dragHome": "Drag each piece home, or tap it",
+    "setBack": "Set them all back"
+  },
+  "magic": {
+    "savePicture": "Save it as a picture",
+    "saved": "Saved",
+    "nothingKept": "{what} Nothing you typed was saved.",
+    "keepDrawing": "Keep drawing, or save it when it feels finished. Nothing you drew is saved unless you save the picture.",
+    "penOn": "The pen is on: draw over the sigil inside the ring. Tap the pen again to stop.",
+    "drawHere": "Draw with your finger or mouse inside the ring.",
+    "drawnHere": "Your sigil will be drawn here.",
+    "lunarLine": "Lunar months {months}; by the sun, about {from} to {to}.",
+    "ritusNote": "Drag to turn. The marker at the top is today. Dates by the sun, as Drik Panchang reckons the ritus; by the lunar months each season comes a few weeks later. Calendars differ.",
+    "wheelNote": "Drag to turn. The marker at the top is today. The Wheel of the Year as kept in modern pagan witchcraft, northern hemisphere.",
+    "todayNext": "Today. Next: {name}, {when}",
+    "todayIs": "Today: {name}",
+    "darkMoon": "Dark moon: Amavasya, and Hecate’s supper",
+    "savedCalendar": "Saved to your calendar file"
+  },
+  "identity": {
+    "callMe": "Please call me {name}.",
+    "callMePronouns": "Please call me {name}; my pronouns are {pronouns}.",
+    "pronouns": "My pronouns are {pronouns}.",
+    "avoid": "Please leave aside, for now: {avoid}.",
+    "copy": "Copy the note",
+    "copied": "Copied",
+    "selectToCopy": "Select the note to copy it"
+  },
+  "devotion": {
+    "aligned": "Aligned. The ten Mahavidyas surround the bindu.",
+    "turn": "Drag to turn the yantra into alignment"
+  },
+  "divination": {
+    "still": "Be still…",
+    "longer": "Hold a little longer; the water needs time to settle"
+  },
+  "diya": {
+    "none": "Light a lamp and hold a wish, a name or a quiet thank-you in mind.",
+    "one": "You have lit one diya here. On the finished site, every lamp joins one shared count for the day.",
+    "many": "You have lit {n} diyas here. On the finished site, every lamp joins one shared count for the day.",
+    "another": "Offer another"
+  },
+  "card": {
+    "drawn": "Your card for today. A new one waits for you tomorrow.",
+    "turn": "Take a breath, then turn the card.",
+    "saved": "Saved as a picture. (If nothing downloaded, this viewer blocks it; the real site allows it.)"
+  },
+  "festivals": {
+    "tonight": "Tonight is {name}",
+    "amavasya": "The new moon, a night especially kept for Kali. From Sarvakali.",
+    "purnima": "The full moon. From Sarvakali."
+  },
+  "pwa": {
+    "already": "Already on your home screen.",
+    "added": "Added. Look for Sarvakali on your home screen.",
+    "later": "No problem. You can add it any time.",
+    "iphone": "On iPhone: tap the Share button, then \"Add to Home Screen\".",
+    "elsewhere": "Open this site in Chrome on Android (or Edge or Chrome on a computer) to add it. This preview viewer cannot install apps.",
+    "installed": "Installed",
+    "addSarvakali": "Add Sarvakali to your home screen",
+    "howIphone": "How to add it on iPhone",
+    "add": "Add to your home screen"
+  },
+  "search": {
+    "intro": "Search {services} services, {practices} guided practices, {mantras} mantras and prayers from every tradition, and every article: protection, grief, Kali, tarot, ancestors…",
+    "found": "{n} found",
+    "none": "Nothing found. Try a shorter word, or ask Sarvakali directly.",
+    "practices": "Guided practices",
+    "library": "Mantra library",
+    "articles": "Articles",
+    "withDeity": "Guided practice · with a deity",
+    "forFeeling": "Guided practice · for how you feel",
+    "forDay": "Guided practice · for the day",
+    "open": "Guided practice · open to all",
+    "keep": "Keep {name} in your list"
+  },
+  "keep": {
+    "remove": "Remove {name}"
+  },
+  "practice": {
+    "roundsToday": "{n} {unit} today",
+    "round": "round",
+    "roundsWord": "rounds",
+    "noRounds": "No rounds yet today",
+    "purnima": "Purnima",
+    "somethingFor": "Something for {name}",
+    "moonSaved": "Saved. Open the file to add the next 12 Amavasyas and Purnimas to your calendar, each with a reminder the evening before.",
+    "weekdays": "Mon, Tue, Wed, Thu, Fri, Sat, Sun"
+  },
+  "booking": {
+    "first": "First choice",
+    "second": "Second choice",
+    "third": "Third choice",
+    "optional": "(optional)",
+    "conversationWith": "Conversation with {name}"
+  },
+  "sky": {
+    "nextAmavasya": "Next Amavasya: {date}, {when}.",
+    "dressed": "The site is dressed for the day.",
+    "tonightsMoon": "Tonight’s moon: {name}",
+    "tithi": "{name} · tithi {n}",
+    "ritualTopic": "A ritual on Amavasya",
+    "askRitual": "Ask about a ritual for that night",
+    "amavasyaNote": "Amavasya, the new moon: a night especially kept for Kali. The site turns deeper tonight.",
+    "purnimaNote": "Purnima, the full moon. The site is washed in silver tonight.",
+    "phaseNote": "{phase} moon, {lit}% lit. The moon in the sky behind this page is tonight’s moon.",
+    "waxing": "Waxing",
+    "waning": "Waning",
+    "amavasyaTitle": "Amavasya (new moon)",
+    "purnimaTitle": "Purnima (full moon)"
+  }
+}

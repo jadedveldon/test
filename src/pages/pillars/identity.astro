@@ -5,6 +5,7 @@
  * light breaks into every colour. Affirming, trauma-aware copy; nothing explicit; people choose what to share.
  */
 import { pillarService } from '../../seo/ld';
+import { words as SW } from '../../config';
 import Base from '../../layouts/Base.astro';
 import { crumbWords as cw } from '../../config';
 import { words } from '../../config';
@@ -33,7 +34,7 @@ const c = COPY.comfort;
           <h1 class="display-l pd-title" data-hero data-split transition:name="pt-identity" data-pt>{p.name}</h1>
           <p class="lede" data-hero>{p.line}</p>
           <p class="pd-note" data-hero><Rich text={WELCOME} /></p>
-          <ol class="pd-index" data-hero aria-label="The chapters">
+          <ol class="pd-index" data-hero aria-label={SW.chapters}>
             {moves.map((m, i) => <li><a href={`#${m.id}`}><span class="pd-num" aria-hidden="true">{ROMAN[i]}</span><span class="pd-ix-title">{m.title}</span><span class="pd-ix-n">{categoryCount(m.cat)} services</span></a></li>)}
           </ol>
         </div>
@@ -62,7 +63,7 @@ const c = COPY.comfort;
             <div class="cta-row"><button type="submit" class="btn btn-ghost btn-sm">{c.make}</button></div>
             <div class="cf-note" data-comfort-note hidden>
               <pre data-comfort-text></pre>
-              <div class="cta-row"><button type="button" class="btn btn-ghost btn-sm" data-comfort-copy>{c.copy}</button><a class="btn btn-ghost btn-sm" href="/connect" data-topic={p.name}>Request a conversation</a></div>
+              <div class="cta-row"><button type="button" class="btn btn-ghost btn-sm" data-comfort-copy>{c.copy}</button><a class="btn btn-ghost btn-sm" href="/connect" data-topic={p.name}>{SW.request}</a></div>
             </div>
             <p class="dv-sig-hint small">{c.hint}</p>
           </form>
@@ -101,7 +102,7 @@ const c = COPY.comfort;
       </div>
     </section>
 
-    <nav class="pp-nav" aria-label="Other pillars">
+    <nav class="pp-nav" aria-label={SW.otherPillars}>
       <a href={`/pillars/${prev.slug}`}><span>{words.previous}</span><b transition:name={`pt-${prev.slug}`} data-pt>{prev.name}</b></a>
       <a href={`/pillars/${next.slug}`}><span>{words.next}</span><b transition:name={`pt-${next.slug}`} data-pt>{next.name}</b></a>
     </nav>

@@ -33,7 +33,9 @@ rule('no catalogue numbers', pages.flatMap((f) => {
 }));
 
 // 3. English pages with the basics: language, title, description, a link-preview picture that exists
-rule('every page: lang="en", a title, a description, a preview picture that exists', pages.flatMap((f) => {
+// (an old address that only forwards to its new page is not a page: Astro writes it as a bare redirect)
+const isRedirect = (f) => /<meta http-equiv="refresh"/.test(html[f]);
+rule('every page: lang="en", a title, a description, a preview picture that exists', pages.filter((f) => !isRedirect(f)).flatMap((f) => {
   const h = html[f], out = [];
   if (!/<html[^>]*\blang="en"/.test(h)) out.push(`${rel(f)}: lang`);
   if (!/<title>[^<]{3,}<\/title>/.test(h)) out.push(`${rel(f)}: title`);
@@ -137,6 +139,36 @@ rule('every catalogue service and category is on its pillar page', SLUGS.flatMap
     for (const m of h.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) { try { if (!JSON.parse(m[1])['@type']) out.push(`${rel(f)}: structured data without a type`); } catch { out.push(`${rel(f)}: structured data is not valid JSON`); } }
   }
   rule('search engines and AI search: sitemap, robots.txt, llms.txt, canonical addresses, structured data', out);
+}
+
+// what search results show (2026-11-27): every page that may be listed has a title of 10 to 70 letters and a line of 50
+// to 170, neither shared with another page; one main heading; every picture with a text for those who cannot see it;
+// and every link to a page of the site leads to one that exists
+{
+  const out = [];
+  const routeOf = (f) => ('/' + path.relative(DIST, f).replace(/\\/g, '/').replace(/\.html$/, '').replace(/(^|\/)index$/, '')).replace(/\/$/, '') || '/';
+  const live = pages.filter((f) => !isRedirect(f));
+  const exists = new Set(pages.map(routeOf));
+  const seenT = new Map(), seenD = new Map();
+  const unesc = (x) => x.replace(/&amp;/g, '&').replace(/&#39;|&#x27;/g, "'").replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+  for (const f of live) {
+    const h = html[f], r = routeOf(f);
+    const listed = !/<meta name="robots" content="noindex/.test(h) && !/<meta name="robots" content="noindex/.test(h.slice(0, 4000));
+    for (const img of h.match(/<img\b[^>]*>/g) ?? []) if (!/\balt=/.test(img)) out.push(`${r}: a picture without alt`);
+    for (const m of h.matchAll(/<a\b[^>]*href="(\/[^"#?]*)/g)) {
+      const to = m[1].replace(/\.html$/, '').replace(/\/$/, '') || '/';
+      if (/^\/(api|og|icons|brand|_astro|studio|keystatic|media|favicon|sitemap|robots|llms|manifest|search-index|sw)/.test(to)) continue;
+      if (!exists.has(to)) out.push(`${r}: a link to ${m[1]}, which is not a page`);
+    }
+    if (!listed) continue;
+    const t = unesc((h.match(/<title>([^<]*)<\/title>/) ?? [])[1] ?? ''), d = unesc((h.match(/<meta name="description" content="([^"]*)"/) ?? [])[1] ?? '');
+    if (t.length < 10 || t.length > 70) out.push(`${r}: title of ${t.length} letters`);
+    if (d.length < 50 || d.length > 170) out.push(`${r}: description of ${d.length} letters`);
+    if (seenT.has(t)) out.push(`${r}: the same title as ${seenT.get(t)}`); else seenT.set(t, r);
+    if (seenD.has(d)) out.push(`${r}: the same description as ${seenD.get(d)}`); else seenD.set(d, r);
+    if ((h.match(/<h1[\s>]/g) ?? []).length !== 1) out.push(`${r}: ${(h.match(/<h1[\s>]/g) ?? []).length} main headings`);
+  }
+  rule('what search results show: titles, descriptions, one main heading, pictures described, no broken links', out);
 }
 
 const failed = results.filter((x) => !x).length;

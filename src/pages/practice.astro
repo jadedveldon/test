@@ -6,6 +6,7 @@
  * mantras), and, behind all that, the library, the seven days, the tools and the traditions for anyone who wants more.
  * The practices: src/content/practices ("Guided practices"); the words: src/content/pages/practice.json.
  */
+import { pageMeta as PM } from '../config';
 import Base from '../layouts/Base.astro';
 import CareText from '../components/CareText.astro';
 import w from '../content/pages/practice.json';
@@ -30,7 +31,7 @@ const weekData = {
 const door = (k: string) => w.doors.find((d) => d.key === k) ?? w.doors[0];
 const mins = (n: number) => H.minutes.replace('{n}', String(n));
 ---
-<Base title="Daily practice · Sarvakali" sequence="practice" description="Guided daily practices with Sarvakali: today's practice, a practice with a deity, or one for how you feel.">
+<Base title={PM.practice.title} sequence="practice" description={PM.practice.description}>
   <div data-practice data-practice-hub>
     <a hidden data-connect-href href="/connect" tabindex="-1" aria-hidden="true"></a>
     <script type="application/json" data-practice-words set:html={JSON.stringify(w)} />

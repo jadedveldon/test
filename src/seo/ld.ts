@@ -36,7 +36,7 @@ export const libraryText = (m: Mantra) => ({
   '@context': 'https://schema.org', '@type': 'CreativeWork', name: m.name, url: abs(`/practice/mantras/${m.slug}`),
   genre: m.kind === 'figure' ? 'Sacred figure' : m.kind, inLanguage: m.lang, isAccessibleForFree: true,
   ...(m.text ? { text: m.text } : {}), ...(m.iastText ? { alternateName: m.iastText.replace(/\n/g, ' ') } : {}),
-  description: m.meaning, ...(m.source ? { citation: m.source } : {}),
+  ...(m.meaning ? { description: m.meaning } : {}), ...(m.source ? { citation: m.source } : {}),
   about: [m.tradition, m.deity].filter(Boolean).map((name) => ({ '@type': 'Thing', name })),
   keywords: [m.tradition, m.deity, m.kind, ...m.themes].filter(Boolean).join(', '),
   isPartOf: { '@type': 'Collection', name: 'The library: prayers of every tradition', url: abs('/practice/library') }, publisher: { '@id': ORG_ID },

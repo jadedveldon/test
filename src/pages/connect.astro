@@ -6,6 +6,8 @@
  * Sarvakali's Studio (src/studio), emails both of them, and gives the visitor a page to follow it on; their list
  * then empties. In the preview the request goes to the Studio's demo, in the same browser.
  */
+import { words as SW } from '../config';
+import { pageMeta as PM } from '../config';
 import Base from '../layouts/Base.astro';
 import Steps from '../components/Steps.astro';
 import Rich from '../components/Rich.astro';
@@ -15,7 +17,7 @@ const f = c.form;
 const d = b.connectDone;
 const mode = import.meta.env.PUBLIC_STUDIO;
 ---
-<Base title="Connect · Sarvakali" sequence="connect" description="Request a conversation with Sarvakali.">
+<Base title={PM.connect.title} sequence="connect" description={PM.connect.description}>
   <section class="connect">
     <div class="connect-intro">
       <p class="kicker" data-hero>{c.kicker}</p>
@@ -66,12 +68,12 @@ const mode = import.meta.env.PUBLIC_STUDIO;
         </div>
       </fieldset>
       <!-- left empty by people; robots fill it in -->
-      <div class="hp" aria-hidden="true"><label>Leave this empty <input name="website" tabindex="-1" autocomplete="off" /></label></div>
+      <div class="hp" aria-hidden="true"><label>{SW.honeypot} <input name="website" tabindex="-1" autocomplete="off" /></label></div>
       <p class="notice">{f.privacy}</p>
       <p class="connect-error" data-connect-error role="alert" hidden></p>
       <button type="submit" class="btn btn-solid" data-connect-send data-sending={d.sending}>{f.send}</button>
       {mode === 'demo' && <p class="proto-note">{c.preview}</p>}
-      {mode === 'off' && <p class="proto-note">Prototype: this copy of the site has no Studio behind it, so nothing is sent from here.</p>}
+      {mode === 'off' && <p class="proto-note">{SW.prototypeNote}</p>}
     </form>
 
     <div id="connect-done" class="connect-done" hidden tabindex="-1" data-error={d.error}>
