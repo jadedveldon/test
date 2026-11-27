@@ -44,6 +44,12 @@ haphazard. They also asked that an article can take any of the site's looks, cho
   care. A theme brings that page's colours, light and form, accent and heading lettering. Cards now take the
   world's own surface, so they read on dark themes too.
 
+### Found by the full suite this round, and fixed
+- **The Greek gods' cards on touch phones:** a rule that made the gods' filter buttons taller picked every element
+  marked `data-el`, the cards too, so each card became one squeezed row with its words cut off. Regression 34.
+- **Service chips on the Greek cards** could run past the card's edge on narrow cards; they now wrap.
+- **A one-word mantra name** ("Ila") was a 24px-wide link on phones; names are at least 44px wide to tap.
+
 ### Checks
 - **New regressions:**
   - 27: the homepage's longest pause while the world starts stays under 450 ms.
@@ -53,6 +59,7 @@ haphazard. They also asked that an article can take any of the site's looks, cho
   - 31: the library's filters do not float over the cards, and cards have room inside (phone and desktop).
   - 32: an article's text is centred on a wide screen, and its title, text and ending share one column.
   - 33: every article has a theme and its world.
+  - 34: the Greek gods' cards keep their shape on a touch phone.
 - Each failed on the old site (measured, or seen in the screenshots) and passes now.
 - Phone and desktop screenshots were taken of the library, the articles, two themes and the pillar pages, before
   and after, and looked at.

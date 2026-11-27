@@ -380,5 +380,12 @@ const ARGS = { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', 
       if (!t.theme || !t.seq) bad.push(`${l} ${JSON.stringify(t)}`); }
     ok('articles: each has a theme and its world', links.length > 0 && bad.length === 0, bad.join(' | ') || `${links.length} articles`);
     await ctx.close(); }
+  // 34 found by layout.cjs (2026-11-27): on touch screens a rule that made the Greek gods' filter buttons taller
+  //    picked every element with data-el, the gods' cards too, which turned each card into one squeezed row
+  { const { ctx, p } = await fresh({ viewport: { width: 320, height: 568 }, isMobile: true, hasTouch: true });
+    await p.goto(`${B}/pillars/devotion?tier=calm&cursor=off`); await p.waitForTimeout(1500);
+    const r = await p.evaluate(() => { const cards = [...document.querySelectorAll('li.greek-card')]; return { all: cards.length, flat: cards.filter((c) => getComputedStyle(c).display !== 'grid').length, cut: cards.filter((c) => c.scrollWidth > c.clientWidth + 2).length }; });
+    ok('devotion: the Greek gods\' cards keep their shape on a touch phone', r.all > 0 && r.flat === 0 && r.cut === 0, JSON.stringify(r));
+    await ctx.close(); }
   await b.close();
 })();

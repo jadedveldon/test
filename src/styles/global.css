@@ -1009,7 +1009,8 @@ li.is-found > .chip-keep, li.is-found > .vidya-keep, li.is-found .deity-name { b
 .presiding-tag { justify-self: start; font: 600 0.62rem/1.3 var(--f-body); letter-spacing: 0.18em; text-transform: uppercase; color: rgb(var(--glow)); }
 .presiding-link { justify-self: start; font-size: 0.85rem; color: rgb(var(--ink)); text-underline-offset: 3px; }
 @media (max-width: 600px) { .greek-card.is-presiding { grid-column: auto; } }
-.greek-work .chip-keep { font-size: 0.78rem; padding: 6px 10px; }
+.greek-work .chip-keep { font-size: 0.78rem; padding: 6px 10px; max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+.greek-work > li { min-width: 0; max-width: 100%; }
 .greek-grid[data-show]:not([data-show="all"]) .greek-card { display: none; }
 .greek-grid[data-show="olympians"] .greek-card[data-el="olympians"], .greek-grid[data-show="chthonic"] .greek-card[data-el="chthonic"],
 .greek-grid[data-show="first"] .greek-card[data-el="first"], .greek-grid[data-show="others"] .greek-card[data-el="others"] { display: grid; }
@@ -1548,7 +1549,7 @@ html[data-light="1"] .pd-num { color: rgb(var(--ink-soft)); }
 /* thumbs: the small controls get a comfortable height on touch screens */
 @media (pointer: coarse) {
   .wordmark, .back-link { display: inline-flex; align-items: center; min-height: 40px; }
-  .vidya-keep, .sg-methods button, .br-modes button, .wheel-modes button, .sg-arr button, .cf-opts span, .fd-opts span, .chip-keep, .btn-sm, [data-el], .pp-item { min-height: 36px; display: inline-flex; align-items: center; }
+  .vidya-keep, .sg-methods button, .br-modes button, .wheel-modes button, .sg-arr button, .cf-opts span, .fd-opts span, .chip-keep, .btn-sm, button[data-el], .pp-item { min-height: 36px; display: inline-flex; align-items: center; }
 }
 
 /* Windows high contrast (forced colours): shadows and backgrounds are removed there, so buttons and chips
