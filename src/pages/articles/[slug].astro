@@ -6,6 +6,8 @@
  */
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import { article } from '../../seo/ld';
+import { site } from '../../config';
 import { crumbWords as cw } from '../../config';
 import { ACCENT, pillars } from '../../data/site';
 
@@ -21,9 +23,10 @@ const all = (await getCollection('writings')).filter((p) => p.id !== post.id).so
 const next = [...all.filter((p) => p.data.pillar === post.data.pillar), ...all.filter((p) => p.data.pillar !== post.data.pillar)].slice(0, 2);
 const h2s = headings.filter((h) => h.depth === 2);
 const accent = ACCENT[pillar.slug];
+const ld = [article({ slug: post.id, title: post.data.title, summary: post.data.summary, date: post.data.date, image: new URL(`/og/articles-${post.id}.jpg`, site.url).href })];
 const date = post.data.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 ---
-<Base title={`${post.data.title} · Sarvakali`} sequence="reading" description={post.data.summary} crumbs={[{ label: cw.articles, href: '/articles' }, { label: post.data.title }]}>
+<Base title={`${post.data.title} · Sarvakali`} ld={ld} sequence="reading" description={post.data.summary} crumbs={[{ label: cw.articles, href: '/articles' }, { label: post.data.title }]}>
   <div class="ar-progress" data-ar-progress aria-hidden="true" style={`--acc-hex: ${accent}`}><span></span></div>
   <article class="page ar-article" data-article style={`--acc-hex: ${accent}`}>
     <header class="page-hero">

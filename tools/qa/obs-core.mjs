@@ -102,5 +102,9 @@ NOW = Date.parse('2027-01-10T10:00:00Z');
 const r = await i.hourly(env);
 ok('raw events and logs older than 30 days are let go; the day’s numbers stay', ![...store.keys()].some((k) => k.startsWith('ev/2026') || k.startsWith('log/2026')) && store.has('sum/2026-11-26') && r.pruned >= 2);
 
+/* ---------------------------------------------------------------- kinds of source */
+ok('AI assistants, search engines, social apps and other sites are told apart', e.sourceKind('chatgpt.com') === 'AI assistants' && e.sourceKind('perplexity.ai') === 'AI assistants' && e.sourceKind('google.co.in') === 'Search engines' && e.sourceKind('instagram.com') === 'Social' && e.sourceKind('example.org') === 'Other sites' && e.sourceKind('Direct') === 'Direct');
+ok('… and added up by kind', JSON.stringify(e.sourceKinds({ 'chatgpt.com': 2, 'claude.ai': 1, 'google.com': 5, Direct: 3 })) === JSON.stringify({ 'AI assistants': 3, 'Search engines': 5, Direct: 3 }));
+
 console.log(fails ? `\n${fails} failed` : '\nall ok');
 process.exit(fails ? 1 : 0);

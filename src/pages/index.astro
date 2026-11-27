@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import { organisation, website } from '../seo/ld';
 import TodayLine from '../components/TodayLine.astro';
 import ThirdEye from '../components/ThirdEye.astro';
 import Loader from '../components/Loader.astro';
@@ -11,7 +12,7 @@ import home from '../content/home.json';
 const h = home;
 const words = kind.words.filter((w) => w.text.trim());
 ---
-<Base title="Sarvakali">
+<Base title="Sarvakali" ld={[organisation(), website()]}>
   <Loader slot="overlay" />
 
   <section class="chapter chapter-hero" data-chapter="hero" data-hero-chapter>

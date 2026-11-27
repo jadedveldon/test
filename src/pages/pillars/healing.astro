@@ -8,6 +8,7 @@
  *   III Shadow: golden repair, a bowl in straight-cut pieces to set back with gold
  *   IV  Journaling: a prompt for today
  */
+import { pillarService } from '../../seo/ld';
 import Base from '../../layouts/Base.astro';
 import { crumbWords as cw } from '../../config';
 import { words } from '../../config';
@@ -70,7 +71,7 @@ const pieces = polys.map((poly, i) => {
   };
 });
 ---
-<Base title={`${p.name} · Sarvakali`} sequence="heal_hero" description={p.line} crumbs={[{ label: cw.pillars, href: '/#paths' }, { label: p.name }]}>
+<Base title={`${p.name} · Sarvakali`} sequence="heal_hero" description={p.line} crumbs={[{ label: cw.pillars, href: '/#paths' }, { label: p.name }]} ld={[pillarService(p)]}>
   <div class="hl" data-healing>
     <section class="chapter hl-hero" data-chapter="heal_hero" data-heal-chapter="hero">
       <div class="chapter-inner hl-hero-grid">

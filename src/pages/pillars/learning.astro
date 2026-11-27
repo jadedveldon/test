@@ -4,6 +4,7 @@
  * lamplight (direction A), the palm-leaf manuscripts (direction C) and the night road of study (direction B).
  * Find your class sits in the library; Your path opens the sky. The yantra drawing is in the project history.
  */
+import { pillarService } from '../../seo/ld';
 import Base from '../../layouts/Base.astro';
 import { crumbWords as cw } from '../../config';
 import { words } from '../../config';
@@ -27,7 +28,7 @@ const road = STATION_XY.slice(0, 9).map(([x, y]) => `${x} ${y}`).join(' L');
 const beforeSky = moves.filter((m) => m.room !== 'sky');
 const sky = moves.filter((m) => m.room === 'sky');
 ---
-<Base title={`${p.name} · Sarvakali`} sequence="lrn_hero" description={p.line} crumbs={[{ label: cw.pillars, href: '/#paths' }, { label: p.name }]}>
+<Base title={`${p.name} · Sarvakali`} sequence="lrn_hero" description={p.line} crumbs={[{ label: cw.pillars, href: '/#paths' }, { label: p.name }]} ld={[pillarService(p)]}>
   <div class="pd pd-learning" data-learning data-blend="edge">
     <section class="chapter pd-hero ln-library" data-chapter="lrn_hero">
       <div class="chapter-inner pd-hero-grid">

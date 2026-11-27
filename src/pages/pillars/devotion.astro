@@ -7,6 +7,7 @@
  *   altars and devotion (lamps), spirits and ancestors (a nebula),
  *   shamanic work (the world tree).
  */
+import { pillarService } from '../../seo/ld';
 import Base from '../../layouts/Base.astro';
 import { crumbWords as cw } from '../../config';
 import { words } from '../../config';
@@ -48,7 +49,7 @@ const triPath = (r: number) => { const t = tri(r); return `M${t[0]} L${t[1]} L${
 const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
 const alias = (k: string) => (aliases[k] || []);
 ---
-<Base title={`${p.name} · Sarvakali`} sequence="devC_hero" description={p.line} crumbs={[{ label: cw.pillars, href: '/#paths' }, { label: p.name }]}>
+<Base title={`${p.name} · Sarvakali`} sequence="devC_hero" description={p.line} crumbs={[{ label: cw.pillars, href: '/#paths' }, { label: p.name }]} ld={[pillarService(p)]}>
   <Yantra />
   <div class="dv" data-devotion>
     <section class="chapter dv-hero" data-chapter="devC_hero" data-dev-chapter="hero">

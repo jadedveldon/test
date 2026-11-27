@@ -111,6 +111,34 @@ rule('every catalogue service and category is on its pillar page', SLUGS.flatMap
   return [...lost, ...gone];
 }));
 
+// search engines and AI search (2026-11-27): a sitemap of every public page and none of the private ones; robots.txt
+// lets search and AI search in and turns crawlers that only train AI models away; llms.txt; every public page names
+// its one address (canonical), private pages ask not to be listed; and the facts written for machines are valid JSON
+{
+  const PRIVATE = /\/(studio|booking|invoice|me|404)(\.html)?$/;
+  const out = [];
+  const read = (f) => (fs.existsSync(path.join(DIST, f)) ? fs.readFileSync(path.join(DIST, f), 'utf8') : '');
+  const sitemap = read('sitemap.xml'), robots = read('robots.txt'), llms = read('llms.txt');
+  const locs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => new URL(m[1]).pathname);
+  if (!locs.length) out.push('sitemap.xml: missing or empty');
+  for (const want of ['/', '/practice/library', '/pillars/devotion', '/practice/mantras/gayatri', '/practice/with/kindness']) if (!locs.includes(want)) out.push(`sitemap.xml: lacks ${want}`);
+  for (const l of locs) if (PRIVATE.test(l)) out.push(`sitemap.xml: lists the private ${l}`);
+  const group = (ua) => robots.split(/\n\s*\n/).find((g) => g.split('\n').some((l) => l.trim() === `User-agent: ${ua}`)) ?? '';
+  for (const ua of ['GPTBot', 'ClaudeBot', 'CCBot']) if (!/^Disallow: \/$/m.test(group(ua))) out.push(`robots.txt: ${ua} (training only) is not turned away`);
+  for (const ua of ['OAI-SearchBot', 'Claude-SearchBot', 'PerplexityBot', 'Google-Extended', 'Googlebot', 'Bingbot']) if (group(ua)) out.push(`robots.txt: ${ua} (search) has a group of its own`);
+  if (!/^Allow: \/$/m.test(group('*')) || !/^Disallow: \/studio$/m.test(group('*'))) out.push('robots.txt: everyone else is not let in, or the Studio is not kept out');
+  if (!/^Sitemap: https?:\/\/\S+\/sitemap\.xml$/m.test(robots)) out.push('robots.txt: no sitemap');
+  if (!/^# Sarvakali$/m.test(llms) || !/\/practice\/library/.test(llms)) out.push('llms.txt: missing or incomplete');
+  for (const f of pages) {
+    const h = html[f], r = '/' + path.relative(DIST, f).replace(/\\/g, '/');
+    const noindex = /<meta name="robots" content="noindex/.test(h);
+    if (PRIVATE.test(r) && !noindex && !/studio/.test(r)) out.push(`${rel(f)}: private but not marked noindex`);
+    if (!noindex && !/<link rel="canonical" href="https?:\/\/[^"]+"/.test(h)) out.push(`${rel(f)}: no canonical address`);
+    for (const m of h.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) { try { if (!JSON.parse(m[1])['@type']) out.push(`${rel(f)}: structured data without a type`); } catch { out.push(`${rel(f)}: structured data is not valid JSON`); } }
+  }
+  rule('search engines and AI search: sitemap, robots.txt, llms.txt, canonical addresses, structured data', out);
+}
+
 const failed = results.filter((x) => !x).length;
 console.log(`ERRORS: ${failed ? `${failed} rule(s) broken` : 'none'}`);
 process.exitCode = failed ? 1 : 0;

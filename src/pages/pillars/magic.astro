@@ -8,6 +8,7 @@
  * sigil, then the seven chapters
  * (the catalogue's seven categories).
  */
+import { pillarService } from '../../seo/ld';
 import Base from '../../layouts/Base.astro';
 import { crumbWords as cw } from '../../config';
 import { words } from '../../config';
@@ -37,7 +38,7 @@ const named = new RegExp(`(^|[^A-Za-z])${escape(hkName)}([^A-Za-z]|$)`);
 const hecateWork = devotion.categories.flatMap((c) => c.subs).flatMap((s) => s.items).filter((it) => named.test(it));
 
 ---
-<Base title={`${p.name} · Sarvakali`} sequence="magG_hero" description={p.line} crumbs={[{ label: cw.pillars, href: '/#paths' }, { label: p.name }]}>
+<Base title={`${p.name} · Sarvakali`} sequence="magG_hero" description={p.line} crumbs={[{ label: cw.pillars, href: '/#paths' }, { label: p.name }]} ld={[pillarService(p)]}>
   <div class="mg" data-magic data-blend="edge">
 
     <!-- night · the opening, under Hecate's sign -->

@@ -7,7 +7,7 @@
  */
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { ownerCall } from '../client';
-import { p75, rate } from '../../obs/core/events';
+import { p75, rate, sourceKinds } from '../../obs/core/events';
 import type { DaySummary, ErrorGroup } from '../../obs/core/events';
 import type { LogLine } from '../../obs/core/insights';
 import { Badge, Btn, Busy, Empty, Section, useStudio } from './ui';
@@ -153,6 +153,7 @@ function Overview({ ins }: { ins: Ins }) {
       <div className="in-grid2">
         <Bars title="Pages seen most" rows={pages.map(([p, s]) => [pageName(p), s.views, <>{n(s.visitors)} visitors{s.msN ? ` · ${dur(s.ms / s.msN)} in view` : ''}{s.sdN ? ` · read ${Math.round(s.sd / s.sdN)}%` : ''}</>])} />
         <div className="in-stack">
+          <Bars title="Kinds of source" rows={top(sourceKinds(t.sources)).map(([k, v]) => [k === 'Direct' ? 'Direct (typed, bookmarked or an app)' : k === 'AI assistants' ? 'AI assistants (ChatGPT, Perplexity, Claude, Gemini…)' : k, v])} total={t.visits} />
           <Bars title="Where visits came from" rows={top(t.sources).map(([k, v]) => [k === 'Direct' ? 'Direct (typed, bookmarked or an app)' : k, v])} total={t.visits} />
           <Bars title="Campaign links" rows={top(t.campaigns)} empty="No visits from tagged links yet. Add ?utm_source=instagram (and utm_campaign) to links you share, to see them here." />
         </div>

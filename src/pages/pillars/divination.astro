@@ -5,6 +5,7 @@
  * (obsidian, silver, arched mirrors). The opening is where they meet: a black mirror in a gilt frame, which gives
  * prompts to ponder. Readings are offered for reflection.
  */
+import { pillarService } from '../../seo/ld';
 import Base from '../../layouts/Base.astro';
 import { crumbWords as cw } from '../../config';
 import { words } from '../../config';
@@ -23,7 +24,7 @@ const moves = CHAPTERS.map((ch) => ({ ...ch, cat: gather(p, ch.key, ch.title, CH
 const aliases = categoryAliases(p, CHAPTER_KEYS, Object.fromEntries(moves.map((m) => [m.key, m.id])));
 const mr = COPY.mirror;
 ---
-<Base title={`${p.name} · Sarvakali`} sequence="div_hero" description={p.line} crumbs={[{ label: cw.pillars, href: '/#paths' }, { label: p.name }]}>
+<Base title={`${p.name} · Sarvakali`} sequence="div_hero" description={p.line} crumbs={[{ label: cw.pillars, href: '/#paths' }, { label: p.name }]} ld={[pillarService(p)]}>
   <div class="pd pd-divination" data-divination>
     <section class="chapter pd-hero dv5-gilt" data-chapter="div_hero">
       <div class="chapter-inner pd-hero-grid">

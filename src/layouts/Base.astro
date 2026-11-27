@@ -20,6 +20,8 @@ interface Props {
   noindex?: boolean;
   /** the trail above an inner page (after Home, which is added): the last item is this page and has no href */
   crumbs?: { label: string; href?: string }[];
+  /** facts about the page for search engines and AI tools (schema.org JSON-LD, src/seo/ld.ts) */
+  ld?: object[];
 }
 const {
   title,
@@ -27,6 +29,7 @@ const {
   sequence = 'hero',
   noindex = false,
   crumbs = [],
+  ld = [],
 } = Astro.props;
 
 // link previews: each page has its own picture, made from the real page by tools/make-og.cjs
@@ -53,7 +56,7 @@ const trailLd = trail.length ? JSON.stringify({
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#060304" />
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {noindex ? <meta name="robots" content="noindex, nofollow" /> : <link rel="canonical" href={pageUrl} />}
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Sarvakali" />
     <meta property="og:title" content={title} />
@@ -95,6 +98,7 @@ const trailLd = trail.length ? JSON.stringify({
     </script>
     <ClientRouter fallback="animate" />
     {trailLd && <script type="application/ld+json" set:html={trailLd} />}
+    {ld.map((x) => <script type="application/ld+json" set:html={JSON.stringify(x)} />)}
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to the content</a>

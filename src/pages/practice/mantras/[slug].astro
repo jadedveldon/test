@@ -7,6 +7,7 @@
  * which marks the day in the visitor's own practice record. A mantra being checked shows its meaning and the
  * wording as supplied, never as a text to recite.
  */
+import { libraryText } from '../../../seo/ld';
 import Base from '../../../layouts/Base.astro';
 import { crumbWords as cw } from '../../../config';
 import MantraCard from '../../../components/MantraCard.astro';
@@ -39,7 +40,7 @@ const canChant = !!m.text && m.status !== 'verify' && m.status !== 'honoured';
 const usedIn = (await loadPractices()).filter((p) => p.steps.some((s) => s.mantra === m.slug));
 const sensitive = /grief|healing/.test(m.themes.join(' ')) || m.status === 'guidance';
 ---
-<Base title={`${m.name} · Mantra library · Sarvakali`} sequence={world} description={m.meaning.slice(0, 155)} crumbs={[{ label: cw.practice, href: '/practice' }, { label: cw.library, href: '/practice/library' }, { label: m.name }]}>
+<Base title={`${m.name} · Mantra library · Sarvakali`} ld={[libraryText(m)]} sequence={world} description={m.meaning.slice(0, 155)} crumbs={[{ label: cw.practice, href: '/practice' }, { label: cw.library, href: '/practice/library' }, { label: m.name }]}>
   <article class="pmantra" data-mantra-page data-slug={m.slug} data-name={m.name} style={`--day:${hex}`}>
     <section class="chapter" data-chapter={world}>
       <div class="chapter-inner">

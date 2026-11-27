@@ -244,3 +244,24 @@ export function rate(metric: string, v: number | null) {
 export function dayOf(ts: number, tzOffsetMin = 330) {
   return new Date(ts + tzOffsetMin * 60_000).toISOString().slice(0, 10);
 }
+
+/** what kind of place a visit came from, by the other site's name: AI assistants (answers that link to the site),
+ *  search engines, social apps, other sites, or none (typed, bookmarked or an app). Worked out when read, so every
+ *  day already counted is grouped the same way. */
+export const SOURCE_KINDS = ['AI assistants', 'Search engines', 'Social', 'Other sites', 'Direct'] as const;
+const AI = /(^|\.)(chatgpt\.com|chat\.openai\.com|openai\.com|perplexity\.ai|claude\.ai|gemini\.google\.com|bard\.google\.com|copilot\.microsoft\.com|you\.com|phind\.com|meta\.ai|grok\.com|x\.ai|deepseek\.com|chat\.mistral\.ai|poe\.com)$/;
+const SEARCH = /(^|\.)(google\.[a-z.]+|bing\.com|duckduckgo\.com|yahoo\.[a-z.]+|yandex\.[a-z.]+|baidu\.com|ecosia\.org|brave\.com|search\.brave\.com|startpage\.com|qwant\.com)$/;
+const SOCIAL = /(^|\.)(facebook\.com|fb\.com|instagram\.com|whatsapp\.com|wa\.me|t\.co|x\.com|twitter\.com|linkedin\.com|lnkd\.in|pinterest\.[a-z.]+|reddit\.com|youtube\.com|youtu\.be|threads\.net|telegram\.org|t\.me|snapchat\.com|tiktok\.com|quora\.com)$/;
+export function sourceKind(source: string): (typeof SOURCE_KINDS)[number] {
+  const s = source.toLowerCase().replace(/^www\./, '');
+  if (!s || s === 'direct') return 'Direct';
+  if (AI.test(s)) return 'AI assistants';
+  if (SEARCH.test(s)) return 'Search engines';
+  if (SOCIAL.test(s)) return 'Social';
+  return 'Other sites';
+}
+export function sourceKinds(sources: Count = {}): Count {
+  const out: Count = {};
+  for (const [k, v] of Object.entries(sources)) { const kind = sourceKind(k); out[kind] = (out[kind] ?? 0) + v; }
+  return out;
+}

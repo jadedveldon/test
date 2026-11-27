@@ -104,7 +104,7 @@ Insights also works out today afresh whenever it is opened (reusing the numbers 
 ## Insights, in the Studio
 
 - **Overview:** visitors (each day's, added up), visits (a gap of 30 minutes, or arriving again from another site or a campaign link, starts a new one), pages seen, time on a
-  page, how far pages are read, visitors each day (hover, focus and arrow keys, or a table), pages, sources, campaign
+  page, how far pages are read, visitors each day (hover, focus and arrow keys, or a table), pages, kinds of source (AI assistants, search engines, social apps, other sites, direct; see `docs/seo.md`), sources, campaign
   links, the hours of the day, countries, devices, browsers.
 - **Journeys:** the way to a conversation (visits → Connect → request sent → time confirmed → held → paid; the last
   three from the Studio's records), where visits begin and end, and the steps from page to page.
