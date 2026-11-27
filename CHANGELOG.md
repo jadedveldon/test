@@ -3,6 +3,44 @@
 Every change to the site, newest first: what changed, why, and how it was checked.
 The rules for checking are in `CLAUDE.md`; the checks themselves are in `tools/qa/`.
 
+## 2026-11-27 · Sarvakali's answers on the eleven mantras
+
+Sarvakali answered the questions on the mantras held back or unclear. Most are from her guru and have no published
+source; her rule is to publish them exactly as given, or leave them out, never "correct" them toward a standard
+version.
+
+- **A new meaning for an old label.** "Wording not yet traced" is now **From Sarvakali's teaching**: given as she and
+  her teacher keep it, not a published text, kept exactly as given.
+- **Texts in Roman letters, exactly as given.** The texts from her teaching are shown in Roman letters, as she wrote
+  them, rather than turned into Devanagari, which would mean guessing at spellings that are hers. CLAUDE.md asks for
+  Devanagari for Sanskrit; her instruction to publish exactly as given comes first. Each still has a readable
+  pronunciation, its meaning and its source.
+- **What changed, entry by entry:**
+  1. **Bhuta Natha Sadananda:** the Ayyappa (Shasta) verse, kept under Shiva on Monday as she chants it. Spelling
+     fixed to "Shastre Tubhyam Namo Namaha"; the note says it is the Ayyappa verse.
+  2. **Dakshina Kalika Dhyanam:** her guru's version, in its own order and wording. The line-by-line meanings now say
+     what the words say (line 4: her body smeared with the blood she has drunk). Flagged for her approval.
+  3. **Gatam Papam Gatam Dukham:** "Gantam" corrected to "Gatam", with the standard ending "…Agata Sukha Sampattih,
+     Punyoham Tava Darshanat", in Devanagari.
+  4. **Jwalantam Karalam:** a separate guru mantra joining Narasimha with Lakshmi and Bhudevi, not Ugram Veeram. Kept
+     as given, not forced into verse.
+  5. **Namo Hanumate Tubhyam:** the fourth line kept as given. The meaning now says it joins Hanuman and Kali
+     (Shyama); the earlier Rudra and Ravana wording is gone.
+  6. **The nine grahas:** the standard verse, with the words separated ("Guru Shukra Shanibhyascha Rahave Ketave
+     Namah"), in Devanagari. The meaning names all nine.
+  7. **Ramaskandam Hanumantam:** her four lines are the mantra; the standard second half follows in brackets. The
+     note says why she leaves it out: so the mantra is not limited to bad dreams.
+  8. **Sankat Mochan Hanuman:** the full formula. The meaning is protection from ghosts and evil spirits.
+  9. **Tripuram Shantam:** from her guru, joining Tripura Sundari and Shakti (not Bagalamukhi). Published as given; its
+     meaning is pending.
+  10. **Namo Hanumate Rudravataraya:** removed from the public library, with her agreement. Its wording (bringing
+      others under control, and all diseases) conflicts with the terms page and with the law on cure claims.
+  11. **Kundali Mala:** her version B is the text; the other wording is no longer shown.
+- **Small fix found by looking:** a mantra page offered a "Transliteration" switch even when the text is already in
+  Roman letters and has no separate transliteration. It now shows only where there is one.
+- **Checks:** the changed pages were built and looked at on a phone. The removed address now shows the not-found
+  page. ERRORS none apart from that expected not-found. The full suites were not run, at the owner's request.
+
 ## 2026-11-27 · Daily practice for every tradition, a minute of it on the homepage, and being found
 
 The owner asked for daily practice to stop being Hindu-only and to hold every tradition, with practice open to people

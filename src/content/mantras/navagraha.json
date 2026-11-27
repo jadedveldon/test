@@ -1,5 +1,5 @@
 {
-  "name": "Aditya Somaya Mangala (the nine grahas)",
+  "name": "Adityaya Somaya (the nine grahas)",
   "days": [
     "saturday"
   ],
@@ -9,16 +9,16 @@
     "balance"
   ],
   "intention": "",
-  "text": "",
-  "meaning": "A salutation to the nine grahas (the planetary powers of Jyotisha).",
+  "text": "आदित्याय सोमाय मङ्गलाय बुधाय च ।\nगुरुशुक्रशनिभ्यश्च राहवे केतवे नमः ॥",
+  "meaning": "Salutations to Aditya (the Sun), Soma (the Moon), Mangala (Mars) and Budha (Mercury); to Guru (Jupiter), Shukra (Venus) and Shani (Saturn); and to Rahu and Ketu, the north and south nodes of the Moon.",
   "purpose": "A salutation to the planets.",
   "supports": "",
   "when": "",
-  "note": "The client list’s transcription is corrupted, and its meaning does not identify all the grahas named. It is held back until checked against its source.",
-  "source": "",
-  "status": "verify",
-  "drafted": false,
-  "supplied": "Aditya Somaya Mangala Budhayacha\nGuru Sukra ShaniBrihascha\nRahave Ketave Namaha",
+  "note": "The salutation to the nine grahas of Jyotisha, the planetary powers of Indian astrology. The words are separated as in the standard verse, at Sarvakali’s direction. A devotional salutation, not a forecast.",
+  "source": "The navagraha salutation in common devotional use; wording as confirmed by Sarvakali",
+  "status": "open",
+  "drafted": true,
+  "supplied": "",
   "parts": [],
   "order": 91
 }

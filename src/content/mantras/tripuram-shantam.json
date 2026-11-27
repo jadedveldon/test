@@ -9,16 +9,20 @@
     "peace"
   ],
   "intention": "",
-  "text": "",
-  "meaning": "A prayer to the Goddess of the three worlds, the source of all power, who removes every hardship.",
+  "text": "Tripuram Tripuram Shantam,\nTripureswaram Mahakritam,\nMaha Devyam Sarva Shakthim,\nSarva Dharmadharinim. Sarva Jeevanam Tam Hleem,\nSarva Kasta Nivarinim Swaha",
+  "meaning": "Its meaning is to come from Sarvakali. It joins Tripura Sundari and Shakti.",
   "purpose": "Devotion to the Goddess.",
   "supports": "",
   "when": "",
-  "note": "The client list’s transcription could not be matched to a published text; it is held back until it is checked.",
-  "source": "",
-  "status": "verify",
-  "drafted": false,
-  "supplied": "Tripuram Tripuram Shantam,\nTripureswaram Mahakritam,\nMaha Devyam Sarva Shakthim,\nSarva Dharmadharinim. Sarva Jeevanam Tam Hleem,\nSarva Kasta Nivarinim Swaha",
+  "note": "From Sarvakali’s guru, kept exactly as given. It joins Tripura Sundari and Shakti. Its meaning is pending.",
+  "source": "Sarvakali’s teaching (her guru’s version); not a published text",
+  "status": "variant",
+  "drafted": true,
+  "supplied": "",
   "parts": [],
-  "order": 68
+  "order": 68,
+  "language": "Sanskrit (in Roman letters, as given)",
+  "lang": "sa-Latn",
+  "iast": "",
+  "pronunciation": "tri-pu-ram tri-pu-ram shaan-tam; tri-pu-resh-va-ram ma-haa-kri-tam; ma-haa day-vyam sar-va shak-tim; sar-va dhar-ma-dhaa-ri-neem, sar-va jee-va-nam tam hleem; sar-va kash-ta ni-vaa-ri-neem svaa-haa"
 }

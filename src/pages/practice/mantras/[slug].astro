@@ -55,7 +55,7 @@ const sensitive = /grief|healing/.test(m.themes.join(' ')) || m.status === 'guid
             <div class="mc-controls" data-mc-controls>
               <span class="hint">{W.show}:</span>
               <label><input type="checkbox" checked data-show-script="deva" /> {m.language}</label>
-              <label><input type="checkbox" checked data-show-script="iast" /> {W.iast}</label>
+              {m.iastText ? <label><input type="checkbox" checked data-show-script="iast" /> {W.iast}</label> : null}
               <label><input type="checkbox" checked data-show-script="read" /> {W.pronunciation}</label>
               <button type="button" class="path-back" data-pm-bigger aria-pressed="false">{W.bigger}</button>
               <button type="button" class="path-back" data-pm-copy data-copied={W.copied}>{W.copy}</button>

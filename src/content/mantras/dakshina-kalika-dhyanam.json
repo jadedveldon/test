@@ -10,41 +10,45 @@
     "protection"
   ],
   "intention": "",
-  "text": "",
-  "meaning": "Six lines describing Kali’s form for meditation: her fierce face and loose hair; her four hands with sword, severed head, blessing and protection; seated with Mahakala, smiling; shining with ornaments; taking the Dakshina form to bless her devotees; removing every obstacle.",
+  "text": "AUM Karala Vadanam Ghoram, Mukta Keshaam Chaturbhujam\nKhargam Mundam Cha Varam Cha, Abhayam Cha Dadhatim Kareem\nMahakal Samaaseenam, Smita Mukti Ruvaam Mukheem\nPeet Asrig Digdha Sarvaangeem, Divyabharan Bhushitaam\nDakshinaam Dakshina Rupam, Bhaktanugrah Kaarineem\nSarva Vighna Haram Devim, Kaleem Vande Shivapriyam",
+  "meaning": "A dhyana of Dakshina Kali, six lines to hold in the mind in meditation: her terrible face and loosened hair, her four hands, her seat with Mahakala, her body smeared with blood, her gracious Dakshina form, and her power to remove every obstacle.",
   "purpose": "A dhyana: a description to hold in the mind while meditating, not a single short mantra.",
   "supports": "",
   "when": "",
-  "note": "The Sanskrit in the client list needs checking against a published dhyana before it is printed as a fixed text. The six meanings are given below.",
-  "source": "",
-  "status": "verify",
-  "drafted": false,
-  "supplied": "Om Karala Vadanam Ghoram, Mukta Keshaam Chaturbhujam\nKhargam Mundam Cha Varam Cha, Abhayam Cha Dadhatim Kareem\nMahakal Samaaseenam, Smita Mukti Ruvaam Mukheem\nPeet Asrig Digdha Sarvaangeem, Divyabharan Bhushitaam\nDakshinaam Dakshina Rupam, Bhaktanugrah Kaarineem\nSarva Vighna Haram Devim, Kaleem Vande Shivapriyam",
+  "note": "This is the version of Sarvakali’s guru, from her own notes, kept in its own order and wording. The meanings say what the words say; they are drafted for Sarvakali to approve.",
+  "source": "Sarvakali’s teaching (her guru’s version); not a published text",
+  "status": "variant",
+  "drafted": true,
+  "supplied": "",
   "parts": [
     {
-      "line": "1",
-      "meaning": "I pray to Goddess Kali, who has a fierce face and wild flowing hair. She has four hands."
+      "line": "AUM Karala Vadanam Ghoram, Mukta Keshaam Chaturbhujam",
+      "meaning": "AUM. Her face gaping and terrible, fierce; her hair loosened; four-armed."
     },
     {
-      "line": "2",
-      "meaning": "In her hands she holds a sword and a severed head, and gives blessings and protection to her devotees."
+      "line": "Khargam Mundam Cha Varam Cha, Abhayam Cha Dadhatim Kareem",
+      "meaning": "In her hands she holds a sword and a severed head, and shows the gestures of blessing and of fearlessness."
     },
     {
-      "line": "3",
-      "meaning": "She sits beside Lord Shiva, smiling kindly, showing the way to freedom and peace."
+      "line": "Mahakal Samaaseenam, Smita Mukti Ruvaam Mukheem",
+      "meaning": "Seated with Mahakala (Shiva as Time); her face smiling, granting liberation."
     },
     {
-      "line": "4",
-      "meaning": "Her body shines brightly, covered with divine ornaments and energy."
+      "line": "Peet Asrig Digdha Sarvaangeem, Divyabharan Bhushitaam",
+      "meaning": "Her whole body smeared with the blood she has drunk; adorned with divine ornaments."
     },
     {
-      "line": "5",
-      "meaning": "She takes the form of Dakshina Kali to bless and take care of her devotees."
+      "line": "Dakshinaam Dakshina Rupam, Bhaktanugrah Kaarineem",
+      "meaning": "Dakshina, of the gracious southern form, who gives grace to her devotees."
     },
     {
-      "line": "6",
-      "meaning": "I bow to Goddess Kali, who loves Shiva and helps remove all difficulties and protects us."
+      "line": "Sarva Vighna Haram Devim, Kaleem Vande Shivapriyam",
+      "meaning": "The Goddess who removes every obstacle: I bow to Kali, beloved of Shiva."
     }
   ],
-  "order": 69
+  "order": 69,
+  "language": "Sanskrit (in Roman letters, as given)",
+  "lang": "sa-Latn",
+  "iast": "",
+  "pronunciation": "AUM ka-raa-la va-da-nam gho-ram, muk-ta kay-shaam cha-tur-bhu-jam; khad-gam mun-dam cha va-ram cha, a-bha-yam cha da-dha-teem ka-reem; ma-haa-kaal sa-maa-see-nam, smi-ta muk-ti ru-vaam mu-kheem; peet a-srig dig-dha sar-vaan-geem, div-yaa-bha-ran bhoo-shi-taam; dak-shi-naam dak-shi-na roo-pam, bhak-taa-nu-grah kaa-ri-neem; sar-va vigh-na ha-ram day-veem, kaa-leem van-day shi-va-pri-yam"
 }

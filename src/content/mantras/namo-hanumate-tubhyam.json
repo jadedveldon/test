@@ -10,16 +10,20 @@
     "devotion"
   ],
   "intention": "",
-  "text": "",
-  "meaning": "A salutation to Hanuman, son of the wind and devoted servant of Rama.",
+  "text": "Namo Hanumate Tubhyam,\nNamo Maruta Sunave,\nNamah Sri Rama Bhaktaya,\nShyamashya cha tey Namaha.",
+  "meaning": "Salutations to you, Hanuman; salutations to the son of the Wind; salutations to the devotee of Sri Rama; and salutations to you who belong to Shyama, the dark Mother, Kali.",
   "purpose": "Courage and service.",
   "supports": "",
   "when": "",
-  "note": "The last line in the client list (“Shyamashya cha tey namaha”) could not be matched to a source; the text is held back until it is confirmed.",
-  "source": "",
-  "status": "verify",
-  "drafted": false,
-  "supplied": "Namo Hanumate Tubhyam,\nNamo Maruta Sunave,\nNamah Sri Rama Bhaktaya,\nShyamashya cha tey Namaha.",
+  "note": "This mantra joins Hanuman and Kali (Shyama), which is why it is not found in published collections. Kept exactly as Sarvakali gives it.",
+  "source": "Sarvakali’s teaching (her guru’s version); not a published text",
+  "status": "variant",
+  "drafted": true,
+  "supplied": "",
   "parts": [],
-  "order": 22
+  "order": 22,
+  "language": "Sanskrit (in Roman letters, as given)",
+  "lang": "sa-Latn",
+  "iast": "",
+  "pronunciation": "na-mo ha-nu-ma-tay tub-hyam; na-mo maa-ru-ta soo-na-vay; na-mah shree raa-ma bhak-taa-ya; shyaa-maa-shya cha tay na-ma-ha"
 }

@@ -9,16 +9,20 @@
     "protection"
   ],
   "intention": "",
-  "text": "",
-  "meaning": "A protective remembrance naming Rama, Skanda, Hanuman, Garuda, Bhima and Shiva.",
+  "text": "Ramaskandam Hanumantam,\nVainateyam Vrikodaram,\nShankaram Shankarasyesham,\nSarvanamami Sadanugam.\n(Shayane Yah Smaren Nityam, Duswapnam Tasya Nashyati)",
+  "meaning": "I bow to Rama, Skanda and Hanuman, to Vainateya (Garuda) and Vrikodara (Bhima), and to Shankara (Shiva): to all of them, always, I bow. (The bracketed line, often added: whoever remembers these names every night at bedtime is freed from bad dreams.)",
   "purpose": "Protection as a devotional intention.",
   "supports": "",
   "when": "",
-  "note": "The wording in the client list differs from the commonly recited verse; it is held back until the version Sarvakali uses is confirmed.",
-  "source": "",
-  "status": "verify",
-  "drafted": false,
-  "supplied": "Ramaskandam Hanumantam,\nVainateyam Vrikodaram,\nShankaram Shankarasyesham,\nSarvanamami Sadanugam.",
+  "note": "Sarvakali chants the first four lines as the mantra. The bracketed half is the commonly recited ending; she leaves it out on purpose, so the mantra is not limited to warding off bad dreams.",
+  "source": "Sarvakali’s teaching; the bracketed line is the common published ending",
+  "status": "variant",
+  "drafted": true,
+  "supplied": "",
   "parts": [],
-  "order": 25
+  "order": 25,
+  "language": "Sanskrit (in Roman letters, as given)",
+  "lang": "sa-Latn",
+  "iast": "",
+  "pronunciation": "raa-ma-skan-dam ha-nu-man-tam; vai-na-tay-yam vri-ko-da-ram; shan-ka-ram shan-ka-ras-yay-sham; sar-va-na-maa-mi sa-daa-nu-gam; (sha-ya-nay yah sma-ren ni-tyam, du-swap-nam tas-ya naash-ya-ti)"
 }

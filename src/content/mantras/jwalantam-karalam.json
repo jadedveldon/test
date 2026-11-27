@@ -9,16 +9,20 @@
     "protection"
   ],
   "intention": "",
-  "text": "",
-  "meaning": "A praise of Narasimha’s fierce yet protective form, his great power, and his ability to bestow peace and protection.",
+  "text": "Jwalantam Karalam Maha Shaktim\nNarasimham Bheeshanam Bhadra Murtim\nAnugraham Shanthim Isham Namami\nSarva Raksha Karam Deva Devam",
+  "meaning": "Blazing, fierce, of great power; Narasimha, terrible yet auspicious in form: I bow to the Lord who gives grace and peace, the god of gods who protects all.",
   "purpose": "Protection.",
   "supports": "",
   "when": "",
-  "note": "The wording in the client list could not be matched to a published verse; it is held back until it is checked.",
-  "source": "",
-  "status": "verify",
-  "drafted": false,
-  "supplied": "Jwalantam Karalam Maha Shaktim\nNarasimham Bheeshanam Bhadra Murtim\nAnugraham Shanthim Isham Namami\nSarva Raksha Karam Deva Devam",
+  "note": "A mantra from Sarvakali’s guru, invoking Narasimha together with Lakshmi and Bhudevi. It is not the published verse Ugram Veeram (also in this library), and it is kept as given, not forced into verse form.",
+  "source": "Sarvakali’s teaching (her guru’s version); not a published text",
+  "status": "variant",
+  "drafted": true,
+  "supplied": "",
   "parts": [],
-  "order": 85
+  "order": 85,
+  "language": "Sanskrit (in Roman letters, as given)",
+  "lang": "sa-Latn",
+  "iast": "",
+  "pronunciation": "jva-lan-tam ka-raa-lam ma-haa shak-tim; na-ra-sim-ham bhee-sha-nam bha-dra moor-tim; a-nu-gra-ham shaan-tim ee-sham na-maa-mi; sar-va rak-sha ka-ram day-va day-vam"
 }

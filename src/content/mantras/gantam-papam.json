@@ -1,5 +1,5 @@
 {
-  "name": "Gantam Papam Gatam Dukham",
+  "name": "Gatam Papam Gatam Dukham",
   "days": [
     "wednesday"
   ],
@@ -9,16 +9,16 @@
     "letting-go"
   ],
   "intention": "",
-  "text": "",
-  "meaning": "When I see you, my sins, sorrows and poverty vanish, and joy, prosperity and virtue arrive.",
+  "text": "गतं पापं गतं दुःखं गतं दारिद्र्यमेव च ।\nआगता सुखसम्पत्तिः पुण्योऽहं तव दर्शनात् ॥",
+  "meaning": "Gone is wrongdoing, gone is sorrow, gone is poverty too; joy and prosperity have come. I am blessed by the sight of you.",
   "purpose": "A verse of darshan, seeing the divine.",
   "supports": "",
   "when": "",
-  "note": "The wording in the client list could not be matched to a published verse; the text is held back until it is checked.",
-  "source": "",
-  "status": "verify",
-  "drafted": false,
-  "supplied": "Gantam Papam Gatam Dukham,\nGatam Daridramevacha,\nAgatha Sukha Sampatthi,\nPunyam Cha Tva Darshanam.",
+  "note": "A verse said at darshan, on seeing the deity. Sarvakali’s list, with the spelling “Gatam” and the standard ending, at her direction.",
+  "source": "A darshan verse in common devotional use; wording as confirmed by Sarvakali",
+  "status": "open",
+  "drafted": true,
+  "supplied": "",
   "parts": [],
   "order": 56
 }
