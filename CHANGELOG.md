@@ -3,6 +3,17 @@
 Every change to the site, newest first: what changed, why, and how it was checked.
 The rules for checking are in `CLAUDE.md`; the checks themselves are in `tools/qa/`.
 
+## 2026-11-27 · Live on Netlify, the Studio's sign-in, a smaller badge
+
+- **Live at https://sarvakali.netlify.app**, public. Every page checked answers; `/api/health` is ok; the sitemap,
+  robots.txt, llms.txt and canonical links name that address; the build's files are cached for a year.
+- **The Studio on the host:** its secret, the door word and the password's hash are set in Netlify's settings (never
+  in the repository). Checked live: without the door `/studio` is not found, a wrong door is not found, the door leads
+  to the sign-in, and a wrong password is refused.
+- **Netlify's "Powered by Netlify" badge** (added on the free plan; Netlify does not allow turning it off there) is
+  shown at 80% of its size, at the owner's request (`global.css`, last rule; remove it to undo). It goes on a paid
+  plan. Looked at on a phone and a computer.
+
 ## 2026-11-27 · Smoother, and the library and articles set right
 
 The owner asked for the site to be as smooth as it can be, and reported two things: the library's cards had no

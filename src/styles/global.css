@@ -2259,3 +2259,7 @@ a[href^="tel:"] { display: inline-block; min-height: 24px; padding: 3px 0; }
 /* the Articles page: a shorter opening, so the featured piece is in view sooner */
 .articles > .page-hero { min-height: 0; padding: clamp(110px, 18vh, 180px) 0 clamp(24px, 4vh, 40px); }
 .articles { display: grid; gap: clamp(18px, 2.4vw, 26px); }
+
+/* the host's "Powered by Netlify" badge (Netlify's free plan adds it; it goes on a paid plan): shown at 80% of its
+   size from its own corner, at the owner's request (2026-11-27), still whole and readable. Remove this rule to undo. */
+#nl-badge-frame { transform: scale(0.8) !important; transform-origin: 100% 100% !important; }
