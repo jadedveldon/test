@@ -45,6 +45,18 @@ without a Meet link, and the editor's door stays shut. Nothing breaks.
 - Send yourself a request from Connect; it appears in the Studio.
 - Open the editor through the door, change one word, save; the site rebuilds with it within a few minutes.
 
+## Deploying from a computer (when GitHub is not connected yet)
+
+Use a current Netlify command-line tool: an old one (17.x) made deploys that came up without the site's storage, so
+the Studio could not sign in (2026-11-28). Build, try, check, then go live:
+
+1. `npx netlify-cli@27 build --offline` (builds exactly as Netlify does, with the settings in `netlify.toml`).
+2. `npx netlify-cli@27 deploy --no-build --skip-functions-cache` makes a trial at its own address.
+3. Open `<trial address>/api/health`: it must say `"status":"ok"`. Anything else: stop; the live site is untouched.
+4. `npx netlify-cli@27 deploy --no-build --prod --skip-functions-cache`, then check `/api/health` on the live site.
+
+If a live deploy ever misbehaves: Netlify → **Deploys** → the last good one → **Publish deploy** puts it back at once.
+
 ## What a deploy does
 
 Every push to the published branch builds and publishes the site. Every save in the content editor is a commit, so

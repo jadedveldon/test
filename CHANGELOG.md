@@ -3,6 +3,20 @@
 Every change to the site, newest first: what changed, why, and how it was checked.
 The rules for checking are in `CLAUDE.md`; the checks themselves are in `tools/qa/`.
 
+## 2026-11-28 · The Studio was down for about 40 minutes: found, fixed, and how to deploy from now on
+
+- **What happened:** from 12:39 to 13:17 (India time) the Studio's sign-in, the diya's count and the health check failed
+  on the live site; the pages themselves stayed up. Every deploy made with the old Netlify command-line tool (17.38)
+  after about 12:30 came up without its storage, or failed to start, even the last good version rebuilt exactly; the
+  same code ran correctly on this computer. Netlify's own status showed no incident. The tool was ten major versions
+  behind (27.x is current); its packaging no longer suits Netlify's servers.
+- **Fixed:** the last good version was restored within a minute of finding it (Netlify keeps every deploy), then the
+  site was rebuilt and deployed with the current tool (27.18.0), first as a trial at its own address, then live.
+  Checked live: health "ok", the diya's count, the door and the Studio's sign-in (a wrong password refused), and
+  regression 37 (instant pages).
+- **From now on** (`docs/deploy.md`): deploy with a current tool, build first, then a trial deploy; check its
+  `/api/health` says "ok" before putting it live, and check the live one after.
+
 ## 2026-11-28 · Instant pages, and the ideas saved
 
 - **Pages open at once.** A page starts loading the moment the mouse rests on its link (computers) or a finger
