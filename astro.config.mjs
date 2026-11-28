@@ -33,7 +33,9 @@ export default defineConfig({
   // Writings became Articles; the AI depth demo now lives in About's portrait
   redirects: { '/writings': '/articles', '/writings/[slug]': '/articles/[slug]', '/depth': '/about', '/practice/traditions': '/practice/library' },
   devToolbar: { enabled: false },
-  prefetch: false,
+  // pages open at once: a page starts loading when the mouse rests on its link (computers) or a finger touches it
+  // (phones: src/scripts/app.ts). Nothing is loaded ahead on a data-saving or 2G connection.
+  prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
   integrations,
   ...(adapter ? { adapter } : {}),
 });

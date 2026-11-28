@@ -3,6 +3,18 @@
 Every change to the site, newest first: what changed, why, and how it was checked.
 The rules for checking are in `CLAUDE.md`; the checks themselves are in `tools/qa/`.
 
+## 2026-11-28 · Instant pages, and the ideas saved
+
+- **Pages open at once.** A page starts loading the moment the mouse rests on its link (computers) or a finger
+  touches it (phones), so by the time the click or tap ends it is mostly there; with the page transitions it feels
+  like an app. Every link on the site's own pages; never the private addresses (the Studio, the door, the editor,
+  the API), never on a data-saving or 2G connection. `astro.config.mjs` (it had been off since the first prototype,
+  with no reason recorded) and `src/scripts/app.ts` for touch.
+- **Checks:** regression 37 (the mouse resting on a link, a finger on a phone, nothing on a data-saving connection,
+  the Studio never loaded ahead); the time from click to the new page, measured on the live site before and after on
+  a simulated 4G connection.
+- **`docs/ideas.md`:** every idea discussed with the owner for later rounds, with why, cost and cautions.
+
 ## 2026-11-28 · Practice from every page
 
 The owner asked for the mantra library and daily practice to be found more: practice offered where it belongs on

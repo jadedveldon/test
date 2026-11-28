@@ -49,6 +49,7 @@ import { initPwa } from './pwa';
 import { startTelemetry } from './telemetry';
 import { loadHealingFont, loadMagicFonts, loadSettledFonts } from './fonts';
 import { track } from './track';
+import { prefetch } from 'astro:prefetch';
 import { say } from './words';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
@@ -883,6 +884,18 @@ function initConnect() {
     }
   });
 }
+
+// phones have no hover: a page starts loading the moment a finger touches its link, a tenth of a second or more before
+// the tap ends (computers start on hover, astro.config.mjs). Only the site's own public pages; a data-saving or 2G
+// connection is left alone (Astro checks).
+const NO_PREFETCH = /^\/(api|door|studio|keystatic)(\/|$)/;
+document.addEventListener('touchstart', (e) => {
+  const a = (e.target as Element | null)?.closest?.('a[href]') as HTMLAnchorElement | null;
+  if (!a || a.target === '_blank' || a.hasAttribute('download') || a.dataset.astroPrefetch === 'false') return;
+  const url = new URL(a.href, location.href);
+  if (url.origin !== location.origin || NO_PREFETCH.test(url.pathname) || (url.pathname === location.pathname && url.hash)) return;
+  prefetch(url.href);
+}, { passive: true, capture: true });
 
 document.addEventListener('click', (e) => {
   const t = e.target as Element | null;

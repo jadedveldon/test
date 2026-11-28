@@ -420,5 +420,32 @@ const ARGS = { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', 
     ok('practice: the moon card leads to today\'s practice', !!go && go.endsWith(`/practice/with/${key}`), String(go));
     ok('practice: no errors', p.errs.length === 0, p.errs.join(' | '));
     await ctx.close(); }
+  // 37 instant pages (2026-11-28): a page starts loading when the mouse rests on its link, or a finger touches it on
+  //    a phone; never on a data-saving connection, and never the private addresses
+  { const loaded = (p) => p.evaluate(() => [...document.querySelectorAll('link[rel="prefetch"]')].map((l) => new URL(l.href).pathname));
+    { const { ctx, p } = await fresh();
+      await p.goto(`${B}/?tier=calm&cursor=off`); await p.waitForTimeout(1500);
+      const a = p.locator('a[href="/connect"]:visible').first(); await a.hover(); await p.waitForTimeout(400);
+      const studio = await p.evaluate(() => { const l = document.querySelector('a[href="/studio"]'); if (!l) return 'none on page'; l.dispatchEvent(new MouseEvent('mouseenter')); l.dispatchEvent(new FocusEvent('focusin', { bubbles: true })); return 'tried'; });
+      await p.waitForTimeout(400);
+      const got = await loaded(p);
+      ok('instant: resting the mouse on a link starts loading its page', got.some((x) => /^\/connect(\.html)?$/.test(x)), got.join(' ') || 'nothing');
+      ok('instant: the Studio is never loaded ahead', !got.some((x) => x.startsWith('/studio')), studio);
+      await ctx.close(); }
+    { const { ctx, p } = await fresh({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+      await p.goto(`${B}/?tier=calm&cursor=off`); await p.waitForTimeout(1500);
+      await p.evaluate(() => { const a = [...document.querySelectorAll('a[href="/connect"]')].find((x) => x.getClientRects().length); a.dispatchEvent(new TouchEvent('touchstart', { bubbles: true, cancelable: true, touches: [] })); });
+      await p.waitForTimeout(400);
+      const got = await loaded(p);
+      ok('instant: on a phone, a finger on a link starts loading its page', got.some((x) => /^\/connect(\.html)?$/.test(x)), got.join(' ') || 'nothing');
+      ok('instant: no errors', p.errs.length === 0, p.errs.join(' | '));
+      await ctx.close(); }
+    { const { ctx, p } = await fresh();
+      await ctx.addInitScript(() => Object.defineProperty(navigator, 'connection', { value: { saveData: true, effectiveType: '4g' }, configurable: true }));
+      await p.goto(`${B}/?tier=calm&cursor=off`); await p.waitForTimeout(1500);
+      await p.locator('a[href="/connect"]:visible').first().hover(); await p.waitForTimeout(400);
+      const got = await loaded(p);
+      ok('instant: nothing is loaded ahead on a data-saving connection', !got.length, got.join(' '));
+      await ctx.close(); } }
   await b.close();
 })();
