@@ -14,7 +14,7 @@ import { track } from './track';
  * answers sit in the address (?p=…&c=…&b=…) so a path can be shared or come back to. Nothing is stored or sent.
  */
 type Begin = 'talk' | 'session' | 'self' | 'learn';
-interface PillarData { name: string; accent: string; care: boolean; moment: { href: string; title: string; text: string }; article: { title: string; href: string; summary: string } | null; cats: Record<string, { name: string; services: string[] }> }
+interface PillarData { name: string; accent: string; care: boolean; moment: { href: string; title: string; text: string }; article: { title: string; href: string; summary: string } | null; practice?: { title: string; line: string; minutes: string; href: string } | null; cats: Record<string, { name: string; services: string[] }> }
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Words = Record<string, any>;
 
@@ -109,12 +109,18 @@ export function initPath(world: World, done: () => void) {
         <p class="kicker">${esc(w.read)}</p>
         <a class="path-read-link" href="${esc(sitePath(p.article.href))}"><span class="display-s">${esc(p.article.title)}</span><span class="hint">${esc(p.article.summary)}</span></a>
       </article>` : '';
+    // one practice to begin with today, from the library's guided practices (src/content/pages/practice-links.json)
+    const practice = p.practice ? `
+      <article class="path-r-block path-practice">
+        <p class="kicker">${esc(w.practiceLead)}</p>
+        <a class="path-read-link" href="${esc(sitePath(p.practice.href))}" data-practice-from="path"><span class="display-s">${esc(p.practice.title)}</span><span class="hint">${esc(p.practice.line)} · ${esc(p.practice.minutes)}</span></a>
+      </article>` : '';
     out.innerHTML = `
       <p class="kicker">${esc(w.resultKicker)}</p>
       <h2 class="display-l">${esc(cat.name)}</h2>
       <p class="path-part">${esc(String(w.partOf).replace('{pillar}', p.name))}</p>
       <p class="lede">${esc(w.resultText[begin])}</p>
-      <div class="path-r-grid">${begin === 'self' ? moment + keep : keep + moment}${read}</div>
+      <div class="path-r-grid">${begin === 'self' ? moment + keep : keep + moment}${practice}${read}</div>
       <div class="cta-row path-r-cta">
         <a class="btn btn-solid" href="${esc(sitePath('/connect'))}" data-path-ask>${esc(w.ask)}</a>
         <a class="btn btn-ghost" data-result-explore href="${esc(sitePath(`/pillars/${choice.pillar}#${choice.cat}`))}">${esc(String(w.explore).replace('{pillar}', p.name))}</a>

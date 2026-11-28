@@ -13,6 +13,8 @@ import { site } from '../../config';
 import { crumbWords as cw } from '../../config';
 import { ACCENT, pillars } from '../../data/site';
 import { articleLook } from '../../data/article-themes';
+import PracticeStrip from '../../components/PracticeStrip.astro';
+import PL from '../../content/pages/practice-links.json';
 
 export async function getStaticPaths() {
   const posts = await getCollection('writings');
@@ -25,6 +27,7 @@ const all = (await getCollection('writings')).filter((p) => p.id !== post.id).so
 // two to read next: the same pillar first, then the newest
 const next = [...all.filter((p) => p.data.pillar === post.data.pillar), ...all.filter((p) => p.data.pillar !== post.data.pillar)].slice(0, 2);
 const h2s = headings.filter((h) => h.depth === 2);
+const practiceSlugs = (PL.articles.find((a) => a.article === post.id)?.practices ?? PL.pillars[pillar.slug as keyof typeof PL.pillars] ?? []).slice(0, 3);
 const look = articleLook(post.data.theme, pillar.slug);
 const accent = look.accent;
 const themeStyle = `--acc-hex: ${accent}${look.font ? `; --ar-font: ${look.font}` : ''}`;
@@ -54,6 +57,7 @@ const date = post.data.date.toLocaleDateString('en-GB', { day: 'numeric', month:
       </div>
     </div>
     <div class="page-body article-end" data-fade>
+      <PracticeStrip slugs={practiceSlugs} kicker={PL.words.articleKicker} from={`article-${post.id}`} more={false} />
       <div class="ar-ask">
         <p class="display-s">{T.askTitle}</p>
         <p>{T.askText}</p>

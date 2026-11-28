@@ -8,6 +8,8 @@
  * sigil, then the seven chapters
  * (the catalogue's seven categories).
  */
+import PracticeStrip from '../../components/PracticeStrip.astro';
+import PL from '../../content/pages/practice-links.json';
 import { pillarService } from '../../seo/ld';
 import { words as SW } from '../../config';
 import Base from '../../layouts/Base.astro';
@@ -244,6 +246,7 @@ const hecateWork = devotion.categories.flatMap((c) => c.subs).flatMap((s) => s.i
           <a class="btn btn-solid" href="/connect" data-topic={p.name}>{COPY.close.button}</a>
           <a class="btn btn-ghost" href="/path">{words.path}</a>
         </div>
+        <PracticeStrip slugs={PL.pillars.magic} lede={PL.words.lede} from="pillar-magic" />
       </div>
     </section>
 

@@ -397,5 +397,28 @@ const ARGS = { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', 
     const t = await p.evaluate(() => document.querySelector('[data-diya-count]').textContent.trim());
     ok('diya: without a host, this device\'s lamps for the day, and no promise', /one diya here today/.test(t) && !/finished site/.test(t), t);
     await ctx.close(); }
+  // 36 practice from every page (2026-11-28): each pillar's end, each article's end, Find your path's result and the
+  //    moon card offer guided practices, every one leading to a real practice; Today's line comes straight after the
+  //    homepage's opening
+  { const { ctx, p } = await fresh({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+    const hrefs = new Set(); const missing = [];
+    for (const path of ['/pillars/devotion', '/pillars/magic', '/pillars/healing', '/pillars/identity', '/pillars/divination', '/pillars/learning', '/articles/who-is-kali', '/articles/the-thirty-moons', '/articles/what-happens-in-a-reading']) {
+      await p.goto(`${B}${path}?tier=calm&cursor=off`); await p.waitForTimeout(700);
+      const h = await p.evaluate(() => [...document.querySelectorAll('.prl a.prl-card')].map((a) => a.getAttribute('href')));
+      if (h.length < 1) missing.push(path); h.forEach((x) => hrefs.add(x));
+    }
+    const broken = [];
+    for (const h of hrefs) { const r = await p.request.get(`${B}${h}`); if (r.status() !== 200) broken.push(`${h} ${r.status()}`); }
+    ok('practice: every pillar and article offers practices', !missing.length, missing.join(', ') || `${hrefs.size} different practices offered`);
+    ok('practice: every practice offered leads to a real practice', !broken.length, broken.join(', '));
+    await p.goto(`${B}/?tier=calm&cursor=off`); await p.waitForTimeout(1200);
+    const order = await p.evaluate(() => [...document.querySelectorAll('#main > [data-chapter]')].slice(0, 3).map((c) => c.dataset.chapter).join(','));
+    ok('practice: Today\'s line comes straight after the homepage\'s opening', order.startsWith('hero,mala'), order);
+    await p.click('[data-sky-btn]'); await p.waitForTimeout(500);
+    const key = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][new Date().getDay()];
+    const go = await p.evaluate(() => { const a = document.querySelector('[data-sky-today-go]'); return a && !a.closest('[hidden]') ? a.getAttribute('href') : null; });
+    ok('practice: the moon card leads to today\'s practice', !!go && go.endsWith(`/practice/with/${key}`), String(go));
+    ok('practice: no errors', p.errs.length === 0, p.errs.join(' | '));
+    await ctx.close(); }
   await b.close();
 })();

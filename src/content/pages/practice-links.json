@@ -1,0 +1,37 @@
+{
+  "words": {
+    "kicker": "Practise this",
+    "lede": "A few minutes of practice that belongs with this page, at home, today.",
+    "minutes": "{n} min",
+    "all": "Every practice",
+    "library": "The mantra library",
+    "pathLead": "To begin today",
+    "connectKicker": "While you wait",
+    "connectLede": "A few minutes of today’s practice, for whenever you have them.",
+    "articleKicker": "Practise this",
+    "today": "Today’s practice",
+    "todayLine": "{day}, the day of {planet}",
+    "todayPage": "All of {day}’s prayers"
+  },
+  "pillars": {
+    "devotion": ["kali", "devi", "shiva", "selene", "aphrodite"],
+    "magic": ["selene", "friday", "saturday", "monday"],
+    "healing": ["breathe", "grief", "fear", "overwhelm", "healing"],
+    "identity": ["worth", "ardhanarishvara", "kindness", "aphrodite"],
+    "divination": ["decision", "stuck", "stillness", "monday"],
+    "learning": ["saraswati", "guru", "ganesha", "wednesday"]
+  },
+  "articles": [
+    { "article": "who-is-kali", "practices": ["kali", "devi"] },
+    { "article": "the-thirty-moons", "practices": ["selene", "monday"] },
+    { "article": "what-happens-in-a-reading", "practices": ["decision", "stillness"] }
+  ],
+  "path": {
+    "devotion": "kali",
+    "magic": "selene",
+    "healing": "breathe",
+    "identity": "worth",
+    "divination": "decision",
+    "learning": "saraswati"
+  }
+}

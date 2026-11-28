@@ -42,7 +42,7 @@ import { sampleHeading } from './dust';
 import { FEST_LOOK, activeFestival, daysUntil, inDays, nextMoon, niceDate, type FestMode } from './festivals';
 import { initSearch, revealFound, closeSearch } from './search';
 import { clearKeep, initKeep, keepLine, keepList, onKeepChange, renderKeep } from './keep';
-import { MODE as STUDIO, pageHref, publicCall } from '../studio/client';
+import { MODE as STUDIO, pageHref, publicCall, sitePath } from '../studio/client';
 import { whenZ, zoneLabel, zonedToUtc, utcToLocalInput } from '../studio/core/time';
 import { closeMenu, initMenu } from './menu';
 import { initPwa } from './pwa';
@@ -521,6 +521,30 @@ function applySky() {
     wrap.querySelector('[data-sky-note]')!.textContent = s.note + next;
   }
   wrap.querySelector('[data-sky-btn]')!.setAttribute('aria-label', say('sky.tonightsMoon', { name: s.name }));
+  applyToday(wrap);
+}
+
+/** today, in the visitor's own week: in the moon card (the day, its planet, its practice and its page), beside the
+ *  moon on wide screens, and the one weekday practice shown where a page offers today's (Connect, after sending) */
+function applyToday(wrap: HTMLElement) {
+  const key = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][new Date().getDay()];
+  document.querySelectorAll<HTMLElement>('[data-day-card]').forEach((li) => { li.hidden = li.dataset.dayCard !== key; });
+  let data: { w: Record<string, string>; days: Record<string, { name: string; planet: string }> } | null = null;
+  try { data = JSON.parse(wrap.querySelector('[data-sky-days]')?.textContent || 'null'); } catch { data = null; }
+  const day = data?.days[key];
+  const box = wrap.querySelector<HTMLElement>('[data-sky-today]');
+  if (!data || !day || !box) return;
+  const fill = (t: string) => t.replace('{day}', day.name).replace('{planet}', day.planet.replace(/^The /, 'the '));
+  box.querySelector('[data-sky-today-line]')!.textContent = fill(data.w.todayLine);
+  const go = box.querySelector<HTMLAnchorElement>('[data-sky-today-go]')!;
+  go.href = sitePath(`/practice/with/${key}`);
+  go.dataset.practiceFrom = 'sky';
+  const page = box.querySelector<HTMLAnchorElement>('[data-sky-today-page]')!;
+  page.href = sitePath(`/practice/${key}`);
+  page.textContent = fill(data.w.todayPage);
+  box.hidden = false;
+  const pill = wrap.querySelector<HTMLElement>('[data-sky-day]');
+  if (pill) pill.textContent = day.name;
 }
 
 /** festival days dress the site: the hero's world, its first line and the moon */
@@ -862,6 +886,10 @@ function initConnect() {
 
 document.addEventListener('click', (e) => {
   const t = e.target as Element | null;
+  // a practice opened from another page: counted by where it was offered (a pillar, an article, Find your path,
+  // Connect, the moon card), so Insights shows which ways in bring people to practice
+  const pr = t?.closest<HTMLElement>('[data-practice-from]');
+  if (pr) track('practice-from', pr.dataset.practiceFrom || '');
   const a = t?.closest<HTMLElement>('[data-topic]');
   if (a) store('sk-topic', a.dataset.topic || '');
   if (t?.closest('[data-sound]')) {

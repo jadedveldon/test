@@ -6,6 +6,8 @@
  * Sarvakali's Studio (src/studio), emails both of them, and gives the visitor a page to follow it on; their list
  * then empties. In the preview the request goes to the Studio's demo, in the same browser.
  */
+import PracticeStrip from '../components/PracticeStrip.astro';
+import PL from '../content/pages/practice-links.json';
 import { words as SW } from '../config';
 import { pageMeta as PM } from '../config';
 import Base from '../layouts/Base.astro';
@@ -86,6 +88,7 @@ const mode = import.meta.env.PUBLIC_STUDIO;
         <a class="btn btn-solid" href="/booking" data-done-track hidden>{d.track}</a>
         <a class="btn btn-ghost" href="/">{d.back}</a>
       </div>
+      <PracticeStrip slugs={['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']} today kicker={PL.words.connectKicker} lede={PL.words.connectLede} from="connect-done" />
     </div>
   </section>
 </Base>

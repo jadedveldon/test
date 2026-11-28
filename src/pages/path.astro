@@ -6,6 +6,8 @@
  * a crossroads drawing lights a road for each answer. The result can be shared (its address holds the answers);
  * nothing is stored or sent. Words: src/content/pages/path.json ("Find your path" in the content editor).
  */
+import PL from '../content/pages/practice-links.json';
+import { loadPractices, practicePath } from '../data/mantras';
 import { getCollection } from 'astro:content';
 import { pageMeta as PM } from '../config';
 import Base from '../layouts/Base.astro';
@@ -27,19 +29,22 @@ const pick = (subs: { items: string[] }[]) => {
   for (let round = 0; out.length < 6 && round < 4; round++) for (const s of subs) { const it = s.items[round]; if (it && out.length < 6 && !out.includes(it)) out.push(it); }
   return out;
 };
+const practices = await loadPractices();
+const practiceOf = (slug: string) => { const pr = practices.find((x) => x.slug === PL.path[slug as keyof typeof PL.path]); return pr ? { title: pr.title, line: pr.line ?? '', minutes: PL.words.minutes.replace('{n}', String(pr.minutes)), href: practicePath(pr.slug) } : null; };
 const data = Object.fromEntries(pillars.map((p) => {
   const post = posts.find((a) => a.data.pillar === p.slug);
   return [p.slug, {
     name: p.name, accent: ACCENT[p.slug], care: CARE.includes(p.slug),
     moment: { href: `/pillars/${p.slug}${MOMENT[p.slug]}`, ...(moments[p.slug] ?? { title: '', text: '' }) },
     article: post ? { title: post.data.title, href: `/articles/${post.id}`, summary: post.data.summary } : null,
+    practice: practiceOf(p.slug),
     cats: Object.fromEntries(p.categories.map((c) => [anchor(c.name), { name: c.name, services: pick(c.subs) }])),
   }];
 }));
 ---
 <Base title={PM.path.title} sequence="findpath" description={PM.path.description}>
   <section class="path" data-path>
-    <script type="application/json" data-path-data set:html={JSON.stringify({ data, w })} />
+    <script type="application/json" data-path-data set:html={JSON.stringify({ data, w: { ...w, practiceLead: PL.words.pathLead } })} />
     <div class="path-head">
       <p class="kicker" data-hero>{w.kicker}</p>
       <h1 class="display-l" data-hero data-split>{w.title}</h1>

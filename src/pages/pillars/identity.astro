@@ -4,6 +4,8 @@
  * Soft prism design (direction B, chosen; A and C are in the project history). A bright, gentle page where
  * light breaks into every colour. Affirming, trauma-aware copy; nothing explicit; people choose what to share.
  */
+import PracticeStrip from '../../components/PracticeStrip.astro';
+import PL from '../../content/pages/practice-links.json';
 import { pillarService } from '../../seo/ld';
 import { words as SW } from '../../config';
 import Base from '../../layouts/Base.astro';
@@ -99,6 +101,7 @@ const c = COPY.comfort;
           <a class="btn btn-solid" href="/connect" data-topic={p.name}>{COPY.close.button}</a>
           <a class="btn btn-ghost" href="/care">{words.care}</a>
         </div>
+        <PracticeStrip slugs={PL.pillars.identity} lede={PL.words.lede} from="pillar-identity" />
       </div>
     </section>
 

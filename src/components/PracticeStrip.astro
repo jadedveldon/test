@@ -1,0 +1,32 @@
+---
+/**
+ * A few guided practices offered from another page (a pillar's end, an article's end, Find your path, Connect after
+ * sending). Which practices: src/content/pages/practice-links.json ("Practice from every page" in the content
+ * editor). A practice that no longer exists is left out; with none left, nothing is shown.
+ */
+import { loadPractices, practicePath } from '../data/mantras';
+import W from '../content/pages/practice-links.json';
+interface Props { slugs: string[]; kicker?: string; lede?: string; from: string; more?: boolean; today?: boolean }
+// today: the seven weekday practices are given and the visitor's own today is shown (app.ts marks it; without
+// scripts all seven show)
+const { slugs, kicker = W.words.kicker, lede, from, more = true, today = false } = Astro.props;
+const all = await loadPractices();
+const list = slugs.map((s) => all.find((p) => p.slug === s)).filter((p): p is NonNullable<typeof p> => !!p);
+---
+{list.length ? (
+  <aside class="prl" data-practice-links data-from={from} aria-label={kicker}>
+    <p class="kicker">{kicker}</p>
+    {lede ? <p class="prl-lede">{lede}</p> : null}
+    <ul class="prl-list">
+      {list.map((p) => (
+        <li data-day-card={today ? p.slug : undefined}><a class="prl-card" href={practicePath(p.slug)} data-practice-from={from}>
+          {p.sanskrit ? <span class="prl-script" aria-hidden="true">{p.sanskrit}</span> : null}
+          <span class="prl-title">{p.title}</span>
+          {p.line ? <span class="prl-line">{p.line}</span> : null}
+          <span class="prl-min">{W.words.minutes.replace('{n}', String(p.minutes))} <span aria-hidden="true">→</span></span>
+        </a></li>
+      ))}
+    </ul>
+    {more ? <p class="prl-more"><a href="/practice">{W.words.all}</a> · <a href="/practice/library">{W.words.library}</a></p> : null}
+  </aside>
+) : null}

@@ -521,6 +521,25 @@ const me = singleton({
   },
 });
 
+/** where the guided practices are offered from other pages (src/components/PracticeStrip.astro) */
+const practiceLinks = singleton({
+  label: 'Practice from every page', path: 'src/content/pages/practice-links', format: { data: 'json' },
+  schema: {
+    words: fields.object({
+      kicker: line('Small heading above the practices on a pillar page'), lede: para('Line under it'), minutes: line('“{n} min”'),
+      all: line('Link to every practice'), library: line('Link to the mantra library'), pathLead: line('Find your path: heading of the practice in a result'),
+      connectKicker: line('Connect, after sending: small heading'), connectLede: para('Connect, after sending: line'), articleKicker: line('End of an article: small heading'),
+      today: line('The moon card in the header: “Today’s practice”'), todayLine: line('The moon card: “{day}, the day of {planet}”'), todayPage: line('The moon card: link to the day’s page, “All of {day}’s prayers”'),
+    }, { label: 'Words' }),
+    pillars: fields.object(Object.fromEntries([['devotion', 'Devotion & the Unseen'], ['magic', 'Witchcraft & Magic'], ['healing', 'Healing & Inner Work'], ['identity', 'Identity, Intimacy & the Body'], ['divination', 'Divination & Insight'], ['learning', 'Learning']].map(([k, label]) => [k, fields.array(fields.relationship({ label: 'Practice', collection: 'practices' }), { label: `${label}: practices at the end of its page`, description: 'Two to five is right. Empty shows none.', validation: { length: { max: 6 } } })])), { label: 'Pillar pages' }),
+    articles: fields.array(fields.object({
+      article: fields.relationship({ label: 'Article', collection: 'writings' }),
+      practices: fields.array(fields.relationship({ label: 'Practice', collection: 'practices' }), { label: 'Practices at its end', validation: { length: { max: 3 } } }),
+    }), { label: 'Articles', itemLabel: (p) => p.fields.article.value || 'An article' }),
+    path: fields.object(Object.fromEntries([['devotion', 'Devotion & the Unseen'], ['magic', 'Witchcraft & Magic'], ['healing', 'Healing & Inner Work'], ['identity', 'Identity, Intimacy & the Body'], ['divination', 'Divination & Insight'], ['learning', 'Learning']].map(([k, label]) => [k, fields.relationship({ label: `${label}: the practice in its result`, collection: 'practices' })])), { label: 'Find your path: one practice for each result' }),
+  },
+});
+
 const articlesPage = singleton({
   label: 'Articles (the words around them)', path: 'src/content/pages/articles', format: { data: 'json' },
   schema: {
@@ -751,14 +770,14 @@ export default config({
     navigation: {
       'The site': ['home', 'kind', 'festivals', 'cards', 'writings', 'articlesPage', 'settings', 'ui'],
       Pages: ['about', 'care', 'connect', 'booking', 'me', 'terms', 'path', 'notfound'],
-      'Daily practice': ['practice', 'practices', 'mantras', 'week', 'library'],
+      'Daily practice': ['practice', 'practices', 'mantras', 'week', 'library', 'practiceLinks'],
       'Pillar pages': ['devotion', 'magic', 'healing', 'identity', 'divination', 'learning'],
       Catalogue: ['catDevotion', 'catMagic', 'catHealing', 'catIdentity', 'catDivination', 'catLearning'],
     },
   },
   collections: { writings, mantras, practices },
   singletons: {
-    home, kind, festivals, cards, settings, articlesPage, ui, about, care, connect, booking, me, terms, path, practice, notfound, week, library,
+    home, kind, festivals, cards, settings, articlesPage, ui, practiceLinks, about, care, connect, booking, me, terms, path, practice, notfound, week, library,
     devotion, magic, healing, identity, divination, learning,
     catDevotion: catalogue('devotion', 'Catalogue · Devotion & the Unseen', CH.devotion, false),
     catMagic: catalogue('magic', 'Catalogue · Witchcraft & Magic', CH.magic),

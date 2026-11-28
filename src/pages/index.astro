@@ -43,6 +43,8 @@ const words = kind.words.filter((w) => w.text.trim());
     <p class="scroll-cue" data-hero aria-hidden="true">{h.hero.scroll}</p>
   </section>
 
+  <TodayLine />
+
   <section class="chapter chapter-connect" data-chapter="connectHome">
     <div class="chapter-inner narrow">
       <p class="kicker" data-fade>{h.connect.kicker}</p>
@@ -75,7 +77,6 @@ const words = kind.words.filter((w) => w.text.trim());
     </section>
   ))}
 
-  <TodayLine />
 
   <section class="chapter chapter-kind" data-chapter="kind">
     <div class="chapter-inner center">

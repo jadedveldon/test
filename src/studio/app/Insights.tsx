@@ -207,7 +207,7 @@ function Practice({ ins }: { ins: Ins }) {
   const g = t.goals;
   const det = (k: string, label = (s: string) => s) => top(t.goalDetails[k], 8).map(([d, v]) => [label(d), v] as [string, number]);
   const groups: [string, string[]][] = [
-    ['Practice', ['practice-start', 'practice-finish', 'rite', 'chant', 'fire', 'lamp', 'journal', 'keep-mantra']],
+    ['Practice', ['practice-from', 'practice-start', 'practice-finish', 'rite', 'chant', 'fire', 'lamp', 'journal', 'keep-mantra']],
     ['Finding things', ['search', 'path-result', 'keep', 'not-found', 'outbound']],
     ['Reaching out', ['request', 'help-line', 'call', 'email', 'booking-accept', 'booking-suggest', 'booking-cancel', 'invoice-paid-claim']],
     ['Accounts and the app', ['signin-link', 'signin', 'account-created', 'account-deleted', 'install', 'record-cleared']],
@@ -220,6 +220,7 @@ function Practice({ ins }: { ins: Ins }) {
       <div className="in-grid3">
         <Bars title="Guided practices finished" rows={det('practice-finish')} />
         <Bars title="Mantras chanted" rows={det('chant')} empty="No chanting counted yet." />
+        <Bars title="Practices opened from other pages" rows={det('practice-from')} empty="None opened from another page yet." note="Where a guided practice was offered: a pillar's page, an article, Find your path, Connect after sending, or the moon card in the header." />
         <Bars title="What people searched for" rows={det('search')} note="Only words that found something on the site are kept; searches that found nothing are counted as “nothing found”." />
         <Bars title="Find your path: where it led" rows={det('path-result')} />
         <Bars title="Missing pages: how people got there" rows={det('not-found')} empty="No missing pages reached." note="“A link on this site” means one of the site’s own links is broken: worth fixing first." />

@@ -4,6 +4,8 @@
  * lamplight (direction A), the palm-leaf manuscripts (direction C) and the night road of study (direction B).
  * Find your class sits in the library; Your path opens the sky. The yantra drawing is in the project history.
  */
+import PracticeStrip from '../../components/PracticeStrip.astro';
+import PL from '../../content/pages/practice-links.json';
 import { pillarService } from '../../seo/ld';
 import { words as SW } from '../../config';
 import Base from '../../layouts/Base.astro';
@@ -138,6 +140,7 @@ const sky = moves.filter((m) => m.room === 'sky');
           <a class="btn btn-solid" href="/connect" data-topic={p.name}>{COPY.close.button}</a>
           <a class="btn btn-ghost" href="/path">{words.path}</a>
         </div>
+        <PracticeStrip slugs={PL.pillars.learning} lede={PL.words.lede} from="pillar-learning" />
       </div>
     </section>
 

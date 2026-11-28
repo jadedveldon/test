@@ -8,6 +8,8 @@
  *   III Shadow: golden repair, a bowl in straight-cut pieces to set back with gold
  *   IV  Journaling: a prompt for today
  */
+import PracticeStrip from '../../components/PracticeStrip.astro';
+import PL from '../../content/pages/practice-links.json';
 import { pillarService } from '../../seo/ld';
 import { words as SW } from '../../config';
 import Base from '../../layouts/Base.astro';
@@ -197,6 +199,7 @@ const pieces = polys.map((poly, i) => {
           <a class="btn btn-solid" href="/connect" data-topic={p.name}>{COPY.close.button}</a>
           <a class="btn btn-ghost" href="/care">{words.care}</a>
         </div>
+        <PracticeStrip slugs={PL.pillars.healing} lede={PL.words.lede} from="pillar-healing" />
       </div>
     </section>
 

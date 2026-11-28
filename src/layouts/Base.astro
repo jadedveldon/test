@@ -1,4 +1,6 @@
 ---
+import PL from '../content/pages/practice-links.json';
+import WEEK from '../content/pages/week.json';
 import { existsSync } from 'node:fs';
 import { ClientRouter } from 'astro:transitions';
 import Veil from '../components/Veil.astro';
@@ -119,11 +121,17 @@ const trailLd = trail.length ? JSON.stringify({
         </button>
         <div class="sky" data-sky>
           <button type="button" class="sky-pill" data-sky-btn aria-expanded="false" aria-controls="sky-card">
-            <span class="sky-icon" data-sky-icon></span><span class="sky-name" data-sky-name>Moon</span>
+            <span class="sky-icon" data-sky-icon></span><span class="sky-name" data-sky-name>Moon</span><span class="sky-day" data-sky-day></span>
           </button>
           <div id="sky-card" class="sky-card" data-sky-card hidden>
             <p class="sky-title" data-sky-title></p>
             <p data-sky-note></p>
+            <div class="sky-today" data-sky-today hidden>
+              <p class="kicker" data-sky-today-line></p>
+              <a class="btn btn-solid btn-sm" data-sky-today-go href="/practice">{PL.words.today} <span aria-hidden="true">→</span></a>
+              <a class="sky-today-day" data-sky-today-page href="/practice"></a>
+            </div>
+            <script type="application/json" data-sky-days set:html={JSON.stringify({ w: PL.words, days: Object.fromEntries(WEEK.days.map((d) => [d.key, { name: d.name, planet: d.planet }])) })} />
           </div>
         </div>
         <button type="button" class="sound-btn" data-sound aria-pressed="false" aria-label="Ambient sound">

@@ -7,6 +7,8 @@
  *   altars and devotion (lamps), spirits and ancestors (a nebula),
  *   shamanic work (the world tree).
  */
+import PracticeStrip from '../../components/PracticeStrip.astro';
+import PL from '../../content/pages/practice-links.json';
 import { pillarService } from '../../seo/ld';
 import { words as SW } from '../../config';
 import Base from '../../layouts/Base.astro';
@@ -255,6 +257,7 @@ const alias = (k: string) => (aliases[k] || []);
           <a class="btn btn-solid" href="/connect" data-topic={p.name}>{COPY.close.button}</a>
           <a class="btn btn-ghost" href="/path">{words.path}</a>
         </div>
+        <PracticeStrip slugs={PL.pillars.devotion} lede={PL.words.lede} from="pillar-devotion" />
       </div>
     </section>
 

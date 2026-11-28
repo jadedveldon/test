@@ -5,6 +5,8 @@
  * (obsidian, silver, arched mirrors). The opening is where they meet: a black mirror in a gilt frame, which gives
  * prompts to ponder. Readings are offered for reflection.
  */
+import PracticeStrip from '../../components/PracticeStrip.astro';
+import PL from '../../content/pages/practice-links.json';
 import { pillarService } from '../../seo/ld';
 import { words as SW } from '../../config';
 import Base from '../../layouts/Base.astro';
@@ -82,6 +84,7 @@ const mr = COPY.mirror;
           <a class="btn btn-solid" href="/connect" data-topic={p.name}>{COPY.close.button}</a>
           <button type="button" class="btn btn-ghost" data-card-open>{COPY.close.card}</button>
         </div>
+        <PracticeStrip slugs={PL.pillars.divination} lede={PL.words.lede} from="pillar-divination" />
       </div>
     </section>
 

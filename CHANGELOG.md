@@ -3,6 +3,29 @@
 Every change to the site, newest first: what changed, why, and how it was checked.
 The rules for checking are in `CLAUDE.md`; the checks themselves are in `tools/qa/`.
 
+## 2026-11-28 · Practice from every page
+
+The owner asked for the mantra library and daily practice to be found more: practice offered where it belongs on
+every page, and today's practice at the top of the site.
+
+- **"Practise this" at the end of each pillar page:** a row of guided practices in that page's world (Devotion:
+  Kali, the Goddess, Shiva, Selene, Aphrodite; Healing: breathe, grief, fear, overwhelm, healing; and so on), with
+  links to every practice and the library. Two compact columns on phones.
+- **At the end of each article:** its practices (Who is Kali? leads to Kali and the Goddess), before the invitation.
+- **Find your path:** each result now offers one practice "To begin today".
+- **Connect, after sending:** "While you wait", today's weekday practice (the visitor's own day).
+- **The moon card in the header:** the day and its planet ("Saturday, the day of Saturn"), Today's practice, and
+  the day's page of prayers; on wide screens the day is beside the moon's name.
+- **The homepage:** Today's line now comes straight after the opening, before Connect and the six pillars.
+- **All of it is in the content editor** ("Practice from every page", under Daily practice): which practices each
+  pillar, article and Find your path result offers, and every word. A practice that no longer exists is left out.
+- **Counted:** each practice opened from another page is counted by where it was offered; Insights → Practice shows
+  "Practices opened from other pages".
+- **Checks** (the owner asked for the new parts only): regression 36 (every pillar and article offers practices,
+  every one a real practice page, Today's line second on the homepage, the moon card leads to today's practice);
+  rules and content files; phone and desktop screenshots looked at. On light pages the script and minutes were too
+  faint, and five tall cards made a long column on phones; both fixed before going live.
+
 ## 2026-11-27 · The diya's shared count of the day
 
 The owner asked to finish the diya's shared count, left as "on the finished site" since it was first made.
