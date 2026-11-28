@@ -3,6 +3,19 @@
 Every change to the site, newest first: what changed, why, and how it was checked.
 The rules for checking are in `CLAUDE.md`; the checks themselves are in `tools/qa/`.
 
+## 2026-11-28 · Sample records in the live Studio
+
+- **The live Studio holds sample records** so it can be tried before real requests arrive: six made-up clients
+  (example.com addresses, each named "… (sample)" and tagged `sample`), seven bookings at every stage (requested,
+  times offered, confirmed, held), two invoices (one paid, one sent) numbered `SAMPLE-2026-…`, notes, history and
+  23 emails in the Outbox. Made by running the Studio's own rules, as the preview's demo does.
+- **Untouched:** the Studio's settings (no made-up UPI ID; the UPI ID, address and email stay empty for Sarvakali),
+  and invoice numbering: the first real invoice is still SK-2026-0001. Email is not switched on, so nothing reaches
+  the example addresses; reminders for the sample bookings wait in the Outbox.
+- **Taking them out:** `tools/studio/remove-samples.mjs` (shows what would go; `--apply` takes out the samples and
+  everything that belongs to them, nothing else). The empty Studio as it was is kept as a backup outside the
+  repository.
+
 ## 2026-11-28 · The Studio was down for about 40 minutes: found, fixed, and how to deploy from now on
 
 - **What happened:** from 12:39 to 13:17 (India time) the Studio's sign-in, the diya's count and the health check failed
